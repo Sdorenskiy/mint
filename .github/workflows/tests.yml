@@ -1,0 +1,33 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    name: ${{ matrix.os }} · Python ${{ matrix.python }}
+    runs-on: ${{ matrix.os }}
+    # Windows has not been tried on real machines yet, so its result does not block merging
+    continue-on-error: ${{ matrix.os == 'windows-latest' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: ["3.10", "3.11", "3.12"]
+        include:
+          - os: windows-latest
+            python: "3.11"
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Test dependencies (Docling is stubbed; real Streamlit is used by the page smoke test)
+        run: python -m pip install "streamlit>=1.36" numpy requests PyYAML "python-docx>=1.2" python-dotenv faiss-cpu truststore pdfplumber reportlab
+      - name: Syntax
+        run: python -m compileall -q app.py mint check_install.py eval_search.py kb_stats.py tests
+      - name: Tests
+        run: python tests/run_all.py

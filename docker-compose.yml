@@ -1,0 +1,45 @@
+# Try MINT without an LLM gateway: Ollama with open models + MINT (docs/OLLAMA.md).
+#   docker compose up -d --build        → http://localhost:8501
+#   docker compose logs -f ollama-pull  → model download progress (about 3 GB on first start)
+# Other models:  MINT_LLM=qwen2.5:7b docker compose up -d
+# For evaluation on public documents. At work, use only models and gateways approved by your organisation.
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    environment:
+      OLLAMA_CONTEXT_LENGTH: "8192"     # context window; keep in sync with config.ollama.yaml
+      OLLAMA_KEEP_ALIVE: "30m"
+    volumes:
+      - ollama:/root/.ollama
+    restart: unless-stopped
+
+  ollama-pull:                          # downloads the models once and exits
+    image: ollama/ollama:latest
+    depends_on: [ollama]
+    environment:
+      OLLAMA_HOST: ollama:11434
+    entrypoint: ["/bin/sh", "-c", "sleep 3 && ollama pull ${MINT_LLM:-qwen2.5:3b} && ollama pull ${MINT_EMBED:-bge-m3}"]
+    restart: "no"
+
+  mint:
+    build: .
+    depends_on: [ollama]
+    ports:
+      - "127.0.0.1:8501:8501"           # the page is reachable only from this computer
+    environment:
+      LLM_API_URL: http://ollama:11434/v1
+      EMBED_API_URL: http://ollama:11434/v1/embeddings
+      LLM_MODEL: ${MINT_LLM:-qwen2.5:3b}
+      EMBED_MODEL: ${MINT_EMBED:-bge-m3}
+      MINT_CONFIG: /app/config.ollama.yaml
+      KB_DIR: /data/knowledge_base
+      LOG_DIR: /data/mint_logs
+      PROMPTS_PATH: /data/prompts.yaml  # edits from the "📝 Prompts" page survive a rebuild
+    volumes:
+      - mint-data:/data
+    restart: unless-stopped
+
+volumes:
+  ollama:
+  mint-data:

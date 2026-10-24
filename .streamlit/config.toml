@@ -1,0 +1,31 @@
+# Streamlit settings for MINT. Streamlit reads this file when MINT is started from the project folder
+# (streamlit run app.py or run_mint.sh / run_mint.bat); it takes precedence over ~/.streamlit/config.toml.
+# Настройки Streamlit для MINT: действуют, когда MINT запускается из папки проекта.
+
+[server]
+# This computer only: the MINT page is not reachable from the network. For a shared server see docs/SECURITY.md.
+# Только этот компьютер: страница MINT не видна по сети.
+address = "localhost"
+port = 8501
+# No e-mail prompt on first start; run_mint.* open the browser themselves
+headless = true
+# Serve ./static (the interface fonts) at app/static/ — nothing is loaded from the internet.
+# Раздавать ./static (шрифты интерфейса): ничего не грузится из интернета.
+enableStaticServing = true
+
+[browser]
+# Do not send usage statistics to Streamlit / не отправлять статистику использования
+gatherUsageStats = false
+
+[client]
+# Only the main menu in the top bar / в верхней панели только главное меню
+toolbarMode = "minimal"
+
+[theme]
+# MINT colours; the rest of the look is in mint/ui/assets/mint.css / цвета MINT, остальное — в mint.css
+base = "light"
+primaryColor = "#12a37a"
+backgroundColor = "#f4f7f5"
+secondaryBackgroundColor = "#e9f0ec"
+textColor = "#1f2d2a"
+font = "sans serif"

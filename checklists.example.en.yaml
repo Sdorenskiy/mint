@@ -1,0 +1,79 @@
+# MINT audit checklists by document type — EXAMPLE (English interface).
+#
+# MINT keeps your own checklists in checklists.yaml next to the program: that file is not in the repository and
+# is not overwritten by MINT updates. Until it exists, MINT uses this example. It is easier to edit them in the
+# interface: "Document audit" → "📋 Checklist by document type" → "💾 Save" (creates checklists.yaml).
+#
+# common — items for any document.
+# types  — document types:
+#   name  — name of the type (shown in the interface and in the conclusion);
+#   match — words by which MINT recognises the type: searched in the file name and at the start of the document
+#           (title page); the type whose word comes first wins;
+#   items — checklist items.
+#
+# Each item is a separate question to the model over the whole document (+1 LLM call). Write an item so that the
+# answer can be found in the text: "For each role it is described what it does in the system", not "Are all roles
+# covered".
+
+common:
+  - The purpose of the document is clear — why it is needed and what decision is made on it
+  - The grounds for the document (decisions, assignments, previous documents) are given and attached or referenced
+  - The initiator (customer) of the document and the people responsible for it are named
+  - All abbreviations and terms used in the document are defined
+  - Obligations of the participants are unambiguous — who does what and by when
+
+types:
+  - name: Technical specification
+    match: [technical specification, statement of work, technical assignment]
+    items:
+      - Each requirement is unambiguous and verifiable — it is clear how to check that it is met
+      - Performance indicators (volumes, throughput, response time, availability) are given with numbers
+      - Interfaces with adjacent systems are described — what is transferred, in which format, over which protocol and who starts the exchange
+      - Information security requirements are given according to the category of the data processed
+      - Stages and deadlines are given, and the deadlines do not contradict dependencies on adjacent systems
+      - The scope and order of testing and acceptance are given
+      - The documentation delivered as a result of the work is listed
+
+  - name: Functional requirements
+    match: [functional requirements, business requirements]
+    items:
+      - For each user role it is described what it does in the system and what rights it has
+      - For each business process the participants, inputs, results and sequence of steps are given, and no step lacks a performer
+      - Use cases are described, including error and exceptional situations
+      - Performance indicators are given with numbers
+      - Requirements can be implemented and verified — there are no ambiguous wordings
+
+  - name: Architecture solution
+    match: [architecture solution, architecture description, solution architecture, design solution, technical solution]
+    items:
+      - The components of the solution and their interaction are described — through what, which data and in which direction
+      - For each system or platform used it is clear whether its current capabilities are enough or a change is needed
+      - The solution delivers the stated performance indicators (volumes, throughput, availability)
+      - Data protection in transit and at rest is described — encryption and signature, whose certificates, who decrypts and where
+      - Fault tolerance, backup and recovery are described
+      - Monitoring and event logging are described
+      - Limitations and risks of the solution are given
+
+  - name: Test programme and methodology
+    match: [test programme and methodology, test program, test plan, test methodology]
+    items:
+      - There is a test for each requirement of the assignment
+      - Each test has input data, steps and the expected result
+      - The test environment (stand) and the data it needs are given
+      - The criteria for passing the tests are given
+      - It is stated which tests are automated and how to run them, and for manual ones — why they are manual
+
+  - name: Test report
+    match: [test report, test protocol]
+    items:
+      - For each test the actual result and the conclusion (passed or not) are given
+      - All tests of the test programme are done, and for those not done the reason is given
+      - Nonconformities found are listed with deadlines and the people responsible for fixing them
+      - The date, stand and participants of the tests are given
+
+  - name: Minutes, plan
+    match: [minutes of the meeting, minutes, action plan, schedule]
+    items:
+      - All obligations are listed — what to do, who is responsible and by when
+      - Deadlines are consistent with dependencies on other work and adjacent systems
+      - It is clear how and by whom the completion of each item will be confirmed

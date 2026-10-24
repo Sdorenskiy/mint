@@ -1,0 +1,42 @@
+# Секреты и локальные настройки — только образцы (*.example) попадают в репозиторий
+.env
+config.yaml
+glossary.json
+checklists.yaml
+/prompts.yaml
+.streamlit/secrets.toml
+
+# Данные компании: база знаний, оригиналы документов, логи
+knowledge_base/
+sources/
+mint_logs/
+*.log
+feedback.jsonl
+
+# Офлайн-комплект для установки без интернета (собирается скриптом, весит сотни МБ)
+wheels/
+mint_offline*/
+mint_offline*.zip
+
+# Результаты оценки и рабочие наборы вопросов (могут содержать внутренние формулировки)
+eval_results/
+eval/questions.csv
+eval/questions.draft.csv
+
+# Документы Word, загружаемые для проверки
+*.docx
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Редакторы и ОС
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Obsidian (если схемы открываются из хранилища)
+.obsidian/

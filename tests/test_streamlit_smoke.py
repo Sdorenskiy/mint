@@ -1,0 +1,166 @@
+"""Смоук-тест страницы MINT на настоящем Streamlit (streamlit.testing.v1.AppTest), без браузера:
+страница открывается, чат отвечает, кнопки 👍/👎 и комментарий работают, «Новый диалог» очищает историю, сохранённый
+аудит открывается из «📂 Мои аудиты» и замечания размечаются, профиль меняет критерии и набор промптов.
+
+Запуск из корня проекта:  python tests/test_streamlit_smoke.py
+Если настоящий Streamlit не установлен, тест пропускается (на GitHub он установлен).
+"""
+import json
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import harness  # noqa: E402
+import mock_server  # noqa: E402
+
+CHILD = r'''
+import json, traceback
+from streamlit.testing.v1 import AppTest
+
+res = {"errors": []}
+
+
+def errors(at):
+    return [str(e.message) + "\n" + "\n".join(str(x) for x in (e.stack_trace or [])[-10:]) for e in at.exception]
+
+
+try:
+    at = AppTest.from_file("app.py", default_timeout=120)
+    at.run()
+    res["errors"] += errors(at)
+    res["titles"] = [str(m.value) for m in at.markdown if "mint-wordmark" in str(m.value)]
+    res["theme"] = any("mint-theme-anchor" in str(m.value) for m in at.markdown)
+    res["tabs"] = len(at.tabs)
+    if not at.exception:
+        at.chat_input[0].set_value("Какие требования к журналам?").run()
+        res["errors"] += errors(at)
+        msgs = at.session_state["messages"]
+        res["messages"] = len(msgs)
+        res["answer"] = msgs[-1]["content"][:200] if msgs else ""
+        aid = msgs[-1].get("id") if msgs else None
+        if aid:
+            at.button(key=f"fb_up_chat_{aid}").click().run()
+            res["errors"] += errors(at)
+            at.text_input(key=f"fb_text_chat_{aid}").set_value("Комментарий из смоук-теста").run()
+            at.button(key=f"fb_send_chat_{aid}").click().run()
+            res["errors"] += errors(at)
+        at.button(key="chat_clear_btn").click().run()
+        res["errors"] += errors(at)
+        res["messages_after_clear"] = len(at.session_state["messages"])
+        # переключение языка настоящим виджетом
+        at.selectbox(key="ui_lang").set_value("en").run()
+        res["errors"] += errors(at)
+        res["titles_en"] = [str(m.value) for m in at.markdown if "mint-wordmark" in str(m.value)]
+        res["tabs_en"] = [str(t.label) for t in at.tabs]
+        at.chat_input[0].set_value("How long are logs kept?").run()
+        res["errors"] += errors(at)
+        res["answer_en"] = at.session_state["messages"][-1]["content"][:200]
+        # сохранённый аудит: открыть из «Моих аудитов» и разметить замечания настоящими виджетами
+        at.selectbox(key="ui_lang").set_value("ru").run()
+        from mint.audit_store import load_audit, save_audit
+        from mint.config import load_settings
+        cfg_, _ = load_settings()
+        f1 = {"severity": "КРИТИЧНЫЙ", "text": "Не указан срок хранения журналов", "quote": "", "sections": ["2. Журналы"],
+              "origins": ["s1"]}
+        f2 = {"severity": "СРЕДНИЙ", "text": "Шаг 2 не связан с шагом 3", "quote": "", "sections": ["3. Процесс"],
+              "origins": ["deep:step#1"], "source": "deep", "check": "step"}
+        aid_ = save_audit(cfg_, {"findings": [f1, f2], "by_section": [("2. Журналы", [f1]), ("3. Процесс", [f2])],
+                                 "report": "# ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ\n", "log_md": "# Лог\n", "failed_sections": [],
+                                 "sections": 2, "special": "", "focus": "", "prompts": "p"}, "Пример.md")
+        at.run()
+        at.selectbox(key="tab2_saved_pick").set_value(aid_).run()
+        at.button(key="tab2_saved_open").click().run()
+        res["errors"] += errors(at)
+        res["reopened"] = bool(at.session_state["tab2_reopened"])
+        rows_ = at.session_state["tab2_rows"]
+        k0, k1 = (f"rv::{aid_}::{rows_[i]['key']}" for i in (0, 1))
+        at.radio(key=k0 + "::v").set_value("ok").run()
+        at.radio(key=k1 + "::v").set_value("wrong").run()
+        res["errors"] += errors(at)
+        at.selectbox(key=k1 + "::r").set_value("present").run()
+        at.text_input(key=k0 + "::c").set_value("согласен").run()
+        res["errors"] += errors(at)
+        res["marks"] = load_audit(cfg_, aid_)["review"]["marks"]
+        res["keys"] = [rows_[0]["key"], rows_[1]["key"]]
+        at.run()
+        res["radio_after"] = [at.radio(key=k0 + "::v").value, at.radio(key=k1 + "::v").value]
+        res["errors"] += errors(at)
+        # профиль: выбран другой — в поле критериев его критерии, чат отвечает с промптами профиля
+        from mint.prompts import profile_audit_focus
+        res["focus_expect"] = [profile_audit_focus("general", "ru"), profile_audit_focus("architecture", "ru")]
+        res["focus_general"] = at.text_area(key="tab2_user_focus").value
+        at.selectbox(key="mint_profile").set_value("architecture").run()
+        res["errors"] += errors(at)
+        res["focus_arch"] = at.text_area(key="tab2_user_focus").value
+        at.chat_input[0].set_value("Какие требования к журналам?").run()
+        res["errors"] += errors(at)
+        res["arch_prompts"] = at.session_state["messages"][-1].get("prompts", "")
+except Exception:
+    res["errors"].append(traceback.format_exc())
+print("RESULT" + json.dumps(res, ensure_ascii=False))
+'''
+
+
+def clean_env(extra):
+    """Окружение без заглушек: настоящий Streamlit; faiss — настоящий или заглушка, если его нет."""
+    paths = [str(extra["PROJECT"])] + ([] if harness.REAL_FAISS else [str(harness.TESTS / "fallback")])
+    env = {k: v for k, v in os.environ.items() if k not in ("PYTHONPATH",)}
+    env.update({k: str(v) for k, v in extra.items() if k != "PROJECT"})
+    env.update({"PYTHONPATH": os.pathsep.join(paths), "PYTHONUTF8": "1"})
+    return env
+
+
+probe = subprocess.run([sys.executable, "-c", "import streamlit.testing.v1"], env=clean_env({"PROJECT": harness.ROOT}),
+                       capture_output=True, text=True)
+if probe.returncode != 0:
+    print("  — настоящий Streamlit не установлен: смоук-тест страницы пропущен")
+    print("\nИТОГ: пропущено (нет Streamlit)")
+    sys.exit(0)
+
+W = harness.make_project(prefix="mint_smoke_", extra_files=("app.py", ".streamlit"))
+(W / "smoke_child.py").write_text(CHILD, encoding="utf-8")
+srv = mock_server.start()
+BASE = f"http://127.0.0.1:{srv.server_address[1]}/v1"
+env = clean_env({
+    "PROJECT": W, "LLM_API_URL": BASE, "EMBED_API_URL": BASE + "/embeddings", "RERANK_API_URL": BASE + "/rerank",
+    "LLM_MODEL": "test-llm", "EMBED_MODEL": "emb-model", "RERANK_MODEL": "rr-model", "LLM_API_KEY": "k",
+    "KB_DIR": W / "kb", "LOG_DIR": W / "logs", "MINT_CONFIG": W / "none.yaml", "GLOSSARY_PATH": W / "none.json", "MINT_LANG": "ru",
+})
+check = harness.Checker()
+r = subprocess.run([sys.executable, "smoke_child.py"], cwd=W, env=env, capture_output=True, text=True,
+                   encoding="utf-8", errors="replace", timeout=600)
+line = next((x for x in r.stdout.splitlines() if x.startswith("RESULT")), None)
+res = json.loads(line[6:]) if line else {"errors": [r.stdout[-2000:] + r.stderr[-3000:]]}
+ver = subprocess.run([sys.executable, "-c", "import streamlit; print(streamlit.__version__)"], env=env,
+                     capture_output=True, text=True).stdout.strip()
+print(f"  Streamlit {ver}")
+
+check(not res["errors"], "страница и действия без исключений", "\n".join(res["errors"])[:3000])
+check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
+check(res.get("tabs") == 3, f"три вкладки: {res.get('tabs')}")
+check(res.get("messages") == 2 and res.get("answer"), f"чат ответил: {res.get('answer', '')[:80]!r}")
+fb = W / "logs" / "feedback.jsonl"
+rows = [json.loads(x) for x in fb.read_text(encoding="utf-8").splitlines()] if fb.exists() else []
+check([x.get("rating") for x in rows] == ["up", "comment"], f"оценка и комментарий записаны: {[x.get('rating') for x in rows]}")
+check(res.get("messages_after_clear") == 0, "«Новый диалог» очищает историю")
+check(any("An intelligent RAG system" in t for t in res.get("titles_en", [])) and "📋 Document review" in res.get("tabs_en", []),
+      f"переключатель языка: интерфейс на английском ({res.get('titles_en')}, {res.get('tabs_en')})")
+check(str(res.get("answer_en", "")).startswith("Answer from the context"), f"чат на английском: {res.get('answer_en')!r}")
+k0, k1 = res.get("keys") or ("", "")
+check(res.get("reopened") and res.get("marks") == {k0: {"verdict": "ok", "comment": "согласен"},
+                                                   k1: {"verdict": "wrong", "reason": "present"}},
+      f"сохранённый аудит открывается, отметки и причина сохраняются: {res.get('marks')}")
+check(res.get("radio_after") == ["ok", "wrong"], f"отметки не сбрасываются после перерисовки: {res.get('radio_after')}")
+check(res.get("focus_expect") and [res.get("focus_general"), res.get("focus_arch")] == res["focus_expect"],
+      "профиль: по умолчанию универсальные критерии, выбран «Архитектура и ИТ-решения» — его критерии")
+check(res.get("arch_prompts") == "ru-8fd10871", f"профиль архитектуры — набор промптов до профилей: {res.get('arch_prompts')}")
+
+if os.environ.get("GITHUB_ACTIONS") == "true" and not check.fails:   # видно в интерфейсе GitHub и через API
+    print(f"::notice title=Смоук-тест страницы::Streamlit {ver}: страница, чат, 👍 и комментарий, «Новый диалог», "
+          "переключение на английский, разбор замечаний сохранённого аудита — без ошибок")
+srv.shutdown()
+shutil.rmtree(W, ignore_errors=True)
+check.finish()

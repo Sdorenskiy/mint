@@ -1,0 +1,13 @@
+# Зависимости MINT. Нужен Python 3.10 или новее.
+# Точные версии, проверенные на рабочей установке, — в requirements.lock (если он есть, ставьте по нему).
+streamlit>=1.36
+docling-slim[format-docx]>=2.140   # Docling только с разбором .docx: без PyTorch и моделей. Зеркало без
+                                   # docling-slim — замените строку на docling>=2.0 (см. docs/ru/INSTALL.md)
+faiss-cpu>=1.8
+numpy>=1.26
+requests>=2.31
+python-docx>=1.2      # 1.2+: замечания в Word добавляются примечаниями
+pdfplumber>=0.11.10   # .pdf по текстовому слою, без моделей (pdfminer.six, pypdfium2)
+python-dotenv>=1.0
+PyYAML>=6.0
+truststore>=0.9       # Windows: корпоративные сертификаты из хранилища ОС

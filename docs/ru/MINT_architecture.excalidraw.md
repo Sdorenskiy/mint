@@ -1,0 +1,5144 @@
+---
+
+excalidraw-plugin: parsed
+tags: [excalidraw]
+
+---
+==⚠  Switch to EXCALIDRAW VIEW in the MORE OPTIONS menu of this document. ⚠== You can decompress Drawing data with the command palette: 'Decompress current Excalidraw file'. For more info check in plugin settings under 'Saving'
+
+
+# Excalidraw Data
+
+## Text Elements
+MINT — архитектура решения ^MEgp2krG
+
+Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский ^KMGeyBAP
+
+Документы для базы (.docx, .pdf,
+.md, .txt): регламенты,
+стандарты ^CMIJ6m5h
+
+Вопрос пользователя ^O8slPZY2
+
+Документ на согласование (.docx,
+.pdf, .md, .txt), критерии и
+«особое внимание» ^uJcbtyhc
+
+Выданные замечания и новая
+редакция документа (.docx, .pdf,
+.md, .txt) ^VYktHA1f
+
+Интерфейс — Streamlit ^ZDbBQfJM
+
+Боковая панель: документы базы,
+настройки, модели и лимиты,
+сокращения, правила экспертов и
+карточки систем (черновик карточки
+— по базе), проверка качества,
+промпты, язык RU / EN, отзывы ^9EeuGh20
+
+Вкладка «Чат» ^rX2XoBEz
+
+Вкладка «Аудит документа»:
+документ, критерии, «особое
+внимание», ⚙️ настройки аудита в
+одном блоке, «Мои аудиты» ^x1vUqZsn
+
+Вкладка «Контроль исправлений» ^nukixQmd
+
+ДОБАВЛЕНИЕ ДОКУМЕНТОВ В БАЗУ
+
+1. Разбор: .docx — Docling; .pdf —
+   без моделей (заголовки из
+   закладок, оглавления, по
+   шрифту); .md, .txt → текст,
+   заголовки, таблицы
+2. Нарезка по границам абзацев и
+   предложений: parent 2500 симв.
+   для LLM, child 400 симв. для
+   поиска; таблицы — по строкам
+3. Эмбеддинги child (вместе с
+   путём заголовков)
+4. Запись в хранилище: векторы,
+   фрагменты, индекс слов
+5. Автосбор сокращений из
+   документов; в манифест — модель
+   и параметры нарезки
+6. Черновик карточки системы (по
+   кнопке на боковой панели): по
+   каждому разделу карточки —
+   поиск по базе и ответ LLM
+   только по найденному, у каждого
+   факта — источник, чего нет —
+   «нет в базе»; эксперт
+   проверяет, дописывает и
+   загружает карточку в базу ^mZpXKQNv
+
+ЧАТ ПО БАЗЕ ЗНАНИЙ
+
+1. Уточняющий вопрос
+   переписывается в
+   самостоятельный по истории
+   диалога
+2. Поиск по базе → 4–5 лучших
+   фрагментов
+3. Контекст: фрагменты с файлом и
+   разделами (соседние — одним
+   блоком, длинные — вокруг
+   найденного места) + справочник
+   сокращений
+4. LLM отвечает только по
+   контексту
+5. Ответ со ссылками [файл,
+   раздел] и списком источников;
+   ссылки сверяются с найденными
+   фрагментами, неверные помечены
+   ⚠; отзыв: оценка и комментарий ^m25FKYcq
+
+АУДИТ ДОКУМЕНТА (MAP → REDUCE)
+
+1. Разбор документа → .md → части
+   по разделам до 4500 симв.
+   (раздел с таблицей — целиком);
+   для сравнения — весь документ
+   одним запросом
+2. MAP: каждая часть — с нормами
+   из базы,
+   документами-основаниями (по
+   ссылкам документа на них),
+   правилами экспертов, карточками
+   упомянутых систем и документом
+   целиком для справки (не
+   помещается в окно — с
+   оглавлением) → LLM пишет
+   замечания; описанный процесс —
+   по шагам; по желанию — с
+   рассуждениями модели
+3. Самокритика (можно выключить):
+   оставить или удалить,
+   критичность, дословная цитата;
+   замечание о пункте другой части
+   отсеивается
+4. Глубокая проверка: узкие
+   вопросы — каждая пара шагов
+   процесса, каждое требование,
+   границы; противоречия между
+   разделами; цифры (считает
+   программа); опечатки
+5. Проходы 2–3 (по желанию):
+   разделы и вопросы о процессе и
+   цифрах — ещё раз с температурой
+   ≥ 0,4; найденное несколькими
+   проходами — выше
+6. «Особое внимание» и чек-лист по
+   типу документа — ответ на
+   каждый пункт по всему документу
+   вместе с замечаниями, уже
+   найденными другими проверками;
+   что документ требует от каждой
+   упомянутой системы
+7. Без модели: сокращения,
+   оформление; ссылки и цифры из
+   замечаний сверяются с
+   документом и нормами
+8. REDUCE: повторы — по словам (в
+   кусках одной длинной таблицы —
+   мягче) и моделью (замечания о
+   разных шагах процесса не
+   сливаются); замечания — по
+   разделам документа, в его
+   порядке; «Главное» —
+   модель-редактор выбирает самые
+   важные
+9. Заключение .md, документ с
+   примечаниями Word, лог проверки
+   и сырые ответы модели .md;
+   сверка с эталоном; отзыв:
+   оценка и комментарий
+10. Аудит сохраняется
+   (LOG_DIR/audits) и открывается
+   позже; эксперт размечает
+   замечания («беру» / «мелочь» /
+   «неверно» с причиной) и
+   дописывает свои → «Мои
+   замечания» Word / .md и файл
+   разбора для улучшения MINT ^d7Q1WHl9
+
+КОНТРОЛЬ ИСПРАВЛЕНИЙ
+
+1. Новая редакция документа →
+   разделы
+2. Для каждого замечания —
+   подходящие разделы (вектор +
+   слова + реранкер) и, по
+   желанию, нормы из базы
+3. LLM: статус «исправлено /
+   частично / нет» и дословная
+   цитата
+4. Цитата сверяется с текстом
+   редакции
+5. Матрица контроля .md / .docx;
+   отзыв: оценка и комментарий ^cOzZf5k5
+
+Поисковый движок (общий для чата, аудита и контроля исправлений)
+вектор (FAISS, смысл) + слова (BM25: основы русских и английских слов, расшифровки сокращений) → слияние
+рангов (RRF) → реранкер (необязательно) → лучшие фрагменты + сигнал «уверенность низкая». Подробно — на
+схеме ниже. ^za0DMpYx
+
+черновик карточки ^tmov1cS1
+
+Ядро MINT — Python ^HQQ0tDBz
+
+Хранилище базы знаний — папка KB_DIR на машине ^o4snPTpc
+
+FAISS — векторы child (по ним ищет
+«вектор») ^KKTFtVje
+
+parent_store.json — фрагменты parent
+(их читает LLM) ^bzt8ESso
+
+bm25_index.pkl — индекс слов по
+основам ^KyOaS2OB
+
+auto_glossary.json — сокращения из
+документов ^p0abAhKA
+
+manifest.json — модель эмбеддингов и
+нарезка каждого документа;
+audit_roles.json — правила экспертов
+и карточки систем для аудита ^jXvBssE7
+
+sources/ — оригиналы документов для
+переиндексации ^p07PEz84
+
+Внешние сервисы ^baST1uPq
+
+любой OpenAI-совместимый API ^1T4SNQGj
+
+LLM — ответы, замечания,
+самокритика, «Главное», черновики
+карточек ^nBcm18E7
+
+Модель эмбеддингов — векторы ^zDX0XsOI
+
+Реранкер — оценка релевантности
+(необязательно) ^L0k8cF7P
+
+запись ^zAZSSevu
+
+чтение ^vwSuw7eL
+
+HTTP ^zufR1oa1
+
+Настройки
+• .env — адреса API, ключи, модели, папки, язык
+   (MINT_LANG)
+• config.yaml — параметры поиска и аудита
+   (необязательно)
+• glossary.json — свои расшифровки сокращений
+   (необязательно)
+• checklists.yaml — свои чек-листы аудита по типам
+   документов (образец — checklists.example.yaml;
+   файл вне папки программы — путь в
+   MINT_CHECKLISTS)
+• mint/prompts/ru.yaml, en.yaml — тексты промптов
+   по умолчанию; свои правки — prompts.yaml
+   (страница «Промпты»); версия набора пишется в
+   отзывы, лог аудита и проверку качества
+• боковая панель — изменения на время сеанса
+• LOG_DIR — журнал работы, отзывы пользователей
+   (feedback.jsonl), проверки качества (eval/),
+   сохранённые аудиты с разбором экспертов
+   (audits/) ^m4ESFAMB
+
+Размеры по умолчанию (MINT подстраивает их под
+лимиты моделей)
+• parent 2500 симв. ≈ 1–1,5 страницы — уходит в
+   контекст LLM
+• child 400 симв. ≈ 2–3 предложения — единица
+   векторного поиска
+• раздел документа в аудите 4500 симв. ≈ 3–4
+   страницы
+• фрагмент для реранкера 800 симв. ^VI6vaxks
+
+Проверка и оценка качества
+• check_install.py — самопроверка установки:
+   пакеты, разбор .docx и .pdf, подключения к
+   моделям, страница
+• «Проверка качества» на боковой панели (в консоли
+   — eval_search.py) — вопросы по базе через поиск
+   в нескольких вариантах (вектор, слова, гибрид,
+   гибрид + реранкер): hit@k, MRR, случайна ли
+   разница, порог «уверенность низкая»,
+   рекомендации; по желанию — ответы чата: ошибка
+   поиска или модели, сравнение по версии промптов
+• разборы замечаний экспертами (файлы разбора) —
+   tools/review_stats.py: доля верных замечаний по
+   видам проверок, причины ошибок, что MINT
+   пропустил
+• tests/ — автотесты без сети и моделей, GitHub
+   Actions ^lTJ2LlMC
+
+Поиск по базе — как находится нужный фрагмент ^QNKeGZEh
+
+Шаги 1–5 общие для чата, аудита и контроля исправлений; шаги 6–7 — ответ в чате. ^rB1WYiMd
+
+1. Вопрос
+
+в чате уточнение
+переписывается по
+истории диалога ^zq5QqHWI
+
+2а. Вектор (смысл)
+
+эмбеддинг вопроса
+(с инструкцией,
+если её требует
+модель) → FAISS →
+50 ближайших child
+→ их parent ^OhrcaOXe
+
+2б. Слова (BM25)
+
+основы слов
+(русских и
+английских) +
+расшифровки
+сокращений → 20
+лучших parent ^NqXrwvw9
+
+3. Слияние рангов
+   (RRF)
+
+16 кандидатов;
+   найденные
+   обоими каналами
+   — выше ^bULLNvq3
+
+4. Реранкер
+
+необязательно:
+оценивает все 16
+по самому
+релевантному
+фрагменту (≤ 800
+симв.); его голос
+добавляется к
+слиянию ^hMgyc1Ik
+
+5. Отбор 4–5
+   фрагментов
+
+без повторов, не
+больше 2 частей
+одной таблицы;
+сигнал
+«уверенность
+низкая» — по баллу
+реранкера, без
+него — по словам
+вопроса ^mavdOV9b
+
+6. Контекст для
+   LLM
+
+фрагменты parent с
+файлом и
+разделами:
+соседние — одним
+блоком, длинные —
+вокруг найденного
+места; +
+справочник
+сокращений ^noOzI47H
+
+7. Ответ
+
+только по
+контексту, со
+ссылками [файл,
+раздел]; ссылки
+сверяются с
+контекстом; нет
+ответа в базе —
+так и говорит ^uX8z8N1E
+
+Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5. ^alP4MKd2
+
+%%
+## Drawing
+```json
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "JbOT9pPk",
+      "type": "rectangle",
+      "x": -50,
+      "y": 3246.5,
+      "width": 1710,
+      "height": 586.0,
+      "angle": 0,
+      "strokeColor": "#95779c",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 905273825,
+      "version": 1,
+      "versionNonce": 59582695,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "a0"
+    },
+    {
+      "id": "000XjC8l",
+      "type": "rectangle",
+      "x": -50,
+      "y": -30,
+      "width": 1710,
+      "height": 3206.5,
+      "angle": 0,
+      "strokeColor": "#95779c",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1874183433,
+      "version": 1,
+      "versionNonce": 378956231,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "a1"
+    },
+    {
+      "id": "5Q9oYRkV",
+      "type": "rectangle",
+      "x": -20,
+      "y": 240,
+      "width": 1650,
+      "height": 223.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1218199308,
+      "version": 1,
+      "versionNonce": 573793694,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "a2"
+    },
+    {
+      "id": "ybyQpWeD",
+      "type": "rectangle",
+      "x": -20,
+      "y": 503.5,
+      "width": 1650,
+      "height": 1753.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1185532718,
+      "version": 1,
+      "versionNonce": 2006891536,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "arrow",
+          "id": "efio1e5v"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "a3"
+    },
+    {
+      "id": "MEgp2krG",
+      "type": "text",
+      "x": 0,
+      "y": 0,
+      "width": 561.6,
+      "height": 45.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 707352969,
+      "version": 1,
+      "versionNonce": 862003252,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "MINT — архитектура решения",
+      "fontSize": 36,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "MINT — архитектура решения",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "a4"
+    },
+    {
+      "id": "KMGeyBAP",
+      "type": "text",
+      "x": 0,
+      "y": 54,
+      "width": 1663.2,
+      "height": 22.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1641693744,
+      "version": 1,
+      "versionNonce": 973195259,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "a5"
+    },
+    {
+      "id": "0oaWIKSc",
+      "type": "rectangle",
+      "x": 0,
+      "y": 110,
+      "width": 380,
+      "height": 74,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1679252868,
+      "version": 1,
+      "versionNonce": 365916924,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "CMIJ6m5h"
+        },
+        {
+          "type": "arrow",
+          "id": "cacUobET"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "a6"
+    },
+    {
+      "id": "CMIJ6m5h",
+      "type": "text",
+      "x": 17.2,
+      "y": 113.25,
+      "width": 345.6,
+      "height": 67.5,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 125931090,
+      "version": 1,
+      "versionNonce": 182831392,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Документы для базы (.docx, .pdf,\n.md, .txt): регламенты,\nстандарты",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "0oaWIKSc",
+      "originalText": "Документы для базы (.docx, .pdf,\n.md, .txt): регламенты,\nстандарты",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "a7"
+    },
+    {
+      "id": "HKutuPIh",
+      "type": "rectangle",
+      "x": 410,
+      "y": 110,
+      "width": 380,
+      "height": 74,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 124282371,
+      "version": 1,
+      "versionNonce": 975783309,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "O8slPZY2"
+        },
+        {
+          "type": "arrow",
+          "id": "WM7zl9XZ"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "a8"
+    },
+    {
+      "id": "O8slPZY2",
+      "type": "text",
+      "x": 497.4,
+      "y": 135.75,
+      "width": 205.2,
+      "height": 22.5,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1172607867,
+      "version": 1,
+      "versionNonce": 899428383,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Вопрос пользователя",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "HKutuPIh",
+      "originalText": "Вопрос пользователя",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "a9"
+    },
+    {
+      "id": "BqcDo4pZ",
+      "type": "rectangle",
+      "x": 820,
+      "y": 110,
+      "width": 380,
+      "height": 74,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 720664956,
+      "version": 1,
+      "versionNonce": 1673316955,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "uJcbtyhc"
+        },
+        {
+          "type": "arrow",
+          "id": "yjVfkkvt"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aA"
+    },
+    {
+      "id": "uJcbtyhc",
+      "type": "text",
+      "x": 837.2,
+      "y": 113.25,
+      "width": 345.6,
+      "height": 67.5,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 897507826,
+      "version": 1,
+      "versionNonce": 1117265392,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Документ на согласование (.docx,\n.pdf, .md, .txt), критерии и\n«особое внимание»",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "BqcDo4pZ",
+      "originalText": "Документ на согласование (.docx,\n.pdf, .md, .txt), критерии и\n«особое внимание»",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aB"
+    },
+    {
+      "id": "DhYvPR6K",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 110,
+      "width": 380,
+      "height": 74,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 25137637,
+      "version": 1,
+      "versionNonce": 1047947683,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "VYktHA1f"
+        },
+        {
+          "type": "arrow",
+          "id": "lCjxa3JM"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aC"
+    },
+    {
+      "id": "VYktHA1f",
+      "type": "text",
+      "x": 1247.2,
+      "y": 113.25,
+      "width": 345.6,
+      "height": 67.5,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1549263419,
+      "version": 1,
+      "versionNonce": 1137609740,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Выданные замечания и новая\nредакция документа (.docx, .pdf,\n.md, .txt)",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "DhYvPR6K",
+      "originalText": "Выданные замечания и новая\nредакция документа (.docx, .pdf,\n.md, .txt)",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aD"
+    },
+    {
+      "id": "ZDbBQfJM",
+      "type": "text",
+      "x": 0,
+      "y": 250,
+      "width": 252.0,
+      "height": 25.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 520776126,
+      "version": 1,
+      "versionNonce": 165560180,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Интерфейс — Streamlit",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Интерфейс — Streamlit",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aE"
+    },
+    {
+      "id": "qIHhG3z1",
+      "type": "rectangle",
+      "x": 0,
+      "y": 290,
+      "width": 380,
+      "height": 151.5,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1131865134,
+      "version": 1,
+      "versionNonce": 1423033338,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "9EeuGh20"
+        },
+        {
+          "type": "arrow",
+          "id": "cacUobET"
+        },
+        {
+          "type": "arrow",
+          "id": "dwllkuSp"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aF"
+    },
+    {
+      "id": "9EeuGh20",
+      "type": "text",
+      "x": 16.6,
+      "y": 302.0,
+      "width": 346.8,
+      "height": 127.5,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 465425446,
+      "version": 1,
+      "versionNonce": 311891264,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Боковая панель: документы базы,\nнастройки, модели и лимиты,\nсокращения, правила экспертов и\nкарточки систем (черновик карточки\n— по базе), проверка качества,\nпромпты, язык RU / EN, отзывы",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "qIHhG3z1",
+      "originalText": "Боковая панель: документы базы,\nнастройки, модели и лимиты,\nсокращения, правила экспертов и\nкарточки систем (черновик карточки\n— по базе), проверка качества,\nпромпты, язык RU / EN, отзывы",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aG"
+    },
+    {
+      "id": "siuavdXh",
+      "type": "rectangle",
+      "x": 410,
+      "y": 290,
+      "width": 380,
+      "height": 151.5,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#ffec99",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 242263977,
+      "version": 1,
+      "versionNonce": 1435133682,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "rX2XoBEz"
+        },
+        {
+          "type": "arrow",
+          "id": "WM7zl9XZ"
+        },
+        {
+          "type": "arrow",
+          "id": "fz2Zr53c"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aH"
+    },
+    {
+      "id": "rX2XoBEz",
+      "type": "text",
+      "x": 533.7,
+      "y": 355.12,
+      "width": 132.6,
+      "height": 21.25,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 851717102,
+      "version": 1,
+      "versionNonce": 284584656,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Вкладка «Чат»",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "siuavdXh",
+      "originalText": "Вкладка «Чат»",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aI"
+    },
+    {
+      "id": "nZj9aaF1",
+      "type": "rectangle",
+      "x": 820,
+      "y": 290,
+      "width": 380,
+      "height": 151.5,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#a5d8ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 77775024,
+      "version": 1,
+      "versionNonce": 2129028561,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "x1vUqZsn"
+        },
+        {
+          "type": "arrow",
+          "id": "yjVfkkvt"
+        },
+        {
+          "type": "arrow",
+          "id": "0azVOzgo"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aJ"
+    },
+    {
+      "id": "x1vUqZsn",
+      "type": "text",
+      "x": 846.8,
+      "y": 323.25,
+      "width": 326.4,
+      "height": 85.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1971339327,
+      "version": 1,
+      "versionNonce": 859571403,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Вкладка «Аудит документа»:\nдокумент, критерии, «особое\nвнимание», ⚙️ настройки аудита в\nодном блоке, «Мои аудиты»",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "nZj9aaF1",
+      "originalText": "Вкладка «Аудит документа»:\nдокумент, критерии, «особое\nвнимание», ⚙️ настройки аудита в\nодном блоке, «Мои аудиты»",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aK"
+    },
+    {
+      "id": "W6098L0A",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 290,
+      "width": 380,
+      "height": 151.5,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "#d0bfff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1639905491,
+      "version": 1,
+      "versionNonce": 1225091641,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "nukixQmd"
+        },
+        {
+          "type": "arrow",
+          "id": "lCjxa3JM"
+        },
+        {
+          "type": "arrow",
+          "id": "MO75qxS5"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aL"
+    },
+    {
+      "id": "nukixQmd",
+      "type": "text",
+      "x": 1267.0,
+      "y": 355.12,
+      "width": 306.0,
+      "height": 21.25,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 82795705,
+      "version": 1,
+      "versionNonce": 1949106478,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Вкладка «Контроль исправлений»",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "W6098L0A",
+      "originalText": "Вкладка «Контроль исправлений»",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aM"
+    },
+    {
+      "id": "cacUobET",
+      "type": "arrow",
+      "x": 311.6,
+      "y": 190,
+      "width": 0.0,
+      "height": 94,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 811946859,
+      "version": 1,
+      "versionNonce": 962771986,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0
+        ],
+        [
+          0.0,
+          94
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "0oaWIKSc",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "qIHhG3z1",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "aN"
+    },
+    {
+      "id": "WM7zl9XZ",
+      "type": "arrow",
+      "x": 721.6,
+      "y": 190,
+      "width": 0.0,
+      "height": 94,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 416742793,
+      "version": 1,
+      "versionNonce": 1503242053,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0
+        ],
+        [
+          0.0,
+          94
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "HKutuPIh",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "siuavdXh",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "aO"
+    },
+    {
+      "id": "yjVfkkvt",
+      "type": "arrow",
+      "x": 1131.6,
+      "y": 190,
+      "width": 0.0,
+      "height": 94,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2080578667,
+      "version": 1,
+      "versionNonce": 870835190,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0
+        ],
+        [
+          0.0,
+          94
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "BqcDo4pZ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "nZj9aaF1",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "aP"
+    },
+    {
+      "id": "lCjxa3JM",
+      "type": "arrow",
+      "x": 1541.6,
+      "y": 190,
+      "width": 0.0,
+      "height": 94,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 859877759,
+      "version": 1,
+      "versionNonce": 2133732663,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0
+        ],
+        [
+          0.0,
+          94
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "DhYvPR6K",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "W6098L0A",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "aQ"
+    },
+    {
+      "id": "T7mEkfFQ",
+      "type": "rectangle",
+      "x": 0,
+      "y": 557.5,
+      "width": 380,
+      "height": 1479.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#ebfbee",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1431523713,
+      "version": 1,
+      "versionNonce": 1587784481,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "mZpXKQNv"
+        },
+        {
+          "type": "arrow",
+          "id": "dwllkuSp"
+        },
+        {
+          "type": "arrow",
+          "id": "HmY8FuFN"
+        },
+        {
+          "type": "arrow",
+          "id": "wIPjVgMP"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aR"
+    },
+    {
+      "id": "mZpXKQNv",
+      "type": "text",
+      "x": 12,
+      "y": 569.5,
+      "width": 346.8,
+      "height": 573.75,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 21192703,
+      "version": 1,
+      "versionNonce": 397301692,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "ДОБАВЛЕНИЕ ДОКУМЕНТОВ В БАЗУ\n\n1. Разбор: .docx — Docling; .pdf —\n   без моделей (заголовки из\n   закладок, оглавления, по\n   шрифту); .md, .txt → текст,\n   заголовки, таблицы\n2. Нарезка по границам абзацев и\n   предложений: parent 2500 симв.\n   для LLM, child 400 симв. для\n   поиска; таблицы — по строкам\n3. Эмбеддинги child (вместе с\n   путём заголовков)\n4. Запись в хранилище: векторы,\n   фрагменты, индекс слов\n5. Автосбор сокращений из\n   документов; в манифест — модель\n   и параметры нарезки\n6. Черновик карточки системы (по\n   кнопке на боковой панели): по\n   каждому разделу карточки —\n   поиск по базе и ответ LLM\n   только по найденному, у каждого\n   факта — источник, чего нет —\n   «нет в базе»; эксперт\n   проверяет, дописывает и\n   загружает карточку в базу",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "T7mEkfFQ",
+      "originalText": "ДОБАВЛЕНИЕ ДОКУМЕНТОВ В БАЗУ\n\n1. Разбор: .docx — Docling; .pdf —\n   без моделей (заголовки из\n   закладок, оглавления, по\n   шрифту); .md, .txt → текст,\n   заголовки, таблицы\n2. Нарезка по границам абзацев и\n   предложений: parent 2500 симв.\n   для LLM, child 400 симв. для\n   поиска; таблицы — по строкам\n3. Эмбеддинги child (вместе с\n   путём заголовков)\n4. Запись в хранилище: векторы,\n   фрагменты, индекс слов\n5. Автосбор сокращений из\n   документов; в манифест — модель\n   и параметры нарезки\n6. Черновик карточки системы (по\n   кнопке на боковой панели): по\n   каждому разделу карточки —\n   поиск по базе и ответ LLM\n   только по найденному, у каждого\n   факта — источник, чего нет —\n   «нет в базе»; эксперт\n   проверяет, дописывает и\n   загружает карточку в базу",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aS"
+    },
+    {
+      "id": "TN1jFYgS",
+      "type": "rectangle",
+      "x": 410,
+      "y": 557.5,
+      "width": 380,
+      "height": 1479.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1511016530,
+      "version": 1,
+      "versionNonce": 1878699547,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "m25FKYcq"
+        },
+        {
+          "type": "arrow",
+          "id": "fz2Zr53c"
+        },
+        {
+          "type": "arrow",
+          "id": "ixFn3XEj"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aT"
+    },
+    {
+      "id": "m25FKYcq",
+      "type": "text",
+      "x": 422,
+      "y": 569.5,
+      "width": 336.6,
+      "height": 425.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 458018139,
+      "version": 1,
+      "versionNonce": 723834894,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "ЧАТ ПО БАЗЕ ЗНАНИЙ\n\n1. Уточняющий вопрос\n   переписывается в\n   самостоятельный по истории\n   диалога\n2. Поиск по базе → 4–5 лучших\n   фрагментов\n3. Контекст: фрагменты с файлом и\n   разделами (соседние — одним\n   блоком, длинные — вокруг\n   найденного места) + справочник\n   сокращений\n4. LLM отвечает только по\n   контексту\n5. Ответ со ссылками [файл,\n   раздел] и списком источников;\n   ссылки сверяются с найденными\n   фрагментами, неверные помечены\n   ⚠; отзыв: оценка и комментарий",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "TN1jFYgS",
+      "originalText": "ЧАТ ПО БАЗЕ ЗНАНИЙ\n\n1. Уточняющий вопрос\n   переписывается в\n   самостоятельный по истории\n   диалога\n2. Поиск по базе → 4–5 лучших\n   фрагментов\n3. Контекст: фрагменты с файлом и\n   разделами (соседние — одним\n   блоком, длинные — вокруг\n   найденного места) + справочник\n   сокращений\n4. LLM отвечает только по\n   контексту\n5. Ответ со ссылками [файл,\n   раздел] и списком источников;\n   ссылки сверяются с найденными\n   фрагментами, неверные помечены\n   ⚠; отзыв: оценка и комментарий",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aU"
+    },
+    {
+      "id": "GtxUZ3NF",
+      "type": "rectangle",
+      "x": 820,
+      "y": 557.5,
+      "width": 380,
+      "height": 1479.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1618439515,
+      "version": 1,
+      "versionNonce": 832090367,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "d7Q1WHl9"
+        },
+        {
+          "type": "arrow",
+          "id": "0azVOzgo"
+        },
+        {
+          "type": "arrow",
+          "id": "XCyBVpqO"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aV"
+    },
+    {
+      "id": "d7Q1WHl9",
+      "type": "text",
+      "x": 832,
+      "y": 569.5,
+      "width": 346.8,
+      "height": 1445.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 657675948,
+      "version": 1,
+      "versionNonce": 1240655623,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "АУДИТ ДОКУМЕНТА (MAP → REDUCE)\n\n1. Разбор документа → .md → части\n   по разделам до 4500 симв.\n   (раздел с таблицей — целиком);\n   для сравнения — весь документ\n   одним запросом\n2. MAP: каждая часть — с нормами\n   из базы,\n   документами-основаниями (по\n   ссылкам документа на них),\n   правилами экспертов, карточками\n   упомянутых систем и документом\n   целиком для справки (не\n   помещается в окно — с\n   оглавлением) → LLM пишет\n   замечания; описанный процесс —\n   по шагам; по желанию — с\n   рассуждениями модели\n3. Самокритика (можно выключить):\n   оставить или удалить,\n   критичность, дословная цитата;\n   замечание о пункте другой части\n   отсеивается\n4. Глубокая проверка: узкие\n   вопросы — каждая пара шагов\n   процесса, каждое требование,\n   границы; противоречия между\n   разделами; цифры (считает\n   программа); опечатки\n5. Проходы 2–3 (по желанию):\n   разделы и вопросы о процессе и\n   цифрах — ещё раз с температурой\n   ≥ 0,4; найденное несколькими\n   проходами — выше\n6. «Особое внимание» и чек-лист по\n   типу документа — ответ на\n   каждый пункт по всему документу\n   вместе с замечаниями, уже\n   найденными другими проверками;\n   что документ требует от каждой\n   упомянутой системы\n7. Без модели: сокращения,\n   оформление; ссылки и цифры из\n   замечаний сверяются с\n   документом и нормами\n8. REDUCE: повторы — по словам (в\n   кусках одной длинной таблицы —\n   мягче) и моделью (замечания о\n   разных шагах процесса не\n   сливаются); замечания — по\n   разделам документа, в его\n   порядке; «Главное» —\n   модель-редактор выбирает самые\n   важные\n9. Заключение .md, документ с\n   примечаниями Word, лог проверки\n   и сырые ответы модели .md;\n   сверка с эталоном; отзыв:\n   оценка и комментарий\n10. Аудит сохраняется\n   (LOG_DIR/audits) и открывается\n   позже; эксперт размечает\n   замечания («беру» / «мелочь» /\n   «неверно» с причиной) и\n   дописывает свои → «Мои\n   замечания» Word / .md и файл\n   разбора для улучшения MINT",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "GtxUZ3NF",
+      "originalText": "АУДИТ ДОКУМЕНТА (MAP → REDUCE)\n\n1. Разбор документа → .md → части\n   по разделам до 4500 симв.\n   (раздел с таблицей — целиком);\n   для сравнения — весь документ\n   одним запросом\n2. MAP: каждая часть — с нормами\n   из базы,\n   документами-основаниями (по\n   ссылкам документа на них),\n   правилами экспертов, карточками\n   упомянутых систем и документом\n   целиком для справки (не\n   помещается в окно — с\n   оглавлением) → LLM пишет\n   замечания; описанный процесс —\n   по шагам; по желанию — с\n   рассуждениями модели\n3. Самокритика (можно выключить):\n   оставить или удалить,\n   критичность, дословная цитата;\n   замечание о пункте другой части\n   отсеивается\n4. Глубокая проверка: узкие\n   вопросы — каждая пара шагов\n   процесса, каждое требование,\n   границы; противоречия между\n   разделами; цифры (считает\n   программа); опечатки\n5. Проходы 2–3 (по желанию):\n   разделы и вопросы о процессе и\n   цифрах — ещё раз с температурой\n   ≥ 0,4; найденное несколькими\n   проходами — выше\n6. «Особое внимание» и чек-лист по\n   типу документа — ответ на\n   каждый пункт по всему документу\n   вместе с замечаниями, уже\n   найденными другими проверками;\n   что документ требует от каждой\n   упомянутой системы\n7. Без модели: сокращения,\n   оформление; ссылки и цифры из\n   замечаний сверяются с\n   документом и нормами\n8. REDUCE: повторы — по словам (в\n   кусках одной длинной таблицы —\n   мягче) и моделью (замечания о\n   разных шагах процесса не\n   сливаются); замечания — по\n   разделам документа, в его\n   порядке; «Главное» —\n   модель-редактор выбирает самые\n   важные\n9. Заключение .md, документ с\n   примечаниями Word, лог проверки\n   и сырые ответы модели .md;\n   сверка с эталоном; отзыв:\n   оценка и комментарий\n10. Аудит сохраняется\n   (LOG_DIR/audits) и открывается\n   позже; эксперт размечает\n   замечания («беру» / «мелочь» /\n   «неверно» с причиной) и\n   дописывает свои → «Мои\n   замечания» Word / .md и файл\n   разбора для улучшения MINT",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aW"
+    },
+    {
+      "id": "NxT10CQ0",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 557.5,
+      "width": 380,
+      "height": 1479.0,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "#f3f0ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1079770702,
+      "version": 1,
+      "versionNonce": 544731864,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "cOzZf5k5"
+        },
+        {
+          "type": "arrow",
+          "id": "MO75qxS5"
+        },
+        {
+          "type": "arrow",
+          "id": "hD5ZeGLD"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "aX"
+    },
+    {
+      "id": "cOzZf5k5",
+      "type": "text",
+      "x": 1242,
+      "y": 569.5,
+      "width": 326.4,
+      "height": 318.75,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1437671190,
+      "version": 1,
+      "versionNonce": 1773752865,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ\n\n1. Новая редакция документа →\n   разделы\n2. Для каждого замечания —\n   подходящие разделы (вектор +\n   слова + реранкер) и, по\n   желанию, нормы из базы\n3. LLM: статус «исправлено /\n   частично / нет» и дословная\n   цитата\n4. Цитата сверяется с текстом\n   редакции\n5. Матрица контроля .md / .docx;\n   отзыв: оценка и комментарий",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "NxT10CQ0",
+      "originalText": "КОНТРОЛЬ ИСПРАВЛЕНИЙ\n\n1. Новая редакция документа →\n   разделы\n2. Для каждого замечания —\n   подходящие разделы (вектор +\n   слова + реранкер) и, по\n   желанию, нормы из базы\n3. LLM: статус «исправлено /\n   частично / нет» и дословная\n   цитата\n4. Цитата сверяется с текстом\n   редакции\n5. Матрица контроля .md / .docx;\n   отзыв: оценка и комментарий",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aY"
+    },
+    {
+      "id": "dwllkuSp",
+      "type": "arrow",
+      "x": 311.6,
+      "y": 447.5,
+      "width": 0.0,
+      "height": 104.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1586519461,
+      "version": 1,
+      "versionNonce": 246127506,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          104.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "qIHhG3z1",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "T7mEkfFQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": "arrow",
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "aZ"
+    },
+    {
+      "id": "fz2Zr53c",
+      "type": "arrow",
+      "x": 721.6,
+      "y": 447.5,
+      "width": 0.0,
+      "height": 104.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1174291129,
+      "version": 1,
+      "versionNonce": 1747155805,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          104.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "siuavdXh",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "TN1jFYgS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": "arrow",
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "aa"
+    },
+    {
+      "id": "0azVOzgo",
+      "type": "arrow",
+      "x": 1131.6,
+      "y": 447.5,
+      "width": 0.0,
+      "height": 104.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1889687610,
+      "version": 1,
+      "versionNonce": 1836313671,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          104.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "nZj9aaF1",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "GtxUZ3NF",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": "arrow",
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "ab"
+    },
+    {
+      "id": "MO75qxS5",
+      "type": "arrow",
+      "x": 1541.6,
+      "y": 447.5,
+      "width": 0.0,
+      "height": 104.0,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2094690968,
+      "version": 1,
+      "versionNonce": 331251064,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          104.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "W6098L0A",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "NxT10CQ0",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.82,
+          0
+        ]
+      },
+      "startArrowhead": "arrow",
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "ac"
+    },
+    {
+      "id": "fSKUH9E4",
+      "type": "rectangle",
+      "x": 410,
+      "y": 2106.5,
+      "width": 1200,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1552595585,
+      "version": 1,
+      "versionNonce": 1583187137,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "za0DMpYx"
+        },
+        {
+          "type": "arrow",
+          "id": "ixFn3XEj"
+        },
+        {
+          "type": "arrow",
+          "id": "XCyBVpqO"
+        },
+        {
+          "type": "arrow",
+          "id": "hD5ZeGLD"
+        },
+        {
+          "type": "arrow",
+          "id": "HmY8FuFN"
+        },
+        {
+          "type": "arrow",
+          "id": "wZnhXokE"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "ad"
+    },
+    {
+      "id": "za0DMpYx",
+      "type": "text",
+      "x": 422,
+      "y": 2118.5,
+      "width": 1123.2,
+      "height": 90.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1380377715,
+      "version": 1,
+      "versionNonce": 234782881,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Поисковый движок (общий для чата, аудита и контроля исправлений)\nвектор (FAISS, смысл) + слова (BM25: основы русских и английских слов, расшифровки сокращений) → слияние\nрангов (RRF) → реранкер (необязательно) → лучшие фрагменты + сигнал «уверенность низкая». Подробно — на\nсхеме ниже.",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "fSKUH9E4",
+      "originalText": "Поисковый движок (общий для чата, аудита и контроля исправлений)\nвектор (FAISS, смысл) + слова (BM25: основы русских и английских слов, расшифровки сокращений) → слияние\nрангов (RRF) → реранкер (необязательно) → лучшие фрагменты + сигнал «уверенность низкая». Подробно — на\nсхеме ниже.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "ae"
+    },
+    {
+      "id": "ixFn3XEj",
+      "type": "arrow",
+      "x": 600.0,
+      "y": 2042.5,
+      "width": 0.0,
+      "height": 58.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 630735173,
+      "version": 1,
+      "versionNonce": 1562140317,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          58.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "TN1jFYgS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "fSKUH9E4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.1583,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "af"
+    },
+    {
+      "id": "XCyBVpqO",
+      "type": "arrow",
+      "x": 1010.0,
+      "y": 2042.5,
+      "width": 0.0,
+      "height": 58.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1367037798,
+      "version": 1,
+      "versionNonce": 1674699393,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          58.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "GtxUZ3NF",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "fSKUH9E4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "ag"
+    },
+    {
+      "id": "hD5ZeGLD",
+      "type": "arrow",
+      "x": 1420.0,
+      "y": 2042.5,
+      "width": 0.0,
+      "height": 58.0,
+      "angle": 0,
+      "strokeColor": "#6741d9",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 530874477,
+      "version": 1,
+      "versionNonce": 1713103680,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          58.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "NxT10CQ0",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "fSKUH9E4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.8417,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "ah"
+    },
+    {
+      "id": "HmY8FuFN",
+      "type": "arrow",
+      "x": 323.0,
+      "y": 2042.5,
+      "width": 81.0,
+      "height": 124.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1548915587,
+      "version": 1,
+      "versionNonce": 1777859923,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "tmov1cS1"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          124.0
+        ],
+        [
+          81.0,
+          124.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "T7mEkfFQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.85,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "fSKUH9E4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "ai"
+    },
+    {
+      "id": "tmov1cS1",
+      "type": "text",
+      "x": 241.4,
+      "y": 2094.5,
+      "width": 163.2,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1755387352,
+      "version": 1,
+      "versionNonce": 1139303386,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "черновик карточки",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "HmY8FuFN",
+      "originalText": "черновик карточки",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aj"
+    },
+    {
+      "id": "HQQ0tDBz",
+      "type": "text",
+      "x": 0,
+      "y": 515.5,
+      "width": 216.0,
+      "height": 25.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1053764395,
+      "version": 1,
+      "versionNonce": 493025635,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Ядро MINT — Python",
+      "fontSize": 20,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Ядро MINT — Python",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "ak"
+    },
+    {
+      "id": "oUvIAzvS",
+      "type": "rectangle",
+      "x": 0,
+      "y": 2336.5,
+      "width": 1200,
+      "height": 326.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffec99",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 395042587,
+      "version": 1,
+      "versionNonce": 1679127538,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "arrow",
+          "id": "wIPjVgMP"
+        },
+        {
+          "type": "arrow",
+          "id": "wZnhXokE"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "al"
+    },
+    {
+      "id": "o4snPTpc",
+      "type": "text",
+      "x": 20,
+      "y": 2348.5,
+      "width": 607.2,
+      "height": 27.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1339402438,
+      "version": 1,
+      "versionNonce": 942050464,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Хранилище базы знаний — папка KB_DIR на машине",
+      "fontSize": 22,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Хранилище базы знаний — папка KB_DIR на машине",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "am"
+    },
+    {
+      "id": "frPxmTX3",
+      "type": "rectangle",
+      "x": 20.0,
+      "y": 2392.5,
+      "width": 373.33,
+      "height": 108.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1733930874,
+      "version": 1,
+      "versionNonce": 386724997,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "KKTFtVje"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "an"
+    },
+    {
+      "id": "KKTFtVje",
+      "type": "text",
+      "x": 43.47,
+      "y": 2426.5,
+      "width": 326.4,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1715765407,
+      "version": 1,
+      "versionNonce": 322588907,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "FAISS — векторы child (по ним ищет\n«вектор»)",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "frPxmTX3",
+      "originalText": "FAISS — векторы child (по ним ищет\n«вектор»)",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "ao"
+    },
+    {
+      "id": "hMCVRlIk",
+      "type": "rectangle",
+      "x": 413.33,
+      "y": 2392.5,
+      "width": 373.33,
+      "height": 108.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1592600815,
+      "version": 1,
+      "versionNonce": 3324235,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "bzt8ESso"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "ap"
+    },
+    {
+      "id": "bzt8ESso",
+      "type": "text",
+      "x": 427.2,
+      "y": 2426.5,
+      "width": 345.6,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1004785210,
+      "version": 1,
+      "versionNonce": 1432782097,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "parent_store.json — фрагменты parent\n(их читает LLM)",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "hMCVRlIk",
+      "originalText": "parent_store.json — фрагменты parent\n(их читает LLM)",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aq"
+    },
+    {
+      "id": "zJXSKFhC",
+      "type": "rectangle",
+      "x": 806.67,
+      "y": 2392.5,
+      "width": 373.33,
+      "height": 108.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 537504397,
+      "version": 1,
+      "versionNonce": 22369781,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "KyOaS2OB"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "ar"
+    },
+    {
+      "id": "KyOaS2OB",
+      "type": "text",
+      "x": 844.53,
+      "y": 2426.5,
+      "width": 297.6,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 134117315,
+      "version": 1,
+      "versionNonce": 358646567,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "bm25_index.pkl — индекс слов по\nосновам",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "zJXSKFhC",
+      "originalText": "bm25_index.pkl — индекс слов по\nосновам",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "as"
+    },
+    {
+      "id": "GUq1zeZx",
+      "type": "rectangle",
+      "x": 20.0,
+      "y": 2516.5,
+      "width": 373.33,
+      "height": 108.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1771423014,
+      "version": 1,
+      "versionNonce": 780732774,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "p0abAhKA"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "at"
+    },
+    {
+      "id": "p0abAhKA",
+      "type": "text",
+      "x": 43.47,
+      "y": 2550.5,
+      "width": 326.4,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1049852511,
+      "version": 1,
+      "versionNonce": 2048044620,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "auto_glossary.json — сокращения из\nдокументов",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "GUq1zeZx",
+      "originalText": "auto_glossary.json — сокращения из\nдокументов",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "au"
+    },
+    {
+      "id": "3QZgUSQg",
+      "type": "rectangle",
+      "x": 413.33,
+      "y": 2516.5,
+      "width": 373.33,
+      "height": 108.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1561543755,
+      "version": 1,
+      "versionNonce": 1416799419,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "jXvBssE7"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "av"
+    },
+    {
+      "id": "jXvBssE7",
+      "type": "text",
+      "x": 427.2,
+      "y": 2530.5,
+      "width": 345.6,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 386782973,
+      "version": 1,
+      "versionNonce": 252752010,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "manifest.json — модель эмбеддингов и\nнарезка каждого документа;\naudit_roles.json — правила экспертов\nи карточки систем для аудита",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "3QZgUSQg",
+      "originalText": "manifest.json — модель эмбеддингов и\nнарезка каждого документа;\naudit_roles.json — правила экспертов\nи карточки систем для аудита",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "aw"
+    },
+    {
+      "id": "HKhEQe0Z",
+      "type": "rectangle",
+      "x": 806.67,
+      "y": 2516.5,
+      "width": 373.33,
+      "height": 108.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 623601665,
+      "version": 1,
+      "versionNonce": 1913301777,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "p07PEz84"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "ax"
+    },
+    {
+      "id": "p07PEz84",
+      "type": "text",
+      "x": 825.33,
+      "y": 2550.5,
+      "width": 336.0,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1083727858,
+      "version": 1,
+      "versionNonce": 1738487285,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "sources/ — оригиналы документов для\nпереиндексации",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "HKhEQe0Z",
+      "originalText": "sources/ — оригиналы документов для\nпереиндексации",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "ay"
+    },
+    {
+      "id": "NeN18c5t",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 2336.5,
+      "width": 380,
+      "height": 326.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffc9c9",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 129803059,
+      "version": 1,
+      "versionNonce": 590271204,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "arrow",
+          "id": "efio1e5v"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "az"
+    },
+    {
+      "id": "baST1uPq",
+      "type": "text",
+      "x": 1246,
+      "y": 2348.5,
+      "width": 198.0,
+      "height": 27.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1399325683,
+      "version": 1,
+      "versionNonce": 1293218056,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Внешние сервисы",
+      "fontSize": 22,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Внешние сервисы",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b10"
+    },
+    {
+      "id": "1T4SNQGj",
+      "type": "text",
+      "x": 1246,
+      "y": 2378.5,
+      "width": 268.8,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 2091140489,
+      "version": 1,
+      "versionNonce": 1889167392,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "любой OpenAI-совместимый API",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "любой OpenAI-совместимый API",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b11"
+    },
+    {
+      "id": "A8h7VLvV",
+      "type": "rectangle",
+      "x": 1246,
+      "y": 2412.5,
+      "width": 348,
+      "height": 68.67,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffe3e3",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 450184865,
+      "version": 1,
+      "versionNonce": 1275421862,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "nBcm18E7"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b12"
+    },
+    {
+      "id": "nBcm18E7",
+      "type": "text",
+      "x": 1261.6,
+      "y": 2416.83,
+      "width": 316.8,
+      "height": 60.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 182476936,
+      "version": 1,
+      "versionNonce": 1076978060,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "LLM — ответы, замечания,\nсамокритика, «Главное», черновики\nкарточек",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "A8h7VLvV",
+      "originalText": "LLM — ответы, замечания,\nсамокритика, «Главное», черновики\nкарточек",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b13"
+    },
+    {
+      "id": "lMqa6dyn",
+      "type": "rectangle",
+      "x": 1246,
+      "y": 2493.17,
+      "width": 348,
+      "height": 68.67,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffe3e3",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1975005288,
+      "version": 1,
+      "versionNonce": 1668778927,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zDX0XsOI"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b14"
+    },
+    {
+      "id": "zDX0XsOI",
+      "type": "text",
+      "x": 1285.6,
+      "y": 2517.5,
+      "width": 268.8,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 780550947,
+      "version": 1,
+      "versionNonce": 1231588435,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Модель эмбеддингов — векторы",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "lMqa6dyn",
+      "originalText": "Модель эмбеддингов — векторы",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b15"
+    },
+    {
+      "id": "0IIzxMCH",
+      "type": "rectangle",
+      "x": 1246,
+      "y": 2573.83,
+      "width": 348,
+      "height": 68.67,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#ffe3e3",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1915104428,
+      "version": 1,
+      "versionNonce": 638186731,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "L0k8cF7P"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b16"
+    },
+    {
+      "id": "L0k8cF7P",
+      "type": "text",
+      "x": 1271.2,
+      "y": 2588.17,
+      "width": 297.6,
+      "height": 40.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1977939920,
+      "version": 1,
+      "versionNonce": 224550167,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Реранкер — оценка релевантности\n(необязательно)",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "0IIzxMCH",
+      "originalText": "Реранкер — оценка релевантности\n(необязательно)",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b17"
+    },
+    {
+      "id": "wIPjVgMP",
+      "type": "arrow",
+      "x": 190.0,
+      "y": 2042.5,
+      "width": 0.0,
+      "height": 288.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 925876467,
+      "version": 1,
+      "versionNonce": 1575679632,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zAZSSevu"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          288.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "T7mEkfFQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "oUvIAzvS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.1583,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b18"
+    },
+    {
+      "id": "zAZSSevu",
+      "type": "text",
+      "x": 161.2,
+      "y": 2176.5,
+      "width": 57.6,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1271321846,
+      "version": 1,
+      "versionNonce": 130875986,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "запись",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "wIPjVgMP",
+      "originalText": "запись",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b19"
+    },
+    {
+      "id": "wZnhXokE",
+      "type": "arrow",
+      "x": 600.0,
+      "y": 2232.5,
+      "width": 0.0,
+      "height": 98.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 261488505,
+      "version": 1,
+      "versionNonce": 1117002960,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "vwSuw7eL"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          98.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "fSKUH9E4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.1583,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "oUvIAzvS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1A"
+    },
+    {
+      "id": "vwSuw7eL",
+      "type": "text",
+      "x": 571.2,
+      "y": 2271.5,
+      "width": 57.6,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 427464887,
+      "version": 1,
+      "versionNonce": 634279936,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "чтение",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "wZnhXokE",
+      "originalText": "чтение",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1B"
+    },
+    {
+      "id": "efio1e5v",
+      "type": "arrow",
+      "x": 1420.0,
+      "y": 2262.5,
+      "width": 0.0,
+      "height": 68.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2013527144,
+      "version": 1,
+      "versionNonce": 621027637,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zufR1oa1"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          68.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "ybyQpWeD",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.8727,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "NeN18c5t",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1C"
+    },
+    {
+      "id": "zufR1oa1",
+      "type": "text",
+      "x": 1400.8,
+      "y": 2286.5,
+      "width": 38.4,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 880242871,
+      "version": 1,
+      "versionNonce": 2138346186,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "HTTP",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "efio1e5v",
+      "originalText": "HTTP",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1D"
+    },
+    {
+      "id": "MN45msGt",
+      "type": "rectangle",
+      "x": 0.0,
+      "y": 2712.5,
+      "width": 516.67,
+      "height": 424.0,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1737930871,
+      "version": 1,
+      "versionNonce": 737651295,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "m4ESFAMB"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1E"
+    },
+    {
+      "id": "m4ESFAMB",
+      "type": "text",
+      "x": 12.0,
+      "y": 2724.5,
+      "width": 480.0,
+      "height": 400.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1995155776,
+      "version": 1,
+      "versionNonce": 1356830984,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Настройки\n• .env — адреса API, ключи, модели, папки, язык\n   (MINT_LANG)\n• config.yaml — параметры поиска и аудита\n   (необязательно)\n• glossary.json — свои расшифровки сокращений\n   (необязательно)\n• checklists.yaml — свои чек-листы аудита по типам\n   документов (образец — checklists.example.yaml;\n   файл вне папки программы — путь в\n   MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — тексты промптов\n   по умолчанию; свои правки — prompts.yaml\n   (страница «Промпты»); версия набора пишется в\n   отзывы, лог аудита и проверку качества\n• боковая панель — изменения на время сеанса\n• LOG_DIR — журнал работы, отзывы пользователей\n   (feedback.jsonl), проверки качества (eval/),\n   сохранённые аудиты с разбором экспертов\n   (audits/)",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "MN45msGt",
+      "originalText": "Настройки\n• .env — адреса API, ключи, модели, папки, язык\n   (MINT_LANG)\n• config.yaml — параметры поиска и аудита\n   (необязательно)\n• glossary.json — свои расшифровки сокращений\n   (необязательно)\n• checklists.yaml — свои чек-листы аудита по типам\n   документов (образец — checklists.example.yaml;\n   файл вне папки программы — путь в\n   MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — тексты промптов\n   по умолчанию; свои правки — prompts.yaml\n   (страница «Промпты»); версия набора пишется в\n   отзывы, лог аудита и проверку качества\n• боковая панель — изменения на время сеанса\n• LOG_DIR — журнал работы, отзывы пользователей\n   (feedback.jsonl), проверки качества (eval/),\n   сохранённые аудиты с разбором экспертов\n   (audits/)",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1F"
+    },
+    {
+      "id": "d9PJHN50",
+      "type": "rectangle",
+      "x": 546.67,
+      "y": 2712.5,
+      "width": 516.67,
+      "height": 424.0,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 910540496,
+      "version": 1,
+      "versionNonce": 1934321891,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "VI6vaxks"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1G"
+    },
+    {
+      "id": "VI6vaxks",
+      "type": "text",
+      "x": 558.67,
+      "y": 2724.5,
+      "width": 451.2,
+      "height": 180.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1628449604,
+      "version": 1,
+      "versionNonce": 494807491,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Размеры по умолчанию (MINT подстраивает их под\nлимиты моделей)\n• parent 2500 симв. ≈ 1–1,5 страницы — уходит в\n   контекст LLM\n• child 400 симв. ≈ 2–3 предложения — единица\n   векторного поиска\n• раздел документа в аудите 4500 симв. ≈ 3–4\n   страницы\n• фрагмент для реранкера 800 симв.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "d9PJHN50",
+      "originalText": "Размеры по умолчанию (MINT подстраивает их под\nлимиты моделей)\n• parent 2500 симв. ≈ 1–1,5 страницы — уходит в\n   контекст LLM\n• child 400 симв. ≈ 2–3 предложения — единица\n   векторного поиска\n• раздел документа в аудите 4500 симв. ≈ 3–4\n   страницы\n• фрагмент для реранкера 800 симв.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1H"
+    },
+    {
+      "id": "JhZOGm7N",
+      "type": "rectangle",
+      "x": 1093.33,
+      "y": 2712.5,
+      "width": 516.67,
+      "height": 424.0,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "#f8f9fa",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 820436801,
+      "version": 1,
+      "versionNonce": 1438249924,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "lTJ2LlMC"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1I"
+    },
+    {
+      "id": "lTJ2LlMC",
+      "type": "text",
+      "x": 1105.33,
+      "y": 2724.5,
+      "width": 480.0,
+      "height": 340.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 72227040,
+      "version": 1,
+      "versionNonce": 418262272,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Проверка и оценка качества\n• check_install.py — самопроверка установки:\n   пакеты, разбор .docx и .pdf, подключения к\n   моделям, страница\n• «Проверка качества» на боковой панели (в консоли\n   — eval_search.py) — вопросы по базе через поиск\n   в нескольких вариантах (вектор, слова, гибрид,\n   гибрид + реранкер): hit@k, MRR, случайна ли\n   разница, порог «уверенность низкая»,\n   рекомендации; по желанию — ответы чата: ошибка\n   поиска или модели, сравнение по версии промптов\n• разборы замечаний экспертами (файлы разбора) —\n   tools/review_stats.py: доля верных замечаний по\n   видам проверок, причины ошибок, что MINT\n   пропустил\n• tests/ — автотесты без сети и моделей, GitHub\n   Actions",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "JhZOGm7N",
+      "originalText": "Проверка и оценка качества\n• check_install.py — самопроверка установки:\n   пакеты, разбор .docx и .pdf, подключения к\n   моделям, страница\n• «Проверка качества» на боковой панели (в консоли\n   — eval_search.py) — вопросы по базе через поиск\n   в нескольких вариантах (вектор, слова, гибрид,\n   гибрид + реранкер): hit@k, MRR, случайна ли\n   разница, порог «уверенность низкая»,\n   рекомендации; по желанию — ответы чата: ошибка\n   поиска или модели, сравнение по версии промптов\n• разборы замечаний экспертами (файлы разбора) —\n   tools/review_stats.py: доля верных замечаний по\n   видам проверок, причины ошибок, что MINT\n   пропустил\n• tests/ — автотесты без сети и моделей, GitHub\n   Actions",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1J"
+    },
+    {
+      "id": "QNKeGZEh",
+      "type": "text",
+      "x": 0,
+      "y": 3276.5,
+      "width": 810.0,
+      "height": 37.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 651909558,
+      "version": 1,
+      "versionNonce": 2067789181,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Поиск по базе — как находится нужный фрагмент",
+      "fontSize": 30,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Поиск по базе — как находится нужный фрагмент",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1K"
+    },
+    {
+      "id": "rB1WYiMd",
+      "type": "text",
+      "x": 0,
+      "y": 3322.5,
+      "width": 864.0,
+      "height": 22.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1734379799,
+      "version": 1,
+      "versionNonce": 307679153,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Шаги 1–5 общие для чата, аудита и контроля исправлений; шаги 6–7 — ответ в чате.",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Шаги 1–5 общие для чата, аудита и контроля исправлений; шаги 6–7 — ответ в чате.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1L"
+    },
+    {
+      "id": "VAiZBjYp",
+      "type": "rectangle",
+      "x": 0,
+      "y": 3376.5,
+      "width": 200,
+      "height": 392.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 419810268,
+      "version": 1,
+      "versionNonce": 722724126,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zq5QqHWI"
+        },
+        {
+          "type": "arrow",
+          "id": "qWuQ5Tyt"
+        },
+        {
+          "type": "arrow",
+          "id": "wFtpo5SN"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1M"
+    },
+    {
+      "id": "zq5QqHWI",
+      "type": "text",
+      "x": 18.4,
+      "y": 3522.5,
+      "width": 163.2,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 289244154,
+      "version": 1,
+      "versionNonce": 2020315457,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "1. Вопрос\n\nв чате уточнение\nпереписывается по\nистории диалога",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "VAiZBjYp",
+      "originalText": "1. Вопрос\n\nв чате уточнение\nпереписывается по\nистории диалога",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1N"
+    },
+    {
+      "id": "8SXdDbVH",
+      "type": "rectangle",
+      "x": 235,
+      "y": 3376.5,
+      "width": 200,
+      "height": 184.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1025793532,
+      "version": 1,
+      "versionNonce": 584673810,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "OhrcaOXe"
+        },
+        {
+          "type": "arrow",
+          "id": "qWuQ5Tyt"
+        },
+        {
+          "type": "arrow",
+          "id": "ink1rcEm"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1O"
+    },
+    {
+      "id": "OhrcaOXe",
+      "type": "text",
+      "x": 248.6,
+      "y": 3388.5,
+      "width": 172.8,
+      "height": 160.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1277387553,
+      "version": 1,
+      "versionNonce": 1000544937,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "2а. Вектор (смысл)\n\nэмбеддинг вопроса\n(с инструкцией,\nесли её требует\nмодель) → FAISS →\n50 ближайших child\n→ их parent",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "8SXdDbVH",
+      "originalText": "2а. Вектор (смысл)\n\nэмбеддинг вопроса\n(с инструкцией,\nесли её требует\nмодель) → FAISS →\n50 ближайших child\n→ их parent",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1P"
+    },
+    {
+      "id": "bRHim8qr",
+      "type": "rectangle",
+      "x": 235,
+      "y": 3584.5,
+      "width": 200,
+      "height": 184.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1189388193,
+      "version": 1,
+      "versionNonce": 236449471,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "NqXrwvw9"
+        },
+        {
+          "type": "arrow",
+          "id": "wFtpo5SN"
+        },
+        {
+          "type": "arrow",
+          "id": "7xQsVvsf"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1Q"
+    },
+    {
+      "id": "NqXrwvw9",
+      "type": "text",
+      "x": 258.2,
+      "y": 3596.5,
+      "width": 153.6,
+      "height": 160.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1484659825,
+      "version": 1,
+      "versionNonce": 2137083554,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "2б. Слова (BM25)\n\nосновы слов\n(русских и\nанглийских) +\nрасшифровки\nсокращений → 20\nлучших parent",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "bRHim8qr",
+      "originalText": "2б. Слова (BM25)\n\nосновы слов\n(русских и\nанглийских) +\nрасшифровки\nсокращений → 20\nлучших parent",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1R"
+    },
+    {
+      "id": "qkdFilPg",
+      "type": "rectangle",
+      "x": 470,
+      "y": 3376.5,
+      "width": 200,
+      "height": 392.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1582194765,
+      "version": 1,
+      "versionNonce": 58177626,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "bULLNvq3"
+        },
+        {
+          "type": "arrow",
+          "id": "ink1rcEm"
+        },
+        {
+          "type": "arrow",
+          "id": "7xQsVvsf"
+        },
+        {
+          "type": "arrow",
+          "id": "QiDuXTvv"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1S"
+    },
+    {
+      "id": "bULLNvq3",
+      "type": "text",
+      "x": 483.6,
+      "y": 3502.5,
+      "width": 172.8,
+      "height": 140.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1910916750,
+      "version": 1,
+      "versionNonce": 1922798787,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "3. Слияние рангов\n   (RRF)\n\n16 кандидатов;\n   найденные\n   обоими каналами\n   — выше",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "qkdFilPg",
+      "originalText": "3. Слияние рангов\n   (RRF)\n\n16 кандидатов;\n   найденные\n   обоими каналами\n   — выше",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1T"
+    },
+    {
+      "id": "RoPDjkGG",
+      "type": "rectangle",
+      "x": 705,
+      "y": 3376.5,
+      "width": 200,
+      "height": 392.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "dashed",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1200996444,
+      "version": 1,
+      "versionNonce": 378015108,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "hMgyc1Ik"
+        },
+        {
+          "type": "arrow",
+          "id": "QiDuXTvv"
+        },
+        {
+          "type": "arrow",
+          "id": "4dLMpfoB"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1U"
+    },
+    {
+      "id": "hMgyc1Ik",
+      "type": "text",
+      "x": 723.4,
+      "y": 3472.5,
+      "width": 163.2,
+      "height": 200.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 94260121,
+      "version": 1,
+      "versionNonce": 1619028827,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "4. Реранкер\n\nнеобязательно:\nоценивает все 16\nпо самому\nрелевантному\nфрагменту (≤ 800\nсимв.); его голос\nдобавляется к\nслиянию",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "RoPDjkGG",
+      "originalText": "4. Реранкер\n\nнеобязательно:\nоценивает все 16\nпо самому\nрелевантному\nфрагменту (≤ 800\nсимв.); его голос\nдобавляется к\nслиянию",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1V"
+    },
+    {
+      "id": "xWDkXwe4",
+      "type": "rectangle",
+      "x": 940,
+      "y": 3376.5,
+      "width": 200,
+      "height": 392.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1934862458,
+      "version": 1,
+      "versionNonce": 1192570795,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "mavdOV9b"
+        },
+        {
+          "type": "arrow",
+          "id": "4dLMpfoB"
+        },
+        {
+          "type": "arrow",
+          "id": "6mtwEXMY"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1W"
+    },
+    {
+      "id": "mavdOV9b",
+      "type": "text",
+      "x": 953.6,
+      "y": 3452.5,
+      "width": 172.8,
+      "height": 240.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1152905832,
+      "version": 1,
+      "versionNonce": 1396715579,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "5. Отбор 4–5\n   фрагментов\n\nбез повторов, не\nбольше 2 частей\nодной таблицы;\nсигнал\n«уверенность\nнизкая» — по баллу\nреранкера, без\nнего — по словам\nвопроса",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "xWDkXwe4",
+      "originalText": "5. Отбор 4–5\n   фрагментов\n\nбез повторов, не\nбольше 2 частей\nодной таблицы;\nсигнал\n«уверенность\nнизкая» — по баллу\nреранкера, без\nнего — по словам\nвопроса",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1X"
+    },
+    {
+      "id": "MNEr0YvH",
+      "type": "rectangle",
+      "x": 1175,
+      "y": 3376.5,
+      "width": 200,
+      "height": 392.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1022300994,
+      "version": 1,
+      "versionNonce": 497257536,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "noOzI47H"
+        },
+        {
+          "type": "arrow",
+          "id": "6mtwEXMY"
+        },
+        {
+          "type": "arrow",
+          "id": "Stk5L1Iq"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1Y"
+    },
+    {
+      "id": "noOzI47H",
+      "type": "text",
+      "x": 1188.6,
+      "y": 3452.5,
+      "width": 172.8,
+      "height": 240.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1153685692,
+      "version": 1,
+      "versionNonce": 2011711854,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "6. Контекст для\n   LLM\n\nфрагменты parent с\nфайлом и\nразделами:\nсоседние — одним\nблоком, длинные —\nвокруг найденного\nместа; +\nсправочник\nсокращений",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "MNEr0YvH",
+      "originalText": "6. Контекст для\n   LLM\n\nфрагменты parent с\nфайлом и\nразделами:\nсоседние — одним\nблоком, длинные —\nвокруг найденного\nместа; +\nсправочник\nсокращений",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1Z"
+    },
+    {
+      "id": "nWYhUPjG",
+      "type": "rectangle",
+      "x": 1410,
+      "y": 3376.5,
+      "width": 200,
+      "height": 392.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 383384842,
+      "version": 1,
+      "versionNonce": 2094565108,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "uX8z8N1E"
+        },
+        {
+          "type": "arrow",
+          "id": "Stk5L1Iq"
+        }
+      ],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "index": "b1a"
+    },
+    {
+      "id": "uX8z8N1E",
+      "type": "text",
+      "x": 1438.0,
+      "y": 3472.5,
+      "width": 144.0,
+      "height": 200.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 2030719654,
+      "version": 1,
+      "versionNonce": 163620562,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "7. Ответ\n\nтолько по\nконтексту, со\nссылками [файл,\nраздел]; ссылки\nсверяются с\nконтекстом; нет\nответа в базе —\nтак и говорит",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "nWYhUPjG",
+      "originalText": "7. Ответ\n\nтолько по\nконтексту, со\nссылками [файл,\nраздел]; ссылки\nсверяются с\nконтекстом; нет\nответа в базе —\nтак и говорит",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1b"
+    },
+    {
+      "id": "qWuQ5Tyt",
+      "type": "arrow",
+      "x": 206,
+      "y": 3494.1,
+      "width": 23,
+      "height": 25.6,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 886555392,
+      "version": 1,
+      "versionNonce": 160393074,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          -25.6
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "VAiZBjYp",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.3
+        ]
+      },
+      "endBinding": {
+        "elementId": "8SXdDbVH",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1c"
+    },
+    {
+      "id": "wFtpo5SN",
+      "type": "arrow",
+      "x": 206,
+      "y": 3650.9,
+      "width": 23,
+      "height": 25.6,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1183493724,
+      "version": 1,
+      "versionNonce": 1810238586,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          25.6
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "VAiZBjYp",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.7
+        ]
+      },
+      "endBinding": {
+        "elementId": "bRHim8qr",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1d"
+    },
+    {
+      "id": "ink1rcEm",
+      "type": "arrow",
+      "x": 441,
+      "y": 3468.5,
+      "width": 23,
+      "height": 25.6,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1885421978,
+      "version": 1,
+      "versionNonce": 1602413674,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          25.6
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "8SXdDbVH",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "qkdFilPg",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.3
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1e"
+    },
+    {
+      "id": "7xQsVvsf",
+      "type": "arrow",
+      "x": 441,
+      "y": 3676.5,
+      "width": 23,
+      "height": 25.6,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 123281288,
+      "version": 1,
+      "versionNonce": 737633972,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          -25.6
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "bRHim8qr",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "qkdFilPg",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.7
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1f"
+    },
+    {
+      "id": "QiDuXTvv",
+      "type": "arrow",
+      "x": 676,
+      "y": 3572.5,
+      "width": 23,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1138911415,
+      "version": 1,
+      "versionNonce": 1163602303,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "qkdFilPg",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "RoPDjkGG",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1g"
+    },
+    {
+      "id": "4dLMpfoB",
+      "type": "arrow",
+      "x": 911,
+      "y": 3572.5,
+      "width": 23,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 982231555,
+      "version": 1,
+      "versionNonce": 868049134,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "RoPDjkGG",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "xWDkXwe4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1h"
+    },
+    {
+      "id": "6mtwEXMY",
+      "type": "arrow",
+      "x": 1146,
+      "y": 3572.5,
+      "width": 23,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 394973851,
+      "version": 1,
+      "versionNonce": 574790563,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "xWDkXwe4",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "MNEr0YvH",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1i"
+    },
+    {
+      "id": "Stk5L1Iq",
+      "type": "arrow",
+      "x": 1381,
+      "y": 3572.5,
+      "width": 23,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 349562564,
+      "version": 1,
+      "versionNonce": 194641959,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          23,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "MNEr0YvH",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "nWYhUPjG",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b1j"
+    },
+    {
+      "id": "alP4MKd2",
+      "type": "text",
+      "x": 0,
+      "y": 3792.5,
+      "width": 1449.6,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 753359200,
+      "version": 1,
+      "versionNonce": 783411893,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1792795435848,
+      "link": null,
+      "locked": false,
+      "text": "Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1k"
+    }
+  ],
+  "appState": {
+    "gridSize": 20,
+    "viewBackgroundColor": "#ffffff",
+    "currentItemFontFamily": 5,
+    "currentItemRoughness": 1,
+    "currentItemStrokeColor": "#1971c2"
+  },
+  "files": {}
+}
+```
+%%

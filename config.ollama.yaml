@@ -1,0 +1,13 @@
+# MINT settings for Ollama (docker-compose.yml or Ollama on this computer).
+# Ollama does not report model windows through its OpenAI-compatible API, so they are set here.
+# Настройки MINT для Ollama: Ollama не сообщает окна моделей, поэтому они заданы явно.
+
+models:
+  llm_context_tokens: 8192    # must match OLLAMA_CONTEXT_LENGTH (Ollama's default window is smaller)
+  embed_max_tokens: 2048      # bge-m3 accepts more; this is enough for review queries
+  chars_per_token: 0          # 0 → 2.5; more precise: "detect from server" button in the sidebar
+
+llm:
+  max_tokens: 1200
+  llm_timeout: 300            # answers are slow on a CPU
+  llm_retries: 1
