@@ -372,6 +372,24 @@ def tall(page, path, height=2600):
     page.set_viewport_size(size)
 
 
+README_VIEWPORT = {"width": 1100, "height": 1400}    # снимки для README: уже, чем экран, — крупнее текст на странице
+README_CSS = ('[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="collapsedControl"], '
+              '[data-testid="stExpandSidebarButton"], [data-testid="stHeader"] {display: none !important;}')
+
+
+def simplify(page):
+    """Снимок для README — только суть: без боковой панели с настройками и служебной полосы Streamlit."""
+    page.add_style_tag(content=README_CSS)
+    time.sleep(0.8)
+
+
+def clip_shot(page, path, top, bottom, pad=20):
+    """Снимок полосы страницы от top до bottom (координаты окна) на всю ширину окна."""
+    w = page.viewport_size["width"]
+    y = max(0, top - pad)
+    page.screenshot(path=str(path), clip={"x": 0, "y": y, "width": w, "height": bottom + pad - y})
+
+
 def upload(page, label, path):
     """Файл в загрузчик с этой подписью (в боковой панели есть свой загрузчик — для базы знаний)."""
     box = page.locator('[data-testid="stFileUploader"]').filter(has_text=label)
@@ -387,13 +405,16 @@ class Shots:
         self.dom, self.errors = [], []
         self.started, self.marks = {}, {}       # время начала сценария и отметки внутри — для нарезки видео
 
-    def scenario(self, name, fn, **ctx_args):
-        ctx = self.browser.new_context(**({"viewport": {"width": 1440, "height": 900}} | ctx_args))
+    def scenario(self, name, fn, readme=False, **ctx_args):
+        size = {"viewport": README_VIEWPORT, "device_scale_factor": 2} if readme else {"viewport": {"width": 1440, "height": 900}}
+        ctx = self.browser.new_context(**(size | ctx_args))
         self.started[name] = time.time()
         page = ctx.new_page()
         try:
             page.goto(f"http://localhost:{PORT}/")
             page.wait_for_selector(".mint-wordmark", timeout=60000)
+            if readme:
+                simplify(page)
             fn(page)
         except Exception:
             import traceback
@@ -436,6 +457,9 @@ def run(out):
     if README_MODE:                     # без чек-листа: на снимке — только замечания по документу
         (work / "checklists.yaml").write_text("common: []\ntypes: []\n", encoding="utf-8")
         env["MINT_CHECKLISTS"] = str(work / "checklists.yaml")
+        # без баллов поиска у источников и без строки глубокой проверки — на снимке только суть
+        (work / "readme.yaml").write_text("show_source_details: false\naudit_deep: false\n", encoding="utf-8")
+        env["MINT_CONFIG"] = str(work / "readme.yaml")
         spec, spec_v2 = build_base_readme(work, env)
     else:
         spec, spec_v2 = build_base_en(work, env) if LANG == "en" else build_base(work, env)
@@ -481,6 +505,12 @@ def run(out):
                 time.sleep(1.2)
                 page.screenshot(path=str(out / "02_chat.png"))
                 shots.dom.append(dom_dump(page, "ответ в чате"))
+                if README_MODE:             # для README: шапка, вопрос, ответ со ссылками и источники — без поля ввода
+                    top, bottom = page.evaluate("""() => {
+                        const hero = document.querySelector('.mint-hero') || document.querySelector('.mint-wordmark');
+                        const m = [...document.querySelectorAll('[data-testid="stChatMessage"]')].pop();
+                        return [hero.getBoundingClientRect().top, m.getBoundingClientRect().bottom]; }""")
+                    clip_shot(page, out / "readme_chat.png", top, bottom)
 
             def audit(page):
                 page.get_by_role("tab", name=L("📋 Аудит документа")).click()
@@ -504,12 +534,17 @@ def run(out):
                 page.locator(".mint-verdict").scroll_into_view_if_needed()
                 page.screenshot(path=str(out / "03_audit.png"))
                 tall(page, out / "03_audit_full.png")
-                if README_MODE:             # для README — заключение от заголовка: штамп, «Главное», замечания
-                    page.locator(".mint-verdict").evaluate("e => e.scrollIntoView({block: 'start'})")
-                    page.mouse.move(900, 450)
-                    page.mouse.wheel(0, -70)
+                if README_MODE:             # для README: заголовок, штамп, «Главное» и замечания — до конца замечаний
+                    title = L("## 📄 Итоговое экспертное заключение").lstrip("# ")
+                    page.evaluate("""t => { const h = [...document.querySelectorAll('h1, h2, h3')]
+                        .find(e => e.innerText.includes(t)); h.scrollIntoView({block: 'start'}); }""", title)
                     time.sleep(1.0)
-                    page.screenshot(path=str(out / "03_audit_report.png"))
+                    top, bottom = page.evaluate("""t => {
+                        const h = [...document.querySelectorAll('h1, h2, h3')].find(e => e.innerText.includes(t));
+                        const li = [...document.querySelectorAll('[data-testid="stMarkdownContainer"] li')]
+                            .filter(e => e.innerText.includes('1.3:')).pop();
+                        return [h.getBoundingClientRect().top, li.getBoundingClientRect().bottom]; }""", title)
+                    clip_shot(page, out / "readme_audit.png", top, bottom)
 
             def review(page):
                 page.get_by_role("tab", name="Контроль исправления замечаний").click()
@@ -566,8 +601,8 @@ def run(out):
 
             shots.scenario("home", home)
             if README_MODE:                        # снимки для README: чат и аудит, схемы Mermaid
-                shots.scenario("chat", chat)
-                shots.scenario("audit", audit)
+                shots.scenario("chat", chat, readme=True)
+                shots.scenario("audit", audit, readme=True)
                 readme_diagrams(browser, out, shots)
                 browser.close()
                 shots.save()
