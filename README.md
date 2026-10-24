@@ -45,8 +45,8 @@ Your documents go nowhere except the model you configured.
 **Try it in a few minutes:** `docker compose up -d --build` starts MINT together with Ollama and open models
 ([docs/OLLAMA.md](docs/OLLAMA.md)); your own model or gateway is set in `.env`.
 
-<p align="center"><img src="docs/img/en/chat.png" width="860" alt="Chat: the answer with references, a numbered list of sources below it"></p>
-<p align="center"><img src="docs/img/en/audit.png" width="860" alt="Document review: the verdict stamp, counters by severity and the start of the report"></p>
+<p align="center"><img src="docs/img/en/chat.png" width="860" alt="Chat: a question, the answer with references to the sources and the list of sources"></p>
+<p align="center"><img src="docs/img/en/audit.png" width="860" alt="Document review: the verdict stamp, counters by severity, key points and findings by document section"></p>
 
 ## How it works
 

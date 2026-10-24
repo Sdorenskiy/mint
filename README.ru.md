@@ -47,8 +47,8 @@ LM Studio на ноутбуке, vLLM или корпоративный шлюз
 **Попробовать за несколько минут:** `docker compose up -d --build` запускает MINT вместе с Ollama и открытыми
 моделями ([docs/ru/OLLAMA.md](docs/ru/OLLAMA.md)), а свою модель или шлюз можно подключить в `.env`.
 
-<p align="center"><img src="docs/img/ru/chat.png" width="860" alt="Чат: ответ со ссылками, под ним — нумерованный список источников"></p>
-<p align="center"><img src="docs/img/ru/audit.png" width="860" alt="Аудит документа: штамп заключения, счётчики по критичности и начало заключения"></p>
+<p align="center"><img src="docs/img/ru/chat.png" width="860" alt="Чат: вопрос, ответ со ссылками на источники и список источников"></p>
+<p align="center"><img src="docs/img/ru/audit.png" width="860" alt="Аудит документа: штамп заключения, счётчики по критичности, «Главное» и замечания по разделам"></p>
 
 ## Как устроен
 
