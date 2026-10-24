@@ -44,7 +44,10 @@ def main():
         st.selectbox("🌐 Язык / Language", options=codes, index=codes.index(lang), format_func=LANGS.get,
                      key="ui_lang", help="Интерфейс и ответы моделей / interface and model answers. "
                                          "По умолчанию / default: MINT_LANG в .env или язык системы / or the OS language.")
-        st.selectbox(tr("🧭 Профиль:"), list(PROFILES), key="mint_profile", format_func=lambda p: tr(PROFILES[p]),
+        # подписи — словарём на языке этого прогона: format_func могут вызвать вне потока страницы (AppTest), где язык
+        # сеанса не задан
+        profile_labels = {p: tr(label) for p, label in PROFILES.items()}
+        st.selectbox(tr("🧭 Профиль:"), list(PROFILES), key="mint_profile", format_func=profile_labels.get,
                      on_change=lambda: on_profile_change(st.session_state["mint_profile"]),
                      help=tr("Набор промптов для чата, аудита и контроля исправлений. «Универсальный» — для любых "
                              "документов: договоров, положений, отчётов, инструкций. «Архитектура и ИТ-решения» — для "
