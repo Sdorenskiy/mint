@@ -138,7 +138,8 @@ ver = subprocess.run([sys.executable, "-c", "import streamlit; print(streamlit._
                      capture_output=True, text=True).stdout.strip()
 print(f"  Streamlit {ver}")
 
-check(not res["errors"], "страница и действия без исключений", "\n".join(res["errors"])[:3000])
+# ошибки — одной строкой: на GitHub в аннотацию попадают только строки с «✗», и трассировка видна целиком
+check(not res["errors"], "страница и действия без исключений", " ⏎ ".join(res["errors"]).replace("\n", " ⏎ ")[-3000:])
 check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
 check(res.get("tabs") == 3, f"три вкладки: {res.get('tabs')}")
 check(res.get("messages") == 2 and res.get("answer"), f"чат ответил: {res.get('answer', '')[:80]!r}")
@@ -147,7 +148,7 @@ rows = [json.loads(x) for x in fb.read_text(encoding="utf-8").splitlines()] if f
 check([x.get("rating") for x in rows] == ["up", "comment"], f"оценка и комментарий записаны: {[x.get('rating') for x in rows]}")
 check(res.get("messages_after_clear") == 0, "«Новый диалог» очищает историю")
 check(any("An intelligent RAG system" in t for t in res.get("titles_en", [])) and "📋 Document review" in res.get("tabs_en", []),
-      f"переключатель языка: интерфейс на английском ({res.get('titles_en')}, {res.get('tabs_en')})")
+      "переключатель языка: интерфейс на английском", f"{str(res.get('titles_en'))[-200:]}, {res.get('tabs_en')}")
 check(str(res.get("answer_en", "")).startswith("Answer from the context"), f"чат на английском: {res.get('answer_en')!r}")
 k0, k1 = res.get("keys") or ("", "")
 check(res.get("reopened") and res.get("marks") == {k0: {"verdict": "ok", "comment": "согласен"},

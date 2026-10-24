@@ -374,7 +374,8 @@ def tall(page, path, height=2600):
 
 README_VIEWPORT = {"width": 1100, "height": 1400}    # снимки для README: уже, чем экран, — крупнее текст на странице
 README_CSS = ('[data-testid="stSidebar"], [data-testid="stSidebarCollapsedControl"], [data-testid="collapsedControl"], '
-              '[data-testid="stExpandSidebarButton"], [data-testid="stHeader"] {display: none !important;}')
+              '[data-testid="stExpandSidebarButton"], [data-testid="stHeader"], .mint-src__meta '
+              '{display: none !important;}')
 
 
 def simplify(page):
@@ -383,8 +384,9 @@ def simplify(page):
     time.sleep(0.8)
 
 
-def clip_shot(page, path, top, bottom, pad=20):
-    """Снимок полосы страницы от top до bottom (координаты окна) на всю ширину окна."""
+def clip_shot(page, path, top, bottom, pad=10):
+    """Снимок полосы страницы от top до bottom (координаты окна) на всю ширину окна: поля небольшие, чтобы в кадр
+    не попадали края соседних блоков (поле ввода чата, загрузчик)."""
     w = page.viewport_size["width"]
     y = max(0, top - pad)
     page.screenshot(path=str(path), clip={"x": 0, "y": y, "width": w, "height": bottom + pad - y})
