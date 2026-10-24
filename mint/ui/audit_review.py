@@ -68,13 +68,15 @@ def _card(aid, row, review):
             st.caption(tr("Не найдено ни в документе, ни в нормах: {v}", v=", ".join(row["unverified"])))
         c1, c2, c3 = st.columns([3.6, 2.0, 2.2])     # четыре варианта отметки — в одну строку
         with c1:
-            st.radio(tr("Отметка"), list(VERDICTS), key=kv, format_func=lambda c: tr(VERDICTS[c]), horizontal=True,
+            verdicts = {c: tr(v) for c, v in VERDICTS.items()}     # подписи на языке прогона (см. mint/ui/app.py)
+            st.radio(tr("Отметка"), list(VERDICTS), key=kv, format_func=verdicts.get, horizontal=True,
                      label_visibility="collapsed")
         with c2:
             if ss.get(kv) == "wrong":
                 ss.setdefault(kr, m.get("reason") or "")
+                reasons = {c: tr(v) if c else tr("Причина: —") for c, v in REASONS.items()}
                 st.selectbox(tr("Причина"), list(REASONS), key=kr, label_visibility="collapsed",
-                             format_func=lambda c: tr("Причина: —") if not c else tr(REASONS[c]))
+                             format_func=reasons.get)
         with c3:
             st.text_input(tr("Комментарий"), key=kc, label_visibility="collapsed",
                           placeholder=tr("комментарий (необязательно)"))
@@ -207,8 +209,8 @@ def render_expert_review(cfg, aid, name, rows, document=None, meta=None):
                               n=prog["no_reason"]))
             c1, c2, c3 = st.columns([2, 1, 1.3])
             with c1:
-                flt = st.selectbox(tr("Показать"), list(FILTERS), key=f"rv_filter::{space}",
-                                   format_func=lambda k: tr(FILTERS[k]))
+                filters = {k: tr(v) for k, v in FILTERS.items()}
+                flt = st.selectbox(tr("Показать"), list(FILTERS), key=f"rv_filter::{space}", format_func=filters.get)
             shown = _filtered(rows, flt)
             pages = max(1, math.ceil(len(shown) / PAGE_SIZE))
             page_key = f"rv_page::{space}"
