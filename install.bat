@@ -6,8 +6,11 @@ rem   install.bat --clean    - peresozdat .venv s nulya
 rem Versii: requirements.lock - tochnye versii, proverennye na GitHub (Windows, Linux; Python 3.10-3.12).
 setlocal
 cd /d "%~dp0"
+rem Python: PYTHON (if set), otherwise the newest of the tested versions via the py launcher, otherwise python
 set "PY="
-where py >nul 2>nul && set "PY=py -3"
+if defined PYTHON set "PY=%PYTHON%"
+if not defined PY for %%V in (3.12 3.11 3.10 3.13) do if not defined PY (py -%%V -c "import sys" >nul 2>nul && set "PY=py -%%V")
+if not defined PY (where py >nul 2>nul && set "PY=py -3")
 if not defined PY set "PY=python"
 %PY% -c "import sys; sys.exit(0 if sys.version_info >= (3, 10) else 1)" 2>nul || (echo Python 3.10+ is required: https://www.python.org/downloads/windows/ - "Install for me only", no admin rights needed & pause & exit /b 1)
 set "REQ=requirements.txt"
@@ -35,7 +38,9 @@ pause
 exit /b 1
 :installed
 if not exist .env (copy .env.example .env >nul & echo Created .env from .env.example - fill in the addresses and key)
+rem Samoproverka podskazhet, chto ispravit' (naprimer, adresa v .env); ustanovka pri etom uzhe zavershena
 ".venv\Scripts\python.exe" check_install.py --no-llm
 echo.
 echo Done. Start MINT: run_mint.bat
 pause
+exit /b 0

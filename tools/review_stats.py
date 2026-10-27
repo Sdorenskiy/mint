@@ -88,7 +88,7 @@ def _short(text, n=220):
 
 def summary_markdown(reviews, examples=3):
     findings = [dict(f, _model=(r.get("audit") or {}).get("model") or "—",
-                     _profile=(r.get("audit") or {}).get("profile") or "general")
+                     _profile=(r.get("audit") or {}).get("profile") or "architecture")
                 for r in reviews for f in r.get("findings") or []]
     added = [a for r in reviews for a in r.get("added") or []]
     with_texts = sum(1 for r in reviews if r.get("texts"))
@@ -142,7 +142,7 @@ def summary_markdown(reviews, examples=3):
             by_model[f["_model"]].append(f)
         for m in sorted(by_model):
             lines.append(_row(m, by_model[m]))
-    by_profile = defaultdict(list)                    # профиль проверки (до 21.0 его не было — универсальный)
+    by_profile = defaultdict(list)       # профиль (до профилей промпты были архитектурными — architecture)
     for f in findings:
         by_profile[f["_profile"]].append(f)
     if len(by_profile) > 1:

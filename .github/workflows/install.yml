@@ -68,9 +68,26 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+      # The output goes into an annotation on failure: it is visible on GitHub and via the API without the log
       - name: install.bat
-        shell: cmd
-        run: install.bat < nul
+        shell: pwsh
+        run: |
+          $out = cmd /c "install.bat < nul" 2>&1 | Out-String
+          $code = $LASTEXITCODE
+          Write-Output $out
+          if ($code -ne 0) {
+            $tail = $out.Substring([Math]::Max(0, $out.Length - 5000)) -replace '%','%25' -replace "`r",'' -replace "`n",'%0A'
+            Write-Output "::error title=install.bat::$tail"
+            exit 1
+          }
       - name: The installation works
-        shell: cmd
-        run: .venv\Scripts\python tests\test_real_install.py
+        shell: pwsh
+        run: |
+          $out = .venv\Scripts\python tests\test_real_install.py 2>&1 | Out-String
+          $code = $LASTEXITCODE
+          Write-Output $out
+          if ($code -ne 0) {
+            $tail = $out.Substring([Math]::Max(0, $out.Length - 5000)) -replace '%','%25' -replace "`r",'' -replace "`n",'%0A'
+            Write-Output "::error title=test_real_install::$tail"
+            exit 1
+          }

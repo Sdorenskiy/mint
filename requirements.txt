@@ -3,6 +3,7 @@
 streamlit>=1.36
 docling-slim[format-docx]==2.127.0  # разбор .docx: MINT берёт из Docling только бэкенд Word — без PyTorch и
                                     # моделей. Версия закреплена: разбор одинаков у всех и проверен в CI
+pylatexenc>=2.10      # формулы Word (OMML → LaTeX) при разборе .docx — в облегчённую сборку Docling не входит
 faiss-cpu>=1.8
 numpy>=1.26
 requests>=2.31

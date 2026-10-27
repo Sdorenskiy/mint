@@ -1,9 +1,9 @@
 @echo off
 rem Obnovlenie MINT na meste iz novoj versii - arhiva .zip ili raspakovannoj papki. Vashi nastrojki ostayutsya:
 rem .env, config.yaml, glossary.json, checklists.yaml, prompts.yaml, okruzhenie .venv, baza znanij i logi.
-rem   update.bat C:\Users\me\Downloads\mint-21.0.zip     - iz arhiva
-rem   update.bat C:\Users\me\Downloads\mint-21.0         - iz papki
-rem   update.bat mint-21.0.zip wheels                    - pakety bez interneta (kak install.bat wheels)
+rem   update.bat C:\Users\me\Downloads\mint-21.1.zip     - iz arhiva
+rem   update.bat C:\Users\me\Downloads\mint-21.1         - iz papki
+rem   update.bat mint-21.1.zip wheels                    - pakety bez interneta (kak install.bat wheels)
 rem Snachala ostanovite MINT (zakrojte ego okno).
 setlocal
 set "SRC=%~f1"
