@@ -82,7 +82,7 @@ with i18n.use_lang("en"):
     check('"FIXED|PARTIAL|NOT_FIXED"' in app.review_prompt("WIKI") and "WIKI" in app.review_prompt("WIKI"),
           "промпт контроля исправлений на английском")
     check("--- QUESTION ---" in app.chat_user_content("ctx", "q"), "разметка вопроса на английском")
-check("Ты — ведущий эксперт-консультант по базе знаний" in app.chat_system_prompt(), "русский промпт без изменений")
+check("Ты — ведущий ИИ-архитектор" in app.chat_system_prompt(), "русский промпт без изменений (профиль по умолчанию)")
 f1 = app.finding_from_line("- **[CRITICAL]** Encryption is not specified")
 check(f1["severity"] == "КРИТИЧНЫЙ" and f1["text"] == "Encryption is not specified", f"английская критичность: {f1}")
 check(app.finding_from_line("- [HIGH] x" * 1)["severity"] == "КРИТИЧНЫЙ", "HIGH → критичный")

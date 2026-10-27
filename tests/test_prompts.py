@@ -180,8 +180,10 @@ check(c2.smart_truncate_chars < c1.smart_truncate_chars and c2.audit_context_max
       f"длинная правка промпта уменьшает место под фрагменты: чат {c1.smart_truncate_chars} → {c2.smart_truncate_chars}, "
       f"нормы аудита {c1.audit_context_max_chars} → {c2.audit_context_max_chars}")
 
-print("7. [unit] Профили: универсальный и «Архитектура и ИТ-решения» (промпты до профилей слово в слово)")
-check(set(P.PROFILES) == {"general", "architecture"} and P.get_profile() == "general", "профили; по умолчанию — универсальный")
+print("7. [unit] Профили: «Архитектура и ИТ-решения» (по умолчанию, промпты до профилей слово в слово) и универсальный")
+check(set(P.PROFILES) == {"general", "architecture"} and P.DEFAULT_PROFILE == "architecture"
+      and P.get_profile() == "architecture" and app.DEFAULTS.profile == "architecture",
+      "профили; по умолчанию — архитектурный (и в config)")
 # Версии наборов промптов MINT до появления профилей (21.0): профиль архитектуры должен давать тот же набор — тогда
 # его результаты сравнимы с прежними, а для архитектурной проверки ничего не меняется
 OLD_VERSIONS = {"ru": "ru-8fd10871", "en": "en-9c3500f7"}
@@ -191,7 +193,8 @@ FREE = {"chat_no_info", "condense_system", "paraphrase_system", "question_gen_sy
         "audit_focus_default", "audit_focus_generic"}          # короткие тексты — отличаются целиком
 for lang in ("ru", "en"):
     over = P.profile_overrides("architecture", lang)
-    base = P.default_prompts(lang)
+    with P.use_profile("general"):
+        base = P.default_prompts(lang)
     check(set(over) <= set(base) and set(over) <= set(HEAD_LINES) | FREE, f"{lang}: профиль меняет только известные ключи",
           str(sorted(set(over) - set(HEAD_LINES) - FREE)))
     check(all(not P.check_text(k, lang, v) for k, v in over.items() if k in P.EDITABLE),
@@ -207,14 +210,19 @@ for lang in ("ru", "en"):
               f"{lang}: самокритика архитектуры — роль архитектурного комитета")
         check(P.get_profile() == "architecture" and P.default_audit_focus(lang) == over["audit_focus_default"],
               f"{lang}: критерии профиля")
-    check(P.get_profile() == "general" and P.default_prompts(lang) == base, f"{lang}: профиль вернулся после блока")
+    with P.use_profile("general"):
+        check(P.get_profile() == "general" and P.default_prompts(lang) == base, f"{lang}: универсальный профиль в блоке")
+    check(P.get_profile() == "architecture" and P.default_prompts(lang) == {**base, **over},
+          f"{lang}: после блока — снова профиль по умолчанию")
 for lang, words in (("ru", r"архитект|корпоратив|ИИ-"), ("en", r"architect|corporate|AI ")):
-    narrow = sorted(k for k, v in P.default_prompts(lang).items() if re.search(words, v, re.I))
+    with P.use_profile("general"):
+        narrow = sorted(k for k, v in P.default_prompts(lang).items() if re.search(words, v, re.I))
     check(not narrow, f"{lang}: в универсальном профиле нет узкой специализации", str(narrow))
 with use_lang("ru"):
     gen, arch = P.profile_audit_focus("general"), P.profile_audit_focus("architecture")
-    check(gen != arch and P.profile_audit_focus("нет такого") == gen and P.normalize_profile("x") == "general"
-          and gen in P.audit_map_prompt("", gen), "критерии профилей; неизвестный профиль — универсальный")
+    check(gen != arch and P.profile_audit_focus("нет такого") == arch and P.normalize_profile("x") == "architecture"
+          and gen in P.audit_map_prompt("", gen) and P.DEFAULT_AUDIT_FOCUS == arch,
+          "критерии профилей; неизвестный профиль — по умолчанию (архитектурный)")
     texts = P.all_profile_focus_texts()
     check(len(texts) == 4 and {gen, arch, P.DEFAULT_AUDIT_FOCUS, P.DEFAULT_AUDIT_FOCUS_EN} <= texts,
           "критерии всех профилей на двух языках — для замены нетронутого поля при смене профиля или языка")
@@ -226,8 +234,8 @@ with use_lang("ru"):
         check(P.prompt_text("critique_system").endswith("Своё правило.") and P.custom_status("ru") == {"critique_system": "session"},
               "своя правка действует и в профиле")
     P.set_session_prompts(None)
-check(P.set_profile("architecture") == "architecture" and P.get_profile() == "architecture"
-      and P.set_profile("нет такого") == "general", "профиль сеанса: set_profile")
+check(P.set_profile("general") == "general" and P.get_profile() == "general"
+      and P.set_profile("нет такого") == "architecture", "профиль сеанса: set_profile")
 check(any("profile" in m for _, m in app.check_settings(replace(app.DEFAULTS, profile="legal")))
       and not any("profile" in m for _, m in app.check_settings(replace(app.DEFAULTS, profile="architecture"))),
       "неизвестный profile в config.yaml — предупреждение")

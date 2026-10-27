@@ -49,6 +49,14 @@ def chat_history(messages, turns):
     return history
 
 
+def same_question(a, b):
+    """Одинаковы ли вопросы с точностью до регистра, «ё» и знаков препинания («Сколько хранятся?» = «сколько
+    хранятся»): такое «переписывание» вопрос не меняет."""
+    def words(s):
+        return re.sub(r"[^\w]+", " ", (s or "").lower().replace("ё", "е")).split()
+    return words(a) == words(b)
+
+
 def condense_question(history, question, cfg):
     """Уточняющий вопрос («а для второго контура?») → самостоятельный вопрос для поиска (+1 вызов LLM).
     При сбое или странном ответе возвращается исходный вопрос."""
@@ -66,7 +74,7 @@ def condense_question(history, question, cfg):
     q = (lines[0] if lines else "").strip().strip('"«»').strip()
     q = re.sub(r"^(?:вопрос|переписанный вопрос|самостоятельный вопрос|question|rewritten question|standalone question)"
                r"\s*:\s*", "", q, flags=re.IGNORECASE)
-    if len(q) < 3 or len(q) > max(300, 3 * len(question)):
+    if len(q) < 3 or len(q) > max(300, 3 * len(question)) or same_question(q, question):
         return question
     if q != question:
         logger.info(f"💬 Уточняющий вопрос: «{question[:80]}» → «{q[:120]}»")
@@ -74,12 +82,14 @@ def condense_question(history, question, cfg):
 
 
 def rag_answer(question, cfg, glossary, history=None, search_question=None, diagnostics=None):
-    """Ответ чата: поиск по базе (по search_question — вопросу, переписанному по истории, — или по самому
-    вопросу), справочник сокращений и ответ модели только по найденному. Возвращает (ответ, контекст, источники).
+    """Ответ чата: поиск по базе, справочник сокращений и ответ модели только по найденному. Возвращает (ответ,
+    контекст, источники). Если вопрос переписан по истории (search_question), поиск идёт по обоим — переписанному
+    и исходному: при переписывании модель может потерять термин, сокращение или номер.
     diagnostics — словарь, который поиск заполнит сигналами уверенности."""
     search_q = search_question or question
     context, sources = search_parent_child(search_q, cfg, k_neighbors=cfg.top_k, use_multi_query=cfg.use_multi_query,
-                                           annotate_low_confidence=True, glossary=glossary, diagnostics=diagnostics)
+                                           annotate_low_confidence=True, glossary=glossary, diagnostics=diagnostics,
+                                           also_query=question if search_q != question else None)
     abbr = glossary.reference_block(search_q, context, cfg.glossary_max_entries) if cfg.glossary_in_context else ""
     answer = ask_llm(chat_system_prompt(), chat_user_content(context, question, abbr, search_q), cfg, history=history)
     return answer, context, sources

@@ -90,7 +90,7 @@ def docling_convert(filename, data: bytes):
                 except ImportError as e:
                     if _process_cache().get("docx_backend_missing") is None:
                         _process_cache()["docx_backend_missing"] = True
-                        logger.warning(f"Бэкенд Word из Docling недоступен ({e}) — разбор .docx через DocumentConverter")
+                        logger.warning(f"Бэкенд Word из Docling недоступен ({e}) — .docx через DocumentConverter")
             return _docling_converter().convert(path).document
 
 

@@ -60,10 +60,12 @@ def _diff(a, b, n=12):
     """Несколько первых строк различий Markdown или структуры."""
     if "error" in a or "error" in b:
         return [f"A: {a.get('error', 'ok')}", f"B: {b.get('error', 'ok')}"]
+    def as_lines(v, key):
+        return v.splitlines() if key == "markdown" else json.dumps(v, ensure_ascii=False, indent=1).splitlines()
+
     for key in ("markdown", "structure"):
         if a[key] != b[key]:
-            la = a[key].splitlines() if key == "markdown" else json.dumps(a[key], ensure_ascii=False, indent=1).splitlines()
-            lb = b[key].splitlines() if key == "markdown" else json.dumps(b[key], ensure_ascii=False, indent=1).splitlines()
+            la, lb = as_lines(a[key], key), as_lines(b[key], key)
             lines = [ln for ln in difflib.unified_diff(la, lb, "A", "B", n=0, lineterm="") if not ln.startswith("@@")]
             return [f"[{key}]"] + lines[2:2 + n]
     return []
@@ -135,8 +137,8 @@ def run_here(paths, dump=None):
     if dump:
         out = Path(dump)
         out.mkdir(parents=True, exist_ok=True)
-        (out / "environment.json").write_text(json.dumps({**env, "torch_loaded": "torch" in sys.modules},
-                                                         ensure_ascii=False, indent=1), encoding="utf-8")
+        env_out = {**env, "torch_loaded": "torch" in sys.modules}
+        (out / "environment.json").write_text(json.dumps(env_out, ensure_ascii=False, indent=1), encoding="utf-8")
         for name, res in results.items():
             (out / f"{name}.json").write_text(json.dumps(res, ensure_ascii=False, indent=1), encoding="utf-8")
     return lines, bad
@@ -145,7 +147,9 @@ def run_here(paths, dump=None):
 def compare_dumps(dir_a, dir_b, parser_a="backend", parser_b="backend"):
     """Два сохранённых разбора (например, облегчённый Docling и полный): одинаково ли."""
     a_dir, b_dir = Path(dir_a), Path(dir_b)
-    env = lambda d: json.dumps(json.loads((d / "environment.json").read_text(encoding="utf-8")), ensure_ascii=False)  # noqa: E731
+    def env(d):
+        return json.dumps(json.loads((d / "environment.json").read_text(encoding="utf-8")), ensure_ascii=False)
+
     lines = [f"A: {dir_a} ({parser_a}) — {env(a_dir)}", f"B: {dir_b} ({parser_b}) — {env(b_dir)}", ""]
     bad = False
     names = sorted({p.name for p in a_dir.glob("*.docx.json")} | {p.name for p in b_dir.glob("*.docx.json")})

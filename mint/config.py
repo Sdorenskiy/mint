@@ -87,8 +87,8 @@ class Settings:
     embed_doc_prefix: str = ""        # префикс перед текстом ДОКУМЕНТА (e5: "passage: "); меняет индекс
 
     # ---------- Профиль ----------
-    profile: str = "general"          # набор промптов: general — любые документы; architecture — архитектура и
-                                      # ИТ-решения (промпты MINT до появления профилей, слово в слово)
+    profile: str = "architecture"     # набор промптов: architecture — архитектура и ИТ-решения (промпты MINT до
+                                      # появления профилей, слово в слово); general — любые документы
 
     # ---------- Языковая модель ----------
     temperature: float = 0.1
@@ -408,10 +408,10 @@ def check_settings(cfg: Settings):
         out.append(("error", tr("Не задан адрес сервиса эмбеддингов — укажите EMBED_API_URL в файле .env.")))
     if extra_body_error(cfg):
         out.append(("warning", extra_body_error(cfg)))
-    from .prompts import PROFILES      # здесь, а не в начале модуля: prompts сам читает config
+    from .prompts import DEFAULT_PROFILE, PROFILES      # здесь, а не в начале модуля: prompts сам читает config
     if cfg.profile not in PROFILES:
-        out.append(("warning", tr("Неизвестный профиль profile = «{v}» — используется «general». Профили: {names}.",
-                                  v=cfg.profile, names=", ".join(PROFILES))))
+        out.append(("warning", tr("Неизвестный профиль profile = «{v}» — используется «{d}». Профили: {names}.",
+                                  v=cfg.profile, d=DEFAULT_PROFILE, names=", ".join(PROFILES))))
     return out
 
 

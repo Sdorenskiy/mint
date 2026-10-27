@@ -52,7 +52,8 @@ def render_chat_tab(cfg, gl):
                 last_question = msg["content"]
             with st.chat_message(msg["role"]):
                 if msg.get("search_query"):
-                    st.caption(tr("🔎 Искал по вопросу: {search_query}", search_query=msg['search_query']))
+                    st.caption(tr("🔎 Искал по вашему вопросу и по уточнённому с учётом диалога: «{q}»",
+                                  q=msg['search_query']))
                 _render_answer(msg)
                 if msg.get("sources"):
                     render_sources(msg["sources"])
@@ -67,7 +68,8 @@ def render_chat_tab(cfg, gl):
                 with st.spinner(tr("Ищу в базе знаний...")):
                     res = answer_question(user_input, cfg, glossary=gl, history=history)
                 if res["search_query"]:
-                    st.caption(tr("🔎 Искал по вопросу: {shown_query}", shown_query=res["search_query"]))
+                    st.caption(tr("🔎 Искал по вашему вопросу и по уточнённому с учётом диалога: «{q}»",
+                                  q=res["search_query"]))
                 msg = {"role": "assistant", "content": res["answer"], "sources": res["sources"],
                        "search_query": res["search_query"], "id": new_feedback_id(), "shown": res["shown"],
                        "citations_invalid": res["citations_invalid"], "prompts": res["prompts"]}
