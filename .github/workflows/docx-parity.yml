@@ -34,12 +34,15 @@ jobs:
       - name: Install
         run: |
           VER=$(sed -n 's/^docling-slim==\([^ ;]*\).*/\1/p' requirements.lock)
+          CORE=$(sed -n 's/^docling-core==\([^ ;]*\).*/\1/p' requirements.lock)
           echo "DOCLING_VER=$VER" >> "$GITHUB_ENV"
           python -m venv /tmp/v
           /tmp/v/bin/python -m pip install -q -U pip
           if [ "${{ matrix.name }}" = "full-docling" ]; then
+            # the full Docling pins some packages differently (e.g. pillow<13), so not the whole lock:
+            # the same Docling and docling-core versions as in requirements.lock, the rest as pip resolves them
             /tmp/v/bin/python -m pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
-            /tmp/v/bin/python -m pip install -q "docling==$VER" -r requirements.lock
+            /tmp/v/bin/python -m pip install -q "docling==$VER" "docling-core==$CORE" -r requirements.txt
           else
             /tmp/v/bin/python -m pip install -q -r requirements.lock
           fi
