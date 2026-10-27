@@ -169,6 +169,8 @@ pydeck==0.9.3
     # via streamlit
 pygments==2.21.0
     # via rich
+pylatexenc==2.11
+    # via -r requirements.txt
 pypdfium2==5.14.0
     # via pdfplumber
 python-dateutil==3.0.0
