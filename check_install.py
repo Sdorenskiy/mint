@@ -175,6 +175,9 @@ def check_docling():
                            "models download), перенесите папку и укажите её в DOCLING_ARTIFACTS_PATH."))
             elif "not permitted" in low or "failed to map segment" in low:
                 hint = tr(ZPS_HINT)
+            elif isinstance(e, ImportError):
+                hint = tr("Пакеты не те, что проверены для MINT (например, другая версия Docling). Переустановите их "
+                          "по requirements.lock: ./install.sh --clean (Windows: install.bat --clean).")
             say("fail", tr("Docling не разобрал тестовый документ"), msg[:500] + (f"\n         {hint}" if hint else ""))
             return
     dt = time.time() - t0

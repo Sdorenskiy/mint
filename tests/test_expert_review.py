@@ -158,7 +158,7 @@ out_dir.mkdir()
 (out_dir / "one.json").write_text(json.dumps(full, ensure_ascii=False), encoding="utf-8")
 later = dict(full, exported="2099-01-01 00:00")
 (out_dir / "all.jsonl").write_text(json.dumps(later, ensure_ascii=False) + "\n"
-                                   + json.dumps(dict(bare, audit={"id": "x2", "model": "other-llm", "profile": "architecture"}),
+                                   + json.dumps(dict(bare, audit={"id": "x2", "model": "other-llm", "profile": "general"}),
                                                 ensure_ascii=False) + "\n", encoding="utf-8")
 tool = harness.ROOT / "tools" / "review_stats.py"
 r = subprocess.run([sys.executable, str(tool), str(out_dir)], capture_output=True, text=True, encoding="utf-8",
@@ -168,7 +168,7 @@ check(r.returncode == 0 and "Аудитов: 2 (с текстами — 1)" in t
 check("| Глубокая: шаги процесса | 2 | 2 | 0 | 0 | 2 | 0% | 0% |" in txt
       and "| в документе это есть | 2 |" in txt and "| без причины | 2 |" in txt and "## По моделям" in txt
       and "## По профилям проверки" in txt and "| architecture |" in txt and "| general |" in txt,
-      "по видам проверок, причинам, моделям и профилям проверки (без профиля — универсальный)", txt)
+      "по видам проверок, причинам, моделям и профилям (без профиля — архитектурный: промпты до профилей)", txt)
 check("Шаг 3 не связан" in txt and "Нет плана восстановления" in txt, "примеры текстов — из разборов с текстами")
 r0 = subprocess.run([sys.executable, str(tool), str(out_dir), "--examples", "0"], capture_output=True, text=True,
                     encoding="utf-8", env={**os.environ, "PYTHONUTF8": "1"})

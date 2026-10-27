@@ -3,10 +3,10 @@
 # .env, config.yaml, glossary.json, checklists.yaml, prompts.yaml, the .venv environment, the knowledge base and logs.
 # Обновление MINT на месте из новой версии — архива .zip или распакованной папки. Ваши настройки остаются:
 # .env, config.yaml, glossary.json, checklists.yaml, prompts.yaml, окружение .venv, база знаний и логи.
-#   ./update.sh ~/Downloads/mint-21.0.zip      — from an archive / из архива
-#   ./update.sh ~/Downloads/mint-21.0          — from a folder / из папки
-#   ./update.sh mint-21.0.zip wheels_folder    — packages offline / пакеты без интернета (как install.sh wheels)
-#   SKIP_INSTALL=1 ./update.sh mint-21.0.zip   — files only, no package install / только файлы, без установки пакетов
+#   ./update.sh ~/Downloads/mint-21.1.zip      — from an archive / из архива
+#   ./update.sh ~/Downloads/mint-21.1          — from a folder / из папки
+#   ./update.sh mint-21.1.zip wheels_folder    — packages offline / пакеты без интернета (как install.sh wheels)
+#   SKIP_INSTALL=1 ./update.sh mint-21.1.zip   — files only, no package install / только файлы, без установки пакетов
 # Stop MINT first (Ctrl+C in its window). / Сначала остановите MINT (Ctrl+C в его окне).
 
 # Весь скрипт — в фигурных скобках: оболочка читает его целиком до запуска, а сам update.sh заменяется новой

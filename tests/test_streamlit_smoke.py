@@ -88,16 +88,16 @@ try:
         at.run()
         res["radio_after"] = [at.radio(key=k0 + "::v").value, at.radio(key=k1 + "::v").value]
         res["errors"] += errors(at)
-        # профиль: выбран другой — в поле критериев его критерии, чат отвечает с промптами профиля
+        # профиль: по умолчанию архитектурный (промпты до профилей); выбран универсальный — его критерии в поле
         from mint.prompts import profile_audit_focus
-        res["focus_expect"] = [profile_audit_focus("general", "ru"), profile_audit_focus("architecture", "ru")]
-        res["focus_general"] = at.text_area(key="tab2_user_focus").value
-        at.selectbox(key="mint_profile").set_value("architecture").run()
-        res["errors"] += errors(at)
-        res["focus_arch"] = at.text_area(key="tab2_user_focus").value
+        res["focus_expect"] = [profile_audit_focus("architecture", "ru"), profile_audit_focus("general", "ru")]
+        res["focus_default"] = at.text_area(key="tab2_user_focus").value
         at.chat_input[0].set_value("Какие требования к журналам?").run()
         res["errors"] += errors(at)
         res["arch_prompts"] = at.session_state["messages"][-1].get("prompts", "")
+        at.selectbox(key="mint_profile").set_value("general").run()
+        res["errors"] += errors(at)
+        res["focus_general"] = at.text_area(key="tab2_user_focus").value
 except Exception:
     res["errors"].append(traceback.format_exc())
 print("RESULT" + json.dumps(res, ensure_ascii=False))
@@ -155,9 +155,10 @@ check(res.get("reopened") and res.get("marks") == {k0: {"verdict": "ok", "commen
                                                    k1: {"verdict": "wrong", "reason": "present"}},
       f"сохранённый аудит открывается, отметки и причина сохраняются: {res.get('marks')}")
 check(res.get("radio_after") == ["ok", "wrong"], f"отметки не сбрасываются после перерисовки: {res.get('radio_after')}")
-check(res.get("focus_expect") and [res.get("focus_general"), res.get("focus_arch")] == res["focus_expect"],
-      "профиль: по умолчанию универсальные критерии, выбран «Архитектура и ИТ-решения» — его критерии")
-check(res.get("arch_prompts") == "ru-8fd10871", f"профиль архитектуры — набор промптов до профилей: {res.get('arch_prompts')}")
+check(res.get("focus_expect") and [res.get("focus_default"), res.get("focus_general")] == res["focus_expect"],
+      "профиль: по умолчанию архитектурные критерии, выбран универсальный — его критерии")
+check(res.get("arch_prompts") == "ru-8fd10871",
+      f"профиль по умолчанию — набор промптов до профилей: {res.get('arch_prompts')}")
 
 if os.environ.get("GITHUB_ACTIONS") == "true" and not check.fails:   # видно в интерфейсе GitHub и через API
     print(f"::notice title=Смоук-тест страницы::Streamlit {ver}: страница, чат, 👍 и комментарий, «Новый диалог», "

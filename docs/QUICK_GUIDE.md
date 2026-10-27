@@ -18,8 +18,8 @@ not an approver: you check every finding. Your "correct / wrong" marks are the m
 
 1. The **"📋 Document review"** tab → upload the document: .docx is best (findings can then be added as Word
    comments); .pdf, .md and .txt also work.
-2. **"🧭 Profile"** (sidebar) — "General" for any documents or "Architecture and IT solutions" for design
-   documentation. The profile fills the "General review criteria" field; adjust them for the document if needed.
+2. **"🧭 Profile"** (sidebar) — "Architecture and IT solutions" (the default) for design documentation or
+   "General" for any other documents. The profile fills the "General review criteria" field; adjust them for the document if needed.
 3. **"🎯 Special attention"** — what matters in this particular document, one item per line. Optional, but MINT
    answers each item separately across the whole document.
 4. Check the **"📋 Checklist"** and **"📎 Basis documents"** blocks: MINT fills them itself; remove what does not

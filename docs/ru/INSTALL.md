@@ -24,7 +24,7 @@ MINT — программа на Python. Ей нужны сторонние па
 
 | Скрипт | Что делает | То же вручную |
 |---|---|---|
-| `install.sh` / `install.bat` | проверяет Python (нужен 3.10+) → создаёт рядом с программой папку `.venv` → ставит в неё пакеты из `requirements.txt` (из интернета, зеркала или офлайн-комплекта) → создаёт `.env` из образца → запускает самопроверку | `python3 -m venv .venv`<br>`.venv/bin/pip install -r requirements.txt`<br>`cp .env.example .env`<br>`.venv/bin/python check_install.py` |
+| `install.sh` / `install.bat` | проверяет Python (нужен 3.10+) → создаёт рядом с программой папку `.venv` → ставит в неё пакеты точных версий из `requirements.lock` (из интернета, зеркала или офлайн-комплекта); неполную `.venv` от прерванной установки создаёт заново → создаёт `.env` из образца → запускает самопроверку | `python3 -m venv .venv`<br>`.venv/bin/pip install -r requirements.lock`<br>`cp .env.example .env`<br>`.venv/bin/python check_install.py` |
 | `run_mint.sh` / `run_mint.bat` | переходит в папку MINT → запускает Streamlit из `.venv` → открывает браузер | `cd ~/mint`<br>`.venv/bin/python -m streamlit run app.py` |
 
 **Почему `.venv`, а не просто `pip install`:**
@@ -51,7 +51,7 @@ streamlit run app.py        # раньше: streamlit run web_app_v19.py
 | | |
 |---|---|
 | Python | **3.10–3.12** (рекомендуется 3.11). Python 3.7–3.9 не подойдёт: Docling их не поддерживает |
-| Диск | ≈ 0,6 ГБ на пакеты (без PyTorch, см. [«Зафиксировать версии»](#зафиксировать-версии-для-разработчика)). Плюс место под базу знаний |
+| Диск | ≈ 0,6 ГБ на пакеты, скачивается ≈ 165 МБ (без PyTorch, см. [«Версии пакетов и Docling без PyTorch»](#версии-пакетов-и-docling-без-pytorch)). Плюс место под базу знаний |
 | Память | от 4 ГБ свободной; большие документы разбираются дольше |
 | Доступ к моделям | адреса API языковой модели и эмбеддингов и **свой** ключ |
 | Пакеты Python | из интернета, внутреннего зеркала PyPI или офлайн-комплекта (см. ниже) |
@@ -91,9 +91,10 @@ cd ~/mint
 ./install.sh wheels     # без интернета: из офлайн-комплекта (папка wheels)
 ```
 
-Скрипт создаёт `.venv`, ставит пакеты (из `requirements.lock`, если он есть, иначе из `requirements.txt`),
-создаёт `.env` из образца и запускает самопроверку. Если в системе нет пакета `python3-venv`, скрипт создаст
-окружение без него, а pip возьмёт из офлайн-комплекта.
+Скрипт создаёт `.venv`, ставит пакеты точных версий из `requirements.lock`, создаёт `.env` из образца и
+запускает самопроверку. Если в системе нет пакета `python3-venv`, скрипт создаст окружение без него, а pip
+скачает системным pip (по вашим настройкам зеркала) или возьмёт из офлайн-комплекта — администратор не нужен.
+Неполную `.venv` от прерванной попытки скрипт создаёт заново сам; начать с нуля — `./install.sh --clean`.
 
 Если pip не выходит в интернет, но в компании есть внутреннее зеркало PyPI (Nexus, Artifactory — адрес
 подскажут ИТ):
@@ -130,7 +131,7 @@ install.bat wheels
 ```bat
 cd C:\mint
 py -3 -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python -m pip install -r requirements.lock
 copy .env.example .env
 .venv\Scripts\python check_install.py
 .venv\Scripts\python -m streamlit run app.py
@@ -225,7 +226,7 @@ Windows:
 
 ```bat
 cd C:\mint
-py -3 -m pip download -r requirements.txt -d wheels
+py -3 -m pip download -r requirements.lock -d wheels
 ```
 
 Передайте папку MINT вместе с `wheels`, но **без** `.env`, `knowledge_base`, `mint_logs` и своих
@@ -236,42 +237,54 @@ py -3 -m pip download -r requirements.txt -d wheels
 готовые колёса; если pip сообщит о пакете без колеса, соберите комплект на такой же машине:
 
 ```bash
-python3 -m pip download -r requirements.txt -d wheels --only-binary=:all: \
+python3 -m pip download -r requirements.lock -d wheels --only-binary=:all: \
     --platform manylinux_2_28_x86_64 --platform manylinux2014_x86_64 \
     --python-version 3.11 --implementation cp
 ```
 
-## Зафиксировать версии (для разработчика)
+## Версии пакетов и Docling без PyTorch
 
-Чтобы у всех стояли те же версии, что на проверенной рабочей машине, снимите список пакетов из `.venv`:
+**Точные версии.** `install.sh` и `install.bat` ставят пакеты по `requirements.lock` — точные версии, одни для
+Linux, Windows и macOS (с пометками для версий Python и ОС). Именно их проверяет GitHub при каждом изменении и
+каждую ночь: установка с нуля на Ubuntu (Python 3.10–3.12), Debian 12 без `python3-venv` (как Astra Linux 1.8) и
+Windows, затем разбор .docx настоящим Docling, база → чат → аудит и самопроверка
+(`.github/workflows/install.yml`, `tests/test_real_install.py`). Если какой-то точной версии нет на вашем
+зеркале, скрипт сообщит об этом и поставит пакеты по `requirements.txt`.
 
-```bash
-.venv/bin/python -m pip freeze > requirements.lock              # Linux
-.venv\Scripts\python -m pip freeze > requirements-windows.lock  # Windows
-```
-
-Скрипты установки берут lock-файл автоматически. Списки для Linux и Windows разные: в каждом есть пакеты
-только для своей ОС.
-
-**Docling без PyTorch.** `requirements.txt` ставит облегчённую сборку Docling — `docling-slim[format-docx]`:
-только разбор .docx, без PyTorch, OpenCV и моделей — 66 пакетов и ≈ 0,6 ГБ вместо 114 пакетов и 2,1 ГБ с полным
-`docling` (проверено на 2.140). Остальное MINT не нужно: .pdf читает pdfplumber, тоже без моделей. Меньше
-пакетов — меньше и проверять службе ИБ.
-
-Если на вашем зеркале нет `docling-slim` (старый Docling), замените эту строку в `requirements.txt` на
-`docling>=2.0`. MINT работает так же, но pip потянет PyTorch; на компьютере без видеокарты поставьте сначала его
-версию для процессора, чтобы не качать гигабайты библиотек CUDA:
+Обновить версии (для разработчика): поменять `requirements.txt` и пересобрать lock-файл, затем дождаться
+зелёной проверки установки на GitHub:
 
 ```bash
-.venv/bin/python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install uv
+uv pip compile requirements.txt --universal --python-version 3.10 --no-header -o requirements.lock
 ```
+
+**Docling без PyTorch.** .docx разбирает Docling — его бэкенд Word: стили заголовков, списки, таблицы, без
+моделей. MINT вызывает этот бэкенд напрямую, а не через общий конвертер Docling, который при запуске подгружает
+и разбор PDF с моделями (PyTorch). Результат тот же, что у полного Docling через конвертер, — это сверяется на
+GitHub на тестовых документах Docling и своих примерах (`tools/docx_parity.py`; проверить на своих документах:
+`python tools/docx_parity.py папка_с_docx`, если у вас стоит полный Docling). Поэтому ставится облегчённая сборка
+`docling-slim[format-docx]` точной версии:
+
+| | MINT (облегчённый Docling) | с полным Docling |
+|---|---|---|
+| Пакетов | 72 | 122 |
+| Скачивается | ≈ 165 МБ | ≈ 540 МБ (PyTorch для процессора) — гигабайты с PyTorch для видеокарты |
+| На диске | ≈ 0,6 ГБ | ≈ 2,1 ГБ |
+| Библиотеки моделей (PyTorch, transformers, huggingface_hub, OpenCV) | нет | есть |
+
+Меньше пакетов — меньше проверять службе ИБ, и нет библиотек, которые умеют сами скачивать модели из
+интернета. .pdf MINT читает своими силами (pdfplumber), тоже без моделей.
+
+Если полный Docling у вас уже стоит (например, MINT запускается системным Python), ничего менять не нужно: MINT
+берёт из него тот же бэкенд Word.
 
 ## Обновление
 
 Остановите MINT и запустите в папке программы `update.sh` (Windows — `update.bat`) с архивом новой версии:
 
 ```bash
-./update.sh ~/Загрузки/mint-21.0.zip        # или распакованная папка новой версии
+./update.sh ~/Загрузки/mint-21.1.zip        # или распакованная папка новой версии
 ```
 
 Скрипт заменяет код (папки `mint`, `docs`, `tools`, `tests`, `static` — целиком, чтобы не остались удалённые
@@ -297,3 +310,7 @@ python3 -m pip download -r requirements.txt -d wheels --only-binary=:all: \
 | `Operation not permitted` при импорте | Включена ЗПС — см. раздел [Astra Linux](#2-замкнутая-программная-среда-зпс) |
 | `python` / `py` не найден (Windows) | Переустановите Python с python.org; лаунчер `py` ставится по умолчанию |
 | Первая загрузка документа идёт долго | При первом запуске Docling загружается в память, дальше быстрее |
+| `Incomplete .venv` / `No module named pip` | Осталась неполная `.venv` от прерванной установки — `install.sh` сам создаёт её заново; принудительно: `./install.sh --clean` |
+| Нет пакета `python3-venv` | Администратор не нужен: `install.sh` скачает pip системным pip (по вашим настройкам зеркала). Если и системного pip нет — офлайн-комплект с `pip-*.whl` |
+| `No module named 'torch'` или `'docling_parse'` при загрузке .docx | Пакеты стоят не по `requirements.lock` (другой Docling): `./install.sh --clean` (Windows — `install.bat --clean`) |
+| `Some exact versions are not available` | На зеркале нет какой-то точной версии — скрипт сам поставит по `requirements.txt`; сообщите разработчику, какой пакет |

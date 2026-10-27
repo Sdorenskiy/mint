@@ -1,0 +1,93 @@
+# Установка с нуля — так, как её делает пользователь: чистая машина, install.sh / install.bat, пакеты по
+# requirements.lock, настоящий Docling (без заглушек), затем tests/test_real_install.py: пакеты, разбор .docx,
+# база → чат → аудит, самопроверка со страницей на настоящем Streamlit.
+# Каждую ночь — тоже: ловит то, что ломается без наших изменений (пропавшая версия пакета, новый раннер).
+name: install
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  ubuntu:
+    name: Ubuntu · Python ${{ matrix.python }} · install.sh
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.10", "3.11", "3.12"]
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python }}
+      - name: install.sh
+        run: PYTHON=python ./install.sh
+      - name: The installation works (real Docling, Streamlit, faiss)
+        run: .venv/bin/python tests/test_real_install.py
+      - name: Recovery — an incomplete .venv left by an interrupted install is recreated
+        run: |
+          rm -rf .venv && python -m venv --without-pip .venv
+          PYTHON=python ./install.sh > /tmp/reinstall.log 2>&1 || { cat /tmp/reinstall.log; exit 1; }
+          grep -q "Incomplete .venv" /tmp/reinstall.log && .venv/bin/python -c "import docling.backend.msword_backend"
+
+  debian:
+    name: Debian 12 without python3-venv (as Astra Linux 1.8) · install.sh
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container: debian:bookworm
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - name: System Python 3.11 and pip, no python3-venv (as on a fresh Astra Linux)
+        run: |
+          apt-get update -qq
+          apt-get install -y -qq python3 python3-pip git ca-certificates > /dev/null
+          python3 --version
+          python3 -c "import ensurepip" 2>/dev/null && { echo "ensurepip must be missing"; exit 1; } || echo "no ensurepip — as expected"
+      - uses: actions/checkout@v5
+      - name: install.sh (no administrator, no manual steps)
+        run: ./install.sh
+      - name: The installation works
+        run: .venv/bin/python tests/test_real_install.py
+
+  windows:
+    name: Windows · Python 3.11 · install.bat
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      # The output goes into an annotation on failure: it is visible on GitHub and via the API without the log
+      - name: install.bat
+        shell: pwsh
+        run: |
+          $out = cmd /c "install.bat < nul" 2>&1 | Out-String
+          $code = $LASTEXITCODE
+          Write-Output $out
+          if ($code -ne 0) {
+            $tail = $out.Substring([Math]::Max(0, $out.Length - 5000)) -replace '%','%25' -replace "`r",'' -replace "`n",'%0A'
+            Write-Output "::error title=install.bat::$tail"
+            exit 1
+          }
+      - name: The installation works
+        shell: pwsh
+        run: |
+          $out = .venv\Scripts\python tests\test_real_install.py 2>&1 | Out-String
+          $code = $LASTEXITCODE
+          Write-Output $out
+          if ($code -ne 0) {
+            $tail = $out.Substring([Math]::Max(0, $out.Length - 5000)) -replace '%','%25' -replace "`r",'' -replace "`n",'%0A'
+            Write-Output "::error title=test_real_install::$tail"
+            exit 1
+          }

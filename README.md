@@ -8,7 +8,7 @@ addressed in a new revision — in one application that runs on your computer, w
 **Any documents, any knowledge base.** Contracts, policies, reports, specifications, manuals, theses — MINT does the
 first pass and shows where to look, with a source for every finding. The knowledge base is whatever you load into
 it: company standards, a team wiki, regulations, textbooks. MINT grew out of reviewing IT architecture documents,
-and that expertise is kept as a ready-made profile — one click away, next to the general one.
+and that expertise is the default profile; for other documents the general one is a click away.
 
 **No access to frontier models? Not a problem.** MINT works with any OpenAI-compatible model — Ollama or LM Studio
 on a laptop, vLLM or a corporate gateway in a company — and gets the most out of it: it splits the review into
@@ -23,7 +23,7 @@ Your documents go nowhere except the model you configured.
 - 🛡️ **Review of any document with flexible settings.** A contract, a policy, a report, a specification, a thesis —
   in .docx, .pdf, .md or .txt. MINT checks every section against your knowledge base, the documents it relies on and
   your criteria; a deep review walks through processes step by step, looks for contradictions between sections
-  and recomputes the figures. Profiles (general, or architecture and IT solutions), your own questions to the
+  and recomputes the figures. Profiles (architecture and IT solutions by default, or general), your own questions to the
   document, checklists by document type, expert rules, several passes, model reasoning — all set in one block. The result: a report with "Key points" and findings by
   section, the original .docx with the findings as Word comments, and a detailed log.
 - 🔄 **Check of a new revision.** Paste the comments you made and upload the revised document — MINT finds the
@@ -93,10 +93,12 @@ git clone https://github.com/Sdorenskiy/mint.git && cd mint
 ```
 
 `install.sh` / `install.bat` do not install anything system-wide: they create a `.venv` folder next to the
-program, install the Python packages (Streamlit, Docling, faiss, …) into it, create `.env` from the template and
-run the self-check. No administrator rights are needed; to remove MINT, delete its folder. If the packages are
-already installed (`pip install -r requirements.txt`), you can simply run `streamlit run app.py` from the MINT
-folder.
+program, install the Python packages (Streamlit, Docling, faiss, …) of exact tested versions into it
+(`requirements.lock`: about 165 MB to download, 0.6 GB on disk, no PyTorch or other model libraries), create
+`.env` from the template and run the self-check. No administrator rights are needed — even without the
+`python3-venv` package; to remove MINT, delete its folder. GitHub runs this installation from scratch on Ubuntu,
+Debian 12 (as Astra Linux 1.8) and Windows on every change and every night. If the packages are already installed
+(`pip install -r requirements.lock`), you can simply run `streamlit run app.py` from the MINT folder.
 
 **Updating:** `./update.sh path/to/mint-<version>.zip` (Windows: `update.bat`) replaces the code and keeps your
 settings, `.venv`, the knowledge base and saved reviews ([details](docs/INSTALL.md#updating)). A quick guide for
@@ -175,7 +177,7 @@ statistics and can compare two bases.
 
 | Format | How it is read | Headings (sections in references) |
 |---|---|---|
-| .docx | Docling | Word heading styles ("Heading 1–3") |
+| .docx | Docling's Word backend — no models, no PyTorch | Word heading styles ("Heading 1–3") |
 | .pdf | from the text layer (pdfplumber), **without models**: nothing to download, nothing is sent anywhere | in this order: PDF bookmarks → the "Contents" page with dot leaders → slide titles → font size and weight |
 | .md | MINT itself | `#` headings, pipe tables |
 | .txt | MINT itself (UTF-8, UTF-16 or Windows-1251) | numbered lines ("2.1 …") and lines in CAPITALS |
@@ -254,11 +256,11 @@ self-critique, passes, reasoning, "Key points", context sizes. Values apply for 
 `config.yaml` (section `audit`).
 
 **Profile** (sidebar → "🧭 Profile"; the default is `profile` in `config.yaml`) is the set of prompts for chat, review
-and verification of fixes. **General — any documents**: neutral roles; the review criteria are requirements and
-obligations, completeness, consistency with the basis documents and the norms of the base, figures, dates, terms and
-references, hidden risks. **Architecture and IT solutions**: the roles of an architecture board; the criteria are
-requirements, compliance with the target architecture, the system's target indicators, data processing and
-protection, architectural risks. The profile fills the "General review criteria" field — edit it for a particular
+and verification of fixes. **Architecture and IT solutions** (the default): the roles of an architecture board; the
+criteria are requirements, compliance with the target architecture, the system's target indicators, data
+processing and protection, architectural risks. **General — any documents**: neutral roles; the review criteria are
+requirements and obligations, completeness, consistency with the basis documents and the norms of the base, figures,
+dates, terms and references, hidden risks. The profile fills the "General review criteria" field — edit it for a particular
 document right there; the profile texts are on the "📝 Prompts" page.
 
 #### Expert knowledge: checklists, rules, system cards
@@ -461,6 +463,7 @@ runs them on every push and pull request on Linux (Python 3.10–3.12) and Windo
 | **Integration** | several modules with the simulated gateway: .docx, .pdf, .md, .txt → knowledge base → search → answer; document review; saved reviews and expert assessment; fix verification; search evaluation; self-check; update in place | `test_app.py` sections `[интеграция]`; `test_formats.py`; `test_eval.py`; `test_check_install.py`; `test_expert_review.py`; `test_update.py` |
 | **End-to-end** | user actions on the page: buttons, uploads, tabs, feedback, prompt editing — in Russian and English (with a Streamlit stub) | `test_app.py` section `[сквозной]`; `test_i18n.py` |
 | **Smoke** | the page on real Streamlit: it opens, chat answers, buttons work, a saved review opens and its findings are marked | `test_streamlit_smoke.py` (GitHub Actions) |
+| **Installation** | a fresh install as a user does it: `install.sh` / `install.bat` on a clean machine (Ubuntu with Python 3.10–3.12, Debian 12 without `python3-venv`, Windows), then the real Docling, base → chat → review and the self-check; on every change and every night. Plus .docx parsing compared with the full Docling on Docling's test documents | `test_real_install.py` (`.github/workflows/install.yml`); `tools/docx_parity.py` (`docx-parity.yml`) |
 | **Installation smoke** | a specific computer: Python, packages, real Docling, your `.env` and gateway, the page | `check_install.py` (run manually) |
 | **Docs** | the diagrams in `docs/` match their build scripts, every function and parameter they name exists, the parameter table matches the code | `test_diagrams.py` |
 
@@ -509,6 +512,7 @@ install.sh/.bat     install into .venv;  run_mint.sh/.bat — start;  update.sh/
 tests/              automated tests (python tests/run_all.py)
 tools/diagrams/     build scripts for the diagrams in docs/ and docs/ru/
 tools/review_stats.py  summary of expert assessments ("📤 Download the assessment" files)
+tools/docx_parity.py   is .docx parsed the same way by Docling's Word backend and by the full Docling
 tools/ui_preview/   README screenshots on real Streamlit with neutral demo data (GitHub Actions → ui-preview-<branch>)
 static/fonts/       interface fonts (OFL), served locally
 docs/               installation, Ollama, security, screenshots (img/); docs/ru — Russian versions

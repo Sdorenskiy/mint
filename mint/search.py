@@ -246,20 +246,29 @@ def is_low_confidence(best_rerank, lexical_cov, lists_agree, rerank_threshold, l
 
 
 def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_query=False,
-                        annotate_low_confidence=False, return_items=False, glossary=None, diagnostics=None):
+                        annotate_low_confidence=False, return_items=False, glossary=None, diagnostics=None,
+                        also_query=None):
     """
     Hybrid Parent-Child RAG + мягкий реранк (слияние RRF). Векторный поиск и реранкер получают исходный
     вопрос; BM25 — вопрос плюс расшифровки сокращений и слова расширения с малым весом.
     Если эмбеддинги недоступны — работает только BM25.
     diagnostics — словарь, который функция заполнит сигналами уверенности (для скрипта оценки).
+    also_query — второй вопрос, по которому ищется наравне с первым: в чате это вопрос пользователя как он есть,
+    когда первый переписан по истории диалога. Кандидаты обоих сливаются, реранкер берёт лучший из двух баллов —
+    если при переписывании потерялись термин, сокращение или номер, нужный фрагмент найдётся по исходному вопросу.
     """
     gl = glossary if glossary is not None else load_glossary(cfg)
     search_query = user_query or ""
-    alt_query = None
+    alternates = []          # (вопрос, вес): вторая формулировка multi-query и исходный вопрос пользователя
     if use_multi_query and attempts == 0:
         variants = expand_query_multi(search_query, cfg)
         if len(variants) > 1:
-            alt_query = variants[1]
+            alternates.append((variants[1], cfg.multi_query_alt_weight))
+    if also_query and attempts == 0 and also_query.strip() and also_query.strip() != search_query.strip():
+        also_query = also_query[:cfg.max_query_chars]
+        alternates.append((also_query, 1.0))
+    else:
+        also_query = None
 
     if len(search_query) > cfg.max_query_chars:
         logger.warning(f"⚠️ КРИТИЧЕСКИЙ ОБЪЕМ: ({len(search_query)} симв.). Отсечение.")
@@ -325,22 +334,23 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
         _distances, indices = index.search(query_np, k=k_dense)
         main_order = _parents_from_indices(indices[0])
         dense_order = main_order
-        # Multi-query: кандидаты по второй формулировке тоже берутся из FAISS и сливаются (RRF)
-        if alt_query:
-            alt_np, _ = _query_vector(alt_query, cfg, index.d)
-            if alt_np is not None:
+        # Вторые формулировки (multi-query, исходный вопрос): их кандидаты из FAISS тоже сливаются (RRF)
+        if alternates:
+            fused_dense = {}
+            for r, p in enumerate(main_order, 1):
+                fused_dense[p] = fused_dense.get(p, 0.0) + 1.0 / (cfg.rrf_constant + r)
+            for alt_q, weight in alternates:
+                alt_np, _ = _query_vector(alt_q, cfg, index.d)
+                if alt_np is None:
+                    logger.warning("Эмбеддинг второй формулировки вопроса недоступен — поиск без неё.")
+                    continue
                 _, alt_indices = index.search(alt_np, k=k_dense)
                 alt_order = _parents_from_indices(alt_indices[0])
-                fused_dense = {}
-                for r, p in enumerate(main_order, 1):
-                    fused_dense[p] = fused_dense.get(p, 0.0) + 1.0 / (cfg.rrf_constant + r)
                 for r, p in enumerate(alt_order, 1):
-                    fused_dense[p] = fused_dense.get(p, 0.0) + cfg.multi_query_alt_weight / (cfg.rrf_constant + r)
-                dense_order = sorted(fused_dense, key=fused_dense.get, reverse=True)[:cfg.initial_k]
-                logger.info(f"🔍 Multi-query dense: основной={len(main_order)} альтернативный={len(alt_order)} "
-                            f"объединено={len(dense_order)}")
-            else:
-                logger.warning("Multi-query: эмбеддинг альтернативной формулировки недоступен — только основная.")
+                    fused_dense[p] = fused_dense.get(p, 0.0) + weight / (cfg.rrf_constant + r)
+            dense_order = sorted(fused_dense, key=fused_dense.get, reverse=True)[:cfg.initial_k]
+            logger.info(f"🔍 Несколько формулировок, dense: основная={len(main_order)} "
+                        f"вторых={len(alternates)} объединено={len(dense_order)}")
 
     dense_candidates = [(p, parent_store[p]) for p in dense_order]
 
@@ -351,10 +361,10 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
     bm25_engine, bm25_parent_ids = load_bm25_for(cfg, parent_store)
     if bm25_engine is not None:
         bm25_scores = bm25_engine.get_scores(search_query, extra_terms=extra_terms, phrase=plan["target"])
-        if alt_query:
+        for alt_q, weight in alternates:
             try:
-                alt_scores = bm25_engine.get_scores(alt_query, extra_terms=gl.bm25_terms(alt_query))
-                bm25_scores = np.maximum(bm25_scores, alt_scores * cfg.multi_query_alt_weight)
+                alt_scores = bm25_engine.get_scores(alt_q, extra_terms=gl.bm25_terms(alt_q))
+                bm25_scores = np.maximum(bm25_scores, alt_scores * weight)
             except Exception:
                 pass
         top_bm25 = np.argsort(bm25_scores)[::-1][:cfg.bm25_top_k]
@@ -363,8 +373,9 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
             for i in top_bm25 if bm25_scores[i] > 0 and bm25_parent_ids[i] in parent_store
         ]
 
-    logger.info(f"🔎 ГИБРИДНЫЙ ПОИСК: '{search_query[:50]}...' (dense {len(dense_candidates)}, "
-                f"BM25 {len(sparse_candidates)})")
+    logger.info(f"🔎 ГИБРИДНЫЙ ПОИСК: '{search_query[:50]}...'"
+                + (f" и '{also_query[:50]}...'" if also_query else "")
+                + f" (dense {len(dense_candidates)}, BM25 {len(sparse_candidates)})")
 
     # --- 1. Базовые ранги dense и BM25 (по parent_id) ---
     dense_rank = {p_id: r for r, (p_id, _) in enumerate(dense_candidates, 1)}
@@ -391,7 +402,7 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
     rerank_query = gl.enrich_query(search_query[:cfg.rerank_query_max_chars], max_chars=cfg.rerank_query_max_chars)
     rerank_ids, rerank_docs = [], []
     # веса слов вопроса: реранкеру и обрезке длинного фрагмента — самое релевантное место, а не начало
-    term_weights = query_term_weights(search_query, extra_terms,
+    term_weights = query_term_weights(search_query + (" " + also_query if also_query else ""), extra_terms,
                                       idf=bm25_engine.idf if bm25_engine is not None else None)
     if cfg.rerank_enabled:
         for p_id in base_order:
@@ -402,11 +413,14 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
             rerank_docs.append(doc)
 
     raw_rerank = {}
-    scores = rerank_scores(rerank_query, rerank_docs, cfg) if rerank_docs else None
-    if scores:
-        for p_id, s in zip(rerank_ids, scores):
-            if s is not None:
-                raw_rerank[p_id] = s
+    rerank_queries = [rerank_query] + ([gl.enrich_query(also_query[:cfg.rerank_query_max_chars],
+                                                         max_chars=cfg.rerank_query_max_chars)] if also_query else [])
+    for rq in rerank_queries:           # с исходным вопросом — лучший балл пары из двух
+        scores = rerank_scores(rq, rerank_docs, cfg) if rerank_docs else None
+        if scores:
+            for p_id, s in zip(rerank_ids, scores):
+                if s is not None:
+                    raw_rerank[p_id] = max(s, raw_rerank.get(p_id, s))
 
     # Голос реранкера учитывается, только если он уверен (балл >= min_rerank_score).
     voting = sorted(((p, s) for p, s in raw_rerank.items() if s >= cfg.min_rerank_score),
@@ -489,9 +503,13 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
     # вопросах обычно высокие (слова темы в базе есть, ответа — нет), поэтому в паре с реранкером они гасили
     # сигнал. Без реранкера — эти два признака вместе.
     best_rerank = max(raw_rerank.values()) if raw_rerank else None
-    q_terms = {t for t in bm25_tokenize(search_query) if t not in BM25_STOP_WORDS and len(t) >= 3}
     ctx_terms = set(bm25_tokenize("\n".join(parents_out)))
-    lexical_cov = (len(q_terms & ctx_terms) / len(q_terms)) if q_terms else 1.0
+
+    def _coverage(q):
+        terms = {t for t in bm25_tokenize(q) if t not in BM25_STOP_WORDS and len(t) >= 3}
+        return (len(terms & ctx_terms) / len(terms)) if terms else 1.0
+
+    lexical_cov = max(_coverage(q) for q in [search_query] + ([also_query] if also_query else []))
     top_dense = {p for p, r in dense_rank.items() if r <= cfg.low_conf_agree_top}
     top_sparse = {p for p, r in sparse_rank.items() if r <= cfg.low_conf_agree_top}
     lists_agree = bool((top_dense & top_sparse) & set(selected))

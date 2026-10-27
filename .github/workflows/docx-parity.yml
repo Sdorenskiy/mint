@@ -1,0 +1,84 @@
+# Разбирает ли MINT .docx так же, как полный Docling. Установка MINT по requirements.lock (облегчённый Docling,
+# бэкенд Word напрямую, без PyTorch) против полного Docling той же версии через DocumentConverter — на тестовых
+# документах Docling этой версии (списки, таблицы, формулы, картинки, надписи) и примерах MINT. Расхождение — ошибка.
+# Does MINT parse .docx exactly like the full Docling: the MINT installation vs the full Docling of the same version.
+name: docx parity
+
+on:
+  push:
+    paths: ["mint/parsing.py", "requirements.txt", "requirements.lock", "tools/docx_parity.py",
+            ".github/workflows/docx-parity.yml"]
+  pull_request:
+    paths: ["mint/parsing.py", "requirements.txt", "requirements.lock", "tools/docx_parity.py",
+            ".github/workflows/docx-parity.yml"]
+  schedule:
+    - cron: "41 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  parse:
+    name: parse · ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [mint, full-docling]
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install
+        run: |
+          VER=$(sed -n 's/^docling-slim==\([^ ;]*\).*/\1/p' requirements.lock)
+          CORE=$(sed -n 's/^docling-core==\([^ ;]*\).*/\1/p' requirements.lock)
+          echo "DOCLING_VER=$VER" >> "$GITHUB_ENV"
+          python -m venv /tmp/v
+          /tmp/v/bin/python -m pip install -q -U pip
+          if [ "${{ matrix.name }}" = "full-docling" ]; then
+            # the full Docling pins some packages differently (e.g. pillow<13), so not the whole lock:
+            # the same Docling and docling-core versions as in requirements.lock, the rest as pip resolves them
+            /tmp/v/bin/python -m pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
+            /tmp/v/bin/python -m pip install -q "docling==$VER" "docling-core==$CORE" -r requirements.txt
+          else
+            /tmp/v/bin/python -m pip install -q -r requirements.lock
+          fi
+      - name: Corpus — Docling's own test documents of this version and MINT samples
+        run: |
+          git clone -q --depth 1 --branch "v$DOCLING_VER" https://github.com/docling-project/docling /tmp/dsrc
+          mkdir -p /tmp/corpus
+          find /tmp/dsrc/tests/data/docx -name "*.docx" -size -5M -exec cp {} /tmp/corpus/ \;
+          /tmp/v/bin/python tools/docx_parity.py --make-samples /tmp/corpus
+          ls /tmp/corpus | wc -l
+      - name: Parse
+        run: /tmp/v/bin/python tools/docx_parity.py /tmp/corpus --dump out/${{ matrix.name }} > out-${{ matrix.name }}.txt 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: parity-${{ matrix.name }}
+          path: out/
+
+  compare:
+    needs: parse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          path: out
+          merge-multiple: true
+      - name: MINT (backend, no PyTorch) vs full Docling (DocumentConverter)
+        run: |
+          python tools/docx_parity.py --compare out/full-docling out/mint --parsers converter,backend > report.txt; code=$?
+          cat report.txt
+          n=$(grep -c "одинаково (" report.txt)
+          if [ $code -ne 0 ]; then
+            echo "::error title=docx parity::$(grep -v '^✅' report.txt | sed ':a;N;$!ba;s/%/%25/g;s/\n/%0A/g')"
+            exit 1
+          fi
+          echo "::notice title=docx parity::$n documents parsed identically by MINT (no PyTorch) and the full Docling"

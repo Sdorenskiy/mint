@@ -2,6 +2,33 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## 21.1 — installation from the first attempt, no PyTorch, the architecture profile by default
+
+- **Installation from the first attempt.** `install.sh` / `install.bat` install exact package versions from
+  `requirements.lock` (one file for Linux, Windows and macOS). GitHub tests them on every change and every night:
+  a fresh install on Ubuntu (Python 3.10–3.12), Debian 12 without `python3-venv` (as Astra Linux 1.8) and Windows,
+  then .docx parsing with the real Docling, base → chat → review and the self-check with the page on real Streamlit
+  (`.github/workflows/install.yml`, `tests/test_real_install.py`). The scripts handle the usual snags themselves:
+  an incomplete `.venv` left by an interrupted install is recreated; without `python3-venv` pip is downloaded by
+  the system pip (no administrator); if the mirror lacks an exact version, the packages come from
+  `requirements.txt`; `--clean` starts from scratch. The self-check suggests `./install.sh --clean` when the
+  installed packages are not the tested ones.
+- **No PyTorch.** .docx is parsed by Docling's Word backend called directly, not through Docling's general
+  converter, which also loads PDF parsing with models. The result is identical to the full Docling — GitHub
+  compares them on Docling's test documents and MINT's samples; `tools/docx_parity.py` checks your own documents.
+  The installation is 72 packages, about 0.6 GB on disk and 165 MB to download instead of 122 packages, 2.1 GB and
+  540 MB, with no model libraries (PyTorch, transformers, huggingface_hub, OpenCV). This also fixes
+  `No module named 'torch'` / `'docling_parse'` when uploading a .docx after a fresh install. Docling is pinned to
+  2.127.0. An existing installation with PyTorch keeps working; to drop it: `./install.sh --clean`.
+- **The "Architecture and IT solutions" profile is the default** — the prompts are the same as before profiles
+  (prompt-set version `ru-8fd10871` / `en-9c3500f7`). The general profile is in the sidebar or `profile: general`
+  in `config.yaml`. `tools/review_stats.py` counts reviews without a profile as architecture.
+- **Chat: a clarified question no longer replaces yours.** A follow-up question rewritten from the dialogue used to
+  be searched alone, so a term, an abbreviation or a number lost in rewriting led the search astray. Now the
+  search uses both questions: their candidates are merged and the reranker takes the better of the two scores.
+  A rewrite that differs only in case or punctuation is not shown; the caption says "Searched by your question
+  and by the one clarified from the dialogue". The prompts are unchanged.
+
 ## 21.0 — saved reviews, expert assessment of findings, update in place
 
 The version for handing MINT over to colleagues: experts go through the findings, and their marks show what to

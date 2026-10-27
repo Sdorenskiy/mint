@@ -477,7 +477,15 @@ parents_lock = app._read_parent_store(cfg_lock)
 check(docs_lock == ["A.docx", "B.docx"] and len({v["source"] for v in parents_lock.values()}) == 2,
       f"параллельная загрузка: оба документа в базе ({docs_lock}, {nvec_lock} векторов)")
 from docling.document_converter import DocumentConverter as _DC
-check(_DC.created == 1, f"Docling-конвертер создан один раз ({_DC.created})")
+check(_DC.created == 0 and app.docx_parser() == "backend",
+      f".docx — бэкендом Word напрямую, DocumentConverter не создаётся ({_DC.created})")
+import os as _os  # noqa: E402
+_os.environ["MINT_DOCX_PARSER"] = "converter"
+md_conv = app.compile_docx_to_markdown("A.docx", data_a)
+md_conv2 = app.compile_docx_to_markdown("B.docx", data_b)
+_os.environ.pop("MINT_DOCX_PARSER")
+check(_DC.created == 1 and md_conv == app.compile_docx_to_markdown("A.docx", data_a) and md_conv2,
+      f"MINT_DOCX_PARSER=converter — через DocumentConverter (создан один раз: {_DC.created}), разбор тот же")
 
 
 print("15. [unit + интеграция] Рассуждения, ссылки на разделы, вопросительные слова, сбой реранкера, история чата")
@@ -728,8 +736,24 @@ qa = app.answer_question("Какие требования к СЗИ?", cfg2, glo
 check(qa["answer"].startswith("Ответ по контексту") and "Справочник: да" in qa["answer"] and qa["sources"]
       and qa["search_query"] is None and not qa["error"] and not qa["low_conf"] and qa["prompts"] == ver
       and qa["context"].startswith("=== ИСТОЧНИК:"), f"ответ чата одним вызовом: {qa['answer'][:60]!r}, {qa['prompts']}")
+mock_server.STATE["requests"].clear()
 qa2 = app.answer_question("А сколько они хранятся?", cfg2, glossary=gl2, history=h[:2])
 check(qa2["search_query"] == "А сколько они хранятся — про журналы событий?", f"уточняющий вопрос: {qa2['search_query']!r}")
+rr_q = [r[2]["query"] for r in mock_server.STATE["requests"] if r[0] == "POST" and r[1].endswith("/rerank")]
+emb_in = [x for r in mock_server.STATE["requests"] if r[0] == "POST" and r[1].endswith("/embeddings")
+          for x in (r[2]["input"] if isinstance(r[2]["input"], list) else [r[2]["input"]])]
+check(any("журналы событий" in q for q in rr_q) and any(q.startswith("А сколько они хранятся?") for q in rr_q)
+      and any("А сколько они хранятся?" in x and "журналы событий" not in x for x in emb_in),
+      f"переписанный вопрос не заменяет исходный: поиск и реранкер — по обоим ({rr_q})")
+check(app.same_question("Сколько хранятся журналы?", "сколько хранятся ЖУРНАЛЫ") and
+      not app.same_question("Сколько хранятся журналы?", "Сколько хранятся журналы СЗИ?"),
+      "[unit] «переписанный» вопрос, отличающийся только регистром и знаками, — тот же вопрос")
+# переписывание, которое теряет сокращение: нужный фрагмент находится по исходному вопросу
+items_lost, _ = app.search_parent_child("Какие требования к средствам защиты?", cfg2, k_neighbors=3, return_items=True,
+                                        glossary=gl2, also_query="Какие требования к СЗИ?")
+items_plain, _ = app.search_parent_child("Какие требования к СЗИ?", cfg2, k_neighbors=3, return_items=True, glossary=gl2)
+check({i["id"] for i in items_plain} & {i["id"] for i in items_lost},
+      "переписанный вопрос без сокращения: фрагменты по исходному вопросу тоже в контексте")
 qa3 = app.answer_question("рецепт борща со свёклой", replace(cfg2, top_k=0))
 check(qa3["low_conf"] and qa3["context"].startswith("[СИГНАЛ ПОИСКА") and qa3["sources"],
       "вопрос не по базе: сигнал «уверенность низкая»; top_k = 0 — глубина по размеру базы")
@@ -883,10 +907,10 @@ try:
           and json.loads((audit_dir / "meta.json").read_text(encoding="utf-8"))["file"] == "ТЗ.docx",
           "аудит сохранён в LOG_DIR/audits: сведения, документ, сырые ответы")
     meta_ = json.loads((audit_dir / "meta.json").read_text(encoding="utf-8"))
-    check(st.session_state.get("mint_profile") == "general" and ("selectbox", "🧭 Профиль:") in st.LOG
+    check(st.session_state.get("mint_profile") == "architecture" and ("selectbox", "🧭 Профиль:") in st.LOG
           and st.session_state.get("tab2_user_focus") == app.DEFAULT_AUDIT_FOCUS
-          and meta_.get("profile") == "general",
-          f"профиль по умолчанию — универсальный, он в сведениях аудита: {meta_.get('profile')}")
+          and meta_.get("profile") == "architecture",
+          f"профиль по умолчанию — архитектурный, он в сведениях аудита: {meta_.get('profile')}")
     rows_ = st.session_state.get("tab2_rows") or []
     check(len(rows_) >= 2 and ("expander", "✍️ Разбор замечаний экспертом и «Мои замечания»") in st.LOG
           and sum(1 for x in st.LOG if x == ("radio", "Отметка")) == min(len(rows_), 15)
@@ -1280,13 +1304,14 @@ try:
     check(run_ui(buttons={"cards_open_btn"}) == "ok" and run_ui(buttons={"cards_close_btn"}) == "ok"
           and not st.session_state.get("cards_open"), "закрыть страницу карточки")
     # профиль сеанса (боковая панель): «Архитектура и ИТ-решения» — промпты MINT до профилей слово в слово
-    st.session_state["mint_profile"] = "architecture"
     check(run_ui() == "ok" and app.get_profile() == "architecture" and app.prompts_version("ru") == "ru-8fd10871"
           and "Старший Контролер Архитектурного Комитета" in app.critique_system("ru"),
-          f"профиль архитектуры в сеансе — набор промптов до профилей: {app.prompts_version('ru')}")
+          f"профиль по умолчанию (архитектурный) — набор промптов до профилей: {app.prompts_version('ru')}")
     st.session_state["mint_profile"] = "general"
-    check(run_ui() == "ok" and app.get_profile() == "general" and app.prompts_version("ru") != "ru-8fd10871",
-          "обратно универсальный профиль")
+    check(run_ui() == "ok" and app.get_profile() == "general" and app.prompts_version("ru") != "ru-8fd10871"
+          and "экспертизы документов" in app.critique_system("ru"), "универсальный профиль в сеансе")
+    st.session_state["mint_profile"] = "architecture"
+    check(run_ui() == "ok" and app.get_profile() == "architecture", "обратно архитектурный")
 except Exception:
     traceback.print_exc()
     FAILS.append("исключение на странице карточки")

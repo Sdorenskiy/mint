@@ -49,10 +49,11 @@ def main():
         profile_labels = {p: tr(label) for p, label in PROFILES.items()}
         st.selectbox(tr("🧭 Профиль:"), list(PROFILES), key="mint_profile", format_func=profile_labels.get,
                      on_change=lambda: on_profile_change(st.session_state["mint_profile"]),
-                     help=tr("Набор промптов для чата, аудита и контроля исправлений. «Универсальный» — для любых "
-                             "документов: договоров, положений, отчётов, инструкций. «Архитектура и ИТ-решения» — для "
-                             "проектной документации: роли архитектурного комитета и архитектурные критерии аудита. По "
-                             "умолчанию — profile в config.yaml; тексты профиля — на странице «📝 Промпты»."))
+                     help=tr("Набор промптов для чата, аудита и контроля исправлений. «Архитектура и ИТ-решения» — для "
+                             "проектной документации: роли архитектурного комитета и архитектурные критерии аудита. "
+                             "«Универсальный» — для любых документов: договоров, положений, отчётов, инструкций. Профиль "
+                             "по умолчанию — profile в config.yaml (не задан — архитектурный); тексты профиля — на "
+                             "странице «📝 Промпты»."))
         cfg = render_settings(base_cfg, config_notes, server, manual, manual_limits)
         gl = render_glossary(cfg)
         render_quality_entry()

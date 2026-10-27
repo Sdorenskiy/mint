@@ -819,12 +819,10 @@ EN = {
         'Clears the history: the next question will be understood without the previous turns.',
     'Задайте вопрос по базе знаний...':
         'Ask a question about the knowledge base...',
-    '🔎 Искал по вопросу: {search_query}':
-        '🔎 Searched for: {search_query}',
+    '🔎 Искал по вашему вопросу и по уточнённому с учётом диалога: «{q}»':
+        '🔎 Searched by your question and by the one clarified from the dialogue: “{q}”',
     'Ищу в базе знаний...':
         'Searching the knowledge base...',
-    '🔎 Искал по вопросу: {shown_query}':
-        '🔎 Searched for: {shown_query}',
     # ---- mint/ui/tab_review.py
     '🤖 Автоматическая контр-проверка устранения замечаний':
         '🤖 Automatic verification of fixes',
@@ -1597,12 +1595,16 @@ EN = {
         'General — any documents',
     'Архитектура и ИТ-решения':
         'Architecture and IT solutions',
-    'Неизвестный профиль profile = «{v}» — используется «general». Профили: {names}.':
-        'Unknown profile profile = “{v}” — “general” is used. Profiles: {names}.',
+    'Неизвестный профиль profile = «{v}» — используется «{d}». Профили: {names}.':
+        'Unknown profile profile = “{v}” — “{d}” is used. Profiles: {names}.',
+    'Docling не открыл файл как документ Word (.docx): файл повреждён или это другой формат с расширением .docx.':
+        'Docling could not open the file as a Word document (.docx): the file is damaged or it is another format with the .docx extension.',
+    'Пакеты не те, что проверены для MINT (например, другая версия Docling). Переустановите их по requirements.lock: ./install.sh --clean (Windows: install.bat --clean).':
+        'The packages are not the ones tested for MINT (for example, another Docling version). Reinstall them from requirements.lock: ./install.sh --clean (Windows: install.bat --clean).',
     '🧭 Профиль:':
         '🧭 Profile:',
-    'Набор промптов для чата, аудита и контроля исправлений. «Универсальный» — для любых документов: договоров, положений, отчётов, инструкций. «Архитектура и ИТ-решения» — для проектной документации: роли архитектурного комитета и архитектурные критерии аудита. По умолчанию — profile в config.yaml; тексты профиля — на странице «📝 Промпты».':
-        'The prompt set for chat, document review and verification of fixes. “General” — for any documents: contracts, policies, reports, manuals. “Architecture and IT solutions” — for design documentation: architecture board roles and architecture review criteria. The default is profile in config.yaml; the profile texts are on the “📝 Prompts” page.',
+    'Набор промптов для чата, аудита и контроля исправлений. «Архитектура и ИТ-решения» — для проектной документации: роли архитектурного комитета и архитектурные критерии аудита. «Универсальный» — для любых документов: договоров, положений, отчётов, инструкций. Профиль по умолчанию — profile в config.yaml (не задан — архитектурный); тексты профиля — на странице «📝 Промпты».':
+        'The prompt set for chat, document review and verification of fixes. “Architecture and IT solutions” — for design documentation: architecture board roles and architecture review criteria. “General” — for any documents: contracts, policies, reports, manuals. The default profile is profile in config.yaml (not set — architecture); the profile texts are on the “📝 Prompts” page.',
     'Критерии, если поле пустое':
         'Criteria when the field is empty',
     'Используются, когда поле критериев очищено.':

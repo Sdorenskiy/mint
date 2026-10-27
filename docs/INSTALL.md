@@ -27,7 +27,7 @@ faiss (vector search) and a few more. The scripts install them for you with one 
 
 | Script | What it does | The same by hand |
 |---|---|---|
-| `install.sh` / `install.bat` | checks Python (3.10+) → creates a `.venv` folder next to the program → installs the packages from `requirements.txt` (from the internet, a mirror or an offline bundle) → creates `.env` from the template → runs the self-check | `python3 -m venv .venv`<br>`.venv/bin/pip install -r requirements.txt`<br>`cp .env.example .env`<br>`.venv/bin/python check_install.py` |
+| `install.sh` / `install.bat` | checks Python (3.10+) → creates a `.venv` folder next to the program → installs the packages of exact versions from `requirements.lock` (from the internet, a mirror or an offline bundle); recreates an incomplete `.venv` left by an interrupted install → creates `.env` from the template → runs the self-check | `python3 -m venv .venv`<br>`.venv/bin/pip install -r requirements.lock`<br>`cp .env.example .env`<br>`.venv/bin/python check_install.py` |
 | `run_mint.sh` / `run_mint.bat` | changes to the MINT folder → starts Streamlit from `.venv` → opens the browser | `cd ~/mint`<br>`.venv/bin/python -m streamlit run app.py` |
 
 **Why `.venv` instead of a plain `pip install`:**
@@ -54,7 +54,7 @@ Two caveats:
 | | |
 |---|---|
 | Python | **3.10–3.12** (3.11 recommended). Docling does not support 3.9 and older |
-| Disk | about 0.6 GB for packages (no PyTorch, see [Pinning versions](#pinning-versions-for-maintainers)); plus space for your knowledge base |
+| Disk | about 0.6 GB for packages, about 165 MB to download (no PyTorch, see [Package versions and Docling without PyTorch](#package-versions-and-docling-without-pytorch)); plus space for your knowledge base |
 | Memory | 4 GB free or more; large documents take longer to parse |
 | Models | an OpenAI-compatible API for an LLM and for embeddings (a reranker is optional), and an API key if the server needs one |
 | Packages | from the internet, an internal PyPI mirror or an offline bundle (see below) |
@@ -75,10 +75,11 @@ cd ~/mint
 ./install.sh wheels     # offline: from a bundle (a "wheels" folder)
 ```
 
-The script creates `.venv`, installs the packages (from `requirements.lock` if present, otherwise from
-`requirements.txt`), creates `.env` from the template and runs the self-check. If the system lacks the
-`python3-venv` package (Debian, Ubuntu, Astra), the script creates the environment without it and takes pip
-from the offline bundle. To use a specific interpreter: `PYTHON=/path/to/python3.11 ./install.sh`.
+The script creates `.venv`, installs the packages of exact versions from `requirements.lock`, creates `.env`
+from the template and runs the self-check. If the system lacks the `python3-venv` package (Debian, Ubuntu,
+Astra), the script creates the environment without it and downloads pip with the system pip (your mirror
+settings) or takes it from the offline bundle — no administrator needed. An incomplete `.venv` left by an
+interrupted attempt is recreated automatically; to start from scratch: `./install.sh --clean`. To use a specific interpreter: `PYTHON=/path/to/python3.11 ./install.sh`.
 
 macOS is expected to work the same way but has not been tested yet.
 
@@ -130,7 +131,7 @@ If `.bat` files are blocked by policy or antivirus, run the same steps by hand:
 ```bat
 cd C:\mint
 py -3 -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python -m pip install -r requirements.lock
 copy .env.example .env
 .venv\Scripts\python check_install.py
 .venv\Scripts\python -m streamlit run app.py
@@ -225,7 +226,7 @@ Windows:
 
 ```bat
 cd C:\mint
-py -3 -m pip download -r requirements.txt -d wheels
+py -3 -m pip download -r requirements.lock -d wheels
 ```
 
 Copy the MINT folder together with `wheels` — but **without** `.env`, `knowledge_base`, `mint_logs` and your
@@ -236,42 +237,54 @@ Building a Linux bundle on another OS works only if every package has a prebuilt
 package without one, build the bundle on a matching machine:
 
 ```bash
-python3 -m pip download -r requirements.txt -d wheels --only-binary=:all: \
+python3 -m pip download -r requirements.lock -d wheels --only-binary=:all: \
     --platform manylinux_2_28_x86_64 --platform manylinux2014_x86_64 \
     --python-version 3.11 --implementation cp
 ```
 
-## Pinning versions (for maintainers)
+## Package versions and Docling without PyTorch
 
-To give everyone exactly the versions tested on a working machine, freeze them from `.venv`:
+**Exact versions.** `install.sh` and `install.bat` install the packages from `requirements.lock` — exact versions,
+one file for Linux, Windows and macOS (with markers for Python versions and OSes). These are what GitHub tests on
+every change and every night: a fresh install on Ubuntu (Python 3.10–3.12), Debian 12 without `python3-venv` (as
+Astra Linux 1.8) and Windows, then .docx parsing with the real Docling, base → chat → review and the self-check
+(`.github/workflows/install.yml`, `tests/test_real_install.py`). If your mirror lacks one of the exact versions,
+the script says so and installs from `requirements.txt`.
 
-```bash
-.venv/bin/python -m pip freeze > requirements.lock              # Linux
-.venv\Scripts\python -m pip freeze > requirements-windows.lock  # Windows
-```
-
-The install scripts pick up the lock file automatically. Linux and Windows lists differ: each contains
-OS-specific packages.
-
-**Docling without PyTorch.** `requirements.txt` installs Docling's slim build, `docling-slim[format-docx]`: only
-the .docx reader, no PyTorch, no OpenCV, no models — 66 packages and about 0.6 GB instead of 114 packages and
-2.1 GB with the full `docling` (checked with 2.140). MINT does not need the rest: .pdf is read by pdfplumber,
-also without models. Fewer packages also means less for an information-security review.
-
-If your mirror has no `docling-slim` (an older Docling), replace that line in `requirements.txt` with
-`docling>=2.0`. MINT works the same, but pip pulls PyTorch; on a computer without a GPU install its CPU build
-first, to avoid gigabytes of CUDA libraries:
+Updating the versions (for maintainers): change `requirements.txt`, rebuild the lock file and wait for a green
+installation check on GitHub:
 
 ```bash
-.venv/bin/python -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+pip install uv
+uv pip compile requirements.txt --universal --python-version 3.10 --no-header -o requirements.lock
 ```
+
+**Docling without PyTorch.** .docx is read by Docling — its Word backend: heading styles, lists, tables, no models.
+MINT calls this backend directly rather than through Docling's general converter, which on start also loads PDF
+parsing with models (PyTorch). The result is the same as the full Docling through its converter — GitHub compares
+them on Docling's test documents and MINT's own samples (`tools/docx_parity.py`; to check on your own documents
+with the full Docling installed: `python tools/docx_parity.py folder_with_docx`). So the slim build
+`docling-slim[format-docx]` of an exact version is installed:
+
+| | MINT (slim Docling) | with the full Docling |
+|---|---|---|
+| Packages | 72 | 122 |
+| Download | about 165 MB | about 540 MB (CPU PyTorch) — gigabytes with GPU PyTorch |
+| On disk | about 0.6 GB | about 2.1 GB |
+| Model libraries (PyTorch, transformers, huggingface_hub, OpenCV) | none | present |
+
+Fewer packages mean less for an information-security review, and no libraries that can download models from the
+internet by themselves. .pdf is read by MINT itself (pdfplumber), also without models.
+
+If the full Docling is already installed (for example, MINT runs on the system Python), nothing needs to change:
+MINT takes the same Word backend from it.
 
 ## Updating
 
 Stop MINT and run `update.sh` (Windows: `update.bat`) in the program folder with the archive of the new version:
 
 ```bash
-./update.sh ~/Downloads/mint-21.0.zip       # or the unpacked folder of the new version
+./update.sh ~/Downloads/mint-21.1.zip       # or the unpacked folder of the new version
 ```
 
 The script replaces the code (the `mint`, `docs`, `tools`, `tests` and `static` folders entirely, so that removed
@@ -298,3 +311,7 @@ re-indexing, the sidebar will say so.
 | `Operation not permitted` on import | Astra Linux closed software environment — see [Astra Linux](#astra-linux) |
 | `python` / `py` not found (Windows) | Reinstall Python from python.org; the `py` launcher is installed by default |
 | The first document upload is slow | Docling is loaded into memory on first use; later uploads are faster |
+| `Incomplete .venv` / `No module named pip` | An incomplete `.venv` was left by an interrupted install — `install.sh` recreates it by itself; to force it: `./install.sh --clean` |
+| No `python3-venv` package | No administrator needed: `install.sh` downloads pip with the system pip (your mirror settings). Without a system pip either — an offline bundle with `pip-*.whl` |
+| `No module named 'torch'` or `'docling_parse'` when uploading a .docx | The packages are not from `requirements.lock` (another Docling): `./install.sh --clean` (Windows: `install.bat --clean`) |
+| `Some exact versions are not available` | Your mirror lacks one exact version — the script installs from `requirements.txt` by itself; tell the maintainer which package |

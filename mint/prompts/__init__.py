@@ -205,20 +205,22 @@ def _short_hash(text):
 # Профиль — набор промптов по умолчанию: «general» — <язык>.yaml (роли и критерии для любых документов),
 # остальные — <язык>.yaml с заменой части текстов из profiles/<профиль>.<язык>.yaml. «architecture» — промпты MINT до
 # появления профилей слово в слово (роли «Архитектурного комитета», архитектурные критерии): версия набора та же, что
-# раньше, — результаты сравнимы. Профиль сеанса — боковая панель «🧭 Профиль», по умолчанию — profile в config.yaml.
+# раньше, — результаты сравнимы. Профиль сеанса — боковая панель «🧭 Профиль», по умолчанию — profile в config.yaml
+# (не задан — DEFAULT_PROFILE).
 PROFILES = {
-    "general": N_("Универсальный — любые документы"),
     "architecture": N_("Архитектура и ИТ-решения"),
+    "general": N_("Универсальный — любые документы"),
 }
+DEFAULT_PROFILE = "architecture"
 
 
 def normalize_profile(name):
-    """Известный профиль или «general»."""
-    return name if name in PROFILES else "general"
+    """Известный профиль или профиль по умолчанию."""
+    return name if name in PROFILES else DEFAULT_PROFILE
 
 
 def get_profile():
-    return _PROFILE.get() or "general"
+    return _PROFILE.get() or DEFAULT_PROFILE
 
 
 def set_profile(name):
@@ -598,7 +600,7 @@ def default_audit_focus(lang=None):
 
 
 def profile_audit_focus(profile, lang=None):
-    """Критерии профиля на языке интерфейса (или lang); неизвестный профиль — универсальный."""
+    """Критерии профиля на языке интерфейса (или lang); неизвестный профиль — профиль по умолчанию."""
     with use_profile(profile):
         return prompt_text("audit_focus_default", lang)
 
