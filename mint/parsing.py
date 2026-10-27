@@ -42,7 +42,7 @@ def document_format(filename):
 
 
 def _docling_converter():
-    """Один DocumentConverter на процесс: его создание (загрузка моделей) дороже самого разбора .docx."""
+    """Один DocumentConverter на процесс: его создание дороже самого разбора .docx."""
     cache = _process_cache()
     conv = cache.get("docling")
     if conv is None:
@@ -51,14 +51,46 @@ def _docling_converter():
     return conv
 
 
+def _docx_backend_convert(path):
+    """.docx — бэкендом Word из Docling напрямую. Это тот же код, которым DocumentConverter разбирает .docx (простой
+    конвейер без моделей: стили заголовков, списки, таблицы), но без импорта конвейера PDF с моделями — поэтому
+    PyTorch и разбор PDF Docling'а не нужны. ImportError — в установленном Docling этого бэкенда нет."""
+    from pathlib import Path
+
+    from docling.backend.msword_backend import MsWordDocumentBackend
+    from docling.datamodel.base_models import InputFormat
+    from docling.datamodel.document import InputDocument
+    in_doc = InputDocument(path_or_stream=Path(path), format=InputFormat.DOCX, backend=MsWordDocumentBackend)
+    backend = getattr(in_doc, "_backend", None)
+    if backend is None:
+        backend = MsWordDocumentBackend(in_doc=in_doc, path_or_stream=Path(path))
+    if getattr(in_doc, "valid", True) is False or not backend.is_valid():
+        raise DocumentUnreadable(tr("Docling не открыл файл как документ Word (.docx): файл повреждён или это другой "
+                                    "формат с расширением .docx."))
+    return backend.convert()
+
+
+def docx_parser():
+    """Как разбирать .docx: «backend» — бэкендом Word напрямую (по умолчанию), «converter» — через
+    DocumentConverter (MINT_DOCX_PARSER=converter: для сравнения или если бэкенд в вашем Docling устроен иначе)."""
+    return "converter" if os.environ.get("MINT_DOCX_PARSER", "").strip().lower() == "converter" else "backend"
+
+
 def docling_convert(filename, data: bytes):
-    """Конвертирует документ Docling'ом. Импорт ленивый: без Docling работает всё, кроме загрузки файлов."""
+    """Конвертирует .docx Docling'ом. Импорт ленивый: без Docling работает всё, кроме загрузки .docx."""
     lock = _process_cache().setdefault("docling_lock", threading.Lock())
     with tempfile.TemporaryDirectory() as tmp:
         path = os.path.join(tmp, os.path.basename(filename) or "document.docx")
         with open(path, "wb") as f:
             f.write(data)
-        with lock:   # конвертер общий для всех сеансов — разбор по очереди
+        with lock:   # разбор по очереди: конвертер общий для всех сеансов
+            if docx_parser() == "backend":
+                try:
+                    return _docx_backend_convert(path)
+                except ImportError as e:
+                    if _process_cache().get("docx_backend_missing") is None:
+                        _process_cache()["docx_backend_missing"] = True
+                        logger.warning(f"Бэкенд Word из Docling недоступен ({e}) — разбор .docx через DocumentConverter")
             return _docling_converter().convert(path).document
 
 

@@ -1,8 +1,8 @@
 # Зависимости MINT. Нужен Python 3.10 или новее.
 # Точные версии, проверенные на рабочей установке, — в requirements.lock (если он есть, ставьте по нему).
 streamlit>=1.36
-docling-slim[format-docx]>=2.140   # Docling только с разбором .docx: без PyTorch и моделей. Зеркало без
-                                   # docling-slim — замените строку на docling>=2.0 (см. docs/ru/INSTALL.md)
+docling-slim[format-docx]==2.127.0  # разбор .docx: MINT берёт из Docling только бэкенд Word — без PyTorch и
+                                    # моделей. Версия закреплена: разбор одинаков у всех и проверен в CI
 faiss-cpu>=1.8
 numpy>=1.26
 requests>=2.31

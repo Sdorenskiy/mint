@@ -1,0 +1,118 @@
+# Временная лаборатория зависимостей: разбор .docx бэкендом Word без PyTorch против полного Docling, размеры
+# установки, универсальный lock-файл. Результат — в ветке lab-<ветка>.
+name: Deps lab
+
+on:
+  push:
+    branches: ["feat/deps-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  env:
+    name: env ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: slim-2127
+            docling: '"docling-slim[format-docx]==2.127.0"'
+            torch: "no"
+          - name: slim-latest
+            docling: '"docling-slim[format-docx]"'
+            torch: "no"
+          - name: full-2127
+            docling: '"docling==2.127.0"'
+            torch: "cpu"
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Install into a clean venv
+        run: |
+          mkdir -p lab
+          python -m venv /tmp/v
+          /tmp/v/bin/python -m pip install -q -U pip
+          if [ "${{ matrix.torch }}" = "cpu" ]; then
+            /tmp/v/bin/python -m pip install -q torch torchvision --index-url https://download.pytorch.org/whl/cpu
+          fi
+          grep -v -i '^docling' requirements.txt | sed 's/#.*//' | grep -v '^\s*$' > /tmp/req_rest.txt
+          /tmp/v/bin/python -m pip install ${{ matrix.docling }} -r /tmp/req_rest.txt 2>&1 | tail -3
+          /tmp/v/bin/python -m pip list --format=json > lab/${{ matrix.name }}_pip.json
+          /tmp/v/bin/python .github/lab/sizes.py /tmp/v > lab/${{ matrix.name }}_sizes.txt
+          mkdir -p /tmp/wh && /tmp/v/bin/python -m pip download -q ${{ matrix.docling }} -r /tmp/req_rest.txt -d /tmp/wh \
+            $([ "${{ matrix.torch }}" = "cpu" ] && echo "--extra-index-url https://download.pytorch.org/whl/cpu") || true
+          echo "download_bytes $(du -sb /tmp/wh | cut -f1)" >> lab/${{ matrix.name }}_sizes.txt
+      - name: Corpus (Docling test documents + MINT samples)
+        run: |
+          git clone -q --depth 1 --branch v2.127.0 https://github.com/docling-project/docling /tmp/dsrc \
+            || git clone -q --depth 1 https://github.com/docling-project/docling /tmp/dsrc
+          mkdir -p /tmp/corpus && cp /tmp/dsrc/tests/data/docx/*.docx /tmp/corpus/ || true
+          /tmp/v/bin/python tools/docx_parity.py --make-samples /tmp/corpus
+          ls /tmp/corpus | tee lab/corpus.txt
+      - name: Parse (both ways where possible)
+        run: |
+          /tmp/v/bin/python -c "import docling.backend.msword_backend, sys; print('torch after backend import:', 'torch' in sys.modules)" > lab/${{ matrix.name }}_import.txt 2>&1 || true
+          /tmp/v/bin/python tools/docx_parity.py /tmp/corpus --dump lab/${{ matrix.name }} > lab/${{ matrix.name }}_here.txt 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab-${{ matrix.name }}
+          path: lab/
+
+  lock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - name: Universal lock (Linux, Windows, macOS; Python 3.10+)
+        run: |
+          mkdir -p lab
+          python -m pip install -q uv
+          uv pip compile requirements.txt --universal --python-version 3.10 --no-header -o lab/requirements.lock 2>&1 | tail -5
+          wc -l lab/requirements.lock
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lab-lock
+          path: lab/
+
+  report:
+    needs: [env, lock]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          path: art
+          merge-multiple: true
+      - name: Compare and publish
+        run: |
+          mkdir -p out && cp -r art/* out/
+          {
+            echo "## slim-2127 backend vs full-2127 converter (as installed at the user)"
+            python tools/docx_parity.py --compare art/full-2127 art/slim-2127 --parsers converter,backend || true
+            echo; echo "## full-2127: backend vs converter"
+            python tools/docx_parity.py --compare art/full-2127 art/full-2127 --parsers converter,backend || true
+            echo; echo "## slim-latest backend vs full-2127 converter"
+            python tools/docx_parity.py --compare art/full-2127 art/slim-latest --parsers converter,backend || true
+          } > out/report.md 2>&1
+          cd out
+          printf "Deps lab for %s (%s)\n" "${GITHUB_SHA::7}" "${GITHUB_REF_NAME}" > README.md
+          target="lab-${GITHUB_REF_NAME//\//-}"
+          git init -q -b "$target"
+          git config user.name "deps-lab"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Deps lab for ${GITHUB_SHA::7}"
+          git push -q -f "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" "$target"
