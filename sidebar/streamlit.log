@@ -1,0 +1,12 @@
+2026-10-28 09:07:24.336 Uvicorn server started on localhost:8599
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://localhost:8599
+
+[2026-10-28 09:07:42] [INFO] [MINT_CORE]: 📘 Автоглоссарий: 0 сокращений
+[2026-10-28 09:07:45] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: 'Сколько хранятся резервные копии?...' (dense 13, BM25 2)
+[2026-10-28 09:07:45] [INFO] [MINT_CORE]: 🎯 Реранк: 13 док. в 2 запросах
+[2026-10-28 09:07:45] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.75 lexical=1.00 agree=True low=False selected=4 dense=on
+[2026-10-28 09:07:45] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+  Stopping...
