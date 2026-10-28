@@ -699,12 +699,42 @@ EN = {
         '⏳ Processing {v}/{n_kb_files}: **{name}**...',
     '📁 Документы в базе':
         '📁 Documents in the base',
-    'Удалить {name} из базы':
-        'Remove {name} from the base',
-    'Файл {name} удалён из базы':
-        'File {name} removed from the base',
-    'Всего векторов в FAISS':
-        'Total vectors in FAISS',
+    '🗑️ Удалено из базы: {names}':
+        '🗑️ Removed from the base: {names}',
+    'Не удалось удалить: {names}':
+        'Could not remove: {names}',
+    'Документов':
+        'Documents',
+    'Документов в базе знаний':
+        'Documents in the knowledge base',
+    'Векторов':
+        'Vectors',
+    'Векторов в индексе FAISS: по одному на каждый небольшой фрагмент текста, по которому идёт поиск':
+        'Vectors in the FAISS index: one for every small text fragment the search works on',
+    'Найти документ':
+        'Find a document',
+    '🔎 Поиск по названию':
+        '🔎 Search by name',
+    'Найдено: {n} из {total}':
+        'Found: {n} of {total}',
+    'Документов с таким названием нет.':
+        'No documents with such a name.',
+    '🗑️ Удалить из базы':
+        '🗑️ Remove from the base',
+    'Из базы удаляются фрагменты, векторы и сохранённый оригинал. Вернуть документ можно, только загрузив его заново.':
+        'The fragments, vectors and the stored original are removed. To bring a document back, upload it again.',
+    'Документы':
+        'Documents',
+    'Выберите документы':
+        'Choose documents',
+    'Удалить из базы документов: {n}? Это нельзя отменить.':
+        'Remove {n} document(s) from the base? This cannot be undone.',
+    'Отмена':
+        'Cancel',
+    'Удалить':
+        'Remove',
+    '🗑️ Удалить выбранные ({n})':
+        '🗑️ Remove selected ({n})',
     '⛔ {n_bad} док. проиндексированы другой моделью эмбеддингов — векторный поиск по ним не работает. Переиндексируйте базу.':
         '⛔ {n_bad} doc(s) were indexed with another embedding model — vector search does not work for them. Re-index the base.',
     'ℹ️ {n_changed} док. нарезаны с другими параметрами или загружены до v18 (наведите на ℹ️). Это не ошибка; для единообразия — переиндексация.':
@@ -810,11 +840,22 @@ EN = {
         'Run settings and, for every section: the result, reference sources, what self-critique rejected. Useful for analysing misses during testing.',
     '**Оцените проверку:** найдены ли важные замечания, нет ли лишних и ошибочных?':
         '**Rate the review:** were the important findings found, are there extra or wrong ones?',
+    # ---- mint/ui/theme.py: documents of the base
+    'карточка системы':
+        'system card',
+    'правила экспертов: учитываются в каждом аудите':
+        'expert rules: used in every review',
+    'векторов: {n}':
+        'vectors: {n}',
+    'другая модель эмбеддингов — переиндексируйте':
+        'another embedding model — re-index',
+    'Документы в базе':
+        'Documents in the base',
     # ---- mint/ui/tab_chat.py
     'Консультация по накопленным знаниям':
         'Ask your knowledge base',
-    '🗑️ Новый диалог':
-        '🗑️ New conversation',
+    '➕ Новый чат':
+        '➕ New chat',
     'Очищает историю: следующий вопрос будет понят без учёта предыдущих реплик.':
         'Clears the history: the next question will be understood without the previous turns.',
     'Задайте вопрос по базе знаний...':
@@ -1601,6 +1642,8 @@ EN = {
         'Docling could not open the file as a Word document (.docx): the file is damaged or it is another format with the .docx extension.',
     'Пакеты не те, что проверены для MINT (например, другая версия Docling). Переустановите их по requirements.lock: ./install.sh --clean (Windows: install.bat --clean).':
         'The packages are not the ones tested for MINT (for example, another Docling version). Reinstall them from requirements.lock: ./install.sh --clean (Windows: install.bat --clean).',
+    'вкладок: {n_tabs}':
+        'tabs: {n_tabs}',
     '🧭 Профиль:':
         '🧭 Profile:',
     'Набор промптов для чата, аудита и контроля исправлений. «Архитектура и ИТ-решения» — для проектной документации: роли архитектурного комитета и архитектурные критерии аудита. «Универсальный» — для любых документов: договоров, положений, отчётов, инструкций. Профиль по умолчанию — profile в config.yaml (не задан — архитектурный); тексты профиля — на странице «📝 Промпты».':

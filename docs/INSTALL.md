@@ -284,7 +284,7 @@ MINT takes the same Word backend from it.
 Stop MINT and run `update.sh` (Windows: `update.bat`) in the program folder with the archive of the new version:
 
 ```bash
-./update.sh ~/Downloads/mint-21.1.zip       # or the unpacked folder of the new version
+./update.sh ~/Downloads/mint-21.2.zip       # or a .tar.gz, or the unpacked folder of the new version
 ```
 
 The script replaces the code (the `mint`, `docs`, `tools`, `tests` and `static` folders entirely, so that removed
@@ -315,3 +315,5 @@ re-indexing, the sidebar will say so.
 | No `python3-venv` package | No administrator needed: `install.sh` downloads pip with the system pip (your mirror settings). Without a system pip either — an offline bundle with `pip-*.whl` |
 | `No module named 'torch'` or `'docling_parse'` when uploading a .docx | The packages are not from `requirements.lock` (another Docling): `./install.sh --clean` (Windows: `install.bat --clean`) |
 | `Some exact versions are not available` | Your mirror lacks one exact version — the script installs from `requirements.txt` by itself; tell the maintainer which package |
+| The installation stopped with a pip error | The end of the log is on screen; the full pip output is in `.venv/install.log` (Windows: `.venv\install.log`) — send that file |
+| `GOST engine already loaded` | A message of the Astra system cryptography (the GOST engine in OpenSSL), not of MINT; harmless |

@@ -3,10 +3,10 @@
 # .env, config.yaml, glossary.json, checklists.yaml, prompts.yaml, the .venv environment, the knowledge base and logs.
 # Обновление MINT на месте из новой версии — архива .zip или распакованной папки. Ваши настройки остаются:
 # .env, config.yaml, glossary.json, checklists.yaml, prompts.yaml, окружение .venv, база знаний и логи.
-#   ./update.sh ~/Downloads/mint-21.1.zip      — from an archive / из архива
-#   ./update.sh ~/Downloads/mint-21.1          — from a folder / из папки
-#   ./update.sh mint-21.1.zip wheels_folder    — packages offline / пакеты без интернета (как install.sh wheels)
-#   SKIP_INSTALL=1 ./update.sh mint-21.1.zip   — files only, no package install / только файлы, без установки пакетов
+#   ./update.sh ~/Downloads/mint-21.2.zip      — from an archive (.zip or .tar.gz) / из архива (.zip или .tar.gz)
+#   ./update.sh ~/Downloads/mint-21.2          — from a folder / из папки
+#   ./update.sh mint-21.2.zip wheels_folder    — packages offline / пакеты без интернета (как install.sh wheels)
+#   SKIP_INSTALL=1 ./update.sh mint-21.2.zip   — files only, no package install / только файлы, без установки пакетов
 # Stop MINT first (Ctrl+C in its window). / Сначала остановите MINT (Ctrl+C в его окне).
 
 # Весь скрипт — в фигурных скобках: оболочка читает его целиком до запуска, а сам update.sh заменяется новой
@@ -28,12 +28,18 @@ fail() { echo "$1"; cleanup; exit 1; }
 
 if [ -f "$SRC" ]; then
     case "$SRC" in
-        *.zip|*.ZIP) ;;
-        *) fail "Not a .zip archive or folder: $SRC / это не архив .zip и не папка" ;;
+        *.zip|*.ZIP) KIND=zip ;;
+        *.tar.gz|*.tgz|*.TAR.GZ|*.TGZ) KIND=tar ;;      # «Source code (tar.gz)» со страницы выпуска
+        *) fail "Not an archive (.zip, .tar.gz) or folder: $SRC / это не архив (.zip, .tar.gz) и не папка" ;;
     esac
     TMP=$(mktemp -d 2>/dev/null || mktemp -d -t mint_update) || fail "Cannot create a temporary folder"
-    "$PY" -m zipfile -e "$SRC" "$TMP" 2>/dev/null || unzip -q "$SRC" -d "$TMP" \
-        || fail "Cannot unpack / не удалось распаковать: $SRC"
+    if [ "$KIND" = zip ]; then
+        "$PY" -m zipfile -e "$SRC" "$TMP" 2>/dev/null || unzip -q "$SRC" -d "$TMP" \
+            || fail "Cannot unpack / не удалось распаковать: $SRC"
+    else
+        tar xzf "$SRC" -C "$TMP" 2>/dev/null || "$PY" -m tarfile -e "$SRC" "$TMP" \
+            || fail "Cannot unpack / не удалось распаковать: $SRC"
+    fi
     SRC=$TMP
 fi
 [ -d "$SRC" ] || fail "Not found / не найдено: $SRC"

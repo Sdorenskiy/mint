@@ -6,6 +6,7 @@ playwright (с Chromium) и ffmpeg для GIF.
 
     python tools/ui_preview/run_preview.py --out preview
     python tools/ui_preview/run_preview.py --out preview/readme/en --readme --lang en   # снимки для README
+    python tools/ui_preview/run_preview.py --out preview/sidebar --sidebar              # список документов, «Новый чат»
 
 В папке --out: PNG экранов, motion.gif (загрузка страницы и ответ в чате), dom.txt — разметка ключевых
 элементов (по ней проверяются селекторы mint/ui/assets/mint.css в текущей версии Streamlit).
@@ -28,6 +29,7 @@ import mock_server  # noqa: E402
 PORT = 8599
 LANG = "ru"          # --lang en: английский интерфейс и подписи
 README_MODE = False  # --readme: нейтральная база и документ без отраслевых терминов, только чат и аудит — для README
+SIDEBAR_MODE = False  # --sidebar: нейтральная база из 14 документов — список документов, поиск, удаление, «Новый чат»
 
 
 def L(text):
@@ -276,6 +278,36 @@ def build_base_readme(work, env):
     return spec, spec
 
 
+SIDEBAR_DOCS = ["Положение_о_резервном_копировании", "Пояснительная_записка_часть_1_Архитектура_решения",
+                "Пояснительная_записка_часть_2_Развёртывание", "Описание_программного_обеспечения",
+                "Стандарт_интеграции_сервисов", "Руководство_администратора_v3", "Методика_оценки_нагрузки",
+                "Правила_именования_сервисов", "Порядок_вывода_из_эксплуатации", "Требования_к_мониторингу",
+                "Регламент_обновления_версий", "Каталог_сервисов_2026"]
+
+
+def add_sidebar_docs(work, env):
+    """Ещё дюжина нейтральных документов (.md) — длинный список, как у пользователей."""
+    folder = work / "more"
+    folder.mkdir()
+    paths = []
+    for i, name in enumerate(SIDEBAR_DOCS):
+        body = (f"# {name.replace('_', ' ')}\n\n## 1. Общие положения\n\nДокумент описывает порядок работы "
+                f"номер {i + 1}: кто выполняет шаги, в какие сроки и как проверяется результат.\n\n"
+                f"## 2. Порядок\n\nШаги выполняются по очереди; результат каждого шага записывается в журнал.\n")
+        path = folder / f"{name}.md"
+        path.write_text(body, encoding="utf-8")
+        paths.append(str(path))
+    code = ("import sys; sys.path.insert(0, %r)\n"
+            "from mint.devtools import load_namespace\n"
+            "app = load_namespace(include_ui=False)\n"
+            "cfg, _ = app.load_settings()\n"
+            "cfg, _ = app.resolve_settings(cfg, app.resolve_model_limits(cfg, {}, None, {}), {})\n"
+            "for p in %r:\n"
+            "    ok, msg = app.process_and_add_to_kb(p.split('/')[-1], open(p, 'rb').read(), cfg)\n"
+            "    print(ok, msg)\n") % (str(ROOT), paths)
+    subprocess.run([sys.executable, "-c", code], env=env, check=True, cwd=ROOT)
+
+
 def build_base_en(work, env):
     """Английская база для снимков README: два регламента и документ на проверку."""
     docs = work / "docs"
@@ -463,6 +495,8 @@ def run(out):
         (work / "readme.yaml").write_text("show_source_details: false\naudit_deep: false\n", encoding="utf-8")
         env["MINT_CONFIG"] = str(work / "readme.yaml")
         spec, spec_v2 = build_base_readme(work, env)
+        if SIDEBAR_MODE:
+            add_sidebar_docs(work, env)
     else:
         spec, spec_v2 = build_base_en(work, env) if LANG == "en" else build_base(work, env)
     log = open(out / "streamlit.log", "w", encoding="utf-8")
@@ -601,7 +635,65 @@ def run(out):
                 time.sleep(2.5)
                 page.screenshot(path=str(out / "05_mobile.png"))
 
+            def sidebar(page):
+                """Документы в базе: число документов и векторов, список, поиск, удаление; «Новый чат» в шапке."""
+                time.sleep(2.5)
+                sb = page.locator('[data-testid="stSidebar"]')
+                page.screenshot(path=str(out / "sidebar_chat_header.png"), clip={"x": 0, "y": 0, "width": 1440, "height": 320})
+                head = sb.get_by_text(L("📁 Документы в базе"), exact=True)
+                head.evaluate("e => e.scrollIntoView({block: 'start'})")
+                time.sleep(0.8)
+                sb.screenshot(path=str(out / "sidebar_docs.png"))
+                shots.dom.append(dom_dump(page, "документы в базе"))
+                find = sb.get_by_placeholder(L("🔎 Поиск по названию"))
+                find.fill("записка 1")
+                find.press("Enter")
+                time.sleep(1.5)
+                head.evaluate("e => e.scrollIntoView({block: 'start'})")
+                sb.screenshot(path=str(out / "sidebar_search.png"))
+                find.fill("")
+                find.press("Enter")
+                time.sleep(1.5)
+                sb.get_by_text(L("🗑️ Удалить из базы"), exact=True).click()
+                time.sleep(0.8)
+                pick = sb.locator('[data-testid="stMultiSelect"]').filter(has_text=L("Документы")).first
+                pick.locator("input").click()
+                pick.locator("input").fill("Каталог")
+                time.sleep(0.6)
+                page.keyboard.press("Enter")
+                time.sleep(0.6)
+                page.keyboard.press("Escape")
+                sb.get_by_text(L("Из базы удаляются фрагменты, векторы и сохранённый оригинал. Вернуть документ можно, "
+                                 "только загрузив его заново.")).click()       # закрыть выпадающий список
+                time.sleep(1.5)
+                ask = sb.get_by_role("button", name=L("🗑️ Удалить выбранные ({n})").format(n=1))
+                ask.wait_for(timeout=15000)
+                ask.click()
+                yes = sb.get_by_role("button", name=L("Удалить"), exact=True)
+                yes.wait_for(timeout=15000)
+                yes.scroll_into_view_if_needed()
+                time.sleep(0.8)
+                sb.screenshot(path=str(out / "sidebar_delete_confirm.png"))
+                yes.click()
+                time.sleep(2.0)
+                head.evaluate("e => e.scrollIntoView({block: 'start'})")
+                sb.screenshot(path=str(out / "sidebar_deleted.png"))
+                shots.dom.append(dom_dump(page, "после удаления"))
+                box = page.locator('[data-testid="stChatInput"] textarea')
+                box.fill(README_TEXT[LANG]["question"])
+                box.press("Enter")
+                page.wait_for_function(
+                    "() => document.querySelectorAll('[data-testid=\"stChatMessage\"]').length >= 2", timeout=60000)
+                time.sleep(1.2)
+                page.evaluate("() => window.scrollTo(0, 0)")
+                page.screenshot(path=str(out / "sidebar_chat_after_answer.png"), clip={"x": 0, "y": 0, "width": 1440, "height": 520})
+
             shots.scenario("home", home)
+            if SIDEBAR_MODE:                       # список документов на боковой панели и «Новый чат»
+                shots.scenario("sidebar", sidebar, viewport={"width": 1440, "height": 1000}, device_scale_factor=2)
+                browser.close()
+                shots.save()
+                return
             if README_MODE:                        # снимки для README: чат и аудит, схемы Mermaid
                 shots.scenario("chat", chat, readme=True)
                 shots.scenario("audit", audit, readme=True)
@@ -770,6 +862,8 @@ if __name__ == "__main__":
     ap.add_argument("--out", default="preview")
     ap.add_argument("--lang", default="ru", choices=["ru", "en"])
     ap.add_argument("--readme", action="store_true", help="снимки для README: нейтральная база, только чат и аудит")
+    ap.add_argument("--sidebar", action="store_true",
+                    help="с --readme: список документов на боковой панели (14 нейтральных документов) и «Новый чат»")
     args = ap.parse_args()
-    LANG, README_MODE = args.lang, args.readme
+    LANG, README_MODE, SIDEBAR_MODE = args.lang, args.readme or args.sidebar, args.sidebar
     run(Path(args.out).resolve())

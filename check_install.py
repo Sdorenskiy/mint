@@ -318,6 +318,11 @@ def check_page():
     except Exception as e:
         say("info", tr("пропущено: в этой установке нет streamlit.testing"), f"{type(e).__name__}: {str(e)[:200]}")
         return
+    import logging
+    # без браузера Streamlit предупреждает «missing ScriptRunContext» — для пробного запуска это норма, не тревога
+    for name in ("streamlit.runtime.scriptrunner_utils.script_run_context",
+                 "streamlit.runtime.scriptrunner.script_run_context"):
+        logging.getLogger(name).setLevel(logging.ERROR)
     t0 = time.time()
     try:
         at = AppTest.from_file(str(HERE / "app.py"), default_timeout=180)
@@ -335,7 +340,9 @@ def check_page():
         n_tabs = len(at.tabs)
     except Exception:
         n_tabs = "?"
-    say("ok", tr("страница открывается без ошибок ({v:.1f} с)", v=time.time() - t0), tr("{titles}; вкладок: {n_tabs}", titles=titles, n_tabs=n_tabs))
+    detail = tr("вкладок: {n_tabs}", n_tabs=n_tabs) if not titles.strip() else \
+        tr("{titles}; вкладок: {n_tabs}", titles=titles, n_tabs=n_tabs)
+    say("ok", tr("страница открывается без ошибок ({v:.1f} с)", v=time.time() - t0), detail)
 
 
 def main():

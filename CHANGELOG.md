@@ -2,6 +2,25 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## 21.2 — a quiet installation, a compact document list, "New chat" always at hand
+
+- **Documents of the base in the sidebar — a compact list.** It scrolls inside itself instead of stretching the whole
+  sidebar; each document shows its role (📌 expert rules, 🗂️ system card), the number of vectors and the date it was
+  indexed; a document indexed with another embedding model is marked ⛔ right under its name, details on hover. With
+  more than 8 documents — a search by name ("note part 1" finds `Explanatory_note_part_1.docx`). Above the list —
+  the number of **documents** in the base next to the number of vectors.
+- **Removing documents** — in "🗑️ Remove from the base": choose one or several documents, "Remove selected", confirm.
+  The 🗑️ button next to every document (it removed at once, without asking) is gone.
+- **"➕ New chat"** is in the chat tab header and is always there: in an empty chat, right after the first answer
+  (before, it appeared only after the next action) and while the model is answering (the click takes effect when the
+  answer is ready).
+- `install.sh` / `install.bat` no longer print hundreds of pip lines (`Ignoring … markers`, `Collecting …`): one line
+  "installing packages…" and the result; pip's full output goes to `.venv/install.log`, and if something fails the
+  end of it is shown on screen. GitHub checks that the installation stays quiet.
+- `update.sh` / `update.bat` accept a `.tar.gz` archive ("Source code (tar.gz)" on the release page) as well as
+  `.zip` and a folder.
+- The self-check no longer shows Streamlit's harmless `missing ScriptRunContext` warning during the trial page run.
+
 ## 21.1 — installation from the first attempt, no PyTorch, the architecture profile by default
 
 - **Installation from the first attempt.** `install.sh` / `install.bat` install exact package versions from

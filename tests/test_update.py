@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import tarfile
 import zipfile
 from pathlib import Path
 
@@ -92,6 +93,20 @@ check(r.returncode == 0 and installed.strip() == f"args:{NEW / 'wheels'}" and "M
       "из папки; пакеты — из её wheels", installed + r.stdout + r.stderr)
 
 shutil.copy(harness.ROOT / "update.sh", OLD / "update.sh")
+
+print("2a. Из архива .tar.gz («Source code (tar.gz)» со страницы выпуска)")
+tgz = W / "mint-99.0.tar.gz"
+with tarfile.open(tgz, "w:gz") as tf:
+    tf.add(NEW, arcname=NEW.name)
+write(OLD / "mint" / "version.py", '"""Версия MINT."""\n\n\nMINT_VERSION = "1.0"\n')
+r = update(str(tgz), env={"SKIP_INSTALL": "1"})
+check(r.returncode == 0 and "MINT 1.0 -> 99.0" in r.stdout
+      and 'MINT_VERSION = "99.0"' in (OLD / "mint" / "version.py").read_text(encoding="utf-8"),
+      "архив .tar.gz принимается так же, как .zip", r.stdout + r.stderr)
+shutil.copy(harness.ROOT / "update.sh", OLD / "update.sh")
+write(W / "notes.txt", "x\n")
+r = update(str(W / "notes.txt"))
+check(r.returncode != 0 and ".tar.gz" in r.stdout and "не архив" in r.stdout, "не архив — понятная ошибка", r.stdout)
 
 print("3. Ошибки")
 r = update(str(W / "nothing.zip"))

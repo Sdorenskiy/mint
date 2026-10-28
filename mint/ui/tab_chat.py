@@ -1,5 +1,7 @@
 """Интерфейс: вкладка «Чат»."""
 
+import inspect
+
 import streamlit as st
 
 from ..chat import answer_question, chat_history
@@ -7,9 +9,14 @@ from ..citations import citation_warning
 from ..feedback import new_feedback_id
 from ..i18n import tr
 from ..kb import list_kb_documents
-from .common import _clear_chat, render_sources
+from .common import _clear_chat, btn_w, render_sources
 from .feedback import render_feedback
 from .theme import empty_chat_html
+
+try:                        # vertical_alignment — с Streamlit 1.36
+    _center = {"vertical_alignment": "center"} if "vertical_alignment" in inspect.signature(st.columns).parameters else {}
+except (TypeError, ValueError):
+    _center = {}
 
 
 def _chat_feedback(cfg, msg, question):
@@ -34,14 +41,16 @@ def _render_answer(msg):
 
 def render_chat_tab(cfg, gl):
     """Вкладка «Чат»: вопросы по базе знаний с учётом истории диалога."""
-    st.subheader(tr("Консультация по накопленным знаниям"))
+    # «Новый чат» — в шапке вкладки и всегда: и до первого вопроса, и сразу после ответа, и пока модель отвечает
+    # (нажатие во время ответа сработает, когда модель закончит: прервать запрос Streamlit не может)
+    head, new_chat = st.columns([0.74, 0.26], **_center)
+    head.subheader(tr("Консультация по накопленным знаниям"))
+    new_chat.button(tr("➕ Новый чат"), key="chat_clear_btn", on_click=_clear_chat, **btn_w,
+                    help=tr("Очищает историю: следующий вопрос будет понят без учёта предыдущих реплик."))
     if "messages" not in st.session_state:
         st.session_state.messages = []
     # история и новый ответ — над полем ввода, поле ввода — в конце страницы
     chat_area = st.container()
-    if st.session_state.messages:
-        st.button(tr("🗑️ Новый диалог"), key="chat_clear_btn", on_click=_clear_chat,
-                  help=tr("Очищает историю: следующий вопрос будет понят без учёта предыдущих реплик."))
     user_input = st.chat_input(tr("Задайте вопрос по базе знаний..."), key="chat_field")
     with chat_area:
         if not st.session_state.messages and not user_input:

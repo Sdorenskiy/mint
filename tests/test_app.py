@@ -817,7 +817,15 @@ try:
     check(i_panel > 0 and all(sum(str(x[1]).startswith(a) for x in in_panel) == 1 for a in audit_labels)
           and not any(str(x[1]).startswith(audit_labels) for x in st.LOG[:i_panel] if x[0] in ("slider", "checkbox")),
           "настройки аудита — во вкладке аудита, одним блоком (в боковой панели их нет)")
-    check(run_ui(chat="Какие требования к СЗИ?") == "ok", "вопрос в чате")
+    check(("button", "➕ Новый чат") in st.LOG, "«Новый чат» есть и в пустом чате")
+    kbl_ = [str(x[1]) for x in st.LOG if x[0] == "markdown" and str(x[1]).startswith('<ul class="mint-kbdocs"')]
+    n_docs_ = kbl_[0].count("<li") if kbl_ else 0
+    check(n_docs_ and ("metric", f"Документов={n_docs_}") in st.LOG
+          and any(x[0] == "metric" and str(x[1]).startswith("Векторов=") for x in st.LOG)
+          and not any(x == ("button", "🗑️") for x in st.LOG),
+          f"боковая панель: список документов одним блоком, число документов ({n_docs_}) и векторов; без 🗑️ у каждого")
+    check(run_ui(chat="Какие требования к СЗИ?") == "ok" and ("button", "➕ Новый чат") in st.LOG,
+          "вопрос в чате; «Новый чат» есть уже при первом ответе")
     last = st.session_state["messages"][-1]
     check("Справочник: да" in last["content"] and last["sources"], f"ответ в чате: {last['content']}")
     check(run_ui(chat="А сколько хранятся журналы?") == "ok", "уточняющий вопрос в чате")
@@ -848,7 +856,7 @@ try:
           and ("download_button", "⬇️ Скачать отзывы (feedback.jsonl)") in st.LOG, "сводка отзывов в боковой панели")
     summ, n_comments = app.feedback_summary(fb_rows + [{"kind": "chat", "id": aid, "rating": "up"}])
     check(summ == {"chat": {"up": 1}} and n_comments == 1, f"сводка считает последнюю оценку: {summ}")
-    check(run_ui(buttons={"chat_clear_btn"}) == "ok" and st.session_state["messages"] == [], "кнопка «Новый диалог»")
+    check(run_ui(buttons={"chat_clear_btn"}) == "ok" and st.session_state["messages"] == [], "кнопка «Новый чат»")
     check(run_ui(chat="Какие требования к СЗИ? ВЫДУМАЙ ССЫЛКУ") == "ok", "ответ с выдуманной ссылкой")
     am = st.session_state["messages"][-1]
     warns_ = [x[1] for x in st.LOG if x[0] == "warning" and "Несуществующий.docx" in str(x[1])]
@@ -1041,6 +1049,24 @@ try:
     check(run_ui(uploads={"kb_uploader": [Upl("старый.doc", b"x")]}, buttons={"kb_index_all_btn"}) == "rerun"
           and not st.session_state["_kb_batch_results"][0][1]
           and "не поддерживается" in st.session_state["_kb_batch_results"][0][2], "неподдерживаемый файл — понятная ошибка")
+    # ---- удаление документов: выбрать → «Удалить выбранные» → подтвердить
+    cfg_ui, _ = app.load_settings()          # та же база, что у страницы (KB_DIR из окружения)
+    run_ui(buttons={"kb_reset_btn"})
+    check(run_ui() == "ok" and "Памятка.md" in app.list_kb_documents(cfg_ui)[0]
+          and ("button_disabled", "🗑️ Удалить выбранные (0)") in st.LOG, "ничего не выбрано — удалять нечего")
+    st.session_state["kb_del_pick"] = ["Памятка.md"]
+    check(run_ui(buttons={"kb_del_ask"}) == "ok" and st.session_state.get("kb_del_confirm") == ["Памятка.md"]
+          and run_ui() == "ok" and any(x[0] == "warning" and "Удалить из базы документов: 1?" in str(x[1]) for x in st.LOG)
+          and "Памятка.md" in app.list_kb_documents(cfg_ui)[0], "«Удалить выбранные» сначала спрашивает подтверждение")
+    check(run_ui(buttons={"kb_del_no"}) == "ok" and "kb_del_confirm" not in st.session_state
+          and "Памятка.md" in app.list_kb_documents(cfg_ui)[0], "«Отмена» — документ на месте")
+    run_ui(buttons={"kb_del_ask"})
+    check(run_ui(buttons={"kb_del_yes"}) == "ok" and "Памятка.md" not in app.list_kb_documents(cfg_ui)[0]
+          and "kb_del_pick" not in st.session_state and not app.source_path(cfg_ui, "Памятка.md").exists(),
+          "«Да, удалить» — документ и его оригинал удалены, выбор очищен")
+    check(run_ui() == "ok" and ("success", "🗑️ Удалено из базы: Памятка.md") in st.LOG
+          and not any("Памятка.md" in str(x[1]) for x in st.LOG if x[0] == "markdown" and str(x[1]).startswith('<ul class="mint-kbdocs"')),
+          "после удаления — сообщение, документа нет в списке")
     st.session_state.pop("tab2_final_report_data", None)
     check(run_ui(uploads={"tab2_audit_uploader": Upl("ТЗ.md", md_doc)}, buttons={"tab2_run_btn"}) == "ok"
           and st.session_state.get("tab2_final_report_data") and st.session_state.get("tab2_docx_review") is None,
@@ -1339,6 +1365,37 @@ try:
     check("пока пуста" in theme.empty_chat_html([]), "пустая база — подсказка, где добавить документы")
     many = theme.empty_chat_html([f"d{i}.docx" for i in range(9)])
     check(many.count("<li") == 7 and "и ещё 3" in many and "Документов в базе: 9" in many, "пустой чат: 6 документов и «и ещё 3»")
+    docs_ = [{"name": "A_<b>.docx", "issues": [("error", "другая модель")], "vectors": 32195,
+              "indexed_at": "2026-10-20 14:33:10"},
+             {"name": "Б.docx", "issues": [("info", "нарезан иначе")], "vectors": 3, "indexed_at": ""},
+             {"name": "В.docx", "issues": [], "vectors": 1, "indexed_at": ""}]
+    kh = theme.kb_docs_html(docs_, {"cards": ["Б.docx"], "always": ["В.docx"]})
+    check("&lt;b&gt;" in kh and "<b>" not in kh and kh.count("<li") == 3 and kh.count("is-error") == 1
+          and "⛔ другая модель эмбеддингов — переиндексируйте" in kh and 'title="другая модель"' in kh and "векторов: 32 195 · 20.10.2026" in kh and 'title="нарезан иначе"' in kh
+          and "🗂️" in kh and "📌" in kh, "список документов: роль, векторы, дата; ошибка видна коротко, подробности — подсказкой")
+    with sys.modules["mint.i18n"].use_lang("en"):
+        check("vectors: 32 195 · 2026-10-20" in theme.kb_docs_html(docs_[:1]), "по-английски — дата 2026-10-20")
+    check(theme.doc_matches("Пояснительная_записка_ч1.docx", "записка Ч1") and not theme.doc_matches("ПЗ.docx", "записка")
+          and theme.doc_matches("x.docx", "  ") and theme.doc_matches("Ёлка-план.docx", "елка план"),
+          "поиск документа: все слова запроса, без регистра, «_» и «-» как пробел")
+    from mint.ui import sidebar as sb_
+    rows10 = [{"name": f"Документ_{i}.docx", "issues": [], "vectors": i, "indexed_at": ""} for i in range(10)]
+    st.LOG.clear()
+    st.session_state["kb_docs_find"] = "документ 3"
+    sb_._render_docs_list(rows10, {})
+    md_ = " ".join(str(x[1]) for x in st.LOG if x[0] == "markdown")
+    check(("text_input", "Найти документ") in st.LOG and ("caption", "Найдено: 1 из 10") in st.LOG
+          and "Документ_<wbr>3.docx" in md_ and "Документ_<wbr>4.docx" not in md_,
+          "больше 8 документов — поиск по названию; длинное имя переносится по «_»")
+    st.LOG.clear()
+    st.session_state["kb_docs_find"] = "нет такого"
+    sb_._render_docs_list(rows10, {})
+    check(("caption", "Документов с таким названием нет.") in st.LOG
+          and not any(str(x[1]).startswith("Найдено") for x in st.LOG), "ничего не найдено — так и сказано, без «Найдено: 0»")
+    st.LOG.clear()
+    sb_._render_docs_list(rows10[:5], {})
+    check(not any(x[0] == "text_input" for x in st.LOG), "5 документов — без поиска")
+    st.session_state.pop("kb_docs_find", None)
 except Exception:
     traceback.print_exc()
     FAILS.append("исключение в оформлении")

@@ -1,9 +1,9 @@
 @echo off
 rem Obnovlenie MINT na meste iz novoj versii - arhiva .zip ili raspakovannoj papki. Vashi nastrojki ostayutsya:
 rem .env, config.yaml, glossary.json, checklists.yaml, prompts.yaml, okruzhenie .venv, baza znanij i logi.
-rem   update.bat C:\Users\me\Downloads\mint-21.1.zip     - iz arhiva
-rem   update.bat C:\Users\me\Downloads\mint-21.1         - iz papki
-rem   update.bat mint-21.1.zip wheels                    - pakety bez interneta (kak install.bat wheels)
+rem   update.bat C:\Users\me\Downloads\mint-21.2.zip     - iz arhiva (.zip ili .tar.gz)
+rem   update.bat C:\Users\me\Downloads\mint-21.2         - iz papki
+rem   update.bat mint-21.2.zip wheels                    - pakety bez interneta (kak install.bat wheels)
 rem Snachala ostanovite MINT (zakrojte ego okno).
 setlocal
 set "SRC=%~f1"
@@ -12,9 +12,21 @@ if not "%~2"=="" set "WHEELS=%~f2"
 cd /d "%~dp0"
 if "%~1"=="" goto usage
 set "TMPD="
-if /i not "%~x1"==".zip" goto have_src
+if /i "%~x1"==".zip" goto unzip
+if /i "%~x1"==".gz" goto untar
+if /i "%~x1"==".tgz" goto untar
+goto have_src
+:unzip
 set "TMPD=%TEMP%\mint_update_%RANDOM%%RANDOM%"
 powershell -NoProfile -ExecutionPolicy Bypass -Command "Expand-Archive -LiteralPath '%SRC%' -DestinationPath '%TMPD%' -Force"
+if errorlevel 1 goto fail_zip
+set "SRC=%TMPD%"
+goto have_src
+rem Source code (tar.gz) so stranicy vypuska - tar est' v Windows 10 i novee
+:untar
+set "TMPD=%TEMP%\mint_update_%RANDOM%%RANDOM%"
+mkdir "%TMPD%"
+tar -xzf "%SRC%" -C "%TMPD%"
 if errorlevel 1 goto fail_zip
 set "SRC=%TMPD%"
 :have_src
