@@ -2,6 +2,15 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## 21.2 — a quiet installation
+
+- `install.sh` / `install.bat` no longer print hundreds of pip lines (`Ignoring … markers`, `Collecting …`): one line
+  "installing packages…" and the result; pip's full output goes to `.venv/install.log`, and if something fails the
+  end of it is shown on screen. GitHub checks that the installation stays quiet.
+- `update.sh` / `update.bat` accept a `.tar.gz` archive ("Source code (tar.gz)" on the release page) as well as
+  `.zip` and a folder.
+- The self-check no longer shows Streamlit's harmless `missing ScriptRunContext` warning during the trial page run.
+
 ## 21.1 — installation from the first attempt, no PyTorch, the architecture profile by default
 
 - **Installation from the first attempt.** `install.sh` / `install.bat` install exact package versions from

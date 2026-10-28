@@ -28,7 +28,11 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: install.sh
-        run: PYTHON=python ./install.sh
+        run: |
+          PYTHON=python ./install.sh | tee /tmp/install.out
+          # quiet: pip output goes to .venv/install.log, not to the screen
+          if grep -qE "^(Ignoring|Collecting|  Using cached)" /tmp/install.out; then echo "pip output on screen"; exit 1; fi
+          test -s .venv/install.log
       - name: The installation works (real Docling, Streamlit, faiss)
         run: .venv/bin/python tests/test_real_install.py
       - name: Recovery — an incomplete .venv left by an interrupted install is recreated

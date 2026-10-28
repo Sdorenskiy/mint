@@ -284,7 +284,7 @@ GitHub на тестовых документах Docling и своих прим
 Остановите MINT и запустите в папке программы `update.sh` (Windows — `update.bat`) с архивом новой версии:
 
 ```bash
-./update.sh ~/Загрузки/mint-21.1.zip        # или распакованная папка новой версии
+./update.sh ~/Загрузки/mint-21.2.zip        # или .tar.gz, или распакованная папка новой версии
 ```
 
 Скрипт заменяет код (папки `mint`, `docs`, `tools`, `tests`, `static` — целиком, чтобы не остались удалённые
@@ -314,3 +314,5 @@ GitHub на тестовых документах Docling и своих прим
 | Нет пакета `python3-venv` | Администратор не нужен: `install.sh` скачает pip системным pip (по вашим настройкам зеркала). Если и системного pip нет — офлайн-комплект с `pip-*.whl` |
 | `No module named 'torch'` или `'docling_parse'` при загрузке .docx | Пакеты стоят не по `requirements.lock` (другой Docling): `./install.sh --clean` (Windows — `install.bat --clean`) |
 | `Some exact versions are not available` | На зеркале нет какой-то точной версии — скрипт сам поставит по `requirements.txt`; сообщите разработчику, какой пакет |
+| Установка остановилась с ошибкой pip | На экране — конец журнала; полный вывод pip — в `.venv/install.log` (Windows — `.venv\install.log`), его и пришлите |
+| `GOST engine already loaded` | Сообщение системной криптографии Astra (движок ГОСТ в OpenSSL), не MINT; на работу не влияет |

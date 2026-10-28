@@ -1601,6 +1601,8 @@ EN = {
         'Docling could not open the file as a Word document (.docx): the file is damaged or it is another format with the .docx extension.',
     'Пакеты не те, что проверены для MINT (например, другая версия Docling). Переустановите их по requirements.lock: ./install.sh --clean (Windows: install.bat --clean).':
         'The packages are not the ones tested for MINT (for example, another Docling version). Reinstall them from requirements.lock: ./install.sh --clean (Windows: install.bat --clean).',
+    'вкладок: {n_tabs}':
+        'tabs: {n_tabs}',
     '🧭 Профиль:':
         '🧭 Profile:',
     'Набор промптов для чата, аудита и контроля исправлений. «Архитектура и ИТ-решения» — для проектной документации: роли архитектурного комитета и архитектурные критерии аудита. «Универсальный» — для любых документов: договоров, положений, отчётов, инструкций. Профиль по умолчанию — profile в config.yaml (не задан — архитектурный); тексты профиля — на странице «📝 Промпты».':

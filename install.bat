@@ -24,16 +24,25 @@ if defined CLEAN if exist .venv rmdir /s /q .venv
 rem Nepolnaya .venv (bez pip - naprimer, posle prervannoj pervoj popytki) - sozdaetsya zanovo
 if exist ".venv\Scripts\python.exe" (".venv\Scripts\python.exe" -m pip --version >nul 2>nul || (echo Incomplete .venv - recreating & rmdir /s /q .venv))
 if not exist ".venv\Scripts\python.exe" (%PY% -m venv .venv || (echo Failed to create .venv & pause & exit /b 1))
+rem Vyvod pip - v .venv\install.log; na ekrane - tol'ko itog, a pri oshibke - konec zhurnala
+set "LOG=.venv\install.log"
+type nul > "%LOG%"
+set "PIP=.venv\Scripts\python.exe -m pip install --disable-pip-version-check"
 if defined WHEELS goto offline
-".venv\Scripts\python.exe" -m pip install -r %REQ% && goto installed
+echo Installing packages (%REQ%), a few minutes (first time - about 165 MB) ...
+%PIP% -r %REQ% >> "%LOG%" 2>&1 && goto installed
 if /i not "%REQ%"=="requirements.lock" goto failed
 echo Some exact versions are not available (mirror?) - trying requirements.txt
-".venv\Scripts\python.exe" -m pip install -r requirements.txt && goto installed
+%PIP% -r requirements.txt >> "%LOG%" 2>&1 && goto installed
 goto failed
 :offline
-".venv\Scripts\python.exe" -m pip install --no-index --find-links "%WHEELS%" -r %REQ% && goto installed
+echo Installing packages from %WHEELS% ...
+%PIP% --no-index --find-links "%WHEELS%" -r %REQ% >> "%LOG%" 2>&1 && goto installed
 :failed
-echo Installation failed - see the pip messages above
+echo.
+powershell -NoProfile -Command "Get-Content -Tail 25 '%LOG%'"
+echo.
+echo Installation failed. Full pip output: %CD%\%LOG%
 pause
 exit /b 1
 :installed

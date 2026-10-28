@@ -75,22 +75,41 @@ if [ ! -x .venv/bin/python ]; then
     fi
 fi
 
-# 3. Packages: exact tested versions (requirements.lock); if the mirror lacks one of them — requirements.txt
-#    Пакеты: точные проверенные версии (requirements.lock); если какой-то нет на зеркале — requirements.txt
+# 3. Packages: exact tested versions (requirements.lock); if the mirror lacks one of them — requirements.txt.
+#    pip output goes to .venv/install.log; on screen — only the result, and the end of the log if something fails.
+#    Пакеты: точные проверенные версии (requirements.lock); если какой-то нет на зеркале — requirements.txt.
+#    Вывод pip — в .venv/install.log; на экране — только итог, а при ошибке — конец журнала.
+LOG=.venv/install.log
+: > "$LOG"
+pip_install() {           # pip_install <аргументы pip install> — тихо, полный вывод в $LOG
+    echo "--- pip install $*" >> "$LOG"
+    .venv/bin/python -m pip install --disable-pip-version-check "$@" >> "$LOG" 2>&1
+}
+show_log() {
+    echo
+    tail -n 25 "$LOG"
+    echo
+    echo "Full pip output / полный вывод pip: $(pwd)/$LOG"
+}
 if [ -n "$WHEELS" ]; then
-    .venv/bin/python -m pip install --no-index --find-links "$WHEELS" -r "$REQ" \
-        || fail "Packages were not installed from $WHEELS — see the pip messages above." \
-                "Пакеты из $WHEELS не установлены — см. сообщения pip выше. Комплект собирают на той же ОС и том же Python."
-elif ! .venv/bin/python -m pip install -r "$REQ"; then
-    if [ "$REQ" = requirements.lock ]; then
-        echo
-        echo "Some exact versions are not available (mirror?) — trying requirements.txt"
-        echo "Каких-то точных версий нет (зеркало?) — ставлю по requirements.txt"
-        .venv/bin/python -m pip install -r requirements.txt \
-            || fail "Packages were not installed — see the pip messages above." \
-                    "Пакеты не установлены — см. сообщения pip выше. Проверьте доступ к пакетам: python3 -m pip download pip -d /tmp/x"
-    else
-        fail "Packages were not installed — see the pip messages above / пакеты не установлены — см. сообщения pip выше."
+    echo "Installing packages from $WHEELS / ставлю пакеты из $WHEELS ..."
+    pip_install --no-index --find-links "$WHEELS" -r "$REQ" \
+        || { show_log; fail "Packages were not installed from $WHEELS." \
+                            "Пакеты из $WHEELS не установлены. Комплект собирают на той же ОС и том же Python."; }
+else
+    echo "Installing packages ($REQ), a few minutes / ставлю пакеты ($REQ), несколько минут (в первый раз — около 165 МБ) ..."
+    if ! pip_install -r "$REQ"; then
+        if [ "$REQ" = requirements.lock ]; then
+            echo "Some exact versions are not available (mirror?) — trying requirements.txt"
+            echo "Каких-то точных версий нет (зеркало?) — ставлю по requirements.txt"
+            grep -E "^ERROR" "$LOG" | tail -n 3
+            pip_install -r requirements.txt \
+                || { show_log; fail "Packages were not installed." \
+                                    "Пакеты не установлены. Проверьте доступ к пакетам: python3 -m pip download pip -d /tmp/x"; }
+        else
+            show_log
+            fail "Packages were not installed / пакеты не установлены."
+        fi
     fi
 fi
 cleanup
@@ -100,7 +119,7 @@ if [ ! -f .env ]; then
     echo "Создан .env из образца — впишите адреса и ключ (docs/ru/INSTALL.md)."
 fi
 echo
-echo "Installed / установлено: $(.venv/bin/python -m pip list 2>/dev/null | tail -n +3 | wc -l | tr -d ' ') packages, .venv $(du -sh .venv 2>/dev/null | cut -f1)"
+echo "Installed / установлено: $(.venv/bin/python -m pip list --disable-pip-version-check 2>/dev/null | tail -n +3 | wc -l | tr -d ' ') packages, .venv $(du -sh .venv 2>/dev/null | cut -f1)"
 echo
 .venv/bin/python check_install.py --no-llm
 echo
