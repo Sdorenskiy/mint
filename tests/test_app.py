@@ -820,8 +820,8 @@ try:
     check(("button", "➕ Новый чат") in st.LOG, "«Новый чат» есть и в пустом чате")
     kbl_ = [str(x[1]) for x in st.LOG if x[0] == "markdown" and str(x[1]).startswith('<ul class="mint-kbdocs"')]
     n_docs_ = kbl_[0].count("<li") if kbl_ else 0
-    check(n_docs_ and ("metric", f"Документов в базе={n_docs_}") in st.LOG
-          and any(x[0] == "metric" and str(x[1]).startswith("Векторов в FAISS=") for x in st.LOG)
+    check(n_docs_ and ("metric", f"Документов={n_docs_}") in st.LOG
+          and any(x[0] == "metric" and str(x[1]).startswith("Векторов=") for x in st.LOG)
           and not any(x == ("button", "🗑️") for x in st.LOG),
           f"боковая панель: список документов одним блоком, число документов ({n_docs_}) и векторов; без 🗑️ у каждого")
     check(run_ui(chat="Какие требования к СЗИ?") == "ok" and ("button", "➕ Новый чат") in st.LOG,
@@ -1390,7 +1390,8 @@ try:
     st.LOG.clear()
     st.session_state["kb_docs_find"] = "нет такого"
     sb_._render_docs_list(rows10, {})
-    check(("caption", "Документов с таким названием нет.") in st.LOG, "ничего не найдено — так и сказано")
+    check(("caption", "Документов с таким названием нет.") in st.LOG
+          and not any(str(x[1]).startswith("Найдено") for x in st.LOG), "ничего не найдено — так и сказано, без «Найдено: 0»")
     st.LOG.clear()
     sb_._render_docs_list(rows10[:5], {})
     check(not any(x[0] == "text_input" for x in st.LOG), "5 документов — без поиска")

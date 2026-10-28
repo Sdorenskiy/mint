@@ -290,10 +290,11 @@ def _render_docs_list(rows, roles):
     shown = rows
     if len(rows) > KB_SEARCH_FROM:
         query = st.text_input(tr("Найти документ"), key="kb_docs_find", label_visibility="collapsed",
-                              placeholder=tr("🔎 Найти документ по названию"))
+                              placeholder=tr("🔎 Поиск по названию"))
         if query and query.strip():
             shown = [r for r in rows if doc_matches(r["name"], query)]
-            st.caption(tr("Найдено: {n} из {total}", n=len(shown), total=len(rows)))
+            if shown:
+                st.caption(tr("Найдено: {n} из {total}", n=len(shown), total=len(rows)))
     if shown:
         st.markdown(kb_docs_html(shown, roles), unsafe_allow_html=True)
     else:
@@ -326,8 +327,8 @@ def _render_delete(cfg, names):
     with st.expander(tr("🗑️ Удалить из базы"), expanded=bool(confirm)):
         st.caption(tr("Из базы удаляются фрагменты, векторы и сохранённый оригинал. Вернуть документ можно, только "
                       "загрузив его заново."))
-        pick = st.multiselect(tr("Документы"), names, key="kb_del_pick", placeholder=tr("Выберите документы"),
-                              on_change=_cancel_delete)
+        pick = st.multiselect(tr("Документы"), names, key="kb_del_pick", placeholder=tr("Выберите документы"))
+        # подтверждение — только для того же выбора; выбор изменился — снова «Удалить выбранные»
         if confirm and [n for n in confirm if n in names] == list(pick or []):
             st.warning(tr("Удалить из базы документов: {n}? Это нельзя отменить.", n=len(confirm)))
             c_yes, c_no = st.columns(2)
@@ -399,8 +400,10 @@ def render_knowledge_base(cfg):
     if rows:
         roles = load_roles(cfg)
         c_docs, c_vec = st.columns(2)
-        c_docs.metric(label=tr("Документов в базе"), value=len(rows))
-        c_vec.metric(label=tr("Векторов в FAISS"), value=f"{n_vectors:,}".replace(",", "\u00a0"))
+        c_docs.metric(label=tr("Документов"), value=len(rows), help=tr("Документов в базе знаний"))
+        c_vec.metric(label=tr("Векторов"), value=f"{n_vectors:,}".replace(",", "\u00a0"),
+                     help=tr("Векторов в индексе FAISS: по одному на каждый небольшой фрагмент текста, по которому "
+                             "идёт поиск"))
         _render_docs_list(rows, roles)
         names = [r["name"] for r in rows]
         _render_delete(cfg, names)

@@ -132,7 +132,8 @@ try:
         res["docs_after"] = len(list_kb_documents(cfg_)[0])
         res["del_gone"] = doc_ not in list_kb_documents(cfg_)[0]
         res["del_pick_after"] = list(at.multiselect(key="kb_del_pick").value)
-        res["del_msg"] = any(str(s.value).startswith("🗑️ Удалено из базы: ") for s in at.success)
+        res["alerts"] = [str(s.value)[:120] for s in list(at.success) + list(at.sidebar.success)]
+        res["del_msg"] = any(a.startswith("🗑️ Удалено из базы: ") for a in res["alerts"])
 except Exception:
     res["errors"].append(traceback.format_exc())
 print("RESULT" + json.dumps(res, ensure_ascii=False))
@@ -181,8 +182,8 @@ check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
       "«Новый чат» есть всегда: в пустом чате и сразу после первого ответа")
 metrics = dict(map(tuple, res.get("metrics") or []))
 docs_list = (res.get("docs_list") or [""])[0]
-check(res.get("indexed") == [True, True] and metrics.get("Документов в базе") == "2" and docs_list.count("<li") == 2
-      and "Памятка_<wbr>Б.md" in docs_list and "Векторов в FAISS" in metrics,
+check(res.get("indexed") == [True, True] and metrics.get("Документов") == "2" and docs_list.count("<li") == 2
+      and "Памятка_<wbr>Б.md" in docs_list and "Векторов" in metrics,
       f"боковая панель: число документов и векторов, список документов: {metrics}, {res.get('indexed')}")
 check(res.get("messages") == 2 and res.get("answer"), f"чат ответил: {res.get('answer', '')[:80]!r}")
 fb = W / "logs" / "feedback.jsonl"
@@ -202,7 +203,8 @@ check(res.get("focus_expect") and [res.get("focus_default"), res.get("focus_gene
 check(res.get("del_confirm") and res.get("del_gone") and res.get("docs_after") == res.get("docs_before", 0) - 1
       and res.get("del_pick_after") == [] and res.get("del_msg"),
       f"удаление документа: подтверждение, документ удалён, выбор очищен, сообщение "
-      f"({res.get('docs_before')} → {res.get('docs_after')}, {res.get('del_confirm')}, {res.get('del_msg')})")
+      f"({res.get('docs_before')} → {res.get('docs_after')}, {res.get('del_confirm')}, {res.get('del_pick_after')}, "
+      f"{res.get('alerts')})")
 check(res.get("arch_prompts") == "ru-8fd10871",
       f"профиль по умолчанию — набор промптов до профилей: {res.get('arch_prompts')}")
 

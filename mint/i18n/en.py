@@ -703,14 +703,18 @@ EN = {
         '🗑️ Removed from the base: {names}',
     'Не удалось удалить: {names}':
         'Could not remove: {names}',
-    'Документов в базе':
-        'Documents in the base',
-    'Векторов в FAISS':
-        'Vectors in FAISS',
+    'Документов':
+        'Documents',
+    'Документов в базе знаний':
+        'Documents in the knowledge base',
+    'Векторов':
+        'Vectors',
+    'Векторов в индексе FAISS: по одному на каждый небольшой фрагмент текста, по которому идёт поиск':
+        'Vectors in the FAISS index: one for every small text fragment the search works on',
     'Найти документ':
         'Find a document',
-    '🔎 Найти документ по названию':
-        '🔎 Find a document by name',
+    '🔎 Поиск по названию':
+        '🔎 Search by name',
     'Найдено: {n} из {total}':
         'Found: {n} of {total}',
     'Документов с таким названием нет.':
