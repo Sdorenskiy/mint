@@ -492,8 +492,13 @@ def list_kb_documents(cfg):
 
 
 def kb_document_status(cfg):
-    """Документы базы и расхождения с текущими настройками (модель эмбеддингов, нарезка)."""
-    docs, n_vectors = list_kb_documents(cfg)
+    """Документы базы и расхождения с текущими настройками (модель эмбеддингов, нарезка); у каждого — число
+    векторов и когда проиндексирован (по манифесту; у загруженных до v18 даты нет)."""
+    meta = load_kb_metadata(cfg)
+    docs, n_vectors = sorted({m["source"] for m in meta}), len(meta)
+    per_doc = {}
+    for m in meta:
+        per_doc[m["source"]] = per_doc.get(m["source"], 0) + 1
     manifest_docs = read_manifest(cfg).get("documents") or {}
     rows = []
     for d in docs:
@@ -509,7 +514,8 @@ def kb_document_status(cfg):
             if diff:
                 issues.append(("info", tr("нарезан с другими параметрами: ") +
                                ", ".join(f"{k} {p.get(k)} → {int(getattr(cfg, k))}" for k in diff)))
-        rows.append({"name": d, "issues": issues, "has_source": source_path(cfg, d).exists()})
+        rows.append({"name": d, "issues": issues, "has_source": source_path(cfg, d).exists(),
+                     "vectors": per_doc.get(d, 0), "indexed_at": (p or {}).get("indexed_at") or ""})
     return rows, n_vectors
 
 

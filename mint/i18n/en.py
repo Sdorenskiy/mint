@@ -699,12 +699,36 @@ EN = {
         '⏳ Processing {v}/{n_kb_files}: **{name}**...',
     '📁 Документы в базе':
         '📁 Documents in the base',
-    'Удалить {name} из базы':
-        'Remove {name} from the base',
-    'Файл {name} удалён из базы':
-        'File {name} removed from the base',
-    'Всего векторов в FAISS':
-        'Total vectors in FAISS',
+    '🗑️ Удалено из базы: {names}':
+        '🗑️ Removed from the base: {names}',
+    'Не удалось удалить: {names}':
+        'Could not remove: {names}',
+    'Документов в базе':
+        'Documents in the base',
+    'Векторов в FAISS':
+        'Vectors in FAISS',
+    'Найти документ':
+        'Find a document',
+    '🔎 Найти документ по названию':
+        '🔎 Find a document by name',
+    'Найдено: {n} из {total}':
+        'Found: {n} of {total}',
+    'Документов с таким названием нет.':
+        'No documents with such a name.',
+    '🗑️ Удалить из базы':
+        '🗑️ Remove from the base',
+    'Из базы удаляются фрагменты, векторы и сохранённый оригинал. Вернуть документ можно, только загрузив его заново.':
+        'The fragments, vectors and the stored original are removed. To bring a document back, upload it again.',
+    'Документы':
+        'Documents',
+    'Выберите документы':
+        'Choose documents',
+    'Удалить из базы документов: {n}? Это нельзя отменить.':
+        'Remove {n} document(s) from the base? This cannot be undone.',
+    'Отмена':
+        'Cancel',
+    '🗑️ Удалить выбранные ({n})':
+        '🗑️ Remove selected ({n})',
     '⛔ {n_bad} док. проиндексированы другой моделью эмбеддингов — векторный поиск по ним не работает. Переиндексируйте базу.':
         '⛔ {n_bad} doc(s) were indexed with another embedding model — vector search does not work for them. Re-index the base.',
     'ℹ️ {n_changed} док. нарезаны с другими параметрами или загружены до v18 (наведите на ℹ️). Это не ошибка; для единообразия — переиндексация.':
@@ -810,11 +834,22 @@ EN = {
         'Run settings and, for every section: the result, reference sources, what self-critique rejected. Useful for analysing misses during testing.',
     '**Оцените проверку:** найдены ли важные замечания, нет ли лишних и ошибочных?':
         '**Rate the review:** were the important findings found, are there extra or wrong ones?',
+    # ---- mint/ui/theme.py: documents of the base
+    'карточка системы':
+        'system card',
+    'правила экспертов: учитываются в каждом аудите':
+        'expert rules: used in every review',
+    'векторов: {n}':
+        'vectors: {n}',
+    'другая модель эмбеддингов — переиндексируйте':
+        'another embedding model — re-index',
+    'Документы в базе':
+        'Documents in the base',
     # ---- mint/ui/tab_chat.py
     'Консультация по накопленным знаниям':
         'Ask your knowledge base',
-    '🗑️ Новый диалог':
-        '🗑️ New conversation',
+    '➕ Новый чат':
+        '➕ New chat',
     'Очищает историю: следующий вопрос будет понят без учёта предыдущих реплик.':
         'Clears the history: the next question will be understood without the previous turns.',
     'Задайте вопрос по базе знаний...':

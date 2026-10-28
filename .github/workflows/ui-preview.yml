@@ -42,6 +42,10 @@ jobs:
         run: |
           python tools/ui_preview/run_preview.py --out preview/en --readme --lang en
           python tools/ui_preview/run_preview.py --out preview/ru --readme --lang ru
+      - name: Sidebar — documents of the base and "New chat" (neutral documents)
+        timeout-minutes: 6
+        continue-on-error: true
+        run: python tools/ui_preview/run_preview.py --out preview/sidebar --sidebar --lang ru
       - name: Publish to the ui-preview-<branch> branch
         if: always()
         run: |

@@ -24,6 +24,7 @@ from .common import (
     EXPERT_GROUPS, LIMIT_HELP, _conn_sig, _expert_widget, _probe_reranker_cached,
     _reset_session_settings, _server_info_cached, _slider, _width_kwargs, btn_w, dl_w,
 )
+from .theme import doc_matches, kb_docs_html
 
 
 def render_settings(base_cfg, config_notes, server, manual, manual_limits):
@@ -281,6 +282,62 @@ def _render_audit_roles(cfg, names, roles):
         render_cards_entry()
 
 
+KB_SEARCH_FROM = 8          # поиск по названию — когда документов больше
+
+
+def _render_docs_list(rows, roles):
+    """Список документов: прокручивается внутри себя, при большом числе документов — поиск по названию."""
+    shown = rows
+    if len(rows) > KB_SEARCH_FROM:
+        query = st.text_input(tr("Найти документ"), key="kb_docs_find", label_visibility="collapsed",
+                              placeholder=tr("🔎 Найти документ по названию"))
+        if query and query.strip():
+            shown = [r for r in rows if doc_matches(r["name"], query)]
+            st.caption(tr("Найдено: {n} из {total}", n=len(shown), total=len(rows)))
+    if shown:
+        st.markdown(kb_docs_html(shown, roles), unsafe_allow_html=True)
+    else:
+        st.caption(tr("Документов с таким названием нет."))
+
+
+def _ask_delete():
+    st.session_state["kb_del_confirm"] = list(st.session_state.get("kb_del_pick") or [])
+
+
+def _cancel_delete():
+    st.session_state.pop("kb_del_confirm", None)
+
+
+def _do_delete(cfg):
+    """Удаление подтверждено: документы удаляются из базы до перерисовки страницы (колбэк кнопки)."""
+    done, failed = [], []
+    for name in st.session_state.pop("kb_del_confirm", None) or []:
+        try:
+            (done if delete_document_from_kb(name, cfg) else failed).append(name)
+        except Exception:
+            failed.append(name)
+    st.session_state.pop("kb_del_pick", None)
+    st.session_state["_kb_deleted"] = (done, failed)
+
+
+def _render_delete(cfg, names):
+    """Удаление документов: выбрать в списке → «Удалить выбранные» → подтвердить."""
+    confirm = st.session_state.get("kb_del_confirm")
+    with st.expander(tr("🗑️ Удалить из базы"), expanded=bool(confirm)):
+        st.caption(tr("Из базы удаляются фрагменты, векторы и сохранённый оригинал. Вернуть документ можно, только "
+                      "загрузив его заново."))
+        pick = st.multiselect(tr("Документы"), names, key="kb_del_pick", placeholder=tr("Выберите документы"),
+                              on_change=_cancel_delete)
+        if confirm and [n for n in confirm if n in names] == list(pick or []):
+            st.warning(tr("Удалить из базы документов: {n}? Это нельзя отменить.", n=len(confirm)))
+            c_yes, c_no = st.columns(2)
+            c_yes.button(tr("Да, удалить"), key="kb_del_yes", type="primary", on_click=_do_delete, args=(cfg,), **btn_w)
+            c_no.button(tr("Отмена"), key="kb_del_no", on_click=_cancel_delete, **btn_w)
+        else:
+            st.button(tr("🗑️ Удалить выбранные ({n})", n=len(pick or [])), key="kb_del_ask", disabled=not pick,
+                      on_click=_ask_delete, **btn_w)
+
+
 def render_knowledge_base(cfg):
     """Боковая панель: добавление документов, список документов, переиндексация."""
     # ---------------- База знаний ----------------
@@ -331,24 +388,23 @@ def render_knowledge_base(cfg):
     st.subheader(tr("📁 Документы в базе"))
     for _name, _ok, _msg in st.session_state.pop("_reindex_results", []):
         (st.success if _ok else st.error)(f"{'✅' if _ok else '❌'} **{_name}** — {_msg}")
+    deleted = st.session_state.pop("_kb_deleted", None)
+    if deleted:
+        done, failed = deleted
+        if done:
+            st.success(tr("🗑️ Удалено из базы: {names}", names=", ".join(done)))
+        if failed:
+            st.error(tr("Не удалось удалить: {names}", names=", ".join(failed)))
     rows, n_vectors = kb_document_status(cfg)
     if rows:
         roles = load_roles(cfg)
-        for r in rows:
-            errors = [t for lvl, t in r["issues"] if lvl == "error"]
-            notes = [t for lvl, t in r["issues"] if lvl != "error"]
-            marker = "⛔ " if errors else ("ℹ️ " if notes else "")
-            icon = "🗂️" if r["name"] in roles["cards"] else "📌" if r["name"] in roles["always"] else "📄"
-            col_text, col_btn = st.columns([0.85, 0.15])
-            with col_text:
-                st.caption(f"{icon} {marker}{r['name']}", help="\n\n".join(errors + notes) or None)
-            with col_btn:
-                if st.button("🗑️", key=f"del_{r['name']}", help=tr("Удалить {name} из базы", name=r['name'])):
-                    if delete_document_from_kb(r["name"], cfg):
-                        st.toast(tr("Файл {name} удалён из базы", name=r['name']))
-                        st.rerun()
-        st.metric(label=tr("Всего векторов в FAISS"), value=n_vectors)
-        _render_audit_roles(cfg, [r["name"] for r in rows], roles)
+        c_docs, c_vec = st.columns(2)
+        c_docs.metric(label=tr("Документов в базе"), value=len(rows))
+        c_vec.metric(label=tr("Векторов в FAISS"), value=f"{n_vectors:,}".replace(",", "\u00a0"))
+        _render_docs_list(rows, roles)
+        names = [r["name"] for r in rows]
+        _render_delete(cfg, names)
+        _render_audit_roles(cfg, names, roles)
 
         n_bad = sum(1 for r in rows if any(lvl == "error" for lvl, _ in r["issues"]))
         n_changed = sum(1 for r in rows if any(lvl == "info" for lvl, _ in r["issues"]))

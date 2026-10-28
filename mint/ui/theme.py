@@ -12,7 +12,7 @@ from pathlib import Path
 import streamlit as st
 
 from ..audit import _SEVERITIES
-from ..i18n import tr
+from ..i18n import get_lang, tr
 
 _CSS = Path(__file__).with_name("assets") / "mint.css"
 
@@ -55,6 +55,62 @@ def empty_chat_html(docs, shown=6):
     if len(docs) > shown:
         chips += f'<li class="is-more" style="--i:{shown}">{html.escape(tr("и ещё {n}", n=len(docs) - shown))}</li>'
     return f'<div class="mint-empty"><p>{html.escape(text)}</p><ul class="mint-empty__docs">{chips}</ul></div>'
+
+
+def _fold(s):
+    """Название для поиска: без регистра, «ё» = «е», «_», «-», «.» и пробелы — один пробел."""
+    return re.sub(r"[\s_.\-]+", " ", (s or "").lower().replace("ё", "е")).strip()
+
+
+def doc_matches(name, query):
+    """Подходит ли документ к строке поиска: все слова запроса есть в названии («записка ч1» ↔
+    «Пояснительная_записка_ч1.docx»). Пустой запрос — подходит любой."""
+    name = _fold(name)
+    return all(w in name for w in _fold(query).split())
+
+
+def _short_date(stamp):
+    """«2026-10-20 14:33:10» → «20.10.2026» (по-английски — «2026-10-20»)."""
+    m = re.match(r"(\d{4})-(\d{2})-(\d{2})", stamp or "")
+    if not m:
+        return ""
+    y, mo, d = m.groups()
+    return f"{y}-{mo}-{d}" if get_lang() == "en" else f"{d}.{mo}.{y}"
+
+
+def _breakable(name):
+    """Длинное имя файла переносится по «_» и «-», а не посреди слова."""
+    return re.sub(r"([_\-])", r"\1<wbr>", html.escape(name))
+
+
+def kb_docs_html(rows, roles=None):
+    """Документы базы (kb.kb_document_status) компактным списком: значок роли, название, векторы и дата; ошибка
+    (другая модель эмбеддингов) — коротко под названием, подробности и примечания — подсказкой при наведении.
+    Список прокручивается внутри себя (mint.css)."""
+    roles = roles or {}
+    cards, always = set(roles.get("cards") or ()), set(roles.get("always") or ())
+    items = []
+    for r in rows:
+        errors = [t for lvl, t in r["issues"] if lvl == "error"]
+        notes = [t for lvl, t in r["issues"] if lvl != "error"]
+        if r["name"] in cards:
+            icon, role = "🗂️", tr("карточка системы")
+        elif r["name"] in always:
+            icon, role = "📌", tr("правила экспертов: учитываются в каждом аудите")
+        else:
+            icon, role = "📄", ""
+        meta = [tr("векторов: {n}", n=f"{int(r.get('vectors') or 0):,}".replace(",", "\u00a0"))]
+        date = _short_date(r.get("indexed_at"))
+        if date:
+            meta.append(date)
+        note = (f' <span class="mint-kbdocs__note" title="{html.escape(" ".join(notes))}">ℹ️</span>' if notes else "")
+        flag = (f'<span class="mint-kbdocs__flag" title="{html.escape(" ".join(errors))}">⛔ '
+                f'{html.escape(tr("другая модель эмбеддингов — переиндексируйте"))}</span>' if errors else "")
+        title = f' title="{html.escape(role)}"' if role else ""
+        items.append(f'<li class="{"is-error" if errors else ""}"><span class="mint-kbdocs__icon"{title}>{icon}</span>'
+                     f'<span class="mint-kbdocs__name">{_breakable(r["name"])}</span>'
+                     f'<span class="mint-kbdocs__meta">{html.escape(" · ".join(meta))}{note}</span>{flag}</li>')
+    return f'<ul class="mint-kbdocs" aria-label="{html.escape(tr("Документы в базе"))}">{"".join(items)}</ul>'
 
 
 def tally_html(items):

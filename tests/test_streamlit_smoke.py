@@ -1,6 +1,7 @@
 """Смоук-тест страницы MINT на настоящем Streamlit (streamlit.testing.v1.AppTest), без браузера:
-страница открывается, чат отвечает, кнопки 👍/👎 и комментарий работают, «Новый диалог» очищает историю, сохранённый
-аудит открывается из «📂 Мои аудиты» и замечания размечаются, профиль меняет критерии и набор промптов.
+страница открывается, чат отвечает, кнопки 👍/👎 и комментарий работают, «Новый чат» есть всегда и очищает историю,
+сохранённый аудит открывается из «📂 Мои аудиты» и замечания размечаются, профиль меняет критерии и набор промптов,
+документ удаляется из базы с подтверждением.
 
 Запуск из корня проекта:  python tests/test_streamlit_smoke.py
 Если настоящий Streamlit не установлен, тест пропускается (на GitHub он установлен).
@@ -23,6 +24,14 @@ from streamlit.testing.v1 import AppTest
 res = {"errors": []}
 
 
+def has_button(at, key):
+    try:
+        at.button(key=key)
+        return True
+    except Exception:
+        return False
+
+
 def errors(at):
     return [str(e.message) + "\n" + "\n".join(str(x) for x in (e.stack_trace or [])[-10:]) for e in at.exception]
 
@@ -34,9 +43,11 @@ try:
     res["titles"] = [str(m.value) for m in at.markdown if "mint-wordmark" in str(m.value)]
     res["theme"] = any("mint-theme-anchor" in str(m.value) for m in at.markdown)
     res["tabs"] = len(at.tabs)
+    res["new_chat_empty"] = has_button(at, "chat_clear_btn")
     if not at.exception:
         at.chat_input[0].set_value("Какие требования к журналам?").run()
         res["errors"] += errors(at)
+        res["new_chat_after_answer"] = has_button(at, "chat_clear_btn")
         msgs = at.session_state["messages"]
         res["messages"] = len(msgs)
         res["answer"] = msgs[-1]["content"][:200] if msgs else ""
@@ -98,6 +109,30 @@ try:
         at.selectbox(key="mint_profile").set_value("general").run()
         res["errors"] += errors(at)
         res["focus_general"] = at.text_area(key="tab2_user_focus").value
+        # документы в базе: число документов и векторов, список; удаление: выбрать → «Удалить выбранные» →
+        # подтвердить (настоящие виджеты и колбэки)
+        from mint.kb import list_kb_documents, process_and_add_to_kb
+        from mint.limits import resolve_model_limits, resolve_settings
+        cfg_kb, _ = resolve_settings(cfg_, resolve_model_limits(cfg_, {}, None, {}), {})
+        for name_, text_ in (("Памятка_А.md", "# Памятка А\n\n## 1. Хранение\n\nФайлы хранятся 30 дней.\n"),
+                             ("Памятка_Б.md", "# Памятка Б\n\n## 1. Доступ\n\nДоступ выдаёт администратор.\n")):
+            res["indexed"] = res.get("indexed", []) + [process_and_add_to_kb(name_, text_.encode("utf-8"), cfg_kb)[0]]
+        at.run()
+        res["errors"] += errors(at)
+        res["metrics"] = [[str(m.label), str(m.value)] for m in at.metric]
+        res["docs_list"] = [str(m.value) for m in at.markdown if str(m.value).startswith('<ul class="mint-kbdocs"')]
+        doc_ = "Памятка_А.md"
+        res["docs_before"] = len(list_kb_documents(cfg_)[0])
+        at.multiselect(key="kb_del_pick").set_value([doc_]).run()
+        at.button(key="kb_del_ask").click().run()
+        res["errors"] += errors(at)
+        res["del_confirm"] = any("Удалить из базы документов: 1?" in str(w.value) for w in at.warning)
+        at.button(key="kb_del_yes").click().run()
+        res["errors"] += errors(at)
+        res["docs_after"] = len(list_kb_documents(cfg_)[0])
+        res["del_gone"] = doc_ not in list_kb_documents(cfg_)[0]
+        res["del_pick_after"] = list(at.multiselect(key="kb_del_pick").value)
+        res["del_msg"] = any(str(s.value).startswith("🗑️ Удалено из базы: ") for s in at.success)
 except Exception:
     res["errors"].append(traceback.format_exc())
 print("RESULT" + json.dumps(res, ensure_ascii=False))
@@ -142,11 +177,18 @@ print(f"  Streamlit {ver}")
 check(not res["errors"], "страница и действия без исключений", " ⏎ ".join(res["errors"]).replace("\n", " ⏎ ")[-3000:])
 check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
 check(res.get("tabs") == 3, f"три вкладки: {res.get('tabs')}")
+check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
+      "«Новый чат» есть всегда: в пустом чате и сразу после первого ответа")
+metrics = dict(map(tuple, res.get("metrics") or []))
+docs_list = (res.get("docs_list") or [""])[0]
+check(res.get("indexed") == [True, True] and metrics.get("Документов в базе") == "2" and docs_list.count("<li") == 2
+      and "Памятка_<wbr>Б.md" in docs_list and "Векторов в FAISS" in metrics,
+      f"боковая панель: число документов и векторов, список документов: {metrics}, {res.get('indexed')}")
 check(res.get("messages") == 2 and res.get("answer"), f"чат ответил: {res.get('answer', '')[:80]!r}")
 fb = W / "logs" / "feedback.jsonl"
 rows = [json.loads(x) for x in fb.read_text(encoding="utf-8").splitlines()] if fb.exists() else []
 check([x.get("rating") for x in rows] == ["up", "comment"], f"оценка и комментарий записаны: {[x.get('rating') for x in rows]}")
-check(res.get("messages_after_clear") == 0, "«Новый диалог» очищает историю")
+check(res.get("messages_after_clear") == 0, "«Новый чат» очищает историю")
 check(any("An intelligent RAG system" in t for t in res.get("titles_en", [])) and "📋 Document review" in res.get("tabs_en", []),
       "переключатель языка: интерфейс на английском", f"{str(res.get('titles_en'))[-200:]}, {res.get('tabs_en')}")
 check(str(res.get("answer_en", "")).startswith("Answer from the context"), f"чат на английском: {res.get('answer_en')!r}")
@@ -157,12 +199,16 @@ check(res.get("reopened") and res.get("marks") == {k0: {"verdict": "ok", "commen
 check(res.get("radio_after") == ["ok", "wrong"], f"отметки не сбрасываются после перерисовки: {res.get('radio_after')}")
 check(res.get("focus_expect") and [res.get("focus_default"), res.get("focus_general")] == res["focus_expect"],
       "профиль: по умолчанию архитектурные критерии, выбран универсальный — его критерии")
+check(res.get("del_confirm") and res.get("del_gone") and res.get("docs_after") == res.get("docs_before", 0) - 1
+      and res.get("del_pick_after") == [] and res.get("del_msg"),
+      f"удаление документа: подтверждение, документ удалён, выбор очищен, сообщение "
+      f"({res.get('docs_before')} → {res.get('docs_after')}, {res.get('del_confirm')}, {res.get('del_msg')})")
 check(res.get("arch_prompts") == "ru-8fd10871",
       f"профиль по умолчанию — набор промптов до профилей: {res.get('arch_prompts')}")
 
 if os.environ.get("GITHUB_ACTIONS") == "true" and not check.fails:   # видно в интерфейсе GitHub и через API
-    print(f"::notice title=Смоук-тест страницы::Streamlit {ver}: страница, чат, 👍 и комментарий, «Новый диалог», "
-          "переключение на английский, разбор замечаний сохранённого аудита — без ошибок")
+    print(f"::notice title=Смоук-тест страницы::Streamlit {ver}: страница, чат, 👍 и комментарий, «Новый чат», "
+          "переключение на английский, разбор замечаний сохранённого аудита, удаление документа — без ошибок")
 srv.shutdown()
 shutil.rmtree(W, ignore_errors=True)
 check.finish()
