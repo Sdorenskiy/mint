@@ -132,8 +132,8 @@ try:
         res["docs_after"] = len(list_kb_documents(cfg_)[0])
         res["del_gone"] = doc_ not in list_kb_documents(cfg_)[0]
         res["del_pick_after"] = list(at.multiselect(key="kb_del_pick").value)
-        res["alerts"] = [str(s.value)[:120] for s in list(at.success) + list(at.sidebar.success)]
-        res["del_msg"] = any(a.startswith("🗑️ Удалено из базы: ") for a in res["alerts"])
+        res["alerts"] = [str(s.value)[:120] for s in at.success]     # эмодзи в начале Streamlit выносит в значок
+        res["del_msg"] = any("Удалено из базы: Памятка_А.md" in a for a in res["alerts"])
 except Exception:
     res["errors"].append(traceback.format_exc())
 print("RESULT" + json.dumps(res, ensure_ascii=False))

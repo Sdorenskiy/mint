@@ -332,7 +332,7 @@ def _render_delete(cfg, names):
         if confirm and [n for n in confirm if n in names] == list(pick or []):
             st.warning(tr("Удалить из базы документов: {n}? Это нельзя отменить.", n=len(confirm)))
             c_yes, c_no = st.columns(2)
-            c_yes.button(tr("Да, удалить"), key="kb_del_yes", type="primary", on_click=_do_delete, args=(cfg,), **btn_w)
+            c_yes.button(tr("Удалить"), key="kb_del_yes", type="primary", on_click=_do_delete, args=(cfg,), **btn_w)
             c_no.button(tr("Отмена"), key="kb_del_no", on_click=_cancel_delete, **btn_w)
         else:
             st.button(tr("🗑️ Удалить выбранные ({n})", n=len(pick or [])), key="kb_del_ask", disabled=not pick,
