@@ -26,6 +26,20 @@
     same as before (`ru-8fd10871` / `en-9c3500f7`), so earlier results stay comparable.
   - Without new libraries and without new network requests: the same LLM, embedding and reranker services.
 
+## 21.2.1 — a review no longer stops on long headings of basis documents
+
+- **Fixed: a review could hang for hours** ("Running the pipeline" spins, the log is silent, the CPU is busy) when
+  basis documents were found for the document under review and one of them had a long heading (40+ letters). The
+  check "is this section without requirements (abbreviations, terms, contents)?" was a regular expression that
+  tried hundreds of millions of ways to split one word. Now it takes a single pass; which headings it recognises has
+  not changed. Four more expressions that slowed down on long runs of spaces, dots or tabs (status lines of system
+  cards, "Answer:" in model answers, table-of-contents lines, process details) are fixed the same way.
+- A new test runs every regular expression of MINT on awkward text (long words and headings, thousands of dots,
+  spaces, tabs) and compares the fixed ones with the previous versions on random lines (`tests/test_regex_speed.py`).
+- **If MINT seems to hang:** `kill -USR1 <MINT process>` (Linux, macOS) writes where each thread is right now to
+  `LOG_DIR/mint_stacks.txt` — program file names, line numbers and functions only, no document text — and MINT keeps
+  working ([INSTALL → Troubleshooting](docs/INSTALL.md#troubleshooting)).
+
 ## 21.2 — a quiet installation, a compact document list, "New chat" always at hand
 
 - **Documents of the base in the sidebar — a compact list.** It scrolls inside itself instead of stretching the whole
