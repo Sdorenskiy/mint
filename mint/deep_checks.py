@@ -106,7 +106,9 @@ def step_text(header, row, i):
     return tr("Шаг {n}: {body}", n=_step_no(row, i), body=body)
 
 
-_INFO_LINE_RE = re.compile(r"^\s*(?:[-–—•·*]\s+)?[*_]*([^:\n]{3,80}?)[*_]*\s*:\s*(\S.{5,})$")
+# «- **Срок хранения:** 5 лет»: название начинается не с пробела — иначе на строке из пробелов разбор перебирал бы,
+# какие из них отдать «\s*», а какие названию
+_INFO_LINE_RE = re.compile(r"^\s*(?:[-–—•·*]\s+)?(?:[*_]+\s*)?([^:\s*_][^:\n]{2,79}?)[*_]*\s*:\s*(\S.{5,})$")
 
 
 def process_info(blocks, table):
@@ -132,7 +134,7 @@ def process_info(blocks, table):
         # сведения, как и раньше, из таблиц: вопросы по ней не меняются)
         if table.get("kind", "table") != "table" and area and (b["path"] == area or b["path"].startswith(area + " → ")):
             for line in b["text"].split("\n"):
-                m = _INFO_LINE_RE.match(line)
+                m = _INFO_LINE_RE.match(line.lstrip()) if ":" in line else None    # без ведущих пробелов: не перебирать их
                 if m and _INFO_KEY_RE.search(m.group(1)) and not _STEP_WORD_RE.match(m.group(1)):
                     info.append(f"{m.group(1).strip()}: {m.group(2).strip()}")
         same = j > table["index"] and b["path"] == table["path"]
