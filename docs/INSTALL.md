@@ -284,7 +284,7 @@ MINT takes the same Word backend from it.
 Stop MINT and run `update.sh` (Windows: `update.bat`) in the program folder with the archive of the new version:
 
 ```bash
-./update.sh ~/Downloads/mint-21.2.zip       # or a .tar.gz, or the unpacked folder of the new version
+./update.sh ~/Downloads/mint-21.3.zip       # or a .tar.gz, or the unpacked folder of the new version
 ```
 
 The script replaces the code (the `mint`, `docs`, `tools`, `tests` and `static` folders entirely, so that removed
@@ -317,3 +317,4 @@ re-indexing, the sidebar will say so.
 | `Some exact versions are not available` | Your mirror lacks one exact version — the script installs from `requirements.txt` by itself; tell the maintainer which package |
 | The installation stopped with a pip error | The end of the log is on screen; the full pip output is in `.venv/install.log` (Windows: `.venv\install.log`) — send that file |
 | `GOST engine already loaded` | A message of the Astra system cryptography (the GOST engine in OpenSSL), not of MINT; harmless |
+| A review (or another action) has been running for a long time, nothing new in the log | Linux, macOS: `kill -USR1 $(pgrep -f "streamlit run app.py")` — MINT writes where each of its threads is right now to `LOG_DIR/mint_stacks.txt` (only program file names, line numbers and functions, no document text) and keeps working; send that file. Works from 21.2.1 (in older versions this signal stops MINT); before 21.2.1 a long heading in a basis document could stop a review for hours — update |

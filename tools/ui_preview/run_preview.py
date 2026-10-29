@@ -462,6 +462,11 @@ class Shots:
             ctx.close()
 
     def save(self):
+        try:
+            import importlib.metadata as md
+            self.dom.insert(0, f"streamlit {md.version('streamlit')}\n")
+        except Exception:
+            pass
         (self.out / "dom.txt").write_text("\n".join(self.dom), encoding="utf-8")
         (self.out / "errors.txt").write_text("\n".join(self.errors) or "нет ошибок\n", encoding="utf-8")
 
@@ -528,7 +533,7 @@ def run(out):
                 shots.dom.append(f"static onest.woff: HTTP {status}\n")
 
             def chat(page):
-                box = page.locator('[data-testid="stChatInput"] textarea')
+                box = page.get_by_placeholder(L("Задайте вопрос по базе знаний..."))   # поле чата (у консультанта — своё)
                 box.fill((README_TEXT if README_MODE else TEXT)[LANG]["question"])
                 box.press("Enter")
                 time.sleep(1.2)
@@ -679,7 +684,7 @@ def run(out):
                 head.evaluate("e => e.scrollIntoView({block: 'start'})")
                 sb.screenshot(path=str(out / "sidebar_deleted.png"))
                 shots.dom.append(dom_dump(page, "после удаления"))
-                box = page.locator('[data-testid="stChatInput"] textarea')
+                box = page.get_by_placeholder(L("Задайте вопрос по базе знаний..."))   # поле чата (у консультанта — своё)
                 box.fill(README_TEXT[LANG]["question"])
                 box.press("Enter")
                 page.wait_for_function(
@@ -688,9 +693,36 @@ def run(out):
                 page.evaluate("() => window.scrollTo(0, 0)")
                 page.screenshot(path=str(out / "sidebar_chat_after_answer.png"), clip={"x": 0, "y": 0, "width": 1440, "height": 520})
 
+            def consult(page):
+                """Вкладка «Консультант»: пустой разговор с примерами, затем ответ со схемой и «Что нашёл в вики».
+                Заодно — обращается ли страница куда-то, кроме самого MINT (схему Streamlit рисует сам?)."""
+                external = []
+                page.on("request", lambda r: external.append(r.url) if not r.url.startswith(
+                    (f"http://localhost:{PORT}", "data:", "blob:")) else None)
+                time.sleep(2.0)
+                page.get_by_role("tab", name=L("🧠 Консультант")).click()
+                time.sleep(1.2)
+                page.screenshot(path=str(out / "consult_empty.png"))
+                box = page.get_by_placeholder(L("Опишите проблему или задачу — например, «нарисуй схему…»"))
+                box.fill("Нарисуй схему прохождения входящего сообщения: от приёма до сохранения в архиве.")
+                box.press("Enter")
+                page.get_by_text(L("Готово за {s} с").split("{")[0].strip()).first.wait_for(timeout=90000)
+                time.sleep(1.5)
+                page.get_by_text(L("🔎 Что нашёл в вики"), exact=True).first.click()
+                time.sleep(1.2)
+                shots.dom.append(dom_dump(page, "консультант"))
+                svg = page.evaluate("() => { const s = [...document.querySelectorAll('svg')].find(e => "
+                                    "/Отправитель|Sender/.test(e.textContent)); if (!s) return null; "
+                                    "let p = s, path = []; for (let i = 0; i < 5 && p; i++, p = p.parentElement) "
+                                    "path.push(p.tagName + '.' + (p.getAttribute('data-testid') || p.className.baseVal "
+                                    "|| p.className || '')); return path.join(' < '); }")
+                shots.dom.append(f"=== схема Mermaid нарисована: {svg}\n=== запросы страницы не к MINT: {external or 'нет'}\n")
+                tall(page, out / "consult_answer.png", 2400)
+
             shots.scenario("home", home)
-            if SIDEBAR_MODE:                       # список документов на боковой панели и «Новый чат»
+            if SIDEBAR_MODE:                       # список документов на боковой панели, «Новый чат», консультант
                 shots.scenario("sidebar", sidebar, viewport={"width": 1440, "height": 1000}, device_scale_factor=2)
+                shots.scenario("consult", consult, viewport={"width": 1440, "height": 1000}, device_scale_factor=2)
                 browser.close()
                 shots.save()
                 return

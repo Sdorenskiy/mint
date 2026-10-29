@@ -2,6 +2,44 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## 21.3 — the Consultant: problems, diagrams, explanations
+
+- **A new tab, "🧠 Consultant"**, for advice rather than "what the document says": analyse a problem and propose
+  solution options, draw a diagram, explain how a system is built, compare approaches. The model learns from the
+  knowledge base how your systems are built and proposes solutions itself.
+  - **A wide context.** Before answering, the model splits the request into sides (composition of the systems,
+    interaction, message path, settings, monitoring); MINT searches for each side and for the request itself, takes
+    the found sections whole (with subsections) and adds the cards of the systems mentioned. The amount follows the
+    model window (`consult_context_max_chars` is the ceiling).
+  - **The answer shows what comes from where.** "📄 How it works now" — from the documents, every item with a reference;
+    💡 — the model's proposals and knowledge; for a problem — causes and 2–4 options with pros, cons, risks and effort
+    plus a recommendation; at the end — what is not in the base and what to clarify. Without a model MINT checks the
+    references (against all fragments seen in the conversation) and marks ❔ the items of the 📄 section that have no
+    reference.
+  - **Diagrams** are drawn right in the answer (Mermaid; Streamlit draws them itself, without internet access): download
+    as a picture, copy, full screen; the code (.mmd) — to refine the diagram in draw.io or Excalidraw.
+  - **A conversation of its own**: earlier answers are part of the work, follow-ups build on them; the chat and its
+    history are untouched.
+  - Settings — "⚙️ Consultant settings" in the tab or the `consult` section of `config.yaml`; texts — the
+    "📝 Prompts" page, the "Consultant" group; the architecture profile has its own role. The consultant texts have a
+    version of their own (`ru-consult-…`) written into the 👍/👎 feedback; the chat and review prompt version is the
+    same as before (`ru-8fd10871` / `en-9c3500f7`), so earlier results stay comparable.
+  - Without new libraries and without new network requests: the same LLM, embedding and reranker services.
+
+## 21.2.1 — a review no longer stops on long headings of basis documents
+
+- **Fixed: a review could hang for hours** ("Running the pipeline" spins, the log is silent, the CPU is busy) when
+  basis documents were found for the document under review and one of them had a long heading (40+ letters). The
+  check "is this section without requirements (abbreviations, terms, contents)?" was a regular expression that
+  tried hundreds of millions of ways to split one word. Now it takes a single pass; which headings it recognises has
+  not changed. Four more expressions that slowed down on long runs of spaces, dots or tabs (status lines of system
+  cards, "Answer:" in model answers, table-of-contents lines, process details) are fixed the same way.
+- A new test runs every regular expression of MINT on awkward text (long words and headings, thousands of dots,
+  spaces, tabs) and compares the fixed ones with the previous versions on random lines (`tests/test_regex_speed.py`).
+- **If MINT seems to hang:** `kill -USR1 <MINT process>` (Linux, macOS) writes where each thread is right now to
+  `LOG_DIR/mint_stacks.txt` — program file names, line numbers and functions only, no document text — and MINT keeps
+  working ([INSTALL → Troubleshooting](docs/INSTALL.md#troubleshooting)).
+
 ## 21.2 — a quiet installation, a compact document list, "New chat" always at hand
 
 - **Documents of the base in the sidebar — a compact list.** It scrolls inside itself instead of stretching the whole

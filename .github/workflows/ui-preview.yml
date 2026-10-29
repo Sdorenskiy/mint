@@ -26,7 +26,9 @@ jobs:
         timeout-minutes: 6
         run: |
           python -m pip install --upgrade pip
-          pip install streamlit faiss-cpu "numpy>=1.26" requests "python-docx>=1.2" python-dotenv PyYAML playwright
+          # версии — как у пользователей (requirements.lock): снимки показывают тот же Streamlit, что ставит install.sh
+          grep -iE '^(streamlit|faiss-cpu|numpy|requests|python-docx|python-dotenv|pyyaml)==' requirements.lock > /tmp/preview-req.txt
+          pip install -r /tmp/preview-req.txt playwright
       - name: Install Chromium for Playwright
         timeout-minutes: 6
         continue-on-error: true

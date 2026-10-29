@@ -1,7 +1,7 @@
 """Смоук-тест страницы MINT на настоящем Streamlit (streamlit.testing.v1.AppTest), без браузера:
 страница открывается, чат отвечает, кнопки 👍/👎 и комментарий работают, «Новый чат» есть всегда и очищает историю,
 сохранённый аудит открывается из «📂 Мои аудиты» и замечания размечаются, профиль меняет критерии и набор промптов,
-документ удаляется из базы с подтверждением.
+консультант отвечает со схемой в своём разговоре, документ удаляется из базы с подтверждением.
 
 Запуск из корня проекта:  python tests/test_streamlit_smoke.py
 Если настоящий Streamlit не установлен, тест пропускается (на GitHub он установлен).
@@ -121,6 +121,19 @@ try:
         res["errors"] += errors(at)
         res["metrics"] = [[str(m.label), str(m.value)] for m in at.metric]
         res["docs_list"] = [str(m.value) for m in at.markdown if str(m.value).startswith('<ul class="mint-kbdocs"')]
+        # консультант: своё поле ввода и свой разговор; ход работы (st.status), ответ, «Что нашёл в вики»
+        at.chat_input(key="consult_field").set_value("Нарисуй схему: как хранятся файлы и кто выдаёт доступ").run()
+        res["errors"] += errors(at)
+        cm_ = at.session_state["consult_messages"]
+        res["consult"] = {"n": len(cm_), "kind": cm_[-1].get("kind") if cm_ else None,
+                          "diagrams": len(cm_[-1].get("diagrams") or []) if cm_ else 0,
+                          "error": cm_[-1].get("error") if cm_ else True,
+                          "shown": any("📄 Как устроено сейчас" in str(m.value) for m in at.markdown),
+                          "found": any("Что нашёл в вики" in str(e.label) for e in at.expander),
+                          "chat_untouched": len(at.session_state["messages"])}
+        at.button(key="consult_clear_btn").click().run()
+        res["errors"] += errors(at)
+        res["consult"]["after_clear"] = len(at.session_state["consult_messages"])
         doc_ = "Памятка_А.md"
         res["docs_before"] = len(list_kb_documents(cfg_)[0])
         at.multiselect(key="kb_del_pick").set_value([doc_]).run()
@@ -177,9 +190,13 @@ print(f"  Streamlit {ver}")
 # ошибки — одной строкой: на GitHub в аннотацию попадают только строки с «✗», и трассировка видна целиком
 check(not res["errors"], "страница и действия без исключений", " ⏎ ".join(res["errors"]).replace("\n", " ⏎ ")[-3000:])
 check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
-check(res.get("tabs") == 3, f"три вкладки: {res.get('tabs')}")
+check(res.get("tabs") == 4, f"четыре вкладки: {res.get('tabs')}")
 check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
       "«Новый чат» есть всегда: в пустом чате и сразу после первого ответа")
+cons = res.get("consult") or {}
+check(cons.get("n") == 2 and cons.get("kind") == "diagram" and cons.get("diagrams") == 1 and not cons.get("error")
+      and cons.get("shown") and cons.get("found") and cons.get("after_clear") == 0,
+      f"«Консультант»: ответ со схемой, «Что нашёл в вики», «Новый разговор»: {cons}")
 metrics = dict(map(tuple, res.get("metrics") or []))
 docs_list = (res.get("docs_list") or [""])[0]
 check(res.get("indexed") == [True, True] and metrics.get("Документов") == "2" and docs_list.count("<li") == 2
@@ -190,7 +207,8 @@ fb = W / "logs" / "feedback.jsonl"
 rows = [json.loads(x) for x in fb.read_text(encoding="utf-8").splitlines()] if fb.exists() else []
 check([x.get("rating") for x in rows] == ["up", "comment"], f"оценка и комментарий записаны: {[x.get('rating') for x in rows]}")
 check(res.get("messages_after_clear") == 0, "«Новый чат» очищает историю")
-check(any("An intelligent RAG system" in t for t in res.get("titles_en", [])) and "📋 Document review" in res.get("tabs_en", []),
+check(any("An intelligent RAG system" in t for t in res.get("titles_en", [])) and "📋 Document review" in res.get("tabs_en", [])
+      and "🧠 Consultant" in res.get("tabs_en", []),
       "переключатель языка: интерфейс на английском", f"{str(res.get('titles_en'))[-200:]}, {res.get('tabs_en')}")
 check(str(res.get("answer_en", "")).startswith("Answer from the context"), f"чат на английском: {res.get('answer_en')!r}")
 k0, k1 = res.get("keys") or ("", "")

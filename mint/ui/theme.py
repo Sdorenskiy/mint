@@ -12,7 +12,8 @@ from pathlib import Path
 import streamlit as st
 
 from ..audit import _SEVERITIES
-from ..i18n import get_lang, tr
+from ..i18n import N_, get_lang, tr
+from ..text import short_path
 
 _CSS = Path(__file__).with_name("assets") / "mint.css"
 
@@ -111,6 +112,54 @@ def kb_docs_html(rows, roles=None):
                      f'<span class="mint-kbdocs__name">{_breakable(r["name"])}</span>'
                      f'<span class="mint-kbdocs__meta">{html.escape(" · ".join(meta))}{note}</span>{flag}</li>')
     return f'<ul class="mint-kbdocs" aria-label="{html.escape(tr("Документы в базе"))}">{"".join(items)}</ul>'
+
+
+CONSULT_EXAMPLES = (
+    N_("Разбери проблему: при росте нагрузки растёт очередь входящих сообщений и задержка обработки. Что можно сделать?"),
+    N_("Нарисуй схему прохождения входящего сообщения: от приёма до сохранения в архиве."),
+    N_("Объясни, из каких компонентов состоит система и как они взаимодействуют."),
+)
+
+
+def consult_empty_html(n_docs):
+    """Пустой разговор с консультантом: что он умеет, как читать ответ, примеры запросов."""
+    lead = tr("Опишите проблему, попросите схему или объяснение. Консультант прочитает в базе, как устроены ваши "
+              "системы, и сам предложит решения: 📄 — из документов, со ссылками; 💡 — предложения и знания модели; "
+              "❔ — утверждение о ваших системах без ссылки, проверьте его. Нужен точный ответ «что написано в "
+              "документе» — вкладка «Чат».")
+    if not n_docs:
+        lead += " " + tr("База знаний пока пуста: ответы будут без опоры на ваши документы.")
+    chips = "".join(f'<li style="--i:{i}">{html.escape(tr(e))}</li>' for i, e in enumerate(CONSULT_EXAMPLES))
+    return (f'<div class="mint-empty"><p>{html.escape(lead)}</p>'
+            f'<ul class="mint-empty__docs mint-empty__examples">{chips}</ul></div>')
+
+
+def consult_found_html(msg):
+    """«Что нашёл в вики»: поисковые запросы по сторонам вопроса и что получила модель."""
+    asp = []
+    for i, a in enumerate(msg.get("aspects") or []):
+        meta = (tr("ничего не найдено") if not a.get("found") else tr("найдено: {n}", n=len(a["found"]))
+                + (" · " + tr("уверенность низкая") if a.get("low_conf") else ""))
+        asp.append(f'<li style="--i:{i}"><span class="mint-src__n">{i + 1}</span>'
+                   f'<span class="mint-src__doc">{html.escape(a.get("query") or "")}</span>'
+                   f'<span class="mint-src__meta">{html.escape(meta)}</span></li>')
+    got = []
+    for i, b in enumerate(msg.get("blocks") or []):
+        icon = "🗂️" if b.get("kind") == "card" else "📄"
+        what = (tr("карточка системы") if b.get("kind") == "card"
+                else tr("раздел целиком") if b.get("expanded") else tr("найденный фрагмент"))
+        meta = f"{what} · " + tr("{n} симв.", n=f"{int(b.get('chars') or 0):,}".replace(",", " "))
+        path = short_path(b.get("path") or "") if b.get("path") else ""
+        doc = html.escape(f"{icon} {b.get('source') or ''}") + (f" <span>› {html.escape(path)}</span>" if path else "")
+        got.append(f'<li style="--i:{i}"><span class="mint-src__n">{i + 1}</span>'
+                   f'<span class="mint-src__doc">{doc}</span><span class="mint-src__meta">{html.escape(meta)}</span></li>')
+    out = f'<p class="mint-found__h">{html.escape(tr("Поиск по сторонам вопроса"))}</p><ol class="mint-sources">{"".join(asp)}</ol>'
+    if got:
+        out += (f'<p class="mint-found__h">{html.escape(tr("Что получила модель"))}</p>'
+                f'<ol class="mint-sources">{"".join(got)}</ol>')
+    else:
+        out += f'<p class="mint-found__h">{html.escape(tr("В базе по запросу ничего не нашлось."))}</p>'
+    return out
 
 
 def tally_html(items):

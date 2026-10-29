@@ -351,6 +351,13 @@
   animation-delay: calc(1s + var(--i, 0) * 60ms);
 }
 .mint-empty__docs li.is-more { background: transparent; color: var(--mint-muted); }
+/* the consultant's empty conversation: example requests, one per line */
+.stApp .mint-empty__examples { display: grid; gap: 0.4rem; }
+.stApp .mint-empty__examples li { border-radius: 12px; padding: 0.45rem 0.75rem; line-height: 1.4; }
+.stApp .mint-empty__examples li::before { content: "→ "; color: var(--mint); }
+/* "what was found in the wiki": headings of the two lists */
+.stApp .mint-found__h { margin: 0.7rem 0 0.35rem; font-size: 0.82rem; font-weight: 600; color: var(--mint-muted); }
+.stApp .mint-found__h:first-child { margin-top: 0.1rem; }
 
 /* sources under an answer appear one after another */
 .stApp .mint-sources { list-style: none; margin: 0.2rem 0 0; padding: 0; display: grid; gap: 0.45rem; }

@@ -49,6 +49,9 @@ def settings_snapshot(cfg):
         "use_multi_query": cfg.use_multi_query,
         "weight_rerank": cfg.weight_rerank if cfg.rerank_url else None,
         "chat_history_turns": cfg.chat_history_turns,
+        "consult": {k: getattr(cfg, k) for k in ("consult_queries", "consult_per_query", "consult_expand_sections",
+                                                 "consult_section_max_chars", "consult_context_max_chars",
+                                                 "consult_max_tokens", "consult_temperature", "consult_history_turns")},
         "glossary_in_context": cfg.glossary_in_context,
         "use_self_critique": cfg.use_self_critique,
         "parent_size": cfg.parent_size,
@@ -65,7 +68,7 @@ def _clip(value):
 
 
 def record_feedback(cfg, kind, rating, item_id, context=None, comment=""):
-    """Записывает оценку. kind — "chat" | "audit" | "review"; rating — "up" | "down" | "comment"
+    """Записывает оценку. kind — "chat" | "consult" | "audit" | "review"; rating — "up" | "down" | "comment"
     (комментарий к уже поставленной оценке, связан с ней по item_id). Возвращает True, если записано."""
     entry = {
         "time": time.strftime("%Y-%m-%d %H:%M:%S"),
