@@ -1,0 +1,18 @@
+2026-10-29 17:04:17.255 Uvicorn server started on localhost:8599
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://localhost:8599
+
+[2026-10-29 17:04:25] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: 'How long are backups kept?...' (dense 2, BM25 1)
+[2026-10-29 17:04:25] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.6 lexical=0.67 agree=True low=False selected=2 dense=on
+[2026-10-29 17:04:25] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+[2026-10-29 17:04:38] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: '# 1. Purpose
+
+The exchange service receives files ...' (dense 2, BM25 2)
+[2026-10-29 17:04:38] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.4595 lexical=0.32 agree=True low=False selected=2 dense=on
+[2026-10-29 17:04:38] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+[2026-10-29 17:04:38] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+[2026-10-29 17:04:38] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+[2026-10-29 17:04:38] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+  Stopping...

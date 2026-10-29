@@ -1,0 +1,26 @@
+2026-10-29 17:05:17.360 Uvicorn server started on localhost:8599
+
+  You can now view your Streamlit app in your browser.
+
+  URL: http://localhost:8599
+
+[2026-10-29 17:05:37] [INFO] [MINT_CORE]: 📘 Автоглоссарий: 0 сокращений
+[2026-10-29 17:05:39] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: 'Сколько хранятся резервные копии?...' (dense 13, BM25 2)
+[2026-10-29 17:05:39] [INFO] [MINT_CORE]: 🎯 Реранк: 13 док. в 2 запросах
+[2026-10-29 17:05:39] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.75 lexical=1.00 agree=True low=False selected=4 dense=on
+[2026-10-29 17:05:39] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=90s)
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=180s)
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🧠 Консультант: diagram, систем 0, поисков 3
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: 'Нарисуй схему прохождения входящего сообщения: от ...' (dense 13, BM25 1)
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🎯 Реранк: 13 док. в 2 запросах
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.1818 lexical=0.12 agree=True low=True selected=4 dense=on
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🔍 Запрос «Нарисуй схему прохождения состав»: composition, предмет «нарисуй схему прохождения»
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: 'Нарисуй схему прохождения состав...' (dense 13, BM25 1)
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🎯 Реранк: 13 док. в 2 запросах
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.0 lexical=0.00 agree=True low=True selected=4 dense=on
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🔎 ГИБРИДНЫЙ ПОИСК: 'Нарисуй схему прохождения взаимодействие...' (dense 13, BM25 0)
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🎯 Реранк: 13 док. в 2 запросах
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 📊 conf: best_rerank=0.0 lexical=0.00 agree=False low=True selected=4 dense=on
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🧠 ИИ-КОНВЕЙЕР: попытка 1/2 → 'test-llm' (timeout=180s)
+[2026-10-29 17:05:46] [INFO] [MINT_CORE]: 🧠 Консультант: фрагментов 7 (1955 из 3000 симв.), ссылок мимо 0, без ссылки 1, 0 с
+  Stopping...
