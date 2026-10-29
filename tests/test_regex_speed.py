@@ -46,7 +46,9 @@ ADVERSARIAL = {
 
 
 def run_limited(fn, seconds):
-    """fn() не дольше seconds: True — успел. POSIX — прерывание по таймеру; Windows — поток с ожиданием."""
+    """fn() не дольше seconds: True — успел. Linux, macOS — прерывание по таймеру (поиск по выражению его замечает).
+    Windows — поток с ожиданием: зависшее выражение держит интерпретатор, и тест не провалится, а остановится, — поэтому
+    прежние, заведомо медленные выражения на Windows не запускаются; новые ловит Linux."""
     if hasattr(signal, "setitimer"):
         class Late(Exception):
             pass
@@ -152,14 +154,19 @@ nr_tokens = ["1", "2.", "1.2", "3)", "А.", "A", "ё", " ", "\t", ".", ")", ",",
              "Сокращения", "и обозначения", "обозначения и сокращения", "перечень терминов", "Перечень ", "термины и определения",
              "определения", "Определение", "содержание", "Оглавление", "ссылочные документы", "нормативные ссылки",
              "лист регистрации", "Contents", "References", "terms and definitions", "Список ", "к "]
-diff, skipped = [], 0
-for s in sample(nr_tokens, 3, 3000):
-    old_res = []
-    if not run_limited(lambda s=s: old_res.append(bool(OLD["nr"].search(s))), 0.05):
-        skipped += 1           # прежнее выражение само «зависло» — сравнивать не с чем
-    elif old_res[0] != nr(s):
-        diff.append(s)
-check(not diff and skipped < 300, f"no_requirements: 3000 заголовков (прежнее не уложилось на {skipped})", str(diff[:5]))
+if hasattr(signal, "setitimer"):
+    diff, skipped = [], 0
+    for s in sample(nr_tokens, 3, 3000):
+        old_res = []
+        if not run_limited(lambda s=s: old_res.append(bool(OLD["nr"].search(s))), 0.05):
+            skipped += 1           # прежнее выражение само «зависло» — сравнивать не с чем
+        elif old_res[0] != nr(s):
+            diff.append(s)
+    check(not diff and skipped < 300, f"no_requirements: 3000 заголовков (прежнее не уложилось на {skipped})",
+          str(diff[:5]))
+else:
+    print("  (Windows: no_requirements сравнивается с прежним только на Linux и macOS — прежнее зависает, а прервать его "
+          "здесь нечем)")
 diff = [s for s in sample(["Название", " ", "\t", ".", "...", "....", "…", "7", "123", "1234", "*", "\u00a0", "\u2003", "x"],
                           8, 20000) if bool(OLD["toc"].search(s)) != bool(app._TOC_TAIL_RE.search(s))]
 check(not diff, "строки содержания: 20000 строк", str(diff[:5]))
