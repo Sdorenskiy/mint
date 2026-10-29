@@ -688,9 +688,26 @@ def run(out):
                 page.evaluate("() => window.scrollTo(0, 0)")
                 page.screenshot(path=str(out / "sidebar_chat_after_answer.png"), clip={"x": 0, "y": 0, "width": 1440, "height": 520})
 
+            def consult(page):
+                """Вкладка «Консультант»: пустой разговор с примерами, затем ответ со схемой и «Что нашёл в вики»."""
+                time.sleep(2.0)
+                page.get_by_role("tab", name=L("🧠 Консультант")).click()
+                time.sleep(1.2)
+                page.screenshot(path=str(out / "consult_empty.png"))
+                box = page.get_by_placeholder(L("Опишите проблему или задачу — например, «нарисуй схему…»"))
+                box.fill("Нарисуй схему прохождения входящего сообщения: от приёма до сохранения в архиве.")
+                box.press("Enter")
+                page.get_by_text(L("Готово за {s} с").split("{")[0].strip()).first.wait_for(timeout=90000)
+                time.sleep(1.5)
+                page.get_by_text(L("🔎 Что нашёл в вики"), exact=True).first.click()
+                time.sleep(1.2)
+                shots.dom.append(dom_dump(page, "консультант"))
+                tall(page, out / "consult_answer.png", 2400)
+
             shots.scenario("home", home)
-            if SIDEBAR_MODE:                       # список документов на боковой панели и «Новый чат»
+            if SIDEBAR_MODE:                       # список документов на боковой панели, «Новый чат», консультант
                 shots.scenario("sidebar", sidebar, viewport={"width": 1440, "height": 1000}, device_scale_factor=2)
+                shots.scenario("consult", consult, viewport={"width": 1440, "height": 1000}, device_scale_factor=2)
                 browser.close()
                 shots.save()
                 return

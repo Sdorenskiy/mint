@@ -2829,4 +2829,113 @@ EN = {
         '📥 Download the assessments ({n}, .jsonl)',
     'найдены, но сняты вручную: {v}':
         'found but removed by hand: {v}',
+    # ---- the Consultant tab (mint/consult.py, mint/ui/tab_consult.py)
+    'Консультант':
+        'Consultant',
+    'Ответ консультанта':
+        'Consultant answer',
+    'Роль и правила ответа во вкладке «Консультант»: факты о ваших системах — из базы, со ссылками [Источник: …]; свои предложения модели — со значком 💡; ответ начинается с раздела «📄 …». Ссылки, 📄 и 💡 обязательны: по ним MINT проверяет ссылки и отмечает пункты раздела 📄 без ссылки.':
+        'The role and answer rules of the "Consultant" tab: facts about your systems come from the base, with references [Source: …]; the model\'s own proposals carry the 💡 sign; the answer begins with the "📄 …" section. References, 📄 and 💡 are required: MINT uses them to check references and to mark items of the 📄 section without a reference.',
+    'Разбор запроса: поиск по аспектам':
+        'Request analysis: search by aspects',
+    'Перед ответом модель определяет, что просят, и составляет несколько поисковых запросов к базе — по одному на каждую сторону вопроса. JSON-ответ с полями kind и queries обязателен.':
+        'Before answering, the model works out what is asked and writes several search queries to the base, one for each side of the question. A JSON answer with the kind and queries fields is required.',
+    '🧠 Консультант':
+        '🧠 Consultant',
+    'Что модель получает из базы':
+        'What the model gets from the base',
+    'Ответ':
+        'Answer',
+    'Сторон вопроса для поиска':
+        'Sides of the question to search',
+    'Перед ответом модель раскладывает запрос на стороны (состав систем, взаимодействие, путь сообщения, настройки, мониторинг) и по каждой ищет в базе отдельно; плюс поиск по самому запросу. Больше — полнее картина, но дольше: каждый поиск — эмбеддинг и реранкер.':
+        'Before answering, the model splits the request into sides (composition of the systems, interaction, message path, settings, monitoring) and searches the base for each of them separately, plus a search by the request itself. More — a fuller picture, but slower: every search costs an embedding and a reranker call.',
+    'Фрагментов на каждый поиск':
+        'Fragments per search',
+    'Сколько лучших фрагментов берётся из каждого поиска — до того, как они расширяются до разделов.':
+        'How many best fragments are taken from every search before they are extended to whole sections.',
+    'Найденный раздел — целиком':
+        'The found section — whole',
+    'Найден кусок раздела — модель получает весь раздел с подразделами (если он не длиннее порога ниже, иначе — окно вокруг найденного места). Так модель видит, как устроена система, а не обрывки.':
+        'When a piece of a section is found, the model gets the whole section with its subsections (if it is not longer than the limit below; otherwise a window around the found place). This way the model sees how the system is built, not scraps.',
+    'Раздел целиком — не длиннее (симв.)':
+        'A whole section — at most (chars)',
+    'Раздел длиннее — модель получает окно вокруг найденного места: сначала текст после него, затем до.':
+        'For a longer section the model gets a window around the found place: first the text after it, then before it.',
+    'Всего фрагментов в запросе — не больше (симв.)':
+        'All fragments in the request — at most (chars)',
+    'Потолок объёма фрагментов. Фактический объём MINT считает по окну модели («Модели и лимиты») — берётся меньшее. Больше — полнее, но медленнее и дороже.':
+        'The ceiling for the fragments. MINT computes the actual amount from the model window ("Models and limits") and takes the smaller of the two. More — fuller, but slower and more expensive.',
+    'Макс. длина ответа (токенов)':
+        'Max. answer length (tokens)',
+    'Варианты решения и схемы — длинные ответы; моделям с рассуждениями нужен запас.':
+        'Solution options and diagrams are long answers; reasoning models need a margin.',
+    'Температура':
+        'Temperature',
+    'Выше — разнообразнее варианты решения; ниже — суше и ближе к тексту документов.':
+        'Higher — more varied solution options; lower — drier and closer to the text of the documents.',
+    'Прошлых реплик в контексте':
+        'Previous turns in the context',
+    'Сколько прошлых пар «запрос — ответ» модель видит почти целиком: на них опираются уточнения («а если без шардирования?», «добавь на схему антивирус»).':
+        'How many previous "request — answer" pairs the model sees almost in full: follow-ups build on them ("and without sharding?", "add the antivirus to the diagram").',
+    'консультант':
+        'consultant',
+    'Ответы консультанта проверкой качества не измеряются — попробуйте правку в сеансе на своих запросах; версия текстов консультанта пишется в отзывы 👍/👎, по ней видно, при какой правке получен ответ.':
+        'The quality check does not measure consultant answers — try the edit in the session on your own requests; the version of the consultant texts is written into the 👍/👎 feedback, so you can see which edit an answer came from.',
+    'Пишу ответ по {b} фрагментам ({c} симв.)…':
+        'Writing the answer from {b} fragments ({c} chars)…',
+    'Разбираю запрос: что просят и где искать…':
+        'Analysing the request: what is asked and where to look…',
+    'Ищу в базе: {i} из {n} — «{q}»':
+        'Searching the base: {i} of {n} — "{q}"',
+    'Консультант: проблемы, схемы, объяснения':
+        'Consultant: problems, diagrams, explanations',
+    '➕ Новый разговор':
+        '➕ New conversation',
+    'Опишите проблему или задачу — например, «нарисуй схему…»':
+        'Describe a problem or a task — for example, "draw a diagram of…"',
+    '⚙️ Настройки консультанта':
+        '⚙️ Consultant settings',
+    'Модель — та же, что в боковой панели. Тексты — страница «📝 Промпты», группа «Консультант». Постоянные значения — в config.yaml, раздел consult.':
+        'The model is the one in the sidebar. Texts — the "📝 Prompts" page, the "Consultant" group. Permanent values — config.yaml, the consult section.',
+    '❔ — утверждение о ваших системах без ссылки на документ ({n}): модель могла выдать догадку за содержание документов — проверьте.':
+        '❔ — a statement about your systems without a reference to a document ({n}): the model may have presented a guess as the content of the documents — check it.',
+    '⬇ Схема {n} (.mmd)':
+        '⬇ Diagram {n} (.mmd)',
+    'Схема — код Mermaid. Открыть и доработать: draw.io → Arrange → Insert → Advanced → Mermaid; Excalidraw → «Mermaid to Excalidraw». Код можно и скопировать из ответа.':
+        'The diagram is Mermaid code. To open and refine it: draw.io → Arrange → Insert → Advanced → Mermaid; Excalidraw → "Mermaid to Excalidraw". You can also copy the code from the answer.',
+    '🔎 Что нашёл в вики':
+        '🔎 What was found in the wiki',
+    'Фрагментов: {c} симв. из {b} доступных · тип запроса: {k} · {s} с · {v}':
+        'Fragments: {c} chars of {b} available · kind of request: {k} · {s} s · {v}',
+    'Начать с чистого листа: прошлые реплики больше не учитываются.':
+        'Start from scratch: previous turns are no longer taken into account.',
+    'Готово за {s} с':
+        'Done in {s} s',
+    'Разбери проблему: при росте нагрузки растёт очередь входящих сообщений и задержка обработки. Что можно сделать?':
+        'Analyse a problem: as the load grows, the incoming message queue and the processing delay grow. What can be done?',
+    'Нарисуй схему прохождения входящего сообщения: от приёма до сохранения в архиве.':
+        'Draw a diagram of the path of an incoming message: from reception to storage in the archive.',
+    'Объясни, из каких компонентов состоит система и как они взаимодействуют.':
+        'Explain what components the system consists of and how they interact.',
+    'Опишите проблему, попросите схему или объяснение. Консультант прочитает в базе, как устроены ваши системы, и сам предложит решения: 📄 — из документов, со ссылками; 💡 — предложения и знания модели; ❔ — утверждение о ваших системах без ссылки, проверьте его. Нужен точный ответ «что написано в документе» — вкладка «Чат».':
+        'Describe a problem, ask for a diagram or an explanation. The consultant reads in the base how your systems are built and proposes solutions itself: 📄 — from the documents, with references; 💡 — the model\'s proposals and knowledge; ❔ — a statement about your systems without a reference, check it. For an exact "what the document says" answer use the "Chat" tab.',
+    'База знаний пока пуста: ответы будут без опоры на ваши документы.':
+        'The knowledge base is empty so far: answers will not rest on your documents.',
+    '{n} симв.':
+        '{n} chars',
+    'найдено: {n}':
+        'found: {n}',
+    'раздел целиком':
+        'whole section',
+    'найденный фрагмент':
+        'found fragment',
+    'Поиск по сторонам вопроса':
+        'Search by sides of the question',
+    'Что получила модель':
+        'What the model got',
+    'В базе по запросу ничего не нашлось.':
+        'Nothing was found in the base for the request.',
+    'уверенность низкая':
+        'low confidence',
 }

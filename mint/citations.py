@@ -131,6 +131,11 @@ def cited_files(answer, context):
     return names
 
 
+def has_citation(text):
+    """Есть ли в тексте ссылка [Источник: …] / [Source: …]."""
+    return bool(_CITE_RE.search(text or ""))
+
+
 def mark_invalid(answer, checks):
     """Ответ с пометкой ⚠️ после каждой ссылки, которой нет в контексте."""
     text = answer or ""

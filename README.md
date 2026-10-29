@@ -20,6 +20,11 @@ Your documents go nowhere except the model you configured.
 - 💬 **An intelligent chat over your documents.** Upload anything — standards, contracts, manuals, textbooks, wiki
   pages — and ask. Hybrid search (vectors + BM25 + reranker) finds the right section, answers come with links to the
   sources, follow-up questions are understood in context, and when the documents have no answer, MINT says so.
+- 🧠 **Consultant: problems, diagrams, explanations.** Describe a problem, ask for a diagram or an explanation — the
+  model reads in the base how your systems are built (a search by several sides of the question, whole sections,
+  system cards) and proposes solution options itself, with pros, cons and risks. Facts from the documents — 📄 with
+  references, the model's proposals — 💡, statements about your systems without a reference MINT marks ❔; a diagram
+  comes as Mermaid code for draw.io and Excalidraw. Follow-ups ("and without sharding?") build on earlier answers.
 - 🛡️ **Review of any document with flexible settings.** A contract, a policy, a report, a specification, a thesis —
   in .docx, .pdf, .md or .txt. MINT checks every section against your knowledge base, the documents it relies on and
   your criteria; a deep review walks through processes step by step, looks for contradictions between sections
@@ -189,7 +194,34 @@ wrong codes) is not indexed: MINT explains why and suggests the .docx or a PDF s
 is not read in any format. The document review adds Word comments only to a .docx; other formats get the
 report and the log.
 
-### Document review
+### Consultant
+
+The "🧠 Consultant" tab is for advice rather than for "what the document says": analyse a problem and propose
+options, draw a diagram, explain how a system is built, compare approaches. The model learns from the base how your
+systems are built and proposes solutions itself.
+
+1. **Request analysis** (+1 LLM call): what is asked (a problem, a diagram, an explanation, a question, a
+   comparison), which systems are mentioned, and several search queries — one for each side of the question.
+2. **Context**: a search for every query and for the user's request itself (the usual MINT hybrid search); the
+   results alternate between the queries, a found fragment is extended to its whole section with subsections (a
+   section longer than `consult_section_max_chars` gives a window around the found place), the cards of the systems
+   mentioned are always added. The amount follows the model window, at most `consult_context_max_chars`.
+3. **Answer**: "📄 How it works now" — only from the documents, with references; 💡 — the model's proposals and
+   knowledge; for a problem — causes, 2–4 options (pros, cons, risks, effort) and a recommendation; for a diagram —
+   Mermaid code and the steps with references; at the end — what is not in the base and what to clarify.
+4. **Checks without a model**: references — against all fragments the model saw in the conversation; items of the
+   📄 section without a reference are marked ❔; the diagram code can be downloaded (.mmd, opens in draw.io and
+   Excalidraw).
+
+The consultant has a conversation of its own: earlier answers are part of the work and follow-ups build on them (the
+chat needs its history only to understand the question). Settings — "⚙️ Consultant settings" in the tab or the
+`consult` section of `config.yaml`. Texts — "📝 Prompts", the "Consultant" group; they have a version of their own
+(`en-consult-…`), the chat and review prompt version does not depend on them. Limits: the quality of the options
+depends on the model; if the base describes your systems sparingly, the answer is generic — MINT shows this in
+"🔎 What was found in the wiki" and in the "not in the base" section; MINT does not draw diagrams itself yet — the
+Mermaid code opens in draw.io and Excalidraw.
+
+## Document review
 
 1. The document is split into parts **by section**: a heading with its text and tables. Small neighbouring
    sections are combined; a section up to one and a half times the part limit (`audit_map_size`) is not split, so
@@ -496,12 +528,14 @@ mint/               the program; everything except mint/ui works without Streaml
   audit_store.py      saved reviews: the LOG_DIR/audits/<id> folder, list, open, delete
   review.py           verification of fixes: verify_remarks()
   chat.py             chat: answer_question() — search → model → reference check; follow-up questions
+  consult.py          consultant: answer_consult() — request analysis → search by sides, whole sections →
+                      model → reference and unreferenced-item checks, diagram code
   prompts/            default prompt texts: en.yaml, ru.yaml, profiles/; assembly, your edits (prompts.yaml), their checks
                       and prompts_version() — __init__.py
   evaluation.py       quality check: questions from the base, search run, metrics, recommendations, chat answers
   i18n/               interface languages: tr() and English translations (en.py)
   feedback.py         👍/👎 feedback
-  ui/                 Streamlit interface: page, sidebar, three tabs, expert assessment (ui/audit_review.py),
+  ui/                 Streamlit interface: page, sidebar, four tabs, expert assessment (ui/audit_review.py),
                       quality check (ui/quality.py),
                       prompts (ui/prompts_page.py), system card draft (ui/cards_page.py);
                       theme — ui/theme.py, ui/assets/mint.css

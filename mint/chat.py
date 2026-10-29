@@ -27,8 +27,9 @@ logger = logging.getLogger("MINT")
 CHAT_HISTORY_ANSWER_CHARS = 1200   # ответ ассистента в истории обрезается: для понимания темы этого достаточно
 
 
-def chat_history(messages, turns):
-    """Последние turns пар «вопрос — ответ» из сохранённых сообщений чата (без источников и ошибок)."""
+def chat_history(messages, turns, answer_chars=CHAT_HISTORY_ANSWER_CHARS):
+    """Последние turns пар «вопрос — ответ» из сохранённых сообщений чата (без источников и ошибок); ответ
+    обрезается до answer_chars (консультанту прошлые ответы нужны целиком — у него свой предел)."""
     if turns <= 0:
         return []
     pairs, i = [], len(messages) - 1
@@ -37,8 +38,8 @@ def chat_history(messages, turns):
         if a.get("role") == "assistant" and q.get("role") == "user":
             answer = a.get("content") or ""
             if not is_llm_error(answer):
-                if len(answer) > CHAT_HISTORY_ANSWER_CHARS:
-                    answer = answer[:CHAT_HISTORY_ANSWER_CHARS].rsplit(" ", 1)[0] + " …"
+                if len(answer) > answer_chars:
+                    answer = answer[:answer_chars].rsplit(" ", 1)[0] + " …"
                 pairs.append((q.get("content") or "", answer))
             i -= 2
         else:

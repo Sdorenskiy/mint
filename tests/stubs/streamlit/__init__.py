@@ -300,7 +300,10 @@ def file_uploader(label, type=None, accept_multiple_files=False, key=None, help=
 
 def chat_input(placeholder="Your message", *, key=None, max_chars=None, disabled=False, on_submit=None,
                args=None, kwargs=None):
+    """SCRIPT["chat_input"] — текст для первого поля ввода на странице или словарь {ключ поля: текст}."""
     v = SCRIPT["chat_input"]
+    if isinstance(v, dict):
+        return v.pop(key, None)
     SCRIPT["chat_input"] = None
     return v
 

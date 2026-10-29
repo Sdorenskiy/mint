@@ -1,7 +1,5 @@
 """Интерфейс: вкладка «Чат»."""
 
-import inspect
-
 import streamlit as st
 
 from ..chat import answer_question, chat_history
@@ -9,14 +7,9 @@ from ..citations import citation_warning
 from ..feedback import new_feedback_id
 from ..i18n import tr
 from ..kb import list_kb_documents
-from .common import _clear_chat, btn_w, render_sources
+from .common import _clear_chat, btn_w, columns_center, render_sources
 from .feedback import render_feedback
 from .theme import empty_chat_html
-
-try:                        # vertical_alignment — с Streamlit 1.36
-    _center = {"vertical_alignment": "center"} if "vertical_alignment" in inspect.signature(st.columns).parameters else {}
-except (TypeError, ValueError):
-    _center = {}
 
 
 def _chat_feedback(cfg, msg, question):
@@ -43,7 +36,7 @@ def render_chat_tab(cfg, gl):
     """Вкладка «Чат»: вопросы по базе знаний с учётом истории диалога."""
     # «Новый чат» — в шапке вкладки и всегда: и до первого вопроса, и сразу после ответа, и пока модель отвечает
     # (нажатие во время ответа сработает, когда модель закончит: прервать запрос Streamlit не может)
-    head, new_chat = st.columns([0.74, 0.26], **_center)
+    head, new_chat = st.columns([0.74, 0.26], **columns_center())
     head.subheader(tr("Консультация по накопленным знаниям"))
     new_chat.button(tr("➕ Новый чат"), key="chat_clear_btn", on_click=_clear_chat, **btn_w,
                     help=tr("Очищает историю: следующий вопрос будет понят без учёта предыдущих реплик."))

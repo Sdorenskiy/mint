@@ -2,6 +2,29 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## 21.3 — the Consultant: problems, diagrams, explanations
+
+- **A new tab, "🧠 Consultant"**, for advice rather than "what the document says": analyse a problem and propose
+  solution options, draw a diagram, explain how a system is built, compare approaches. The model learns from the
+  knowledge base how your systems are built and proposes solutions itself.
+  - **A wide context.** Before answering, the model splits the request into sides (composition of the systems,
+    interaction, message path, settings, monitoring); MINT searches for each side and for the request itself, takes
+    the found sections whole (with subsections) and adds the cards of the systems mentioned. The amount follows the
+    model window (`consult_context_max_chars` is the ceiling).
+  - **The answer shows what comes from where.** "📄 How it works now" — from the documents, every item with a reference;
+    💡 — the model's proposals and knowledge; for a problem — causes and 2–4 options with pros, cons, risks and effort
+    plus a recommendation; at the end — what is not in the base and what to clarify. Without a model MINT checks the
+    references (against all fragments seen in the conversation) and marks ❔ the items of the 📄 section that have no
+    reference.
+  - **Diagrams** come as Mermaid code: shown in the answer and downloadable (.mmd) for draw.io and Excalidraw.
+  - **A conversation of its own**: earlier answers are part of the work, follow-ups build on them; the chat and its
+    history are untouched.
+  - Settings — "⚙️ Consultant settings" in the tab or the `consult` section of `config.yaml`; texts — the
+    "📝 Prompts" page, the "Consultant" group; the architecture profile has its own role. The consultant texts have a
+    version of their own (`ru-consult-…`) written into the 👍/👎 feedback; the chat and review prompt version is the
+    same as before (`ru-8fd10871` / `en-9c3500f7`), so earlier results stay comparable.
+  - Without new libraries and without new network requests: the same LLM, embedding and reranker services.
+
 ## 21.2 — a quiet installation, a compact document list, "New chat" always at hand
 
 - **Documents of the base in the sidebar — a compact list.** It scrolls inside itself instead of stretching the whole

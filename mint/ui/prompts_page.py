@@ -131,14 +131,18 @@ def render_prompts(cfg):
     check = c[3].button(tr("Проверить правку"), key="pr_check_btn", disabled=bool(problems) or not measured,
                         help=tr("Применить правку в сеансе и открыть «Проверку качества» с ответами чата на вопросах "
                                 "прошлой проверки: результат сравнится с прошлой проверкой ответов.") if measured else
-                        tr("Аудит, контроль исправлений и черновик вопросов проверкой ответов чата не измеряются — "
-                           "проверьте правку на документе с известными замечаниями."), **btn_w)
+                        (tr("Ответы консультанта проверкой качества не измеряются — попробуйте правку в сеансе на "
+                            "своих запросах; версия текстов консультанта пишется в отзывы 👍/👎, по ней видно, при "
+                            "какой правке получен ответ.") if key.startswith(P.CONSULT_PREFIX) else
+                         tr("Аудит, контроль исправлений и черновик вопросов проверкой ответов чата не измеряются — "
+                            "проверьте правку на документе с известными замечаниями.")), **btn_w)
     if key == "paraphrase_system" and not cfg.use_multi_query:
         st.caption(tr("Перефразировка работает, только если включён multi-query (Экспертные настройки → Поиск и контекст)."))
 
+    version = P.consult_prompts_version if key.startswith(P.CONSULT_PREFIX) else P.prompts_version
     if try_:
         _set_session(lang, key, text)
-        st.toast(tr("Правка действует в этом сеансе. Версия промптов: {v}", v=P.prompts_version(lang)))
+        st.toast(tr("Правка действует в этом сеансе. Версия промптов: {v}", v=version(lang)))
         st.rerun()
     elif save:
         try:
@@ -149,7 +153,7 @@ def render_prompts(cfg):
             session_prompts().get(lang, {}).pop(key, None)
             P.set_session_prompts(session_prompts())
             _bump()
-            st.toast(tr("Сохранено в {path}. Версия промптов: {v}", path=saved, v=P.prompts_version(lang)))
+            st.toast(tr("Сохранено в {path}. Версия промптов: {v}", path=saved, v=version(lang)))
             st.rerun()
     elif reset:
         session_prompts().get(lang, {}).pop(key, None)
