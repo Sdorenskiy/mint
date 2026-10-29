@@ -73,8 +73,9 @@ a diagram, explain how a system is built.
 - How to read the answer: **📄** — how it works now, from the documents, with references; **💡** — the model's
   proposals and knowledge (you check them); **❔** — a statement about your systems without a reference: the model may
   have presented a guess as a document.
-- A diagram comes as Mermaid code: **"⬇ Diagram (.mmd)"**, or copy the code from the answer and paste it into draw.io
-  (Arrange → Insert → Advanced → Mermaid) or Excalidraw ("Mermaid to Excalidraw").
+- A diagram is drawn right in the answer; the buttons above it download it as a picture, copy it, open it full
+  screen. To refine it: **"⬇ Diagram (.mmd)"** and paste the code into draw.io (Arrange → Insert → Advanced → Mermaid)
+  or Excalidraw ("Mermaid to Excalidraw").
 - Refine in the same conversation: "and without sharding?", "add the antivirus to the diagram". **"➕ New
   conversation"** starts from scratch.
 - **"🔎 What was found in the wiki"** under the answer — which searches were made and what the model got. If the

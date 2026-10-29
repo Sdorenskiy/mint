@@ -16,7 +16,8 @@
     plus a recommendation; at the end — what is not in the base and what to clarify. Without a model MINT checks the
     references (against all fragments seen in the conversation) and marks ❔ the items of the 📄 section that have no
     reference.
-  - **Diagrams** come as Mermaid code: shown in the answer and downloadable (.mmd) for draw.io and Excalidraw.
+  - **Diagrams** are drawn right in the answer (Mermaid; Streamlit draws them itself, without internet access): download
+    as a picture, copy, full screen; the code (.mmd) — to refine the diagram in draw.io or Excalidraw.
   - **A conversation of its own**: earlier answers are part of the work, follow-ups build on them; the chat and its
     history are untouched.
   - Settings — "⚙️ Consultant settings" in the tab or the `consult` section of `config.yaml`; texts — the

@@ -2902,8 +2902,8 @@ EN = {
         '❔ — a statement about your systems without a reference to a document ({n}): the model may have presented a guess as the content of the documents — check it.',
     '⬇ Схема {n} (.mmd)':
         '⬇ Diagram {n} (.mmd)',
-    'Схема — код Mermaid. Открыть и доработать: draw.io → Arrange → Insert → Advanced → Mermaid; Excalidraw → «Mermaid to Excalidraw». Код можно и скопировать из ответа.':
-        'The diagram is Mermaid code. To open and refine it: draw.io → Arrange → Insert → Advanced → Mermaid; Excalidraw → "Mermaid to Excalidraw". You can also copy the code from the answer.',
+    'Схему Streamlit рисует прямо в ответе, без интернета; кнопки над ней — скачать картинкой, скопировать, на весь экран. Код Mermaid (.mmd) — чтобы доработать схему: draw.io → Arrange → Insert → Advanced → Mermaid; Excalidraw → «Mermaid to Excalidraw».':
+        'Streamlit draws the diagram right in the answer, without internet access; the buttons above it download it as a picture, copy it, open it full screen. The Mermaid code (.mmd) is for refining the diagram: draw.io → Arrange → Insert → Advanced → Mermaid; Excalidraw → "Mermaid to Excalidraw".',
     '🔎 Что нашёл в вики':
         '🔎 What was found in the wiki',
     'Фрагментов: {c} симв. из {b} доступных · тип запроса: {k} · {s} с · {v}':

@@ -462,6 +462,11 @@ class Shots:
             ctx.close()
 
     def save(self):
+        try:
+            import importlib.metadata as md
+            self.dom.insert(0, f"streamlit {md.version('streamlit')}\n")
+        except Exception:
+            pass
         (self.out / "dom.txt").write_text("\n".join(self.dom), encoding="utf-8")
         (self.out / "errors.txt").write_text("\n".join(self.errors) or "нет ошибок\n", encoding="utf-8")
 

@@ -23,8 +23,8 @@ Your documents go nowhere except the model you configured.
 - 🧠 **Consultant: problems, diagrams, explanations.** Describe a problem, ask for a diagram or an explanation — the
   model reads in the base how your systems are built (a search by several sides of the question, whole sections,
   system cards) and proposes solution options itself, with pros, cons and risks. Facts from the documents — 📄 with
-  references, the model's proposals — 💡, statements about your systems without a reference MINT marks ❔; a diagram
-  comes as Mermaid code for draw.io and Excalidraw. Follow-ups ("and without sharding?") build on earlier answers.
+  references, the model's proposals — 💡, statements about your systems without a reference MINT marks ❔; MINT draws a
+  diagram right in the answer (Mermaid, no internet access) and gives its code for draw.io and Excalidraw. Follow-ups ("and without sharding?") build on earlier answers.
 - 🛡️ **Review of any document with flexible settings.** A contract, a policy, a report, a specification, a thesis —
   in .docx, .pdf, .md or .txt. MINT checks every section against your knowledge base, the documents it relies on and
   your criteria; a deep review walks through processes step by step, looks for contradictions between sections
@@ -208,7 +208,7 @@ systems are built and proposes solutions itself.
    mentioned are always added. The amount follows the model window, at most `consult_context_max_chars`.
 3. **Answer**: "📄 How it works now" — only from the documents, with references; 💡 — the model's proposals and
    knowledge; for a problem — causes, 2–4 options (pros, cons, risks, effort) and a recommendation; for a diagram —
-   Mermaid code and the steps with references; at the end — what is not in the base and what to clarify.
+   a Mermaid diagram (MINT draws it in the answer) and the steps with references; at the end — what is not in the base and what to clarify.
 4. **Checks without a model**: references — against all fragments the model saw in the conversation; items of the
    📄 section without a reference are marked ❔; the diagram code can be downloaded (.mmd, opens in draw.io and
    Excalidraw).
@@ -218,8 +218,8 @@ chat needs its history only to understand the question). Settings — "⚙️ Co
 `consult` section of `config.yaml`. Texts — "📝 Prompts", the "Consultant" group; they have a version of their own
 (`en-consult-…`), the chat and review prompt version does not depend on them. Limits: the quality of the options
 depends on the model; if the base describes your systems sparingly, the answer is generic — MINT shows this in
-"🔎 What was found in the wiki" and in the "not in the base" section; MINT does not draw diagrams itself yet — the
-Mermaid code opens in draw.io and Excalidraw.
+"🔎 What was found in the wiki" and in the "not in the base" section. Streamlit draws the diagram (part of Streamlit,
+no internet access); the layout is automatic — refine the diagram in draw.io or Excalidraw from the .mmd code.
 
 ## Document review
 

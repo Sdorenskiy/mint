@@ -1,6 +1,7 @@
-"""Интерфейс: вкладка «Консультант» — разбор проблем и варианты решения, схемы (код Mermaid), объяснения устройства
-систем с опорой на базу знаний. Сценарий — mint/consult.py; разговор хранится отдельно от чата (у них разный
-смысл истории: чату прошлые реплики нужны, чтобы понять вопрос, консультанту — как часть работы)."""
+"""Интерфейс: вкладка «Консультант» — разбор проблем и варианты решения, схемы, объяснения устройства систем с опорой
+на базу знаний. Схемы — Mermaid: Streamlit рисует их прямо в ответе, без интернета. Сценарий — mint/consult.py;
+разговор хранится отдельно от чата (у них разный смысл истории: чату прошлые реплики нужны, чтобы понять вопрос,
+консультанту — как часть работы)."""
 
 import streamlit as st
 
@@ -57,8 +58,9 @@ def _render_answer(cfg, msg, request):
         st.download_button(tr("⬇ Схема {n} (.mmd)", n=i + 1), code, file_name=f"mint_diagram_{i + 1}.mmd",
                            mime="text/plain", key=f"consult_mmd_{msg['id']}_{i}", **dl_w)
     if msg.get("diagrams"):
-        st.caption(tr("Схема — код Mermaid. Открыть и доработать: draw.io → Arrange → Insert → Advanced → Mermaid; "
-                      "Excalidraw → «Mermaid to Excalidraw». Код можно и скопировать из ответа."))
+        st.caption(tr("Схему Streamlit рисует прямо в ответе, без интернета; кнопки над ней — скачать картинкой, "
+                      "скопировать, на весь экран. Код Mermaid (.mmd) — чтобы доработать схему: draw.io → Arrange → "
+                      "Insert → Advanced → Mermaid; Excalidraw → «Mermaid to Excalidraw»."))
     with st.expander(tr("🔎 Что нашёл в вики")):
         st.markdown(consult_found_html(msg), unsafe_allow_html=True)
         st.caption(tr("Фрагментов: {c} симв. из {b} доступных · тип запроса: {k} · {s} с · {v}",
