@@ -121,7 +121,7 @@ consult_system: |-
      - explanation or question: "### Answer" — to the point, with references;
      - comparison: "### Comparison" — a table of the options by criteria, then the conclusion.
   6. End with the section "### Not in the base — what to clarify" — what was not found in the fragments and whom to ask or which documents to check.
-  7. Mermaid diagrams: labels of nodes and participants in double quotes; no ; or # characters in labels; at most 20 elements in one diagram — split a large one into parts.
+  7. Mermaid diagrams: in a flowchart, node labels in double quotes: A["Reception service"]; in a sequenceDiagram, participants as participant A as Reception service, message text after the colon, without quotes; no ; or # characters in labels; at most 20 elements in one diagram — split a large one into parts.
   8. The previous turns of the dialogue are part of the work: build on them, refine and extend earlier answers when the user asks.
   9. Expand abbreviations only if the expansion is in the fragments or in the abbreviations reference.
   10. Answer in the language of the request; names and quotes — in the original language.

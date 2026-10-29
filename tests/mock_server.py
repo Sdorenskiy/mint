@@ -68,8 +68,8 @@ def consult_reply(system, user, en=False):
                  "- The gateway passes messages to the queue without a delivery confirmation to the recipient.",
                  "### Solution options", "- 💡 Split the queues by flows."]
         if kind == "diagram":
-            parts += ["### Diagram", "```mermaid", "sequenceDiagram", '  participant A as "Sender"',
-                      '  participant B as "Gateway"', '  A->>B: "Message"', "```", "### Steps",
+            parts += ["### Diagram", "```mermaid", "sequenceDiagram", '  participant A as Sender',
+                      '  participant B as Gateway', '  A->>B: Message', "```", "### Steps",
                       f"1. The sender passes the message [Source: {src}]"]
         parts += ["### Not in the base — what to clarify", f"- Monitoring is not described. Fragments: {n}."]
     else:
@@ -77,8 +77,8 @@ def consult_reply(system, user, en=False):
                  "- Шлюз передаёт сообщения в очередь без подтверждения доставки получателю.",
                  "### Варианты решения", "- 💡 Разделить очереди по потокам."]
         if kind == "diagram":
-            parts += ["### Схема", "```mermaid", "sequenceDiagram", '  participant A as "Отправитель"',
-                      '  participant B as "Шлюз"', '  A->>B: "Сообщение"', "```", "### Шаги",
+            parts += ["### Схема", "```mermaid", "sequenceDiagram", '  participant A as Отправитель',
+                      '  participant B as Шлюз', '  A->>B: Сообщение', "```", "### Шаги",
                       f"1. Отправитель передаёт сообщение [Источник: {src}]"]
         parts += ["### Чего нет в базе и что уточнить", f"- Нет описания мониторинга. Фрагментов: {n}."]
     return "\n".join(parts)
