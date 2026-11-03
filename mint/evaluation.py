@@ -269,6 +269,18 @@ def metrics(results, questions, top_k):
     return out
 
 
+def wilson(k, n, z=1.96):
+    """95 % интервал для доли k/n (метод Уилсона): где, скорее всего, лежит настоящая доля. В отличие от
+    p ± 1,96·√(p(1−p)/n) не вылезает за 0 и 1 и не сжимается в точку при k = 0 или k = n. (lo, hi) — доли."""
+    if not n:
+        return 0.0, 0.0
+    p = k / n
+    d = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / d
+    h = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
+    return (0.0 if k == 0 else max(0.0, c - h)), (1.0 if k == n else min(1.0, c + h))
+
+
 def sign_test_p(wins, losses):
     """Двусторонний критерий знаков: вероятность получить такой или больший перекос случайно, если
     конфигурации на самом деле равны. Вопросы, где места совпали, не учитываются."""
@@ -348,6 +360,7 @@ class EvalRun:
     cfg: object
     stats: dict
     answers: dict = None        # check_answers(), если проверялись ответы чата
+    cv: dict = None             # cross_validate(), если просили кросс-валидацию
     created: str = field(default_factory=lambda: time.strftime("%Y-%m-%d %H:%M:%S"))
     prompts: str = field(default_factory=prompts_version)     # версия промптов (язык интерфейса на момент прогона)
 
@@ -364,15 +377,55 @@ class EvalRun:
         """Лучшая конфигурация по MRR (при равенстве — по hit@K, затем текущая)."""
         if not self.n_answerable:
             return self.current
-        return max(self.configs, key=lambda c: (round(self.summary[c[0]]["mrr"], 6),
-                                                self.summary[c[0]][f"hit@{self.top_k}"], c[0] == self.current))[0]
+        return best_on(self, [q for q in self.questions if q.answerable])
+
+
+def best_on(run, questions):
+    """Лучшая конфигурация по MRR на этих вопросах (при равенстве — по hit@top_k, затем текущая)."""
+    def key(c):
+        m = metrics(run.results[c[0]], questions, run.top_k)
+        return round(m.get("mrr", 0.0), 6), m.get(f"hit@{run.top_k}", 0), c[0] == run.current
+    return max(run.configs, key=key)[0]
+
+
+CV_HIT = 3          # hit@N, который показывается в кросс-валидации (как в разделе «Как меряю качество»)
+
+
+def cross_validate(run, folds=5, seed=7):
+    """Проверка на подгонку. «Лучшая конфигурация» выбирается по тем же вопросам, на которых считаются цифры,
+    и потому они завышены. Здесь вопросы с ответом делятся на folds частей (случайно, воспроизводимо при том же
+    seed); лучшая конфигурация выбирается по остальным частям и проверяется на этой — каждый вопрос проверяется
+    ровно один раз, на конфигурации, выбранной без него. Возвращает None, если вопросов меньше 2 × folds."""
+    ans = [q for q in run.questions if q.answerable]
+    if folds < 2 or len(ans) < 2 * folds:
+        return None
+    order = ans[:]
+    random.Random(seed).shuffle(order)
+    parts = [order[i::folds] for i in range(folds)]
+    rows, hits, rr_sum = [], 0, 0.0
+    for i, part in enumerate(parts, 1):
+        rest = [q for p in parts if p is not part for q in p]
+        chosen = best_on(run, rest)
+        res = run.results[chosen]
+        ranks = [res[q.n]["rank"] for q in part]
+        h = sum(1 for r in ranks if r and r <= CV_HIT)
+        s = sum(1.0 / r for r in ranks if r)
+        rows.append({"fold": i, "n": len(part), "chosen": chosen, "hit": h, "mrr": s / len(part)})
+        hits += h
+        rr_sum += s
+    best_all = best_on(run, ans)
+    m_all = metrics(run.results[best_all], ans, run.top_k)
+    return {"folds": folds, "seed": seed, "n": len(ans), "rows": rows, "hit": hits, "mrr": rr_sum / len(ans),
+            "chosen": dict(Counter(r["chosen"] for r in rows)), "best_all": best_all,
+            "best_all_hit": m_all[f"hit@{CV_HIT}"], "best_all_mrr": m_all["mrr"]}
 
 
 def evaluate(cfg, questions, top_k=None, with_multi_query=False, compare=True, progress=None, answers=False,
-             repeat=1):
+             repeat=1, cv=0, cv_seed=7):
     """Прогон набора вопросов. progress(сделано, всего, имя этапа) — для полосы прогресса. answers=True —
     ещё и ответы чата на каждый вопрос (+1 вызов LLM на вопрос и повтор, см. check_answers); repeat — сколько
-    раз задать чату каждый вопрос (модель отвечает не всегда одинаково).
+    раз задать чату каждый вопрос (модель отвечает не всегда одинаково). cv — кросс-валидация на столько частей
+    (cross_validate; 0 — без неё): новых запросов к сервисам не делает, работает на уже посчитанных местах.
     Повторные запросы к сервисам в разных конфигурациях уходят один раз (request_cache)."""
     snap = load_kb_snapshot(cfg)
     if snap is None or snap.index.ntotal == 0:
@@ -400,7 +453,10 @@ def evaluate(cfg, questions, top_k=None, with_multi_query=False, compare=True, p
                 (lambda i, n: progress(base + i, total, STAGE_ANSWERS)) if progress else None))
         stats = dict(stats)
     calib = calibrate(results[current], questions, cfg)
-    return EvalRun(questions, configs, current, results, summary, calib, top_k, cfg, stats, checked)
+    run = EvalRun(questions, configs, current, results, summary, calib, top_k, cfg, stats, checked)
+    if cv:
+        run.cv = cross_validate(run, int(cv), cv_seed) or {"folds": int(cv), "skipped": True, "n": run.n_answerable}
+    return run
 
 
 def recommendations(run):
@@ -440,6 +496,27 @@ def pct(k, n):
     return f"{k}/{n} ({100.0 * k / n:.0f} %)" if n else "—"
 
 
+def pct_ci(k, n):
+    """«42/60 (70 %; 57–80 %)»: доля и её 95 % интервал (wilson)."""
+    if not n:
+        return "—"
+    lo, hi = wilson(k, n)
+    return f"{k}/{n} ({100.0 * k / n:.0f} %; {100 * lo:.0f}–{100 * hi:.0f} %)"
+
+
+def cv_summary(cv):
+    """Итог кросс-валидации одной строкой (для отчёта и консоли)."""
+    if not cv:
+        return ""
+    if cv.get("skipped"):
+        return tr("Кросс-валидация на {k} частей не проводилась: вопросов с ответом {n}, нужно хотя бы {m}.",
+                  k=cv["folds"], n=cv["n"], m=2 * cv["folds"])
+    return tr("**Честная оценка (кросс-валидация, {k} частей):** hit@{h} {hit}, MRR {mrr:.3f}. Лучшая конфигурация, "
+              "проверенная на тех же вопросах, по которым выбрана: hit@{h} {hit_all}, MRR {mrr_all:.3f}. Разница — "
+              "завышение от подгонки под набор.", k=cv["folds"], h=CV_HIT, hit=pct_ci(cv["hit"], cv["n"]),
+              mrr=cv["mrr"], hit_all=pct_ci(cv["best_all_hit"], cv["n"]), mrr_all=cv["best_all_mrr"])
+
+
 def place_cell(res, q):
     """Ячейка «Место» в details.csv: место правильного фрагмента, а для вопроса без ответа в базе —
     сработал ли сигнал «уверенность низкая» (что и должно происходить на таких вопросах)."""
@@ -476,6 +553,9 @@ def report_lines(run, compare=None, prev_answers=None):
            "которым сработал сигнал «уверенность низкая»; «ложная тревога» — сигнал на вопросах, где ответ есть.",
            top_k=top_k),
         "",
+        tr("После доли в скобках — 95 % интервал: где, скорее всего, лежит настоящее значение. На 60 вопросах он "
+           "шириной около ±12 процентных пунктов, поэтому разница меньше этого может быть случайной."),
+        "",
     ]
     ks = hit_ks(top_k)
     head = [tr("Конфигурация")] + [f"hit@{k}" for k in ks] + ["MRR"]
@@ -490,7 +570,7 @@ def report_lines(run, compare=None, prev_answers=None):
         m = summary[name]
         row = [config_label(name) + (tr(" ⬅ текущие настройки") if name == current else "")]
         if n_ans:
-            row += [pct(m[f"hit@{k}"], n_ans) for k in ks] + [f"{m['mrr']:.3f}"]
+            row += [pct_ci(m[f"hit@{k}"], n_ans) for k in ks] + [f"{m['mrr']:.3f}"]
         else:
             row += ["—"] * (len(ks) + 1)
         if n_none:
@@ -543,6 +623,7 @@ def report_lines(run, compare=None, prev_answers=None):
                     lines.append(f"| {q.n} | {q.question} | {ra or f'> {K_MAX}'} | {rb or f'> {K_MAX}'} | {fa} | {fb} |")
                 if len(diff) > 20:
                     lines += ["", tr("Ещё {n} — в details.csv.", n=len(diff) - 20)]
+        lines += cv_report_lines(run)
 
     if calib:
         b = calib["best"]
@@ -614,6 +695,32 @@ def report_lines(run, compare=None, prev_answers=None):
     return lines
 
 
+def cv_report_lines(run):
+    """Раздел отчёта «Проверка на подгонку» (кросс-валидация), если она проводилась."""
+    cv = run.cv
+    if not cv:
+        return []
+    lines = ["", tr("## Проверка на подгонку: кросс-валидация"), ""]
+    if cv.get("skipped"):
+        return lines + [cv_summary(cv)]
+    lines += [tr("Цифры в таблице выше и «лучшая по MRR» получены на одних и тех же вопросах — выбор подогнан под "
+                 "набор, и результат завышен. Здесь вопросы с ответом поделены на {k} частей: лучшая конфигурация "
+                 "выбирается по остальным частям и проверяется на этой. Каждый вопрос проверен ровно один раз, на "
+                 "конфигурации, выбранной без него.", k=cv["folds"]), "",
+              f"| {tr('Часть')} | {tr('Вопросов')} | {tr('Выбрана по остальным частям')} | hit@{CV_HIT} | MRR |",
+              "|---|---|---|---|---|"]
+    for r in cv["rows"]:
+        lines.append(f"| {r['fold']} | {r['n']} | {config_label(r['chosen'])} | {pct(r['hit'], r['n'])} | "
+                     f"{r['mrr']:.3f} |")
+    lines += ["", cv_summary(cv)]
+    if len(cv["chosen"]) > 1:
+        lines.append(tr("В разных частях выбраны разные конфигурации ({names}): вопросов мало, чтобы уверенно выбрать "
+                        "одну.", names=", ".join(f"{config_label(n)} — {c}" for n, c in cv["chosen"].items())))
+    else:
+        lines.append(tr("Во всех частях выбрана одна и та же конфигурация — выбор устойчив."))
+    return lines
+
+
 def pair_verdict(a, b, wins, losses, diff, n_ans):
     p = sign_test_p(wins, losses)
     if not diff:
@@ -655,6 +762,8 @@ def summary_dict(run):
            "current": run.current, "configs": run.summary, "prompts": run.prompts}
     if run.answers:
         out["answers"] = run.answers["summary"]
+    if run.cv:
+        out["cv"] = {k: v for k, v in run.cv.items() if k != "rows"}
     return out
 
 

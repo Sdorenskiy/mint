@@ -1147,6 +1147,26 @@ EN = {
         '**Best by MRR:** {best}.',
     'Случайна ли разница — в разделе «Где конфигурации расходятся».':
         'Whether the difference is chance — see “Where configurations differ”.',
+    'После доли в скобках — 95 % интервал: где, скорее всего, лежит настоящее значение. На 60 вопросах он шириной около ±12 процентных пунктов, поэтому разница меньше этого может быть случайной.':
+        'After each share, in brackets — the 95 % interval: where the true value most likely lies. On 60 questions it is about ±12 percentage points wide, so a smaller difference may be chance.',
+    'Кросс-валидация на {k} частей не проводилась: вопросов с ответом {n}, нужно хотя бы {m}.':
+        'Cross-validation on {k} folds was not run: {n} questions with an answer, at least {m} needed.',
+    '**Честная оценка (кросс-валидация, {k} частей):** hit@{h} {hit}, MRR {mrr:.3f}. Лучшая конфигурация, проверенная на тех же вопросах, по которым выбрана: hit@{h} {hit_all}, MRR {mrr_all:.3f}. Разница — завышение от подгонки под набор.':
+        '**Honest estimate (cross-validation, {k} folds):** hit@{h} {hit}, MRR {mrr:.3f}. The best configuration checked on the same questions it was chosen on: hit@{h} {hit_all}, MRR {mrr_all:.3f}. The difference is the optimism of fitting to the set.',
+    '## Проверка на подгонку: кросс-валидация':
+        '## Overfitting check: cross-validation',
+    'Цифры в таблице выше и «лучшая по MRR» получены на одних и тех же вопросах — выбор подогнан под набор, и результат завышен. Здесь вопросы с ответом поделены на {k} частей: лучшая конфигурация выбирается по остальным частям и проверяется на этой. Каждый вопрос проверен ровно один раз, на конфигурации, выбранной без него.':
+        'The numbers in the table above and the “best by MRR” come from the same questions — the choice is fitted to the set, and the result is inflated. Here the questions with an answer are split into {k} folds: the best configuration is chosen on the other folds and checked on this one. Every question is checked exactly once, on a configuration chosen without it.',
+    'Часть':
+        'Fold',
+    'Вопросов':
+        'Questions',
+    'Выбрана по остальным частям':
+        'Chosen on the other folds',
+    'В разных частях выбраны разные конфигурации ({names}): вопросов мало, чтобы уверенно выбрать одну.':
+        'Different folds chose different configurations ({names}): too few questions to choose one with confidence.',
+    'Во всех частях выбрана одна и та же конфигурация — выбор устойчив.':
+        'Every fold chose the same configuration — the choice is stable.',
     'С реранкером «уверенность низкая» ставится, если лучший балл реранкера ниже порога `low_conf_rerank`.':
         'With a reranker, “low confidence” is set when the best reranker score is below `low_conf_rerank`.',
     'Реранкера нет: «уверенность низкая» ставится, если доля слов вопроса в контексте ниже порога `low_conf_lexical` и dense с BM25 не сошлись в топ-N.':
