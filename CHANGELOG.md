@@ -25,6 +25,12 @@
     version of their own (`ru-consult-…`) written into the 👍/👎 feedback; the chat and review prompt version is the
     same as before (`ru-8fd10871` / `en-9c3500f7`), so earlier results stay comparable.
   - Without new libraries and without new network requests: the same LLM, embedding and reranker services.
+- **Search evaluation: every share comes with its 95 % interval** (Wilson): "42/60 (70 %; 57–80 %)". On 60
+  questions it is about ±12 percentage points wide, so a smaller difference between configurations may be chance.
+- **`eval_search.py --cv 5` — an overfitting check.** "Best by MRR" is chosen on the same questions it is measured
+  on, so its numbers are inflated. Cross-validation splits the questions with an answer into 5 folds, chooses the
+  best configuration on four and checks it on the fifth, in turn: an honest estimate next to the in-sample one,
+  and whether every fold picks the same configuration. It reuses the computed ranks — no extra requests.
 
 ## 21.2.1 — a review no longer stops on long headings of basis documents
 

@@ -7,6 +7,9 @@
   • считает, на каком месте оказался правильный фрагмент: hit@1, hit@3, hit@K (попал ли он в контекст
     модели), MRR;
   • сравнивает конфигурации на одних и тех же вопросах (критерий знаков): случайна ли разница между ними;
+    у каждой доли — 95 % интервал (сколько она может гулять на таком числе вопросов);
+  • с --cv N проверяет выбор лучшей конфигурации на подгонку (кросс-валидация на N частей): лучшая выбирается по
+    одним вопросам, проверяется на других — так видно, насколько цифры на своём же наборе завышены;
   • по вопросам, ответа на которые в базе нет, показывает, сработал ли сигнал «уверенность низкая», и
     подбирает его порог;
   • с --answers задаёт каждый вопрос и чату (тем же сценарием, что вкладка «Чат») и проверяет ответ без
@@ -19,6 +22,7 @@
 Запуск (из папки MINT, где лежат app.py, .env и config.yaml):
   python eval_search.py eval/questions.csv
   python eval_search.py eval/questions.csv --compare eval_results/2026-10-10_09-00/summary.json
+  python eval_search.py eval/questions.csv --cv 5                     # + проверка выбора на подгонку
   python eval_search.py --generate 40 --out eval/questions.draft.csv     # черновик вопросов по базе
   python eval_search.py eval/questions.csv --answers --repeat 3 --quick  # ответы чата (после правки промпта)
 
@@ -50,8 +54,8 @@ if str(HERE) not in sys.path:
 try:
     from mint import evaluation as ev
     from mint.evaluation import (K_MAX, RERANK_WEIGHTS, Question, build_configs, calibrate,  # noqa: F401  (для тестов)
-                                 current_config_name, hit_ks, is_relevant, load_questions, metrics, nearest_quote,
-                                 paired, place_cell, rerank_cell, sign_test_p)
+                                 cross_validate, current_config_name, hit_ks, is_relevant, load_questions, metrics,
+                                 nearest_quote, paired, place_cell, rerank_cell, sign_test_p, wilson)
     from mint.i18n import set_lang, tr
 except ImportError as e:
     sys.exit(f"Не найден пакет mint рядом с {Path(__file__).name} ({e}). Запускайте скрипт из папки MINT.")
@@ -102,7 +106,7 @@ def evaluate(args):
         print(f"\r  [{done}/{total}] {ev.config_label(name)}" + " " * 20, end="", flush=True)
 
     run = ev.evaluate(cfg, questions, top_k=top_k, with_multi_query=args.multi_query, progress=progress,
-                      compare=not args.quick, answers=args.answers, repeat=args.repeat)
+                      compare=not args.quick, answers=args.answers, repeat=args.repeat, cv=args.cv, cv_seed=args.seed)
     print(f"\r  {tr('Готово за {s:.0f} с', s=time.time() - t0)}" + " " * 40)
     compare = prev_answers = None
     if args.compare:
@@ -118,6 +122,8 @@ def evaluate(args):
     start = next(i for i, ln in enumerate(lines) if ln.startswith(head))
     for ln in lines[start:start + len(run.configs) + 2]:
         print(ln)
+    if run.cv:
+        print("\n" + ev.cv_summary(run.cv).replace("**", ""))
     if run.answers:
         a = run.answers["summary"]
         print()
@@ -167,7 +173,9 @@ def main():
     parser.add_argument("--quick", action="store_true",
                         help="не сравнивать все настройки поиска: текущие, только векторный поиск и гибрид")
     parser.add_argument("--generate", type=int, default=0, metavar="N", help="сделать черновик из N вопросов по базе")
-    parser.add_argument("--seed", type=int, default=7, help="случайное зерно для --generate")
+    parser.add_argument("--cv", type=int, default=0, metavar="N",
+                        help="проверка выбора лучшей конфигурации на подгонку: кросс-валидация на N частей (обычно 5)")
+    parser.add_argument("--seed", type=int, default=7, help="случайное зерно для --generate и --cv")
     parser.add_argument("--lang", choices=["ru", "en"], help="язык отчёта (по умолчанию — как у MINT)")
     args = parser.parse_args()
     if args.lang:

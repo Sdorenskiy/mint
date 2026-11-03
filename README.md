@@ -452,8 +452,14 @@ answer in full.
 python eval_search.py --generate 40 --out eval/questions.csv   # draft questions from your base (review them!)
 python eval_search.py eval/questions.csv                        # evaluate → eval_results/<date>/report.md
 python eval_search.py eval/questions.csv --compare eval_results/<previous run>/summary.json
+python eval_search.py eval/questions.csv --cv 5                 # + an overfitting check (cross-validation)
 python eval_search.py eval/questions.csv --answers --repeat 3 --quick   # chat answers (after a prompt change)
 ```
+
+Every share in the report comes with its 95 % interval: on 60 questions it is about ±12 percentage points wide, and
+a smaller difference may be chance. The best configuration is chosen on the same questions the numbers are computed
+on, so they are inflated; `--cv 5` checks the choice for overfitting: the questions are split into 5 folds, the best
+configuration is chosen on four and checked on the fifth, in turn. It sends no extra requests to the services.
 
 Labels refer to the file name, section and a verbatim phrase rather than internal IDs, so a question set
 survives re-indexing. The format is shown in `eval/questions.example.csv`. Questions written by the model share

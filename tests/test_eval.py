@@ -110,6 +110,39 @@ import eval_search  # noqa: E402
 check(abs(eval_search.sign_test_p(7, 2) - 0.1797) < 1e-3 and eval_search.sign_test_p(0, 0) == 1.0
       and eval_search.sign_test_p(9, 0) < 0.01, "критерий знаков: 7 против 2 — p ≈ 0.18, 9 против 0 — p < 0.01")
 check(eval_search.hit_ks(3) == [1, 3] and eval_search.hit_ks(5) == [1, 3, 5], "hit@K без повтора при top_k = 3")
+check(tuple(round(x, 3) for x in eval_search.wilson(42, 60)) == (0.575, 0.801) and eval_search.wilson(0, 0) == (0.0, 0.0)
+      and eval_search.wilson(60, 60)[1] == 1.0 and eval_search.wilson(0, 10)[0] == 0.0,
+      "[unit] 95 % интервал Уилсона: 42 из 60 — от 57 до 80 %; не выходит за 0 и 1")
+
+# кросс-валидация на готовых местах: A ставит правильный фрагмент первым всегда, B — только на половине вопросов,
+# C (текущая) — всегда вторым
+cv_qs = [app.Question(i, f"q{i}", ["f"]) for i in range(1, 11)] + [app.Question(11, "без ответа")]
+cv_res = {name: {q.n: {"rank": rank(q.n), "top": [], "diag": {}} for q in cv_qs}
+          for name, rank in (("A", lambda n: 1), ("B", lambda n: 1 if n <= 5 else None), ("C", lambda n: 2))}
+cv_run = app.EvalRun(cv_qs, [("A", None), ("B", None), ("C", None)], "C", cv_res, {}, None, 3, None, {})
+cv_ = app.cross_validate(cv_run, folds=5, seed=1)
+check(cv_ and cv_["n"] == 10 and sum(r["n"] for r in cv_["rows"]) == 10 and cv_["chosen"] == {"A": 5}
+      and cv_["hit"] == 10 and abs(cv_["mrr"] - 1.0) < 1e-9 and cv_["best_all"] == "A",
+      f"[unit] кросс-валидация: каждый вопрос с ответом проверен один раз, лучшая выбрана без него: {cv_}")
+check(app.cross_validate(cv_run, folds=6) is None, "[unit] кросс-валидация: вопросов меньше 2 × частей — не проводится")
+cv_lines = "\n".join(app.cv_report_lines(cv_run.__class__(**{**cv_run.__dict__, "cv": cv_})))
+check("## Проверка на подгонку: кросс-валидация" in cv_lines and "выбор устойчив" in cv_lines
+      and "hit@3 10/10 (100 %; 72–100 %)" in cv_lines, "[unit] раздел отчёта о кросс-валидации", cv_lines[:800])
+
+run([str(W / "eval" / "questions.example.csv"), "--out", str(W / "cv1"), "--quick", "--cv", "2"],
+    "прогон с кросс-валидацией (--cv 2)")
+cv_rep = (W / "cv1" / "report.md").read_text(encoding="utf-8") if (W / "cv1" / "report.md").exists() else ""
+cv_sum = json.loads((W / "cv1" / "summary.json").read_text(encoding="utf-8")) if (W / "cv1" / "summary.json").exists() else {}
+import re  # noqa: E402
+check("## Проверка на подгонку: кросс-валидация" in cv_rep and "Честная оценка" in cv_rep
+      and cv_sum.get("cv", {}).get("folds") == 2 and sum(cv_sum["cv"].get("chosen", {}).values()) == 2,
+      "отчёт и итоги: кросс-валидация", cv_rep[cv_rep.find("## Проверка"):][:800])
+check(re.search(r"\| \d+/\d+ \(\d+ %; \d+–\d+ %\) \|", cv_rep) is not None and "95 % интервал" in cv_rep,
+      "в таблице конфигураций у долей — 95 % интервал", cv_rep[:1500])
+run([str(W / "eval" / "questions.example.csv"), "--out", str(W / "cv2"), "--quick", "--cv", "5"],
+    "кросс-валидация на слишком маленьком наборе не ломает прогон")
+cv2_rep = (W / "cv2" / "report.md").read_text(encoding="utf-8") if (W / "cv2" / "report.md").exists() else ""
+check("не проводилась" in cv2_rep, "вопросов мало — в отчёте сказано, что кросс-валидация не проводилась")
 
 # ядро проверки качества в интерфейсе (mint/evaluation.py): таблица вопросов, разметка, ответы чата
 snap = app.load_kb_snapshot(cfg)
