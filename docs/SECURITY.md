@@ -24,7 +24,9 @@ Browser ──HTTP, localhost──► MINT (Python, Streamlit) ──HTTPS─�
 - **Incoming connections:** none by default. The page listens on `localhost:8501` only
   (`server.address = "localhost"`), so other computers cannot reach it.
 - **What is sent to the models:** fragments of documents from the knowledge base and of the document under
-  review, user questions, and review comments. If your documents contain personal or otherwise protected data,
+  review (the consultant sends more: whole sections and system cards, up to 60,000 characters per request by
+  default, `consult_context_max_chars`), user questions (in the consultant — also the earlier turns of the
+  conversation), and review comments. If your documents contain personal or otherwise protected data,
   the model endpoint must be approved for it.
 
 ## What is stored where
@@ -33,12 +35,12 @@ Browser ──HTTP, localhost──► MINT (Python, Streamlit) ──HTTPS─�
 |---|---|---|
 | `KB_DIR` (default `~/knowledge_base`) | document fragments (`parent_store.json`), vectors (FAISS), BM25 index, metadata, the original uploaded .docx files (`sources/`), extracted abbreviations | yes |
 | `LOG_DIR` (default `~/mint_logs`) | `mint_system.log` (rotated, 10 MB × 5): beginnings of queries (up to 120 characters), file names, errors | partly |
-| `LOG_DIR/feedback.jsonl` | 👍/👎 ratings with the question, answer, sources and comment | yes |
+| `LOG_DIR/feedback.jsonl` | 👍/👎 ratings with the question (the consultant request), answer, sources and comment | yes |
 | `LOG_DIR/eval/` | quality checks: questions with verbatim phrases from the documents, reports, chat answers | yes |
 | `LOG_DIR/audits/` | saved reviews ("📂 Saved reviews"): the report, the log, raw model answers (compressed), a copy of the reviewed .docx, the expert assessment of findings; removed with "🗑️ Delete the review" | yes |
 | `.env` in the program folder | API addresses and the **API key** | no |
 | `prompts.yaml` in the program folder (`PROMPTS_PATH`) | your edits of the model prompts saved on the "📝 Prompts" page | no |
-| process memory | chat history and results of the current session; gone when the tab is closed or MINT restarts | yes |
+| process memory | chat history and the consultant conversation (with the fragments found), results of the current session; gone when the tab is closed or MINT restarts | yes |
 
 The assessment file for improving MINT ("📤 Download the assessment", "📥 Download the assessments") is downloaded
 by the user. With texts (the default) it has the findings with quotes from the document; with "Without finding

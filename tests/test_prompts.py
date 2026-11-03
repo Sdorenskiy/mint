@@ -188,7 +188,8 @@ check(set(P.PROFILES) == {"general", "architecture"} and P.DEFAULT_PROFILE == "a
 # его результаты сравнимы с прежними, а для архитектурной проверки ничего не меняется
 OLD_VERSIONS = {"ru": "ru-8fd10871", "en": "en-9c3500f7"}
 HEAD_LINES = {"chat_system": 2, "audit_system": 2, "audit_focus_answer_system": 1, "audit_checklist_system": 1,
-              "critique_system": 1, "review_system": 1}       # остальное в них — правила, общие с <язык>.yaml
+              "critique_system": 1, "review_system": 1,
+              "consult_system": 2}                             # остальное в них — правила, общие с <язык>.yaml
 FREE = {"chat_no_info", "condense_system", "paraphrase_system", "question_gen_system", "audit_no_norms",
         "audit_focus_default", "audit_focus_generic"}          # короткие тексты — отличаются целиком
 for lang in ("ru", "en"):
@@ -234,6 +235,23 @@ with use_lang("ru"):
         check(P.prompt_text("critique_system").endswith("Своё правило.") and P.custom_status("ru") == {"critique_system": "session"},
               "своя правка действует и в профиле")
     P.set_session_prompts(None)
+# Консультант: свои тексты (consult_*) — своя версия; общая версия набора (чат, аудит) от них не зависит
+for lang in ("ru", "en"):
+    v_main, v_cons = P.prompts_version(lang), P.consult_prompts_version(lang)
+    P.set_session_prompts({lang: {"consult_system": P.default_text("consult_system", lang) + "\n11. Своё правило."}})
+    check(P.prompt_text("consult_system", lang).endswith("Своё правило.") and P.prompts_version(lang) == v_main
+          and P.consult_prompts_version(lang) != v_cons and v_cons.startswith(f"{lang}-consult-"),
+          f"{lang}: правка консультанта меняет только его версию ({v_cons}), версия чата и аудита прежняя ({v_main})")
+    P.set_session_prompts({lang: {"chat_system": P.default_text("chat_system", lang) + "\n9. Своё."}})
+    check(P.prompts_version(lang) != v_main and P.consult_prompts_version(lang) == v_cons,
+          f"{lang}: правка чата не меняет версию консультанта")
+    P.set_session_prompts(None)
+    sys_, user_ = P.consult_plan_messages("Как устроен шлюз?", "", 5, lang)
+    check("5" in sys_ and "Как устроен шлюз?" in user_ and P.prompt_text("consult_plan_no_dialog", lang) in user_,
+          f"{lang}: разбор запроса — подстановки и «начало разговора»")
+    uc_ = P.consult_user_content("", "Запрос", "problem", abbreviations="- ВП — внешний портал", low_found=True, lang=lang)
+    check(P.prompt_text("consult_nothing_found", lang) in uc_ and P.prompt_text("consult_low_found", lang) in uc_
+          and "ВП — внешний портал" in uc_ and "problem" in uc_, f"{lang}: запрос ответа консультанта")
 check(P.set_profile("general") == "general" and P.get_profile() == "general"
       and P.set_profile("нет такого") == "architecture", "профиль сеанса: set_profile")
 check(any("profile" in m for _, m in app.check_settings(replace(app.DEFAULTS, profile="legal")))

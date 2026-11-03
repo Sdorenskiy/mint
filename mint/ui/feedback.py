@@ -5,7 +5,8 @@ import streamlit as st
 from ..feedback import RATINGS, feedback_path, feedback_summary, read_feedback, record_feedback
 from ..i18n import N_, tr
 
-KIND_TITLES = {"chat": N_("ответы чата"), "audit": N_("аудит"), "review": N_("контроль исправлений")}
+KIND_TITLES = {"chat": N_("ответы чата"), "consult": N_("консультант"), "audit": N_("аудит"),
+               "review": N_("контроль исправлений")}
 
 
 def render_feedback(cfg, kind, item_id, context, subject=""):

@@ -15,7 +15,8 @@ profiles/<профиль>.<язык>.yaml. Профиль сеанса зада�
 
     prompt_text("chat_system")                    # действующий текст на языке интерфейса
     render("audit_user", section=text)            # с подстановками
-    prompts_version()                             # «ru-1a2b3c4d»: язык и хэш всех действующих текстов
+    prompts_version()                             # «ru-1a2b3c4d»: язык и хэш действующих текстов (кроме consult_*)
+    consult_prompts_version()                     # «ru-consult-1a2b3c4d»: тексты консультанта — своя версия
 
 Версия набора пишется в отзывы, лог аудита и проверку качества: по ней видно, при каких текстах получен
 результат. Константы CHAT_SYSTEM_PROMPT и др. — тексты по умолчанию (для тестов и совместимости).
@@ -147,6 +148,15 @@ EDITABLE = {
                       N_("Исправлено ли замечание в новой редакции. JSON-ответ со статусом и цитатой обязателен.")),
     "question_gen_system": (N_("Проверка качества"), N_("Черновик вопросов по базе"),
                             N_("По фрагменту базы — вопрос и дословная цитата с ответом. JSON-ответ обязателен.")),
+    "consult_system": (N_("Консультант"), N_("Ответ консультанта"),
+                       N_("Роль и правила ответа во вкладке «Консультант»: факты о ваших системах — из базы, со "
+                          "ссылками [Источник: …]; свои предложения модели — со значком 💡; ответ начинается с раздела "
+                          "«📄 …». Ссылки, 📄 и 💡 обязательны: по ним MINT проверяет ссылки и отмечает пункты "
+                          "раздела 📄 без ссылки.")),
+    "consult_plan_system": (N_("Консультант"), N_("Разбор запроса: поиск по аспектам"),
+                            N_("Перед ответом модель определяет, что просят, и составляет несколько поисковых запросов "
+                               "к базе — по одному на каждую сторону вопроса. JSON-ответ с полями kind и queries "
+                               "обязателен.")),
 }
 
 # Ключи, правку которых измеряет проверка качества с ответами чата (вопросы без истории диалога)
@@ -187,6 +197,8 @@ FORMAT_PARTS = {
     "review_system": {"ru": ['{"status": "ИСПРАВЛЕНО|ЧАСТИЧНО|НЕ_ИСПРАВЛЕНО", "quote": "...", "comment": "..."}'],
                       "en": ['{"status": "FIXED|PARTIAL|NOT_FIXED", "quote": "...", "comment": "..."}']},
     "question_gen_system": {"ru": ['{"question": "...", "quote": "..."}'], "en": ['{"question": "...", "quote": "..."}']},
+    "consult_system": {"ru": ["[Источник:", "📄", "💡"], "en": ["[Source:", "📄", "💡"]},
+    "consult_plan_system": {"ru": ['"kind"', '"queries"'], "en": ['"kind"', '"queries"']},
 }
 
 
@@ -542,12 +554,28 @@ def render(key, lang=None, **values):
     return fill(prompt_text(key, lang), values, name=key)
 
 
+# Тексты консультанта (вкладка «Консультант») версионируются отдельно: их правка или появление не меняют версию
+# набора чата, аудита и контроля исправлений — результаты, полученные до консультанта, остаются сравнимыми.
+CONSULT_PREFIX = "consult_"
+
+
+def _digest(texts):
+    return hashlib.sha256(json.dumps(texts, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()[:8]
+
+
 def prompts_version(lang=None):
-    """Версия набора промптов: «<язык>-<8 знаков хэша>» действующих текстов. Меняется при любой правке."""
+    """Версия набора промптов чата, аудита и контроля исправлений: «<язык>-<8 знаков хэша>» действующих текстов
+    (без текстов консультанта — у них consult_prompts_version). Меняется при любой правке."""
     lang = _lang(lang)
-    texts = effective_prompts(lang)
-    digest = hashlib.sha256(json.dumps(texts, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest()
-    return f"{lang}-{digest[:8]}"
+    texts = {k: v for k, v in effective_prompts(lang).items() if not k.startswith(CONSULT_PREFIX)}
+    return f"{lang}-{_digest(texts)}"
+
+
+def consult_prompts_version(lang=None):
+    """Версия текстов консультанта: «<язык>-consult-<8 знаков хэша>»."""
+    lang = _lang(lang)
+    texts = {k: v for k, v in effective_prompts(lang).items() if k.startswith(CONSULT_PREFIX)}
+    return f"{lang}-consult-{_digest(texts)}"
 
 
 # ---------------------------------------------------------------- чат
@@ -570,6 +598,33 @@ def chat_user_content(context, question, abbreviations="", search_question=None)
 
 def condense_system(lang=None):
     return prompt_text("condense_system", lang)
+
+
+# ---------------------------------------------------------------- консультант
+
+def consult_plan_messages(request, dialog, max_queries, lang=None):
+    """(системный промпт, запрос) разбора запроса консультанта; dialog — текст прошлых реплик или пусто."""
+    system = render("consult_plan_system", lang, max_queries=max_queries)
+    user = render("consult_plan_user", lang, dialog=dialog or prompt_text("consult_plan_no_dialog", lang),
+                  request=request)
+    return system, user
+
+
+def consult_system_prompt(lang=None):
+    return prompt_text("consult_system", lang)
+
+
+def consult_user_content(context, request, kind, abbreviations="", low_found=False, lang=None):
+    """Запрос ответа консультанта: справочник сокращений, фрагменты базы (или «ничего не найдено»), запрос."""
+    parts = []
+    if abbreviations:
+        parts.append(render("chat_user_abbreviations", lang, abbreviations=abbreviations))
+    body = context or prompt_text("consult_nothing_found", lang)
+    if low_found:
+        body = prompt_text("consult_low_found", lang) + "\n\n" + body
+    parts.append(render("consult_user_context", lang, context=body))
+    parts.append(render("consult_user_request", lang, request=request, kind=kind))
+    return "\n\n".join(parts)
 
 
 def paraphrase_system(lang=None):

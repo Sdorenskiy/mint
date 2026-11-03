@@ -13,6 +13,7 @@ from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 SUITES = [
     ("Ядро и интерфейс", ["test_app.py"]),
+    ("Консультант: разбор запроса, поиск по аспектам, разделы целиком, 📄/💡, схемы", ["test_consult.py"]),
     ("Промпты: языки, подстановки, версия, формат ответа", ["test_prompts.py"]),
     ("Форматы: .pdf без моделей, .md, .txt", ["test_formats.py"]),
     ("Запросы к модели: рассуждения, свои параметры, таймауты аудита", ["test_llm_requests.py"]),

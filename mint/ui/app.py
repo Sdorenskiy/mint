@@ -17,6 +17,7 @@ from .quality import OPEN, render_quality, render_quality_entry
 from .sidebar import render_glossary, render_knowledge_base, render_settings
 from .tab_audit import on_profile_change, render_audit_tab
 from .tab_chat import render_chat_tab
+from .tab_consult import render_consult_tab
 from .tab_review import render_review_tab
 from .theme import inject_theme, render_header
 
@@ -76,15 +77,18 @@ def main():
         render_cards(cfg)         # и черновик карточки системы
         return
 
-    tab1, tab2, tab3 = st.tabs([
+    tab_chat, tab_consult, tab_audit, tab_review = st.tabs([
         tr("💬 Интерактивный чат (RAG)"),
+        tr("🧠 Консультант"),
         tr("📋 Аудит документа"),
         tr("🔄 Контроль исправления замечаний"),
     ])
 
-    with tab1:
+    with tab_chat:
         render_chat_tab(cfg, gl)
-    with tab2:
+    with tab_consult:
+        render_consult_tab(cfg, gl)
+    with tab_audit:
         render_audit_tab(cfg, gl)
-    with tab3:
+    with tab_review:
         render_review_tab(cfg, gl)

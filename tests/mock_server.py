@@ -40,8 +40,54 @@ def ntok(text):
     return math.ceil(len(text or "") / 3.3) + 2
 
 
+def consult_reply(system, user, en=False):
+    """Консультант (mint/consult.py): разбор запроса — JSON; ответ — разделы «📄 …», варианты, схема Mermaid, ссылка
+    на первый фрагмент и один пункт без ссылки (его MINT помечает ❔). None — промпт не консультанта.
+    Свои ответы — STATE["consult_plan_reply"], STATE["consult_reply"]."""
+    if "Ты готовишь поиск по базе знаний" in system or "You are preparing a search of the organisation" in system:
+        if STATE.get("consult_plan_reply") is not None:
+            return STATE["consult_plan_reply"]
+        req = user.split("--- REQUEST ---" if en else "--- ЗАПРОС ---")[-1].strip()
+        kind = ("diagram" if re.search(r"схем|diagram", req, re.I) else
+                "problem" if re.search(r"проблем|problem", req, re.I) else "explain")
+        words = re.findall(r"\w{5,}", req)[:3]
+        queries = [" ".join(words) + (" composition" if en else " состав"),
+                   " ".join(words) + (" interaction" if en else " взаимодействие")]
+        return "```json\n" + json.dumps({"kind": kind, "systems": [], "queries": queries}, ensure_ascii=False) + "\n```"
+    if "📄 Как устроено сейчас" not in system and "📄 How it works now" not in system:
+        return None
+    if STATE.get("consult_reply") is not None:
+        return STATE["consult_reply"]
+    m = re.search(r"=== (?:ИСТОЧНИК|SOURCE): (.+?)(?: \| .*)? ===", user)
+    src = m.group(1).strip() if m else ("none.docx" if en else "нет.docx")
+    kind = re.search(r"\((?:тип запроса по разбору|kind of request from the analysis): (\w+)", user)
+    kind = kind.group(1) if kind else "other"
+    n = user.count("=== ИСТОЧНИК") + user.count("=== SOURCE")
+    if en:
+        parts = ["### 📄 How it works now", f"- The components are described in the document [Source: {src}]",
+                 "- The gateway passes messages to the queue without a delivery confirmation to the recipient.",
+                 "### Solution options", "- 💡 Split the queues by flows."]
+        if kind == "diagram":
+            parts += ["### Diagram", "```mermaid", "sequenceDiagram", '  participant A as Sender',
+                      '  participant B as Gateway', '  A->>B: Message', "```", "### Steps",
+                      f"1. The sender passes the message [Source: {src}]"]
+        parts += ["### Not in the base — what to clarify", f"- Monitoring is not described. Fragments: {n}."]
+    else:
+        parts = ["### 📄 Как устроено сейчас", f"- Компоненты описаны в документе [Источник: {src}]",
+                 "- Шлюз передаёт сообщения в очередь без подтверждения доставки получателю.",
+                 "### Варианты решения", "- 💡 Разделить очереди по потокам."]
+        if kind == "diagram":
+            parts += ["### Схема", "```mermaid", "sequenceDiagram", '  participant A as Отправитель',
+                      '  participant B as Шлюз', '  A->>B: Сообщение', "```", "### Шаги",
+                      f"1. Отправитель передаёт сообщение [Источник: {src}]"]
+        parts += ["### Чего нет в базе и что уточнить", f"- Нет описания мониторинга. Фрагментов: {n}."]
+    return "\n".join(parts)
+
+
 def chat_reply_en(system, user):
     """Ответы на английские промпты (интерфейс на английском). None — промпт не английский."""
+    if "You are preparing a search of the organisation" in system or "📄 How it works now" in system:
+        return consult_reply(system, user, en=True)
     if "Senior Controller" in system:
         n = len(re.findall(r"^\d+\.", user.split("DRAFT FINDINGS")[-1], flags=re.M))
         chapter = user.split("--- DOCUMENT SECTION ---")[-1].split("--- REFERENCE")[0]
@@ -164,6 +210,9 @@ def chat_reply(system, user, max_tokens):
     en = chat_reply_en(system, user)
     if en is not None:
         return en
+    consult = consult_reply(system, user)
+    if consult is not None:
+        return consult
     if "Старший Контролер" in system:
         n = len(re.findall(r"^\d+\.", user.split("ЧЕРНОВИК ЗАМЕЧАНИЙ")[-1], flags=re.M))
         chapter = re.split(r"--- ГЛАВА (?:ТЗ|ДОКУМЕНТА) ---", user)[-1].split("--- НОРМАТИВНЫЙ")[0]
