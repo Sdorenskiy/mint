@@ -320,7 +320,9 @@ def build_norms_context(section_text, cfg, k, glossary=None, extra_items=None, s
 
 # ---------- Пункты документа: замечание о другой части ----------
 _CLAUSE_LINE_RE = re.compile(r"^[ \t]*(?:#{1,6}[ \t]+)?\**(\d+(?:\.\d+)*)\.?\**[ \t]")
-_TOC_TAIL_RE = re.compile(r"(?:\t|\.{3,}|…)\s*\d{1,3}\**\s*$")
+# Строка содержания: заполнитель (табуляция, «...», «…») и номер страницы в конце. После заполнителя — пробелы, но не
+# табуляция (её найдёт сам поиск как заполнитель): так ряд из тысяч точек или табуляций разбирается за один проход.
+_TOC_TAIL_RE = re.compile(r"(?:\t|\.{3}|…)[^\S\t]*\d{1,3}\**\s*$")
 _FINDING_CLAUSE_RE = re.compile(r"^\W*(?:(?:пп?|пункт\w*|подраздел\w*|раздел\w*|clause|section)\.?\s*)?"
                                 r"(\d+(?:\.\d+)*)\.?(?=[\s,:;)]|$)", re.IGNORECASE)
 _PATH_NO_RE = re.compile(r"^(\d+(?:\.\d+)*)\.?\s")
@@ -1362,14 +1364,17 @@ def verify_absence(res, idx, ctx, cfg):
 FOCUS_POINTS_MAX = 8
 SYSTEMS_MAX = 5             # систем с карточками на аудит: по каждой — вопрос «что документ требует от системы»
 SYSTEM_MIN_MENTIONS = 2     # столько раз система должна упоминаться в документе, чтобы задать вопрос
-_ANSWER_RE = re.compile(r"^\s*\**\s*(?:Ответ|Answer)\s*\**\s*:\s*\**\s*(.*)$", re.IGNORECASE)
+_ANSWER_RE = re.compile(r"^\s*(?:\*+\s*)?(?:Ответ|Answer)\s*(?:\*+\s*)?:\s*(?:\*+\s*)?(.*)$", re.IGNORECASE)
 _VERDICT_WORDS = (("не относится", "na"), ("неприменим", "na"), ("not applicable", "na"), ("n/a", "na"),
                   ("частично", "partial"), ("partially", "partial"), ("partly", "partial"), ("partial", "partial"),
                   ("да", "yes"), ("yes", "yes"), ("нет", "no"), ("no", "no"))
 VERDICT_ICONS = {"yes": "✅", "partial": "⚠️", "no": "❌", "na": "➖", "unknown": "❔"}
+# Пробелы и «*» — только после обязательной части (без «\s*\**\s*»; маркер списка из «*» кончается перед пробелом): на
+# строке из тысяч пробелов или звёздочек разбор не перебирает, как поделить их между соседними частями. Что разбирается —
+# не изменилось (tests/test_regex_speed.py).
 _STATUS_RE = re.compile(
-    r"^\s*(?:[-–—•*·]+|\d{1,2}[.)])?\s*\**\s*\[\s*(ЕСТЬ|В\s+ПЛАНАХ|ДОРАБОТКА|ПРОТИВОРЕЧИЕ|НЕЯСНО|HAVE|PLANNED|CHANGE|"
-    r"CONFLICT|UNCLEAR)\s*\]\s*\**\s*[:—–-]?\s*(.+)$", re.IGNORECASE)
+    r"^\s*(?:(?:(?:[-–—•·*]*[-–—•·])?\*+(?=\s)|[-–—•·*]*[-–—•·]|\d{1,2}[.)])\s*)?(?:\*+\s*)?"
+    r"\[\s*(ЕСТЬ|В\s+ПЛАНАХ|ДОРАБОТКА|ПРОТИВОРЕЧИЕ|НЕЯСНО|HAVE|PLANNED|CHANGE|CONFLICT|UNCLEAR)\s*\]\s*(?:\*+\s*)?(?:[:—–-]\s*)?(.+)$", re.IGNORECASE)
 _STATUS_CODES = {"ЕСТЬ": "have", "HAVE": "have", "В ПЛАНАХ": "planned", "PLANNED": "planned", "ДОРАБОТКА": "change",
                  "CHANGE": "change", "ПРОТИВОРЕЧИЕ": "conflict", "CONFLICT": "conflict", "НЕЯСНО": "unclear",
                  "UNCLEAR": "unclear"}

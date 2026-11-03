@@ -24,6 +24,7 @@ logger = logging.getLogger("MINT")
 
 NUM_RE = re.compile(r"^((?:\d{1,2}\.){0,4}\d{1,2})\.?\s+(\S.+)$")
 TOC_RE = re.compile(r"(?:\.\s?){4,}\s*\d{1,4}\s*$|…{2,}\s*\d{1,4}\s*$")
+TOC_LINE_MAX = 300           # длиннее — не строка оглавления (и разбор длинной строки шёл бы долго)
 TOC_LINE_RE = re.compile(r"^(?P<title>.*?[A-Za-zА-Яа-яЁё].*?)\s*(?:(?:\.\s?){3,}|…+)\s*(?P<page>\d{1,4})\s*$")
 BULLET_RE = re.compile(r"^\s*(?:[-–—•●▪■❑❖◦*·∙]|\d{1,2}[.)]|[а-яa-z][)])\s+")
 BOLD_RE = re.compile(r"bold|black|heavy|semibold|demi|,b\b|-b\b|bd\b", re.I)
@@ -137,7 +138,7 @@ def _toc_entries(pages):
         if not pg["toc"]:
             continue
         for ln in pg["lines"]:
-            m = TOC_LINE_RE.match(ln["text"])
+            m = TOC_LINE_RE.match(ln["text"]) if len(ln["text"]) <= TOC_LINE_MAX else None   # строка оглавления короткая
             if not m:
                 continue
             title = m.group("title").strip()
