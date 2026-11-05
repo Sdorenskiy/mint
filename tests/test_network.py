@@ -8,8 +8,9 @@ install.sh), модели — имитация шлюза на 127.0.0.1 (tests/
    WebSocket — страница выполняется и обращается к шлюзу.
 
 Проверяется: соединения и обращения к DNS — только к адресам из .env (здесь — имитация шлюза на 127.0.0.1); сервер
-слушает только localhost; программы не запускаются; файлы пишутся только в KB_DIR, LOG_DIR и временную папку; реестр
-Windows не меняется. Итог печатается таблицей — её можно приложить к заявке на проверку.
+слушает только localhost; программы не запускаются (одно известное исключение: Docling при импорте узнаёт тип
+процессора — `uname -p` в Linux и macOS); файлы пишутся только в KB_DIR, LOG_DIR и временную папку; реестр Windows
+не меняется. Итог печатается таблицей — её можно приложить к заявке на проверку.
 
 Запуск — Python из установленной .venv, из корня проекта:
     .venv/bin/python tests/test_network.py          (Windows: .venv\\Scripts\\python tests\\test_network.py)
@@ -75,6 +76,13 @@ def where(path):
     return None
 
 
+def known_process(d):
+    """Известный безобидный запуск: Docling при импорте узнаёт тип процессора для сведений о версии
+    (platform.processor() → `uname -p` в Linux и macOS; в Windows программа не запускается)."""
+    caller = " ".join(d[3] if len(d) > 3 else [])
+    return os.path.basename(str(d[1])) == "uname" and "'-p'" in str(d[2]) and "DoclingVersion" in caller
+
+
 def analyze(events, title):
     """Сводка событий одного процесса → строки отчёта; нарушения — в FAILS."""
     conn = sorted({f"{h}:{p}" for e in events if e["kind"] in ("connect", "sendto") for h, p in [e["detail"]]})
@@ -85,6 +93,8 @@ def analyze(events, title):
     binds = sorted({f"{h}:{p}" for e in events if e["kind"] == "bind" for h, p in [e["detail"]]})
     open_binds = [b for b in binds if b.rsplit(":", 1)[0] not in {"127.0.0.1", "::1", "localhost"}]
     procs = [e["detail"] for e in events if e["kind"] == "process"]
+    known = [d for d in procs if known_process(d)]
+    procs = [d for d in procs if not known_process(d)]
     for d in procs:
         print(f"    запуск программы: {d[1]} {d[2]} ← {' ← '.join(reversed(d[3] if len(d) > 3 else []))}")
     writes = {}
@@ -104,12 +114,15 @@ def analyze(events, title):
           ", ".join(foreign))
     check(not foreign_dns, f"{title}: обращений к DNS за чужими адресами нет", ", ".join(foreign_dns))
     check(not open_binds, f"{title}: слушает только localhost ({', '.join(binds) or 'не слушает'})", ", ".join(open_binds))
-    check(not procs, f"{title}: программы не запускаются", json.dumps(procs, ensure_ascii=False)[:600])
+    check(not procs, f"{title}: программы не запускаются"
+                     + (f" (кроме `uname -p` из Docling — тип процессора: {len(known)})" if known else ""),
+          json.dumps(procs, ensure_ascii=False)[:600])
     check(not bad_writes, f"{title}: файлы пишутся только в KB_DIR, LOG_DIR и временную папку "
                           f"({', '.join(f'{k}: {v}' for k, v in sorted(writes.items())) or 'не пишет'})",
           "; ".join(sorted(set(bad_writes))[:15]))
     check(not registry, f"{title}: реестр Windows не меняется", str(registry)[:300])
-    return {"connections": conn, "listen": binds, "writes": writes, "processes": len(procs)}
+    return {"connections": conn, "listen": binds, "writes": writes,
+            "processes": len(procs) or ("uname -p из Docling (тип процессора)" if known else 0)}
 
 
 # ---------------------------------------------------------------------------------------------------------------

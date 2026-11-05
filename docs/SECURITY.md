@@ -122,7 +122,7 @@ every night (Ubuntu, Debian 12, Windows) and prints a summary table. You can run
 |---|---|
 | Rights | An ordinary user account, no administrator |
 | Installation | `install.sh` / `install.bat` create `.venv` in the program folder and install the packages into it from the offline bundle or an internal mirror (pip). Nothing is installed into the system: no services, autostart, scheduled tasks or registry changes. To remove MINT, delete the program folder, `KB_DIR` and `LOG_DIR` |
-| Processes | One Python process: `python -m streamlit run app.py`. MINT starts no other programs. `run_mint.sh` / `run_mint.bat` open the browser once at start (`xdg-open`, `open` or `start`) |
+| Processes | One Python process: `python -m streamlit run app.py`. MINT starts no other programs. Two known starts: `run_mint.sh` / `run_mint.bat` open the browser once at start (`xdg-open`, `open` or `start`); on Linux and macOS the Docling library runs `uname -p` once at the first .docx parsing — Python's standard `platform.processor()`, the processor type for Docling's version info |
 | Incoming connections | `localhost:8501` only |
 | Outgoing connections | Only to `LLM_API_URL`, `EMBED_API_URL`, `RERANK_API_URL` from `.env`; DNS lookups only for their names. No update checks, usage statistics, font or model downloads; the page in the browser loads nothing from the internet |
 | File writes | `KB_DIR`, `LOG_DIR` and the OS temporary folder. Into the program folder only during installation (`.venv`, `.env` from the template), on a user action (`prompts.yaml`, `checklists.yaml`) and Python's byte-code cache (`__pycache__`) |
