@@ -15,7 +15,6 @@ Windows не меняется. Итог печатается таблицей �
     .venv/bin/python tests/test_network.py          (Windows: .venv\\Scripts\\python tests\\test_network.py)
 На GitHub — .github/workflows/install.yml после установки с нуля.
 """
-import asyncio
 import json
 import os
 import shutil
@@ -62,6 +61,8 @@ ALLOWED_WRITE = {"KB_DIR": work / "kb", "LOG_DIR": work / "logs", "времен�
 
 def where(path):
     """Куда пишет: KB_DIR, LOG_DIR, временная папка — или «другое» (тогда это ошибка)."""
+    if str(path) in (os.devnull, "/dev/null", "nul", "NUL"):
+        return "пустое устройство (os.devnull)"
     p = os.path.abspath(path)
     if "__pycache__" in Path(p).parts:
         return "кэш байт-кода Python (__pycache__)"
@@ -84,6 +85,8 @@ def analyze(events, title):
     binds = sorted({f"{h}:{p}" for e in events if e["kind"] == "bind" for h, p in [e["detail"]]})
     open_binds = [b for b in binds if b.rsplit(":", 1)[0] not in {"127.0.0.1", "::1", "localhost"}]
     procs = [e["detail"] for e in events if e["kind"] == "process"]
+    for d in procs:
+        print(f"    запуск программы: {d[1]} {d[2]} ← {' ← '.join(reversed(d[3] if len(d) > 3 else []))}")
     writes = {}
     bad_writes = []
     for e in events:
@@ -179,33 +182,34 @@ with hook.paused():
             page_ok = r.status == 200 and b"<html" in r.read().lower()
     check(page_ok, "страница отдаётся")
 
-    async def browser_session():
+    def browser_session():
         """Как браузер: WebSocket, запрос на выполнение страницы, ожидание конца выполнения."""
         from streamlit.proto.BackMsg_pb2 import BackMsg
         from streamlit.proto.ForwardMsg_pb2 import ForwardMsg
-        from tornado.websocket import websocket_connect
-        ws = await websocket_connect(f"ws://localhost:{port}/_stcore/stream", subprotocols=["streamlit"])
+        from websockets.sync.client import connect
         msg = BackMsg()
         msg.rerun_script.query_string = ""
         msg.rerun_script.page_script_hash = ""
-        await ws.write_message(msg.SerializeToString(), binary=True)
-        deadline = time.time() + 180
-        while time.time() < deadline:
-            raw = await asyncio.wait_for(ws.read_message(), timeout=max(1.0, deadline - time.time()))
-            if raw is None:
-                break
-            fm = ForwardMsg()
-            fm.ParseFromString(raw)
-            if fm.WhichOneof("type") == "script_finished":
-                ws.close()
-                return True
-        ws.close()
+        kinds = []
+        with connect(f"ws://localhost:{port}/_stcore/stream", subprotocols=["streamlit"], open_timeout=30,
+                     max_size=None) as ws:
+            ws.send(msg.SerializeToString())
+            deadline = time.time() + 180
+            while time.time() < deadline:
+                raw = ws.recv(timeout=max(1.0, deadline - time.time()))
+                fm = ForwardMsg()
+                fm.ParseFromString(raw)
+                kind = fm.WhichOneof("type")
+                kinds.append(kind)
+                if kind == "script_finished":
+                    return True
+        print(f"  сеанс браузера: конца выполнения не дождались; сообщения: {kinds[:20]}")
         return False
 
     finished = False
     if up:
         try:
-            finished = asyncio.run(browser_session())
+            finished = browser_session()
         except Exception as e:
             print(f"  сеанс браузера: {type(e).__name__}: {str(e)[:300]}")
     gateway_calls = mock_server.STATE["requests"][before:]

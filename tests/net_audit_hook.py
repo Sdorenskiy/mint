@@ -9,6 +9,7 @@ import json
 import os
 import sys
 import threading
+import traceback
 from contextlib import contextmanager
 
 EVENTS = []
@@ -20,6 +21,10 @@ _PROCESS = {"subprocess.Popen", "os.system", "os.posix_spawn", "os.exec", "os.sp
             "os.forkpty"}
 _FS = {"os.mkdir", "os.rename", "os.replace", "os.remove", "os.rmdir", "os.symlink", "os.link", "os.truncate",
        "shutil.rmtree", "shutil.move", "shutil.copyfile"}
+# позиция аргумента dir_fd: путь относительно открытой папки — это удаление дерева (shutil.rmtree), само оно
+# приходит отдельным событием с полным путём
+_DIR_FD = {"os.mkdir": 2, "os.remove": 1, "os.rmdir": 1, "os.rename": 2, "os.replace": 2, "os.symlink": 2,
+           "os.link": 2}
 _REGISTRY_WRITE = {"winreg.CreateKey", "winreg.DeleteKey", "winreg.DeleteValue", "winreg.SetValue",
                    "winreg.SaveKey", "winreg.LoadKey"}
 
@@ -33,6 +38,12 @@ def _path(p):
 
 def _addr(a):
     return [a[0], a[1]] if isinstance(a, tuple) and len(a) >= 2 else [_path(a), None]
+
+
+def _caller():
+    """Кто вызвал: последние кадры стека вне этого файла — «файл:строка функция»."""
+    frames = [f for f in traceback.extract_stack()[:-3] if not f.filename.endswith(("net_audit_hook.py", "sitecustomize.py"))]
+    return [f"{os.path.basename(f.filename)}:{f.lineno} {f.name}" for f in frames[-6:]]
 
 
 def _record(kind, detail):
@@ -66,12 +77,16 @@ def _hook(event, args):
         elif event == "urllib.Request":
             _record("url", [str(args[0]), None])
         elif event in _PROCESS:
-            _record("process", [event, _path(args[0])[:300] if args else "", str(args[1])[:300] if len(args) > 1 else ""])
+            _record("process", [event, _path(args[0])[:300] if args else "", str(args[1])[:300] if len(args) > 1 else "",
+                                _caller()])
         elif event == "open":
             path, _mode, flags = args
             if not isinstance(path, int) and isinstance(flags, int) and flags & _WRITE_FLAGS:
                 _record("write", [_path(path), None])
         elif event in _FS:
+            pos = _DIR_FD.get(event)
+            if pos is not None and len(args) > pos and isinstance(args[pos], int) and args[pos] >= 0:
+                return
             _record("fs", [event, _path(args[0]) if args else ""])
         elif event in _REGISTRY_WRITE:
             _record("registry", [event, str(args[:2])[:300]])
