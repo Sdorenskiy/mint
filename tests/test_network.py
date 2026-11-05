@@ -90,8 +90,10 @@ def analyze(events, title):
     names = sorted({str(e["detail"][0]) for e in events if e["kind"] in ("resolve", "url")})
     foreign_dns = [n for n in names if n not in LOCAL and not n.startswith(f"http://127.0.0.1:{gw_port}")
                    and not n.startswith("http://localhost:")]
-    binds = sorted({f"{h}:{p}" for e in events if e["kind"] == "bind" for h, p in [e["detail"]]})
-    open_binds = [b for b in binds if b.rsplit(":", 1)[0] not in {"127.0.0.1", "::1", "localhost"}]
+    all_binds = sorted({f"{h}:{p}" for e in events if e["kind"] == "bind" for h, p in [e["detail"]]})
+    open_binds = [b for b in all_binds if b.rsplit(":", 1)[0] not in {"127.0.0.1", "::1", "localhost"}]
+    # порт 0 на localhost — не приём соединений: проба IPv6 (urllib3), пара сокетов asyncio, имитация шлюза до выбора порта
+    binds = [b for b in all_binds if not b.endswith(":0")]
     procs = [e["detail"] for e in events if e["kind"] == "process"]
     known = [d for d in procs if known_process(d)]
     procs = [d for d in procs if not known_process(d)]
@@ -247,7 +249,7 @@ print("| | В процессе (база, чат, консультант, ауд
 print("|---|---|---|")
 print(f"| Исходящие соединения | {', '.join(in_process['connections']) or 'нет'} | "
       f"{', '.join(server['connections']) or 'нет'} |")
-print(f"| Слушает | {', '.join(in_process['listen']) or 'нет'} (имитация шлюза) | {', '.join(server['listen']) or 'нет'} |")
+print(f"| Слушает | — (в процессе теста слушает только имитация шлюза на 127.0.0.1) | {', '.join(server['listen']) or 'нет'} |")
 print(f"| Запуск программ | {in_process['processes'] or 'нет'} | {server['processes'] or 'нет'} |")
 print(f"| Запись файлов | {', '.join(f'{k}: {v}' for k, v in sorted(in_process['writes'].items()))} | "
       f"{', '.join(f'{k}: {v}' for k, v in sorted(server['writes'].items()))} |")

@@ -284,7 +284,7 @@ MINT takes the same Word backend from it.
 Stop MINT and run `update.sh` (Windows: `update.bat`) in the program folder with the archive of the new version:
 
 ```bash
-./update.sh ~/Downloads/mint-21.3.zip       # or a .tar.gz, or the unpacked folder of the new version
+./update.sh ~/Downloads/mint-21.3.1.zip       # or a .tar.gz, or the unpacked folder of the new version
 ```
 
 The script replaces the code (the `mint`, `docs`, `tools`, `tests` and `static` folders entirely, so that removed
