@@ -1,6 +1,7 @@
 # Установка с нуля — так, как её делает пользователь: чистая машина, install.sh / install.bat, пакеты по
 # requirements.lock, настоящий Docling (без заглушек), затем tests/test_real_install.py: пакеты, разбор .docx,
-# база → чат → аудит, самопроверка со страницей на настоящем Streamlit.
+# база → чат → аудит, самопроверка со страницей на настоящем Streamlit; tests/test_network.py — что MINT делает вовне
+# (соединения, адреса, на которых слушает, запуск программ, запись файлов) — для проверки в песочнице.
 # Каждую ночь — тоже: ловит то, что ломается без наших изменений (пропавшая версия пакета, новый раннер).
 name: install
 
@@ -35,6 +36,8 @@ jobs:
           test -s .venv/install.log
       - name: The installation works (real Docling, Streamlit, faiss)
         run: .venv/bin/python tests/test_real_install.py
+      - name: What MINT does outside (network, listening, processes, files) — the sandbox profile
+        run: .venv/bin/python tests/test_network.py
       - name: Recovery — an incomplete .venv left by an interrupted install is recreated
         run: |
           rm -rf .venv && python -m venv --without-pip .venv
@@ -60,6 +63,8 @@ jobs:
         run: ./install.sh
       - name: The installation works
         run: .venv/bin/python tests/test_real_install.py
+      - name: What MINT does outside (network, listening, processes, files)
+        run: .venv/bin/python tests/test_network.py
 
   windows:
     name: Windows · Python 3.11 · install.bat
@@ -93,5 +98,16 @@ jobs:
           if ($code -ne 0) {
             $tail = $out.Substring([Math]::Max(0, $out.Length - 5000)) -replace '%','%25' -replace "`r",'' -replace "`n",'%0A'
             Write-Output "::error title=test_real_install::$tail"
+            exit 1
+          }
+      - name: What MINT does outside (network, listening, processes, files)
+        shell: pwsh
+        run: |
+          $out = .venv\Scripts\python tests\test_network.py 2>&1 | Out-String
+          $code = $LASTEXITCODE
+          Write-Output $out
+          if ($code -ne 0) {
+            $tail = $out.Substring([Math]::Max(0, $out.Length - 5000)) -replace '%','%25' -replace "`r",'' -replace "`n",'%0A'
+            Write-Output "::error title=test_network::$tail"
             exit 1
           }

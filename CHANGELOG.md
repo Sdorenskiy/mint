@@ -2,6 +2,23 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## 21.3.1 — ready for a sandbox check
+
+- **[SECURITY → Checking in a sandbox](docs/SECURITY.md#checking-in-a-sandbox)**: what to hand over (the release
+  archive with its checksum and the offline bundle), what to expect — rights, installation, processes, incoming
+  and outgoing connections, file writes, signals — and how to go through every function without a model gateway.
+- **`tests/test_network.py`** records what MINT does outside through Python's own event log (audit hooks): every
+  connection and DNS lookup, the addresses the server listens on, started programs, written files, Windows registry
+  changes — in every function (base, chat, consultant, review, fix verification) and on a real Streamlit server
+  with a browser session. It runs on GitHub on every change and every night (Ubuntu, Debian 12, Windows) and prints
+  a table for the check request. Result: connections only to the addresses from `.env`, listening on `localhost`
+  only, no programs started (one known exception: Docling runs `uname -p` once on Linux and macOS to learn the
+  processor type), writes only to `KB_DIR`, `LOG_DIR` and the temporary folder.
+- `tests/mock_server.py` runs on its own — a gateway imitation on 127.0.0.1 with canned answers, to try every
+  function in a sandbox: `.venv/bin/python tests/mock_server.py 8099`.
+- SECURITY: documents are accepted as .docx, .pdf, .md and .txt (it said .docx only); `mint_stacks.txt` and
+  `checklists.yaml` are in the table of what is stored where.
+
 ## 21.3 — the Consultant: problems, diagrams, explanations
 
 - **A new tab, "🧠 Consultant"**, for advice rather than "what the document says": analyse a problem and propose

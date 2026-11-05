@@ -19,8 +19,8 @@ Browser ──HTTP, localhost──► MINT (Python, Streamlit) ──HTTPS─�
   - Streamlit usage statistics are disabled (`.streamlit/config.toml`: `gatherUsageStats = false`).
   - The page loads nothing from the internet: the interface fonts are files in `static/fonts/`, served by
     Streamlit itself (`enableStaticServing = true`, only the `static/` folder is served, at `app/static/`).
-  - Only .docx documents are accepted. For .docx, Docling uses no neural models and downloads nothing.
-    You can verify this by running `check_install.py` without internet access.
+  - Documents are accepted as .docx, .pdf (text layer), .md and .txt. Parsing uses no neural models and
+    downloads nothing: .docx is read by Docling's Word backend, .pdf by pdfplumber.
 - **Incoming connections:** none by default. The page listens on `localhost:8501` only
   (`server.address = "localhost"`), so other computers cannot reach it.
 - **What is sent to the models:** fragments of documents from the knowledge base and of the document under
@@ -38,8 +38,10 @@ Browser ──HTTP, localhost──► MINT (Python, Streamlit) ──HTTPS─�
 | `LOG_DIR/feedback.jsonl` | 👍/👎 ratings with the question (the consultant request), answer, sources and comment | yes |
 | `LOG_DIR/eval/` | quality checks: questions with verbatim phrases from the documents, reports, chat answers | yes |
 | `LOG_DIR/audits/` | saved reviews ("📂 Saved reviews"): the report, the log, raw model answers (compressed), a copy of the reviewed .docx, the expert assessment of findings; removed with "🗑️ Delete the review" | yes |
+| `LOG_DIR/mint_stacks.txt` | a snapshot of the threads on `kill -USR1` (Linux, macOS), if MINT hangs: program file names, line numbers and functions | no |
 | `.env` in the program folder | API addresses and the **API key** | no |
 | `prompts.yaml` in the program folder (`PROMPTS_PATH`) | your edits of the model prompts saved on the "📝 Prompts" page | no |
+| `checklists.yaml` in the program folder (`MINT_CHECKLISTS`) | your review checklists saved on the review tab | no |
 | process memory | chat history and the consultant conversation (with the fragments found), results of the current session; gone when the tab is closed or MINT restarts | yes |
 
 The assessment file for improving MINT ("📤 Download the assessment", "📥 Download the assessments") is downloaded
@@ -95,6 +97,47 @@ Pin exact versions with `requirements.lock` (see [INSTALL.md](INSTALL.md#pinning
   Results are advisory, and source links let users verify them.
 - **Model errors.** The model can miss an issue or be wrong. MINT supports expert review; it does not replace
   it.
+
+## Checking in a sandbox
+
+What to hand over, what to expect, and how to go through every function without a model gateway. The behaviour
+in the table below is confirmed by `tests/test_network.py`. It records everything MINT does outside through
+Python's own event log (audit hooks, PEP 578), so the actions of the libraries are visible too, not only MINT's
+code. The scenarios cover every function: knowledge base, chat, consultant, a saved review, fix verification and
+the whole page on a real Streamlit server with a browser session. The test runs on GitHub on every change and
+every night (Ubuntu, Debian 12, Windows) and prints a summary table. You can run it in the sandbox as well:
+`.venv/bin/python tests/test_network.py` (Windows: `.venv\Scripts\python tests\test_network.py`).
+
+**What to hand over:**
+
+- the release archive from the Releases page (Source code, .zip or .tar.gz) and its checksum:
+  `sha256sum mint-<version>.zip` (Windows: `certutil -hashfile mint-<version>.zip SHA256`);
+- the offline bundle, the `wheels` folder ([INSTALL → Offline bundle](INSTALL.md#offline-bundle)). With it the
+  installation needs no internet: `./install.sh wheels` (Windows: `install.bat wheels`). Exact package versions
+  are in `requirements.lock`.
+
+**What to expect:**
+
+| What | MINT's behaviour |
+|---|---|
+| Rights | An ordinary user account, no administrator |
+| Installation | `install.sh` / `install.bat` create `.venv` in the program folder and install the packages into it from the offline bundle or an internal mirror (pip). Nothing is installed into the system: no services, autostart, scheduled tasks or registry changes. To remove MINT, delete the program folder, `KB_DIR` and `LOG_DIR` |
+| Processes | One Python process: `python -m streamlit run app.py`. MINT starts no other programs. Two known starts: `run_mint.sh` / `run_mint.bat` open the browser once at start (`xdg-open`, `open` or `start`); on Linux and macOS the Docling library runs `uname -p` once at the first .docx parsing — Python's standard `platform.processor()`, the processor type for Docling's version info |
+| Incoming connections | `localhost:8501` only |
+| Outgoing connections | Only to `LLM_API_URL`, `EMBED_API_URL`, `RERANK_API_URL` from `.env`; DNS lookups only for their names. No update checks, usage statistics, font or model downloads; the page in the browser loads nothing from the internet |
+| File writes | `KB_DIR`, `LOG_DIR` and the OS temporary folder. Into the program folder only during installation (`.venv`, `.env` from the template), on a user action (`prompts.yaml`, `checklists.yaml`) and Python's byte-code cache (`__pycache__`) |
+| Signals | Registers a `SIGUSR1` handler (Linux, macOS): `kill -USR1` writes a snapshot of the threads to `LOG_DIR/mint_stacks.txt`. MINT sends no signals itself |
+
+**Going through every function without a model gateway.** A sandbox usually has no gateway. The gateway
+imitation answers with canned replies and listens on 127.0.0.1 only:
+
+```bash
+.venv/bin/python tests/mock_server.py 8099     # Windows: .venv\Scripts\python tests\mock_server.py 8099
+```
+
+It prints the lines for `.env`. Put them there, start `./run_mint.sh` (`run_mint.bat`) and go through: upload a
+.docx to the base → a chat question → the consultant → a review → fix verification. The answers are canned:
+this checks the program's behaviour, not the quality of answers.
 
 ## Running on a shared server
 

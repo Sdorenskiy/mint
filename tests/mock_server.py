@@ -456,7 +456,23 @@ class Handler(BaseHTTPRequestHandler):
         self._send(404, {"error": "not found"})
 
 
-def start():
-    srv = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+def start(port=0):
+    srv = ThreadingHTTPServer(("127.0.0.1", port), Handler)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv
+
+
+if __name__ == "__main__":
+    # Отдельно — для проверки MINT без настоящего шлюза (песочница, демонстрация): ответы-заготовки, только 127.0.0.1.
+    import sys
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else 8099
+    server = start(port)
+    base = f"http://127.0.0.1:{port}/v1"
+    print(f"Имитация шлюза моделей: {base}  (Ctrl+C — остановить). В .env:\n"
+          f"  LLM_API_URL={base}\n  EMBED_API_URL={base}/embeddings\n  RERANK_API_URL={base}/rerank\n"
+          f"  LLM_API_KEY=test\n  LLM_MODEL=test-llm\n  EMBED_MODEL=emb-model\n  RERANK_MODEL=rr-model", flush=True)
+    try:
+        while True:
+            time.sleep(3600)
+    except KeyboardInterrupt:
+        server.shutdown()
