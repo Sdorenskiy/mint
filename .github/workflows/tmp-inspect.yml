@@ -1,0 +1,21 @@
+name: tmp-inspect
+on: push
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: |
+          pip download -q --no-deps streamlit==1.66.1 -d w && cd w && python -m zipfile -e streamlit-*.whl x
+          echo "=== URLs in python code ==="
+          grep -rnoE "https?://[a-zA-Z0-9._/-]+" x/streamlit --include=*.py | grep -vE "docs\.streamlit\.io|github\.com|localhost|127\.0\.0\.1|example|w3\.org|share\.streamlit|streamlit\.io/(cloud|generative)" | sort -u | head -80
+          echo "=== version.py ==="
+          cat x/streamlit/version.py
+          echo "=== callers ==="
+          grep -rn "should_show_new_version_notice\|_get_latest_streamlit_version\|_maybe_print_old_version_warning" x/streamlit --include=*.py
+          echo "=== bootstrap around it ==="
+          grep -n "_maybe_print_old_version_warning" -A25 x/streamlit/web/bootstrap.py | head -80
+          echo "=== frontend external hosts ==="
+          grep -rhoE "https://[a-zA-Z0-9.-]+\.[a-z]{2,}" x/streamlit/static | sort | uniq -c | sort -rn | head -40
