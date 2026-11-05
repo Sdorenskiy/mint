@@ -40,10 +40,18 @@ def _addr(a):
     return [a[0], a[1]] if isinstance(a, tuple) and len(a) >= 2 else [_path(a), None]
 
 
+_STDLIB = os.path.dirname(os.__file__)
+
+
 def _caller():
-    """Кто вызвал: последние кадры стека вне этого файла — «файл:строка функция»."""
-    frames = [f for f in traceback.extract_stack()[:-3] if not f.filename.endswith(("net_audit_hook.py", "sitecustomize.py"))]
-    return [f"{os.path.basename(f.filename)}:{f.lineno} {f.name}" for f in frames[-6:]]
+    """Кто вызвал: ближайшие кадры стека вне стандартной библиотеки и этого файла — «пакет/файл:строка функция»
+    (кадры стандартной библиотеки — platform, subprocess — только показывают, как вызов дошёл до запуска)."""
+    frames = [f for f in traceback.extract_stack()[:-3]
+              if not f.filename.endswith(("net_audit_hook.py", "sitecustomize.py"))]
+    own = [f for f in frames if not os.path.abspath(f.filename).startswith(_STDLIB + os.sep)
+           or "site-packages" in f.filename]
+    pick = own[-5:] + [f for f in frames[-2:] if f not in own[-5:]]
+    return [f"{os.sep.join(f.filename.split(os.sep)[-2:])}:{f.lineno} {f.name}" for f in pick]
 
 
 def _record(kind, detail):
