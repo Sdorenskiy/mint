@@ -49,6 +49,7 @@ ENV_FIELDS = {
 # Поля, которые можно задать и в config.yaml, и в окружении / .env (окружение важнее): их удобно менять
 # вместе с подключением к шлюзу.
 ENV_OPTIONAL = {
+    "embed_revision": "EMBED_REVISION",
     "llm_no_reasoning": "LLM_NO_REASONING",
     "llm_extra_body": "LLM_EXTRA_BODY",
 }
@@ -70,6 +71,7 @@ class Settings:
     rerank_api_key: str = ""          # пусто — используется llm_api_key
     llm_model: str = ""               # модель по умолчанию; пусто — первая из списка сервера
     embed_model: str = "qwen3-embedding-4b"
+    embed_revision: str = ""          # change when weights/embedding namespace change under the same model name
     rerank_model: str = "bge-reranker-v2-m3"
     ca_bundle: str = "/etc/ssl/certs/ca-certificates.crt"
     ssl_insecure: bool = False

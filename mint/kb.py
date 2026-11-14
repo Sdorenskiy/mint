@@ -1,17 +1,19 @@
 """База знаний: индексация, удаление, переиндексация, манифест, чтение."""
 
 import bisect
+import hashlib
 import json
 import logging
 import os
 import pickle
 import re
+import shutil
 import tempfile
 import threading
 import time
 import uuid
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import faiss
@@ -47,6 +49,26 @@ KB_MANIFEST = "manifest.json"
 KB_SOURCES_DIR = "sources"        # оригиналы документов — для переиндексации после смены моделей
 
 CHUNK_PARAM_KEYS = ("parent_size", "parent_overlap", "child_size", "child_overlap")
+
+
+def embedding_profile(cfg, dim):
+    """Identity of stored vectors; never persist API keys or endpoint URLs.
+
+    Revision is operator supplied when a gateway changes weights under the same model name.
+    Query instructions and chunk sizes do not change the embedding space of stored vectors.
+    """
+    return {"version": 1, "model": cfg.embed_model, "revision": cfg.embed_revision,
+            "endpoint": hashlib.sha256(cfg.embed_url.rstrip("/").encode()).hexdigest(),
+            "dim": int(dim), "doc_prefix": cfg.embed_doc_prefix,
+            "input_max_chars": cfg.embed_input_max_chars, "preparation": "heading-body-l2-v1"}
+
+
+def embeddings_compatible(cfg, dim, metadata, documents):
+    """Fail closed for legacy, unknown or mixed profiles, including equal dimensions."""
+    expected = embedding_profile(cfg, dim)
+    sources = {m["source"] for m in metadata}
+    return bool(sources) and all((documents.get(name) or {}).get("embedding_profile") == expected
+                                 for name in sources)
 
 
 def read_faiss(path):
@@ -148,6 +170,7 @@ class KBSnapshot:
     metadata: list
     index: object
     order: dict = None     # parent_id → номер в базе (см. parent_order)
+    documents: dict = None
 
 
 def parent_order(snap):
@@ -164,24 +187,25 @@ def load_kb_snapshot(cfg):
     if not (fp.exists() and pp.exists() and mp.exists()):
         return None
     cache = _process_cache()["kb"]
-    sig = _file_sig(fp, pp, mp)
+    sig = _file_sig(fp, pp, mp, kb_file(cfg, KB_MANIFEST))
     hit = cache.get(str(cfg.kb_path))
     if hit and hit[0] == sig:
         return hit[1]
     with kb_write_lock(cfg):   # коротко: чтобы не прочитать файлы посреди записи
         if not (fp.exists() and pp.exists() and mp.exists()):
             return None
-        sig = _file_sig(fp, pp, mp)
+        sig = _file_sig(fp, pp, mp, kb_file(cfg, KB_MANIFEST))
         with open(pp, "r", encoding="utf-8") as f:
             parent_store = json.load(f)
         with open(mp, "rb") as f:
             metadata = pickle.load(f)
         index = read_faiss(fp)
+        documents = read_manifest(cfg).get("documents") or {}
     index, fixed = normalized_index(index)
     if fixed:
         logger.info("📐 Векторы базы не нормированы — нормирую в памяти (поиск по косинусу). "
                     "Переиндексация не нужна.")
-    snap = KBSnapshot(parent_store, metadata, index)
+    snap = KBSnapshot(parent_store, metadata, index, documents=documents)
     cache[str(cfg.kb_path)] = (sig, snap)
     return snap
 
@@ -271,16 +295,28 @@ def _commit_kb(cfg, index, metadata, parent_store, doc_updates=None, removed_doc
         with open(tmp / KB_MANIFEST, "w", encoding="utf-8") as f:
             json.dump(manifest, f, ensure_ascii=False, indent=2)
 
-        if has_index:
-            os.replace(tmp / KB_FAISS, kbp / KB_FAISS)
-        elif (kbp / KB_FAISS).exists():
-            (kbp / KB_FAISS).unlink()
-        os.replace(tmp / KB_META, kbp / KB_META)
-        os.replace(tmp / KB_PARENTS, kbp / KB_PARENTS)
-        os.replace(tmp / KB_MANIFEST, kbp / KB_MANIFEST)
-
-    save_bm25_index(parent_store, kbp / KB_BM25)
-    rebuild_auto_glossary(parent_store, cfg)
+        save_bm25_index(parent_store, tmp / KB_BM25)
+        rebuild_auto_glossary(parent_store, replace(cfg, kb_dir=str(tmp)))
+        names = (KB_FAISS, KB_META, KB_PARENTS, KB_MANIFEST, KB_BM25, AUTO_GLOSSARY_FILE)
+        backup = tmp / "backup"
+        backup.mkdir()
+        for name in names:
+            if (kbp / name).exists():
+                shutil.copy2(kbp / name, backup / name)
+        try:
+            for name in names:
+                if (tmp / name).exists():
+                    os.replace(tmp / name, kbp / name)
+                elif (kbp / name).exists():
+                    (kbp / name).unlink()
+        except Exception:
+            # A publication error must not leave a mixture of old and new files.
+            for name in names:
+                if (backup / name).exists():
+                    os.replace(backup / name, kbp / name)
+                elif (kbp / name).exists():
+                    (kbp / name).unlink()
+            raise
 
 
 def build_parent_chunks(units, tables, pages_real, filename, cfg):
@@ -397,12 +433,10 @@ def index_parsed_document(filename, units, tables, pages_real, structured, cfg, 
                 existing_metadata = pickle.load(f)
             old_index = read_faiss(fp)
             keep = [i for i, m in enumerate(existing_metadata) if m["source"] != filename]
-            if keep and old_index.d != dim:
-                return False, (
-                    tr("Размерность векторов текущей модели эмбеддингов ({dim}) не совпадает с базой ({d}): база "
-                       "построена другой моделью. Переиндексируйте базу (кнопка в списке документов) или верните "
-                       "прежнюю EMBED_MODEL.", dim=dim, d=old_index.d)
-                )
+            if keep and not embeddings_compatible(cfg, dim, [existing_metadata[i] for i in keep],
+                                                  read_manifest(cfg).get("documents") or {}):
+                return False, tr("Профиль эмбеддингов базы несовместим или неизвестен. Запись отменена. "
+                                 "Переиндексируйте всю базу или верните прежние настройки эмбеддингов.")
             index = faiss.IndexFlatL2(dim)
             if keep:
                 index.add(l2_normalize(index_vectors(old_index, keep)))
@@ -414,6 +448,7 @@ def index_parsed_document(filename, units, tables, pages_real, structured, cfg, 
         metadata_to_save.extend(valid_metadata)
 
         doc_params = {
+            "embedding_profile": embedding_profile(cfg, dim), "embedding_complete": not n_skipped,
             "embed_model": cfg.embed_model, "embed_dim": dim, "embed_doc_prefix": cfg.embed_doc_prefix,
             **{k: int(getattr(cfg, k)) for k in CHUNK_PARAM_KEYS},
             "indexed_at": time.strftime("%Y-%m-%d %H:%M:%S"), "mint_version": MINT_VERSION,
@@ -448,6 +483,20 @@ def process_and_add_to_kb(filename, data: bytes, cfg, store_source=True):
             return False, "❌ " + str(e)
         if not parsed["units"] and not parsed["tables"]:
             return False, tr("❌ В документе не найден текст.")
+        # Recover missing originals even when the current embedding profile prevents upsert.
+        # Only an existing document's missing original is accepted; vectors remain untouched.
+        if store_source:
+            with kb_write_lock(cfg):
+                snap = load_kb_snapshot(cfg)
+                sp = source_path(cfg, filename)
+                if (snap is not None and any(m["source"] == filename for m in snap.metadata)
+                        and not sp.exists()
+                        and not embeddings_compatible(cfg, snap.index.d, snap.metadata, snap.documents or {})):
+                    sp.parent.mkdir(parents=True, exist_ok=True)
+                    sp.write_bytes(data)
+                    return False, tr("Оригинал сохранён для полной переиндексации. Индекс не изменён: "
+                                     "профиль эмбеддингов несовместим или неизвестен. После загрузки всех "
+                                     "недостающих оригиналов переиндексируйте базу.")
         ok, msg = index_parsed_document(filename, parsed["units"], parsed["tables"], parsed["pages_real"],
                                         parsed["structured"], cfg, info=parsed["info"])
         if ok and store_source:
@@ -504,6 +553,9 @@ def kb_document_status(cfg):
     for d in docs:
         p = manifest_docs.get(d)
         issues = []
+        if not embeddings_compatible(cfg, (p or {}).get("embed_dim") or 0, [{"source": d}], manifest_docs):
+            issues.append(("error", tr("Профиль эмбеддингов несовместим или неизвестен: векторный поиск отключён, "
+                                      "доступен BM25. Переиндексируйте всю базу.")))
         if p is None:
             issues.append(("info", tr("параметры индексации не записаны (документ загружен до v18)")))
         else:
@@ -529,25 +581,37 @@ def _clear_kb_index(cfg):
 
 
 def reindex_documents(cfg, progress=None):
-    """Переиндексирует документы с сохранёнными оригиналами по текущим настройкам.
-    Если сменилась размерность векторов (другая модель эмбеддингов) — база строится заново:
-    документы без оригинала при этом удаляются (их нужно загрузить повторно)."""
-    rows, _ = kb_document_status(cfg)
-    with_src = [r["name"] for r in rows if r["has_source"]]
-    probe = get_query_embedding("проверка размерности", cfg)
-    if probe is None:
-        return [("—", False, tr("Сервис эмбеддингов недоступен — переиндексация не начата."))]
-    snap = load_kb_snapshot(cfg)
-    if snap is not None and len(probe) != snap.index.d:
-        logger.warning(f"Размерность {snap.index.d} → {len(probe)}: база строится заново")
-        _clear_kb_index(cfg)
-    results = []
-    for i, name in enumerate(with_src):
-        ok, msg = process_and_add_to_kb(name, source_path(cfg, name).read_bytes(), cfg, store_source=False)
-        results.append((name, ok, msg))
-        if progress:
-            progress((i + 1) / max(1, len(with_src)), name)
-    return results
+    """Build a complete replacement beside the live KB; publish only if every document succeeds.
+
+    Hold the writer lock so uploads/deletions cannot be lost while rebuilding. Readers may
+    continue using a cached snapshot. Missing sources and partial embeddings keep the old KB.
+    """
+    with kb_write_lock(cfg):
+        rows, _ = kb_document_status(cfg)
+        if not rows:
+            return []
+        missing = [r["name"] for r in rows if not r["has_source"]]
+        if missing:
+            return [(name, False, tr("Нет оригинала: загрузите документ заново. База не изменена."))
+                    for name in missing]
+        results = []
+        with tempfile.TemporaryDirectory(dir=str(cfg.kb_path), prefix=".reindex_") as tmp:
+            staging = replace(cfg, kb_dir=tmp)
+            for i, row in enumerate(rows):
+                name = row["name"]
+                ok, msg = process_and_add_to_kb(name, source_path(cfg, name).read_bytes(), staging,
+                                               store_source=False)
+                # Ingestion normally permits missing children; a replacement must be complete.
+                params = (read_manifest(staging).get("documents") or {}).get(name) or {}
+                ok = ok and params.get("embedding_complete", False)
+                results.append((name, ok, msg))
+                if progress:
+                    progress((i + 1) / len(rows), name)
+                if not ok:
+                    return [(name, False, tr("Переиндексация не завершена. База не изменена: {v}", v=msg))]
+            snap = load_kb_snapshot(staging)
+            _commit_kb(cfg, snap.index, snap.metadata, snap.parent_store, doc_updates=snap.documents)
+        return results
 
 
 def kb_parent_lengths(cfg):

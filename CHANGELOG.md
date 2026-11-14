@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Reject incompatible or unknown embedding profiles even at equal dimensions; use BM25 until a complete, separately built re-index succeeds. Preserve the old base on missing sources, partial embeddings or publication errors.
+
 - Disable model reasoning by default (`llm_no_reasoning=true`). Explicit YAML, environment and session overrides remain effective; the independent audit reasoning switch can still enable reasoning.
 
 - Add an independent “Check typos and grammar” audit setting (off by default, `audit_typos` in config.yaml). Disabled language checks do not consume the deep-review budget; recognised language findings are excluded from final results. Deduplicate full correction sets and exact language findings without discarding different corrections.

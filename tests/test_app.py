@@ -265,7 +265,7 @@ check(all(any(l == "error" for l, _ in r["issues"]) for r in rows2), "все д�
 ctx4, srcs4 = app.search_parent_child("требования к СЗИ", cfg2, k_neighbors=3, glossary=gl)
 check(srcs4 and all("dense —" in s for s in srcs4), "размерность другая → поиск продолжает работать по BM25")
 ok, msg = app.process_and_add_to_kb("Регламент_SLA.docx", data_b, cfg2)
-check(not ok and "Размерность" in msg, f"добавление в базу другой размерности отклонено: {msg[:70]}")
+check(not ok and "Профиль эмбеддингов" in msg, f"добавление в базу другой размерности отклонено: {msg[:70]}")
 res = app.reindex_documents(cfg2)
 check(res and all(ok for _, ok, _ in res), f"переиндексация: {[(n, ok) for n, ok, _ in res]}")
 rows3, nvec3 = app.kb_document_status(cfg2)
