@@ -52,7 +52,8 @@ STATE["stream_aborted"] = 0
 t0 = time.time()
 ans = app.ask_llm("s", "проверь", replace(cfg, llm_model="loop-model"), guard=True)
 took = time.time() - t0
-lines = [ln for ln in ans.split("\n") if ln.strip()]
+lines = [ln for ln in ans.split("\n") if ln.strip() and not ln.startswith("⚠️")]
+check("⚠️ Ответ обрезан" in ans, "обрыв зацикливания явно обозначен")
 check(chats()[-1].get("stream") is True and len(lines) == 5 and len(set(lines)) == 5 and took < 3,
       f"зациклившийся ответ оборван: строк {len(lines)}, {took:.1f} с (полный ответ — 1500 строк)")
 time.sleep(0.3)

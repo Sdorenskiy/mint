@@ -46,7 +46,7 @@ from .sections import (
 )
 from .services import (
     answer_label, ask_llm, model_reasons, rate_limit_stats, reasoning_blocked_by_extra_body, reasoning_on,
-    record_answers,
+    record_answers, TRUNCATED_MARKERS,
 )
 from .text import compact_markdown_tables, extract_json, norm_for_match, quote_in_text, smart_truncate
 from .version import MINT_VERSION
@@ -81,8 +81,8 @@ def severity_label(code):
 
 
 def is_llm_error(text):
-    """ask_llm возвращает ошибки обычной строкой, начинающейся с «❌»."""
-    return (text or "").lstrip().startswith("❌")
+    """Ошибка, пустой или оборванный ответ не подтверждает выполнение проверки."""
+    return not (text or "").strip() or text.lstrip().startswith("❌") or any(m in text for m in TRUNCATED_MARKERS)
 
 
 def is_clean_report(text):
@@ -414,11 +414,12 @@ def audit_section(sec, cfg, focus, use_wiki, k, glossary=None, part=None, specia
     failed = is_llm_error(draft)
     if failed:
         report = draft  # сбой шлюза — НЕ «чистый раздел»
-    elif is_clean_report(draft) or len(draft.strip()) < 15:
+    elif is_clean_report(draft):
         report = draft
     else:
         findings = [finding_from_line(line, part) for line in parse_findings(draft)]
         findings = [f for f in findings if len(f["text"]) > 15]
+        failed = not bool(findings)
         if clauses:
             own, known = clauses
             keep = []
@@ -436,7 +437,7 @@ def audit_section(sec, cfg, focus, use_wiki, k, glossary=None, part=None, specia
         if cfg.use_self_critique and findings:
             findings, rejected = critique_findings(sec, norms_text, findings, cfg, special=special, doc_block=doc_block)
             dropped = rejected + dropped
-        report = "\n".join(format_finding(f) for f in findings) if findings else tr("Часть чистая")
+        report = (draft if failed else ("\n".join(format_finding(f) for f in findings) if findings else tr("Часть чистая")))
     return {"report": report, "findings": findings, "failed": failed, "sources": sources_used, "dropped": dropped,
             "norms_text": norms_text}
 
@@ -830,9 +831,12 @@ def _summary_block(summary, by_model=True):
 def build_final_report(filename, sections, failed_sections, n_sections, special="", focus_answers=None,
                        focus_findings=None, unverified=None, deep_note="", minor=None, typos=None, checklist=None,
                        checklist_findings=None, doc_type="", systems=None, system_findings=None, summary=None,
-                       summary_by_model=True):
+                       summary_by_model=True, completion=None):
     """Заключение (Markdown). sections — главные замечания по разделам документа: [(раздел, [замечания])] из
     group_by_section; summary — «Главное» (select_summary): указатели на замечания по номерам."""
+    incomplete = (completion or {}).get("status") == "incomplete" or bool(failed_sections)
+    point_checks = list(focus_answers or []) + list(checklist or []) + list(systems or [])
+    incomplete = incomplete or any(e.get("failed") for e in point_checks)
     formatted_blocks, has_any, counter = [], False, 1
     for home, items in sections or []:
         if not items:
@@ -857,12 +861,12 @@ def build_final_report(filename, sections, failed_sections, n_sections, special=
                         or any(f["severity"] == "КРИТИЧНЫЙ" for f in point_findings))
         verdict_text = (tr("⚠️ ДОКУМЕНТ ТРЕБУЕТ ДОРАБОТКИ. ")
                         + (tr("Выявлены критические замечания.") if has_critical else tr("Выявлены замечания.")))
-    elif failed_sections:
+    elif incomplete:
         risks_block = tr("### ❓ В проверенных разделах замечаний не обнаружено.")
         verdict_text = ""
     else:
         risks_block = tr("### ✅ Замечаний не обнаружено.")
-        verdict_text = tr("✅ ДОКУМЕНТ СОГЛАСОВАН.")
+        verdict_text = tr("✅ В выполненных проверках замечаний не найдено.")
 
     failed_block = ""
     if failed_sections:
@@ -876,6 +880,12 @@ def build_final_report(filename, sections, failed_sections, n_sections, special=
             + "\n"
         )
 
+    if incomplete:
+        verdict_text = tr("⚠️ ПРОВЕРЕНО НЕ ПОЛНОСТЬЮ. Результат нельзя считать согласованием.")
+    if completion:
+        failed_block += tr("\nВыполнено проверок: {done} из {total}; ошибок: {failed}; пропущено: {skipped}.\n",
+                           done=completion["completed"], total=completion["total"],
+                           failed=completion["failed"], skipped=completion["skipped"])
     header = (
         tr("# ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ\n**Объект анализа**: документ «{filename}»\n", filename=filename)
         + (tr("**Тип документа**: {v}\n", v=doc_type) if doc_type else "")
@@ -2020,11 +2030,29 @@ def found_so_far_block(state, max_chars=FOUND_SO_FAR_MAX_CHARS):
     return "\n".join(lines)
 
 
+def audit_completion(state):
+    """Полнота запрошенных проверок, включая дополнительные проходы и задачи сверх лимита."""
+    entries = list(state.get("results") or [])
+    for kind in ("focus", "checklist", "systems"):
+        entries += list(state.get(kind) or [])
+    entries += [d["entry"] for d in state.get("deep") or []]
+    for run in state.get("passes") or []:
+        entries += list(run.get("results") or [])
+        entries += [d["entry"] for d in run.get("deep") or []]
+    failed = sum(1 for e in entries if not e or e.get("failed"))
+    skipped = int(state.get("deep_skipped") or 0)
+    skipped += max(0, max(1, len(state.get("sections") or [])) - len(state.get("results") or []))
+    total = len(entries) + skipped
+    return {"status": "incomplete" if failed or skipped else "complete", "total": total,
+            "completed": len(entries) - failed, "failed": failed, "skipped": skipped}
+
+
 def _assemble(state, filename, cfg, emit=None):
     """Итог аудита из результатов разделов и ответов на «особое внимание»: сверка ссылок и цифр с источниками,
     замечания без повторов (по словам, затем моделью), категории, заключение, лог."""
     emit = emit or (lambda *a, **k: None)
     ctx, sections, results = state["ctx"], state["sections"], state["results"]
+    completion = audit_completion(state)
     focus = [e for e in state.get("focus") or [] if e]
     checklist = [e for e in state.get("checklist") or [] if e]
     systems = [e for e in state.get("systems") or [] if e]
@@ -2170,8 +2198,9 @@ def _assemble(state, filename, cfg, emit=None):
                                      deep_note=deep_note, minor=minor, typos=typos, checklist=checklist,
                                      checklist_findings=by_kind["checklist"], doc_type=ctx.get("doc_type", ""),
                                      systems=systems, system_findings=by_kind["system"], summary=summary,
-                                     summary_by_model=not summary_err),
+                                     summary_by_model=not summary_err, completion=completion),
         "summary": summary,
+        "completion": completion,
         "deep": deep,
         "log": state["log"], "log_md": log_md, "failed_sections": failed_sections, "sections": len(sections),
         "focus": ctx["focus"], "special": ctx["special"], "focus_items": ctx["focus_items"], "prompts": version,

@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Audit reports and the UI now distinguish incomplete checks across sections, deep checks, points and additional passes; completeness survives saving, and automatic checks no longer declare document approval.
+
+- Mark incomplete model replies explicitly: streamed token limits, missing terminal events, connection interruptions and client guards; reject empty replies in streaming and JSON modes.
+
 - Add a Russian developer code map (`docs/CODE_MAP.md`) alongside the source and a short `AGENTS.md` entry
   point; link them from the contribution guide. Application behaviour is unchanged.
 
