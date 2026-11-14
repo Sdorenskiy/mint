@@ -119,7 +119,9 @@ def _store_result(cfg, res, audit_file, use_wiki_rag, status, recheck=False):
     _show(audit_file.name, res, rows, review, res["log"], aid, ctx,
           _docx_review(doc_bytes, res) if HAS_DOCX and is_docx else None, reopened=False,
           meta=load_meta(cfg, aid) if aid else None)
-    if failed_sections:
+    if (res.get("completion") or {}).get("status") == "incomplete":
+        status.update(label=tr("🏁 Проверено не полностью: есть ошибки или пропущенные проверки"), state="error", expanded=True)
+    elif failed_sections:
         status.update(label=tr("🏁 Экспертиза завершена, но {n_failed_sections} из {n_sections} разделов не проверены", n_failed_sections=len(failed_sections), n_sections=res["sections"]), state="error", expanded=True)
     else:
         status.update(label=tr("🏁 Аналитическая экспертиза завершена!"), state="complete", expanded=False)
@@ -634,7 +636,15 @@ def _render_results(cfg, name, just_ran):
     ctx = ss.get("tab2_feedback_ctx") or {}
     if ss.get("tab2_reopened"):
         st.caption(tr("Открыт сохранённый аудит: {f}.", f=name))
-    st.markdown(audit_verdict_html(ss.get("tab2_findings"), ctx.get("failed_sections", 0), ctx.get("sections", 0)),
+    result = ss.get("tab2_audit_result") or {}
+    completion = result.get("completion")
+    if completion:
+        incomplete = completion.get("failed", 0) + completion.get("skipped", 0)
+        total = completion.get("total", 0)
+    else:
+        incomplete, total = 1, 0
+        st.warning(tr("Полнота сохранённого аудита не зафиксирована. Его старый статус не подтверждает завершение всех проверок."))
+    st.markdown(audit_verdict_html(ss.get("tab2_findings"), incomplete, total),
                 unsafe_allow_html=True)
     st.markdown(ss["tab2_final_report_data"])
     saved_log = (ss.get("tab2_audit_log") or []) + _point_entries(ss.get("tab2_audit_result") or {})

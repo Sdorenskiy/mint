@@ -4,6 +4,15 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Полнота проверки не подтверждена.": "Review completeness has not been confirmed.",
+    '✅ В выполненных проверках замечаний не найдено.': '✅ No findings in the completed checks.',
+    '⚠️ ПРОВЕРЕНО НЕ ПОЛНОСТЬЮ. Результат нельзя считать согласованием.': '⚠️ INCOMPLETE REVIEW. The result cannot be treated as approval.',
+    '\nВыполнено проверок: {done} из {total}; ошибок: {failed}; пропущено: {skipped}.\n': '\nChecks completed: {done} of {total}; failed: {failed}; skipped: {skipped}.\n',
+    'Замечаний не найдено': 'No findings',
+    'Не выполнено проверок: {n_failed} из {n_sections} — результат нельзя считать согласованием.': 'Checks not completed: {n_failed} of {n_sections} — the result cannot be treated as approval.',
+    '🏁 Проверено не полностью: есть ошибки или пропущенные проверки': '🏁 Review incomplete: some checks failed or were skipped',
+    'Полнота сохранённого аудита не зафиксирована. Его старый статус не подтверждает завершение всех проверок.': 'Completeness was not recorded for this saved review. Its historical status does not confirm that all checks were completed.',
+
     "\n\n⚠️ Ответ обрезан: получение ответа прервано. Результат неполный; повторите запрос.":
         "\n\n⚠️ Answer truncated: receiving the answer was interrupted. The result is incomplete; retry the request.",
     "❌ [ПУСТОЙ ОТВЕТ]: модель не вернула текст ответа. Повторите запрос.":
@@ -35,8 +44,6 @@ EN = {
         '### ❓ No findings in the reviewed sections.',
     '### ✅ Замечаний не обнаружено.':
         '### ✅ No findings.',
-    '✅ ДОКУМЕНТ СОГЛАСОВАН.':
-        '✅ THE DOCUMENT IS APPROVED.',
     '⚠️ ПРОВЕРЕНО НЕ ПОЛНОСТЬЮ: не удалось проверить {n_failed_sections} из {n_sections} разделов — результат нельзя считать согласованием.':
         '⚠️ REVIEW INCOMPLETE: {n_failed_sections} of {n_sections} sections could not be reviewed — the result cannot be treated as an approval.',
     '\n## ⚠️ РАЗДЕЛЫ, КОТОРЫЕ НЕ УДАЛОСЬ ПРОВЕРИТЬ\n':
@@ -296,10 +303,6 @@ EN = {
         'Findings to address',
     'Проверено не полностью':
         'Review incomplete',
-    'Согласовано':
-        'Approved',
-    'Не удалось проверить разделов: {n_failed} из {n_sections} — результат нельзя считать согласованием.':
-        '{n_failed} of {n_sections} sections could not be reviewed — the result is not an approval.',
     'критичные':
         'critical',
     'средние':

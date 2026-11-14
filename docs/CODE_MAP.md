@@ -91,7 +91,7 @@ MINT использует локальные файлы базы знаний, �
 | DOCX/PDF | `mint/parsing.py`, `mint/pdfparse.py` | `tests/test_formats.py`, `tests/test_real_install.py`, DOCX parity CI |
 | Чат, цитаты | `mint/chat.py`, `mint/citations.py` | `tests/test_app.py`, `tests/test_llm_requests.py` |
 | Консультант | `mint/consult.py`, `mint/ui/tab_consult.py` | `tests/test_consult.py` |
-| Аудит, качество замечаний | `mint/audit.py`, `mint/deep_checks.py` | `tests/test_audit_quality.py`, `tests/test_audit_noise.py`, `tests/test_deep_checks.py` |
+| Аудит, качество замечаний | `mint/audit.py`, `mint/deep_checks.py` | `tests/test_audit_quality.py`, `tests/test_audit_noise.py`, `tests/test_deep_checks.py`, `tests/test_audit_completion.py` |
 | Экспертный разбор, сохранение | `mint/expert_review.py`, `mint/audit_store.py` | `tests/test_expert_review.py` |
 | Контроль исправлений | `mint/review.py`, `mint/ui/tab_review.py` | `tests/test_app.py` (проверить охват конкретной правки) |
 | UI, тема, вкладки | `mint/ui/app.py`, `mint/ui/theme.py`, `mint/ui/tab_*.py` | `tests/test_streamlit_smoke.py`, UI preview CI |
@@ -109,6 +109,7 @@ MINT использует локальные файлы базы знаний, �
 - Источник схем: `tools/diagrams/build_architecture.py` и `build_engineering.py`; актуальность проверяет `tests/test_diagrams.py`.
 - Правила разработки: [CONTRIBUTING.md](../CONTRIBUTING.md); точка входа для AI: [AGENTS.md](../AGENTS.md).
 - `ask_llm()` сохраняет строковый интерфейс: пустой ответ — ошибка `❌`, частичный — с маркером `TRUNCATED_MARKERS` (RU/EN). Это не заменяет проверку полноты итогового аудита.
+- Результат аудита содержит `completion`: статус, число выполненных, ошибочных и пропущенных проверок. Сохранение результата сохраняет и полноту; старые аудиты без этих данных отображаются с предупреждением.
 - Планы, приоритеты и статусы задач ведутся отдельно и здесь не дублируются. Основной экземпляр этой карты — `docs/CODE_MAP.md` в данном репозитории.
 
 **При следующей задаче:** сначала прочитать этот файл; сравнить SHA выше с актуальным `mint/main`; при изменении SHA посмотреть diff и соответствующий код. Код — источник истины. При изменении архитектуры обновить карту и SHA, при обычном изменении — проверить необходимость обновления. Отдельно сообщать, какие тесты действительно запускались и что проверил CI.

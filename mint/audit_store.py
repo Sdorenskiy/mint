@@ -90,7 +90,7 @@ def save_audit(cfg, res, filename, doc_bytes=None, settings=None, raw_md="", aid
     result = {"findings": [_light(f) for f in res.get("findings") or []],
               "unverified": [_light(f) for f in res.get("unverified") or []],
               "failed_sections": [list(x) for x in res.get("failed_sections") or []],
-              **{k: res.get(k) for k in ("sections", "special", "focus", "prompts", "document_mode", "doc_type")}}
+              **{k: res.get(k) for k in ("sections", "special", "focus", "prompts", "document_mode", "doc_type", "completion")}}
     _write(folder / "meta.json", _json(meta))
     _write(folder / "report.md", res.get("report") or "")
     _write(folder / "log.md", res.get("log_md") or "")

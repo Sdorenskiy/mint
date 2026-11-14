@@ -187,7 +187,7 @@ def audit_verdict(findings, n_failed=0):
     elif n_failed:
         kind, label = "incomplete", tr("Проверено не полностью")
     else:
-        kind, label = "approved", tr("Согласовано")
+        kind, label = "approved", tr("Замечаний не найдено")
     return kind, label, counts
 
 
@@ -196,8 +196,10 @@ def audit_verdict_html(findings, n_failed=0, n_sections=0):
     critical, medium, low = (counts[s] for s in _SEVERITIES)
     note = ""
     if n_failed:
-        note = tr("Не удалось проверить разделов: {n_failed} из {n_sections} — результат нельзя считать согласованием.",
+        note = tr("Не выполнено проверок: {n_failed} из {n_sections} — результат нельзя считать согласованием.",
                   n_failed=n_failed, n_sections=n_sections)
+    if n_failed and not n_sections:
+        note = tr("Полнота проверки не подтверждена.")
     tally = tally_html([("is-critical", tr("критичные"), critical), ("is-medium", tr("средние"), medium),
                     ("is-low", tr("низкие"), low)])
     return (f'<section class="mint-verdict mint-verdict--{kind}" aria-label="{html.escape(label)}">'
