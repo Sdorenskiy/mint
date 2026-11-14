@@ -4,6 +4,10 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    'Проверять опечатки и грамматику': 'Check typos and grammar',
+    'Опечатки и грамматика': 'Typos and grammar',
+    'По умолчанию выключено. Включает языковые вопросы глубокой проверки и распознанные языковые замечания в заключении. Не отключает проверки процессов, противоречий и цифр. Постоянная настройка: audit_typos в config.yaml.': 'Off by default. Enables language checks in deep review and recognised language findings in the report. Process, contradiction and numeric checks remain enabled. Persistent setting: audit_typos in config.yaml.',
+
     "Полнота проверки не подтверждена.": "Review completeness has not been confirmed.",
     '✅ В выполненных проверках замечаний не найдено.': '✅ No findings in the completed checks.',
     '⚠️ ПРОВЕРЕНО НЕ ПОЛНОСТЬЮ. Результат нельзя считать согласованием.': '⚠️ INCOMPLETE REVIEW. The result cannot be treated as approval.',

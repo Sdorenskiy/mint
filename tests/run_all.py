@@ -12,6 +12,7 @@ from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
 SUITES = [
+    ("Опечатки: настройка, фильтр, повторы", ["test_audit_typos.py"]),
     ("Полнота аудита: сбои, повтор, сохранение", ["test_audit_completion.py"]),
     ("Завершение ответа модели: поток, обрывы, пустой ответ", ["test_stream_completion.py"]),
     ("Ядро и интерфейс", ["test_app.py"]),

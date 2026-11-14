@@ -684,7 +684,7 @@ def _unverified_block(unverified):
     return "\n".join(lines) + "\n"
 
 
-_TYPO_RE = re.compile(r"«[^»\n]{1,80}»\s*→\s*«[^»\n]{1,80}»|\bопечатк|орфограф|\btypo|spelling", re.IGNORECASE)
+_TYPO_RE = re.compile(r"«[^»\n]{1,80}»\s*→\s*«[^»\n]{1,80}»|\bопечатк|орфограф|граммат|\btypo|spelling|grammar", re.IGNORECASE)
 _PLACE_RE = re.compile(r"\b\d+(?:\.\d+)+\b|\bшаг\w*\s*\d|\bstep\s*\d|\bтабл|\btable\s*\d|\bп\.\s*\d", re.IGNORECASE)
 
 
@@ -1116,7 +1116,7 @@ def merge_log_line(members, apart=(), other_steps=()):
 
 def is_typo(f):
     """Опечатка или грамматика: проверка языка или низкая критичность и «как написано» → «как правильно»."""
-    return f.get("check") == "language" or (f["severity"] == "НИЗКИЙ" and bool(_TYPO_RE.search(f["text"])))
+    return f.get("check") == "language" or (f["severity"] == "НИЗКИЙ" and bool(_TYPO_RE.search(f["text"]) or _PAIR_RE.search(f["text"])))
 
 
 def _typo_norm(text):
@@ -1124,15 +1124,16 @@ def _typo_norm(text):
 
 
 def clean_typos(findings):
-    """Опечатки без мусора и повторов: строка, где «как написано» и «как правильно» совпадают и сама модель
-    пишет «ошибки нет», убирается; одна и та же исправляемая фраза из разных проверок — одна строка."""
+    """Повторы по полному набору пар «ошибка → исправление» или точному нормализованному тексту.
+    Разные исправления не сливаются; разделы и происхождение повторов сохраняются."""
     out, seen = [], {}
     for f in findings:
         pairs = _PAIR_RE.findall(f["text"])
         if (len(pairs) == 1 and _typo_norm(pairs[0][0]) == _typo_norm(pairs[0][1])
                 and _NO_ERROR_RE.search(f["text"])):
             continue
-        key = _typo_norm(pairs[0][0]) if pairs else None
+        key = (("pairs", tuple(sorted(set((" ".join(a.split()).casefold(), " ".join(b.split())) for a, b in pairs))))
+               if pairs else ("text", " ".join(f["text"].split()).casefold()))
         if key and key in seen:
             _absorb(seen[key], f)
             continue
@@ -1779,7 +1780,9 @@ def _run_deep(state, cfg, emit):
     # утверждения и опечатки — по разделам и в режиме «весь документ одним запросом»: один вопрос на весь документ
     # модель среднего размера решает хуже (и опечаток из него берётся не больше DEEP_FINDINGS_MAX)
     state["processes"] = process_summary(find_processes(ctx["blocks"]))
-    tasks, skipped = limit_tasks(build_deep_tasks(ctx["blocks"], ctx.get("deep_parts") or ctx["parts"]), budget)
+    tasks = build_deep_tasks(ctx["blocks"], ctx.get("deep_parts") or ctx["parts"])
+    tasks = [t for t in tasks if cfg.audit_typos or t["kind"] != "language"]
+    tasks, skipped = limit_tasks(tasks, budget)
     emit("deep", n=len(tasks), skipped=skipped, parallel=cfg.audit_parallel)
     entries = run_tasks(tasks, cfg, parallel=cfg.audit_parallel,
                         on_done=lambda i, e: emit("deep_task", entry=e, index=i, total=len(tasks)))
@@ -2059,7 +2062,7 @@ def _assemble(state, filename, cfg, emit=None):
     points = focus + checklist + systems
     failed_sections = [(idx + 1, state["log"][idx]["preview"], res["report"].strip())
                        for idx, res in enumerate(results) if res["failed"]]
-    raw = model_findings(state, points)
+    raw = [f for f in model_findings(state, points) if cfg.audit_typos or not is_typo(f)]
     deep = [d["entry"] for d in state.get("deep") or []]
     passes = state.get("passes") or []
 
@@ -2078,7 +2081,8 @@ def _assemble(state, filename, cfg, emit=None):
     no_problem = [f for f in findings if not is_typo(f) and is_no_problem(f["text"])]
     findings = [f for f in findings if not any(f is x for x in no_problem)]
     dup_stats = {}
-    findings = collect_unique_findings(findings, stats=dup_stats)
+    typo_candidates = [f for f in findings if is_typo(f)]
+    findings = collect_unique_findings([f for f in findings if not is_typo(f)], stats=dup_stats) + typo_candidates
     # опечатки сводятся без модели (одна исправляемая фраза — одна строка), остальное — моделью
     typo_all = [f for f in findings if is_typo(f)]
     typo_list = clean_typos(typo_all)
@@ -2108,6 +2112,7 @@ def _assemble(state, filename, cfg, emit=None):
             by_kind.get(f.get("point_kind") or "focus", by_kind["focus"]).append(f)
     focus_findings = by_kind["focus"]
     main = [f for f in confirmed if f.get("focus_item") is None] + [dict(f) for f in state.get("checks") or []]
+    main = [f for f in main if cfg.audit_typos or not is_typo(f)]
     main, minor, typos = split_minor_findings(main)
     by_section = group_by_section(main, section_order(ctx.get("blocks") or []))
     summary, summary_err, summary_line = [], "", tr("Выключено в настройках (audit_summary_max = 0).")
@@ -2160,6 +2165,7 @@ def _assemble(state, filename, cfg, emit=None):
         tr("Нормативная база"): tr("да") if ctx["use_wiki"] else tr("нет"),
         tr("Самокритика"): tr("да") if cfg.use_self_critique else tr("нет"),
         tr("Рассуждения модели"): _reasoning_line(cfg),
+        tr("Опечатки и грамматика"): tr("да") if cfg.audit_typos else tr("нет"),
         tr("Проходов проверки (audit_passes)"): audit_passes(cfg),
         tr("Таймаут ответа LLM, с"): cfg.llm_timeout,
         tr("Время аудита (по часам), с"): round(state["wall"]) if state.get("wall") else None,

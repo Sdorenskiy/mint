@@ -299,7 +299,7 @@ check(len(conf) == 1 and "«3.1»: содержит ПД" in conf[0]["user"] and
 
 print("5. [интеграция] Аудит с глубокой проверкой")
 cfg, _ = app.load_settings()
-cfg = replace(cfg, llm_context_tokens=32768, audit_map_size=1500, use_self_critique=False, audit_parallel=3)
+cfg = replace(cfg, audit_typos=True, llm_context_tokens=32768, audit_map_size=1500, use_self_critique=False, audit_parallel=3)
 STATE["requests"].clear()
 events = []
 res = app.run_audit(DOC, "ФТ.md", cfg, use_wiki=False, deep=True, on_progress=lambda e, **d: events.append(e))

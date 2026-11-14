@@ -773,7 +773,7 @@ check([f["unverified"] for f in au["unverified"]] == [["152-ФЗ"]] and "НЕ П
       f"ссылки на акт нет ни в документе, ни в нормах — замечание в блоке «Не подтверждено»: {au['unverified']}")
 n_deep = events.count("deep_task")
 check(events == ["sections", "checks"] + ["section"] * au["sections"] + ["deep"] + ["deep_task"] * n_deep + ["merge", "summary"]
-      and n_deep == len(au["deep"]) >= 2, f"ход аудита сообщается по разделам и вопросам глубокой проверки: {events}")
+      and n_deep == len(au["deep"]) >= 1, f"ход аудита сообщается по разделам и вопросам глубокой проверки: {events}")
 check(f"**Промпты:** {ver}" in au["log_md"] and "Часть 1/" in au["log_md"], "в логе проверки — версия промптов")
 au2 = app.run_audit(md, "ТЗ.docx", cfg2, focus="  ", special=" шифрование ПДн ", use_wiki=False, glossary=gl2)
 check(au2["focus"] == app.GENERIC_AUDIT_FOCUS and au2["special"] == "шифрование ПДн" and not au2["focus_items"]
