@@ -102,10 +102,30 @@ text_ = ("Вступление без раздела.\n### 📄 Как устр�
          "### Варианты решения\n- Разделить очереди по потокам — без ссылки, но это не раздел 📄.\n"
          "**📄 Ещё по документам**\n- Архив хранится пять лет, журнал обработки три года.\n")
 marked, n_ = C.mark_unsupported(text_)
-check(n_ == 2 and "независимы. ❔" in marked and "три года. ❔" in marked and "[Источник: a.docx, 2.1]\n" in marked
+check(n_ == 4 and "независимы. ❔" in marked and "три года. ❔" in marked and "[Источник: a.docx, 2.1]\n" in marked
       and "по потокам — без ссылки, но это не раздел 📄." in marked and "💡 Вероятно" in marked
       and "балансировку.\n" in marked and "без ссылки\"\n" in marked,
-      f"❔ — только у пунктов раздела 📄 без ссылки (не вступление, не 💡, не «ничего не», не код): {n_}")
+      f"❔ — у текста любого раздела без ссылки (не заголовки, не 💡, не «ничего не», не код): {n_}")
+# [regression] The same assertion is checked with any or no heading, and anywhere in the answer.
+assertion = "- Архив хранится 5 лет."
+for heading in ("### 📄 Как устроено сейчас", "### Как устроено сейчас", "**По документам**",
+                "## 💡 Предложения", "#### Ответ", ""):
+    marked_, count_ = C.mark_unsupported(heading + "\n" + assertion)
+    check(count_ == 1 and assertion + " ❔" in marked_, f"missing citation is marked under {heading!r}")
+for heading in ("### По документам", "### 📄 По документам", "**По документам**", ""):
+    cited = assertion + " [Источник: a.docx, 2.1]"
+    marked_, count_ = C.mark_unsupported(heading + "\n" + cited)
+    check(count_ == 0 and cited in marked_, f"valid citation remains intact under {heading!r}")
+check(C.mark_unsupported("### Возможные причины\n" + assertion)[1] == 1,
+      "facts outside the opening document section require references too")
+check(C.mark_unsupported("- **💡 Предлагаю хранить архив пять лет.**")[1] == 0,
+      "explicit proposal is not presented as a documented fact")
+check(C.mark_unsupported("~~~mermaid\nflowchart LR\nA-->B\n~~~")[1] == 0,
+      "tilde code fences do not produce missing-reference warnings")
+marked_, _ = C.mark_unsupported(assertion)
+check(C.mark_unsupported(marked_)[0] == marked_, "rechecking does not duplicate warnings")
+check(not app.check_text("consult_system", "ru", app.consult_system_prompt().replace("📄", "")),
+      "custom prompt can remove the cosmetic heading emoji")
 two = C.diagrams("```mermaid\nflowchart LR\n  A-->B\n```\nтекст\n``` Mermaid\nsequenceDiagram\n  A->>B: x\n```\n```python\nx=1\n```")
 check(len(two) == 2 and two[0].startswith("flowchart") and two[1].startswith("sequenceDiagram"), "код схем Mermaid")
 small = replace(cfg, llm_context_tokens=8000, chars_per_token=2.5, consult_max_tokens=4000, consult_context_max_chars=60000)
