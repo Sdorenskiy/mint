@@ -4,6 +4,14 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    'Оригинал сохранён для полной переиндексации. Индекс не изменён: профиль эмбеддингов несовместим или неизвестен. После загрузки всех недостающих оригиналов переиндексируйте базу.': 'The original was saved for full re-indexing. The index is unchanged: the embedding profile is incompatible or unknown. Re-index the base after uploading all missing originals.',
+
+    'Нет оригинала: загрузите документ заново. База не изменена.': 'Original missing: upload the document again. The base is unchanged.',
+    'Нужна после смены профиля эмбеддингов или нарезки. Новая база строится отдельно и заменяет текущую только после полной индексации всех документов. Если нет оригинала или возникла ошибка, текущая база сохраняется. Недостающие оригиналы загрузите заново.': 'Required after changing the embedding profile or chunking. A new base is built separately and replaces the current one only after every document is fully indexed. Missing originals or errors leave the current base intact. Upload missing originals again.',
+    'Переиндексация не завершена. База не изменена: {v}': 'Re-indexing did not complete. The base is unchanged: {v}',
+    'Профиль эмбеддингов базы несовместим или неизвестен. Запись отменена. Переиндексируйте всю базу или верните прежние настройки эмбеддингов.': 'The embedding profile is incompatible or unknown. Write cancelled. Re-index the entire base or restore the previous embedding settings.',
+    'Профиль эмбеддингов несовместим или неизвестен: векторный поиск отключён, доступен BM25. Переиндексируйте всю базу.': 'The embedding profile is incompatible or unknown: dense search is disabled; BM25 is available. Re-index the entire base.',
+
     'Проверять опечатки и грамматику': 'Check typos and grammar',
     'Опечатки и грамматика': 'Typos and grammar',
     'По умолчанию выключено. Включает языковые вопросы глубокой проверки и распознанные языковые замечания в заключении. Не отключает проверки процессов, противоречий и цифр. Постоянная настройка: audit_typos в config.yaml.': 'Off by default. Enables language checks in deep review and recognised language findings in the report. Process, contradiction and numeric checks remain enabled. Persistent setting: audit_typos in config.yaml.',
@@ -117,8 +125,6 @@ EN = {
     # ---- mint/kb.py
     'Не удалось сгенерировать векторы через сервис эмбеддингов.':
         'Could not get vectors from the embedding service.',
-    'Размерность векторов текущей модели эмбеддингов ({dim}) не совпадает с базой ({d}): база построена другой моделью. Переиндексируйте базу (кнопка в списке документов) или верните прежнюю EMBED_MODEL.':
-        'The vector dimension of the current embedding model ({dim}) does not match the knowledge base ({d}): the base was built with another model. Re-index the base (button in the document list) or switch back to the previous EMBED_MODEL.',
     'Успешно добавлено {v} векторов.':
         'Added {v} vectors.',
     ' Структура документа не распознана — заголовки не использованы (плоский режим).':
@@ -137,8 +143,6 @@ EN = {
         'indexed with the embedding model “{v}”, current model is “{embed_model}”: vector search does not work for it',
     'нарезан с другими параметрами: ':
         'chunked with different parameters: ',
-    'Сервис эмбеддингов недоступен — переиндексация не начата.':
-        'The embedding service is unavailable — re-indexing was not started.',
     # ---- mint/limits.py
     'Окно контекста LLM, токенов':
         'LLM context window, tokens',
@@ -752,8 +756,6 @@ EN = {
         'ℹ️ {n_changed} doc(s) were chunked with different parameters or uploaded before v18 (hover over ℹ️). This is not an error; re-index for consistency.',
     '🔄 Переиндексация':
         '🔄 Re-indexing',
-    'Нужна после смены модели эмбеддингов или параметров нарезки. Переиндексируются документы, оригиналы которых сохранены (загруженные в v18 и новее). Документы, загруженные раньше, загрузите заново. Если сменилась размерность векторов, база строится заново, и документы без оригинала удаляются.':
-        'Needed after changing the embedding model or the chunking parameters. Documents whose originals are stored (uploaded in v18 or later) are re-indexed. Upload older documents again. If the vector dimension changed, the base is rebuilt and documents without an original are removed.',
     'Переиндексировать нечего: ни у одного из {n_rows} док. нет сохранённого оригинала. Загрузите их заново через «Добавить документы в базу» — с теми же именами файлов, старые версии заменятся.':
         'Nothing to re-index: none of the {n_rows} doc(s) has a stored original. Upload them again via “Add documents to the base” — with the same file names, the old versions are replaced.',
     'Без оригинала: {v} док.':

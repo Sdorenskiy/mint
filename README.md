@@ -178,6 +178,17 @@ chunking parameters were used and keeps the original file in `sources/`; if you 
 chunking, MINT marks the affected documents and offers re-indexing. `python kb_stats.py` shows per-document
 statistics and can compare two bases.
 
+
+The index profile records the model, `embed_revision` (`EMBED_REVISION`), endpoint fingerprint,
+dimension, document prefix and input limit. Mismatched, mixed or unknown legacy profiles disable dense
+search (BM25 remains available) and prevent appending incompatible vectors. Re-indexing builds a complete
+replacement separately and publishes it only on full success; missing originals or embeddings leave the
+old base intact. Set a new `EMBED_REVISION` when weights or the access namespace change under the same
+model name and URL: MINT cannot detect such a server-side change automatically. If an existing document has no original after a model change, upload
+it under its old filename: MINT saves the original and reports that the index is still unchanged.
+Run full re-indexing once all originals are available. Query instructions and
+chunk sizes do not determine embedding-space compatibility.
+
 ### Document formats
 
 | Format | How it is read | Headings (sections in references) |

@@ -13,7 +13,7 @@ from .bm25 import (
     query_term_weights,
 )
 from .i18n import tr
-from .kb import l2_normalize, load_bm25_for, load_glossary, load_kb_snapshot, parent_order
+from .kb import embeddings_compatible, l2_normalize, load_bm25_for, load_glossary, load_kb_snapshot, parent_order
 from .passages import focus_passage, merge_adjacent
 from .prompts import low_confidence_note, paraphrase_system, render
 from .services import (
@@ -304,7 +304,8 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
 
     # --- Векторный поиск (до 3 попыток получить эмбеддинг; иначе — только BM25) ---
     query_np = None
-    for attempt in range(3):
+    compatible = embeddings_compatible(cfg, index.d, child_metadata, snap.documents or {})
+    for attempt in range(3) if compatible else ():
         query_np, why = _query_vector(search_query, cfg, index.d)
         if query_np is not None or why == "dim" or request_cache_active():
             break  # при другой размерности повторять бессмысленно; в кэше оценки попытки уже сделаны
