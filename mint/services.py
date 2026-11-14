@@ -430,45 +430,50 @@ def answer_loops(text, window=LOOP_WINDOW, repeats=LOOP_REPEATS):
 
 def _read_stream(response, deadline, max_chars):
     """Ответ потоком (Server-Sent Events, как у OpenAI) → (текст, рассуждения были, finish_reason, usage, обрыв).
-    обрыв: "length" — ответ длиннее max_chars, "loop" — зациклился, "time" — вышло время, "" — закончился сам."""
+    обрыв: "length" — лимит символов, "loop" — повторы, "time" — таймаут, "interrupted" — нет завершения."""
     parts, reasoning, finish, usage, total, checked = [], False, None, None, 0, 0
-    for raw in response.iter_lines():
-        if not raw:
-            continue
-        line = raw.decode("utf-8", "replace").strip() if isinstance(raw, bytes) else str(raw).strip()
-        if not line.startswith("data:"):
-            continue
-        data = line[5:].strip()
-        if data == "[DONE]":
-            break
-        try:
-            obj = json.loads(data)
-        except ValueError:
-            continue
-        choice = (obj.get("choices") or [{}])[0] or {}
-        delta = choice.get("delta") or choice.get("message") or {}
-        if delta.get("reasoning_content") or delta.get("reasoning"):
-            reasoning = True
-        piece = delta.get("content") or ""
-        if piece:
-            parts.append(piece)
-            total += len(piece)
-        finish = choice.get("finish_reason") or finish
-        usage = obj.get("usage") or usage
-        cut = ""
-        if time.time() > deadline:
-            cut = "time"
-        elif total - checked >= STREAM_CHECK_EVERY:
-            checked = total
-            visible = _visible_answer("".join(parts))
-            if max_chars and len(visible) > max_chars:
-                cut = "length"
-            elif answer_loops(visible):
-                cut = "loop"
-        if cut:
-            response.close()                  # шлюз (vLLM и др.) прекращает генерацию, когда клиент отключился
-            return "".join(parts), reasoning, finish, usage, cut
-    return "".join(parts), reasoning, finish, usage, ""
+    done = False
+    try:
+        for raw in response.iter_lines():
+            if not raw:
+                continue
+            line = raw.decode("utf-8", "replace").strip() if isinstance(raw, bytes) else str(raw).strip()
+            if not line.startswith("data:"):
+                continue
+            data = line[5:].strip()
+            if data == "[DONE]":
+                done = True
+                break
+            try:
+                obj = json.loads(data)
+            except ValueError:
+                continue
+            choice = (obj.get("choices") or [{}])[0] or {}
+            delta = choice.get("delta") or choice.get("message") or {}
+            if delta.get("reasoning_content") or delta.get("reasoning"):
+                reasoning = True
+            piece = delta.get("content") or ""
+            if piece:
+                parts.append(piece)
+                total += len(piece)
+            finish = choice.get("finish_reason") or finish
+            usage = obj.get("usage") or usage
+            cut = ""
+            if time.time() > deadline:
+                cut = "time"
+            elif total - checked >= STREAM_CHECK_EVERY:
+                checked = total
+                visible = _visible_answer("".join(parts))
+                if max_chars and len(visible) > max_chars:
+                    cut = "length"
+                elif answer_loops(visible):
+                    cut = "loop"
+            if cut:
+                response.close()                  # шлюз (vLLM и др.) прекращает генерацию, когда клиент отключился
+                return "".join(parts), reasoning, finish, usage, cut
+    except requests.exceptions.RequestException:
+        return "".join(parts), reasoning, finish, usage, "interrupted"
+    return "".join(parts), reasoning, finish, usage, "" if done or finish else "interrupted"
 
 
 def _trim_cut(content, cut):
@@ -707,7 +712,10 @@ def _ask_llm(system_prompt, user_content, cfg, model=None, temperature=None, max
 
             if (response.status_code == 200 and stream
                     and "text/event-stream" in (response.headers.get("Content-Type") or "").lower()):
-                raw_content, reasoning, finish, usage, cut = _read_stream(response, started + llm_timeout, max_chars)
+                try:
+                    raw_content, reasoning, finish, usage, cut = _read_stream(response, started + llm_timeout, max_chars)
+                finally:
+                    response.close()
                 content = strip_reasoning(raw_content)
                 _note_reasoning(cfg, chosen_model, {"reasoning_content": "1" if reasoning else ""}, usage,
                                 raw_content, content)
@@ -717,11 +725,17 @@ def _ask_llm(system_prompt, user_content, cfg, model=None, temperature=None, max
                     logger.warning(f"Ответ модели оборван MINT ({cut}): {len(raw_content)} симв. за "
                                    f"{time.time() - started:.0f} с")
                     content = _trim_cut(content, cut)
-                elif finish == "length" and not content:
-                    return (tr("❌ [ОТВЕТ ОБРЕЗАН]: модель израсходовала лимит {chosen_tokens} токенов (вероятно, на "
-                               "рассуждения) и не дала ответа. Увеличьте «Макс. длину ответа модели» в блоке «Модели и лимиты» "
-                               "или выберите модель без рассуждений.", chosen_tokens=chosen_tokens))
-                return content
+                    if content:
+                        content += tr("\n\n⚠️ Ответ обрезан: получение ответа прервано. Результат неполный; повторите запрос.")
+                elif finish == "length":
+                    if content:
+                        content += tr("\n\n⚠️ Ответ обрезан: достигнут лимит длины ответа ({chosen_tokens} токенов). Увеличьте «Макс. "
+                                      "длину ответа модели» в блоке «Модели и лимиты».", chosen_tokens=chosen_tokens)
+                    else:
+                        return (tr("❌ [ОТВЕТ ОБРЕЗАН]: модель израсходовала лимит {chosen_tokens} токенов (вероятно, на "
+                                   "рассуждения) и не дала ответа. Увеличьте «Макс. длину ответа модели» в блоке «Модели и лимиты» "
+                                   "или выберите модель без рассуждений.", chosen_tokens=chosen_tokens))
+                return content or tr("❌ [ПУСТОЙ ОТВЕТ]: модель не вернула текст ответа. Повторите запрос.")
 
             if response.status_code == 200:
                 res_json = response.json()
@@ -739,7 +753,7 @@ def _ask_llm(system_prompt, user_content, cfg, model=None, temperature=None, max
                                        "или выберите модель без рассуждений.", chosen_tokens=chosen_tokens))
                         content += (tr("\n\n⚠️ Ответ обрезан: достигнут лимит длины ответа ({chosen_tokens} токенов). Увеличьте «Макс. "
                                        "длину ответа модели» в блоке «Модели и лимиты».", chosen_tokens=chosen_tokens))
-                    return content
+                    return content or tr("❌ [ПУСТОЙ ОТВЕТ]: модель не вернула текст ответа. Повторите запрос.")
                 return tr("❌ [ОШИБКА СТРУКТУРЫ]: Некорректный формат JSON-ответа от модели.")
 
             hint = (" " + tr("Проверьте свои параметры запроса (llm_extra_body / LLM_EXTRA_BODY).")

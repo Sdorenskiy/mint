@@ -4,6 +4,10 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "\n\n⚠️ Ответ обрезан: получение ответа прервано. Результат неполный; повторите запрос.":
+        "\n\n⚠️ Answer truncated: receiving the answer was interrupted. The result is incomplete; retry the request.",
+    "❌ [ПУСТОЙ ОТВЕТ]: модель не вернула текст ответа. Повторите запрос.":
+        "❌ [EMPTY ANSWER]: the model returned no answer text. Retry the request.",
     # ---- mint/audit.py
     'КРИТИЧНЫЙ':
         'CRITICAL',

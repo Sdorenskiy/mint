@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Mark incomplete model replies explicitly: streamed token limits, missing terminal events, connection interruptions and client guards; reject empty replies in streaming and JSON modes.
+
 - Add a Russian developer code map (`docs/CODE_MAP.md`) alongside the source and a short `AGENTS.md` entry
   point; link them from the contribution guide. Application behaviour is unchanged.
 
