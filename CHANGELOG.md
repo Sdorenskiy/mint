@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Disable model reasoning by default (`llm_no_reasoning=true`). Explicit YAML, environment and session overrides remain effective; the independent audit reasoning switch can still enable reasoning.
+
 - Add an independent “Check typos and grammar” audit setting (off by default, `audit_typos` in config.yaml). Disabled language checks do not consume the deep-review budget; recognised language findings are excluded from final results. Deduplicate full correction sets and exact language findings without discarding different corrections.
 
 - Audit reports and the UI now distinguish incomplete checks across sections, deep checks, points and additional passes; completeness survives saving, and automatic checks no longer declare document approval.

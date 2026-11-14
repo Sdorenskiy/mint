@@ -75,7 +75,7 @@ check(not a1.startswith("❌") and not a2.startswith("❌") and sent == [True, F
       f"шлюз отклонил поток — повтор обычным запросом, дальше сразу обычный: {sent}")
 check(app.ask_llm("Ты помощник.", "Привет", replace(cfg, llm_model="nostream-model"), guard=True).startswith("Ответ"),
       "шлюз, который поток молча игнорирует, — обычный ответ разбирается")
-think = replace(cfg, llm_model="think-model")
+think = replace(cfg, llm_model="think-model", llm_no_reasoning=False)
 app.ask_llm("Ты помощник.", "Привет", think, guard=True)
 check(app.model_reasons(think), "рассуждения в потоке тоже замечаются")
 

@@ -6,6 +6,8 @@ MINT reviews any document — a contract, a policy, a report, a specification, a
 the documents in the knowledge base, and writes a report. It is an assistant,
 not an approver: you check every finding. Your "correct / wrong" marks are the main source of MINT improvements.
 
+**Chat reasoning.** “Turn off model reasoning” is checked by default to reserve the answer budget for the final text. Explicit existing settings are preserved. To keep it checked persistently, set `llm_no_reasoning: true` in `config.yaml` or `LLM_NO_REASONING=1` in `.env` (environment takes precedence). Audit reasoning has its own switch.
+
 ## Start and update
 
 - Start: `./run_mint.sh` (Windows: `run_mint.bat`); the page opens by itself: `http://localhost:8501`.
