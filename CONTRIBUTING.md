@@ -26,6 +26,9 @@ to work on MINT. To try the real interface without a gateway, use Ollama ([docs/
 
 ## Code layout and rules
 
+Start with [the code map (Russian)](docs/CODE_MAP.md) for entry points, data files and relevant tests.
+Update it in the same PR when those change; [AGENTS.md](AGENTS.md) is the short entry point for AI assistants.
+
 - `mint/` is the core and must not import Streamlit; everything Streamlit-specific lives in `mint/ui/`.
   This keeps the core usable from scripts (`eval_search.py`, `kb_stats.py`) and testable without a browser:
   the quality check, for example, lives in `mint/evaluation.py`, and `mint/ui/quality.py` only draws it. A whole

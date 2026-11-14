@@ -2,6 +2,11 @@
 
 **English** · [Русский](docs/ru/CHANGELOG.md)
 
+## Unreleased
+
+- Add a Russian developer code map (`docs/CODE_MAP.md`) alongside the source and a short `AGENTS.md` entry
+  point; link them from the contribution guide. Application behaviour is unchanged.
+
 ## 21.3.1 — ready for a sandbox check
 
 - **[SECURITY → Checking in a sandbox](docs/SECURITY.md#checking-in-a-sandbox)**: what to hand over (the release
