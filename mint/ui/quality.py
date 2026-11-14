@@ -224,7 +224,7 @@ def answers_html(run):
 
 
 def answers_delta_text(cur, prev):
-    """«верный ответ ▲ 10 п.п.; …» — изменение долей с прошлой проверки с ответами чата."""
+    """«источники прошли проверку ▲ 10 п.п.; …» — изменение долей с прошлой проверки с ответами чата."""
     c = ev.compare_answers(cur, prev)
     parts = []
     for key, label, _k, _n, higher in ev.answer_metrics(cur):
@@ -249,7 +249,7 @@ def records(data):
 
 
 def blank_row():
-    return {"use": True, "question": "", "file": "", "section": "", "contains": "", "note": "", "id": None}
+    return {"use": True, "question": "", "file": "", "section": "", "contains": "", "note": "", "expected_answer": "", "id": None}
 
 
 def generated_rows(items):
@@ -390,6 +390,7 @@ def _editor(rows, files, ver):
         "contains": cc.TextColumn(tr("Ответ в документе — дословная фраза"), width="medium",
                                   help=tr("Короткая фраза из нужного фрагмента: по ней понятно, что поиск нашёл именно "
                                           "его. Необязательно, но точнее всего.")),
+        "expected_answer": cc.TextColumn(tr("Ожидаемый ответ"), width="large"),
         "note": cc.TextColumn(tr("Примечание"), width="small"),
     }
     edited = st.data_editor(rows, key=f"qa_editor_{ver}", num_rows="dynamic", hide_index=True,
@@ -532,6 +533,7 @@ def _results(cfg, qa):
     if run.calib:
         _calibration(run)
     if run.answers:
+        _review_contents(cfg, run, qa)
         _answers(run, qa.get("prev_answers"))
     _per_question(run)
     _downloads(run, qa)
@@ -542,6 +544,37 @@ def _results(cfg, qa):
         st.session_state[QA] = {"stage": "setup", "rows": [], "ver": qa["ver"] + 1, "fragments": {}, "seed": qa["seed"] + 1}
         st.rerun()
     c[2].button(tr("✕ Закрыть"), key="qa_close2_btn", on_click=close_quality, **btn_w)
+
+
+def _review_contents(cfg, run, qa):
+    with st.expander(tr("Оценить содержание ответов")):
+        st.caption(tr("Эта проверка оценивает источники и ссылки, а не правильность фактов. Содержание оценивается вручную."))
+        labels = {key: tr(label) for key, label in ev.CONTENT_REVIEWS.items()}
+        rows = [{"question": q.question, "expected": q.expected_answer, "answer": r["answer"],
+                 "verdict": labels[r.get("content_review", "unreviewed")]}
+                for q in run.questions for r in run.answers["rows"][q.n]]
+        edited = records(st.data_editor(rows, key="qa_content_review_" + run.created, hide_index=True,
+            disabled=["question", "expected", "answer"],
+            column_config={"question": st.column_config.TextColumn(tr("Вопрос")),
+                           "expected": st.column_config.TextColumn(tr("Ожидаемый ответ")),
+                           "answer": st.column_config.TextColumn(tr("Ответ чата")),
+                           "verdict": st.column_config.SelectboxColumn(tr("Оценка содержания"),
+                                                                       options=list(labels.values()))}))
+        if st.button(tr("Сохранить оценки содержания"), key="qa_save_content"):
+            by_label = {v: k for k, v in labels.items()}
+            positions = [(q.n, i) for q in run.questions for i, _ in enumerate(run.answers["rows"][q.n])]
+            for (n, i), row in zip(positions, edited):
+                ev.review_answer(run, n, i, by_label.get(row.get("verdict"), "unreviewed"))
+            try:
+                if qa.get("saved"):
+                    folder = qa["saved"]
+                    lines = ev.write_reports(folder, run, (qa.get("prev") or {}).get("configs"), qa.get("prev_answers"))
+                else:
+                    folder, lines = ev.save_run(cfg, run, (qa.get("prev") or {}).get("configs"), qa.get("prev_answers"))
+                qa["saved"], qa["report"], qa["save_error"] = str(folder), "\n".join(lines) + "\n", None
+            except OSError as e:
+                qa["save_error"] = str(e)
+                qa["report"] = "\n".join(ev.report_lines(run, None, qa.get("prev_answers"))) + "\n"
 
 
 def _answers(run, prev):

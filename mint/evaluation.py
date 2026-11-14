@@ -43,6 +43,7 @@ COLUMN_ALIASES = {
     "file": ("file", "файл", "source", "источник"),
     "section": ("section", "раздел"),
     "contains": ("contains", "содержит", "фраза", "цитата", "quote"),
+    "expected_answer": ("expected_answer", "ожидаемый ответ"),
     "note": ("note", "примечание", "комментарий"),
 }
 # внутренние имена конфигураций (ключи summary.json — по ним сравниваются прогоны); показ — config_label()
@@ -63,6 +64,7 @@ class Question:
     sections: list = field(default_factory=list)
     contains: list = field(default_factory=list)
     note: str = ""
+    expected_answer: str = ""
 
     @property
     def answerable(self):
@@ -93,7 +95,7 @@ def questions_from_rows(rows):
         q = str(r.get("question") or "").strip()
         if q:
             out.append(Question(i, q, split_alts(r.get("file")), split_alts(r.get("section")),
-                                split_alts(r.get("contains")), str(r.get("note") or "")))
+                                split_alts(r.get("contains")), str(r.get("note") or ""), str(r.get("expected_answer") or "")))
     return out
 
 
@@ -148,9 +150,9 @@ def questions_csv(questions):
     """Набор вопросов в формате eval_search.py (разделитель «;», UTF-8 с BOM — открывается в Excel)."""
     buf = io.StringIO()
     w = csv.writer(buf, delimiter=";")
-    w.writerow(["question", "file", "section", "contains", "note"])
+    w.writerow(["question", "file", "section", "contains", "note", "expected_answer"])
     for q in questions:
-        w.writerow([q.question, " | ".join(q.files), " | ".join(q.sections), " | ".join(q.contains), q.note])
+        w.writerow([q.question, " | ".join(q.files), " | ".join(q.sections), " | ".join(q.contains), q.note, q.expected_answer])
     return "﻿" + buf.getvalue()
 
 
@@ -890,7 +892,8 @@ def _norm_name(s):
 
 def judge_answer(q, res):
     """Проверка одного ответа чата (результат chat.answer_question) без модели. Возвращает признаки, итог ok и
-    причину ошибки reason (ключ ANSWER_REASONS) или None."""
+    причину ошибки reason (ключ ANSWER_REASONS) или None. ok относится только к источникам и ссылкам;
+    содержание остаётся unreviewed до ручной оценки."""
     failed = res["error"]
     refused = not failed and is_refusal(res["answer"])
     names = [] if failed else cited_files(res["answer"], res["context"])
@@ -898,7 +901,7 @@ def judge_answer(q, res):
     r = {"answer": res["answer"], "failed": failed, "refused": refused, "low_conf": bool(res.get("low_conf")),
          "n_citations": len(res.get("citations") or []), "invalid": list(res.get("citations_invalid") or []),
          "cites_expected": any(w in _norm_name(n) for n in names for w in wanted),
-         "in_context": None, "contains_in_answer": None,
+         "in_context": None, "contains_in_answer": None, "content_review": "unreviewed",
          "sources": list(res.get("sources") or []), "seconds": round(float(res.get("seconds") or 0.0), 1)}
     if q.answerable:
         srcs = " ".join(r["sources"]).lower()
@@ -922,13 +925,24 @@ def judge_answer(q, res):
             reason = "bad_ref"
         else:
             reason = None
-        # поиск не нашёл ожидаемый фрагмент, а ответ всё равно ссылается на нужный документ — засчитывается
-        if reason == "search" and r["cites_expected"] and not refused and not r["invalid"]:
-            reason = None
     else:
         reason = "error" if failed else (None if refused else "answered")
     r["ok"], r["reason"] = reason is None, reason
     return r
+
+
+CONTENT_REVIEWS = {"unreviewed": N_("не проверено"), "correct": N_("верно"),
+                   "partial": N_("частично"), "incorrect": N_("неверно")}
+
+
+def review_answer(run, question_number, repeat_index, verdict):
+    """Record a human verdict without changing the independent formal check."""
+    if verdict not in CONTENT_REVIEWS:
+        raise ValueError(verdict)
+    row = run.answers["rows"][question_number][repeat_index]
+    row["content_review"] = verdict
+    run.answers["summary"] = answers_summary(run.cfg, run.questions, run.answers["rows"],
+                                               run.answers["summary"].get("repeat", 1))
 
 
 def check_answers(cfg, questions, glossary, progress=None, repeat=1):
@@ -955,7 +969,7 @@ def check_answers(cfg, questions, glossary, progress=None, repeat=1):
 
 def answers_summary(cfg, questions, rows, repeat=1):
     """Счётчики по всем ответам (вопрос × повтор); сбои модели — отдельно и в доли не входят. scores — доля
-    верных ответов по каждому вопросу: по ним сравниваются прогоны (compare_answers)."""
+    ответов с проверенными источниками по каждому вопросу: по ним сравниваются прогоны (compare_answers)."""
     ans = [r for q in questions if q.answerable for r in rows[q.n] if not r["failed"]]
     none = [r for q in questions if not q.answerable for r in rows[q.n] if not r["failed"]]
     with_phrase = [r for q in questions if q.answerable and q.contains for r in rows[q.n] if not r["failed"]]
@@ -972,6 +986,8 @@ def answers_summary(cfg, questions, rows, repeat=1):
         "low_conf_no_answer": sum(1 for r in none if r["low_conf"]),
         "reasons": dict(Counter(r["reason"] for q in questions for r in rows[q.n] if r["reason"])),
         "scores": {q.question: round(sum(r["ok"] for r in rows[q.n]) / len(rows[q.n]), 3) for q in questions},
+        "evaluation_version": 2, "content_reviews": dict(Counter(r.get("content_review", "unreviewed")
+            for q in questions for r in rows[q.n])),
         "prompts": prompts_version(), "prompts_custom": custom_status(), "lang": get_lang(), "llm_model": cfg.llm_model,
         "temperature": cfg.temperature, "top_k": cfg.top_k, "repeat": repeat,
     }
@@ -980,7 +996,7 @@ def answers_summary(cfg, questions, rows, repeat=1):
 def answer_metrics(a):
     """Главные показатели ответов: [(ключ, подпись, верно, всего, больше — лучше)]; без пустых."""
     items = [
-        ("ok_answerable", N_("верный ответ"), a["ok_answerable"], a["n_answerable"], True),
+        ("ok_answerable", N_("источники и ссылки прошли проверку"), a["ok_answerable"], a["n_answerable"], True),
         ("cites_expected", N_("ссылка на нужный документ"), a["cites_expected"], a["n_answerable"], True),
         ("false_refusal", N_("ложное «информации нет»"), a["false_refusal"], a["n_answerable"], False),
         ("honest_refusal", N_("честное «информации нет»"), a["honest_refusal"], a["n_no_answer"], True),
@@ -993,7 +1009,8 @@ def answer_metrics(a):
 def latest_answers(runs):
     """Итоги ответов из самой свежей проверки, где проверялись ответы чата (runs — list_runs())."""
     for _folder, summary in runs:
-        if isinstance(summary.get("answers"), dict) and summary["answers"].get("scores"):
+        if (isinstance(summary.get("answers"), dict) and summary["answers"].get("scores")
+                and summary["answers"].get("evaluation_version") == 2):
             return summary["answers"]
     return None
 
@@ -1003,9 +1020,10 @@ def compare_answers(cur, prev):
     (критерий знаков), changed [(лучше/хуже, вопрос, было, стало)], meta [(что, было, стало)] — что изменилось в
     настройках, several — изменилось больше одного параметра (язык входит в версию промптов), deltas
     {показатель: изменение доли в п.п.}."""
+    compatible = cur.get("evaluation_version") == prev.get("evaluation_version")
     better = worse = same = 0
     changed = []
-    for question, score in (cur.get("scores") or {}).items():
+    for question, score in ((cur.get("scores") or {}) if compatible else {}).items():
         old = (prev.get("scores") or {}).get(question)
         if old is None:
             continue
@@ -1021,16 +1039,18 @@ def compare_answers(cur, prev):
     keys = {k for k, _, _ in meta}
     several = len([k for k in keys if not (k == "lang" and "prompts" in keys)]) > 1
     deltas = {}
-    old_items = {key: (k, n) for key, _l, k, n, _h in answer_metrics(prev)} if prev.get("n_answerable") is not None else {}
+    old_items = {key: (k, n) for key, _l, k, n, _h in answer_metrics(prev)} if compatible and prev.get("n_answerable") is not None else {}
     for key, _label, k, n, _h in answer_metrics(cur):
         if key in old_items and old_items[key][1]:
             deltas[key] = 100.0 * (k / n - old_items[key][0] / old_items[key][1])
     return {"better": better, "worse": worse, "same": same, "p": sign_test_p(better, worse), "changed": changed,
-            "meta": meta, "several": several, "deltas": deltas}
+            "meta": meta, "several": several, "deltas": deltas, "compatible": compatible}
 
 
 def answers_verdict(c):
     """Одна строка: лучше/хуже на общих вопросах и случайна ли разница."""
+    if not c.get("compatible", True):
+        return tr("Методика проверки изменилась: показатели ответов не сравниваются.")
     if not (c["better"] or c["worse"]):
         tail = tr("разницы нет.")
     elif c["p"] < 0.05:
@@ -1052,7 +1072,10 @@ def answers_report_lines(run, prev_answers=None):
                 "найденными фрагментами, «информации нет» — по фразе chat_no_info из промпта. Промпты: **{v}**.",
                 rep=tr(", повторов: {n}", n=a["repeat"]) if a.get("repeat", 1) > 1 else "", v=a.get("prompts", "—"))
              + (" " + tr("Свои правки промптов: {v}.", v=custom_label(a["prompts_custom"])) if a.get("prompts_custom") else ""),
-             ""]
+             "", tr("Эта проверка оценивает источники и ссылки, а не правильность фактов. Содержание оценивается вручную."), ""]
+    reviews = a.get("content_reviews") or {}
+    lines += [tr("Оценка содержания — {label}: {n}", label=tr(label), n=reviews.get(key, 0))
+              for key, label in CONTENT_REVIEWS.items()]
     for _key, label, k, n, _h in answer_metrics(a):
         lines.append(f"- {tr(label)}: {pct(k, n)}")
     if a["n_answerable"]:
@@ -1096,14 +1119,15 @@ def answers_csv(run):
     w.writerow(["№", tr("Вопрос"), tr("Ожидалось"), tr("Повтор"), tr("Итог"), tr("Причина"), tr("Ответ чата"),
                 tr("Ссылка на ожидаемый документ"), tr("Ссылки мимо найденного"), tr("«Информации нет»"),
                 tr("Фрагмент в контексте"), tr("Сигнал «уверенность низкая»"), tr("Фраза в ответе"), tr("Время, с"),
-                tr("Источники")])
+                tr("Источники"), tr("Ожидаемый ответ"), tr("Оценка содержания")])
     for q in run.questions:
         for i, r in enumerate(run.answers["rows"][q.n], 1):
             w.writerow([q.n, q.question, q.expected, i, "✓" if r["ok"] else "✗",
                         tr(ANSWER_REASONS[r["reason"]]) if r["reason"] else "—", r["answer"].strip() or "—",
                         yn[r["cites_expected"] if q.answerable else None], " ".join(r["invalid"]) or "—",
                         yn[r["refused"]], yn[r["in_context"]], yn[r["low_conf"]], yn[r["contains_in_answer"]],
-                        f"{r['seconds']:.1f}", " || ".join(s.replace("📄 ", "") for s in r["sources"]) or "—"])
+                        f"{r['seconds']:.1f}", " || ".join(s.replace("📄 ", "") for s in r["sources"]) or "—", q.expected_answer,
+                        tr(CONTENT_REVIEWS[r.get("content_review", "unreviewed")])])
     return "\ufeff" + buf.getvalue()
 
 
@@ -1135,7 +1159,7 @@ def rows_to_questions(rows):
             continue
         files = [] if is_no_answer(f) else split_alts(f)
         out.append(Question(i, text, files, split_alts(cell(r.get("section"))) if files else [],
-                            split_alts(cell(r.get("contains"))) if files else [], cell(r.get("note"))))
+                            split_alts(cell(r.get("contains"))) if files else [], cell(r.get("note")), cell(r.get("expected_answer"))))
     return out, issues
 
 
@@ -1150,7 +1174,7 @@ def question_rows(questions, snap):
             hits = [k for k in known if f.lower() in k.lower()]
             names.append(hits[0] if len(hits) == 1 else f)
         rows.append({"use": True, "question": q.question, "file": " | ".join(names) or tr(NO_ANSWER),
-                     "section": " | ".join(q.sections), "contains": " | ".join(q.contains), "note": q.note})
+                     "section": " | ".join(q.sections), "contains": " | ".join(q.contains), "note": q.note, "expected_answer": q.expected_answer})
     return rows
 
 

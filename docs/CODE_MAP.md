@@ -2,8 +2,7 @@
 
 > Назначение: навигатор для разработчика и AI («задача → код → тесты»), а не копия подробной архитектуры.
 > Исходный код: [Sdorenskiy/mint](https://github.com/Sdorenskiy/mint).
-> База текущих изменений: `843c550` (проверена совместимость эмбеддингов).
-> Основа анализа: `main`, коммит [`7504be1`](https://github.com/Sdorenskiy/mint/commit/7504be1276e35f824f31419dfd7a8f97f0fb4ad8) (`7504be1276e35f824f31419dfd7a8f97f0fb4ad8`).
+> Проверенный базовый коммит: `843c550` (`main` до этих доработок).
 > Обновлено: 2026-11-14. Это статическая карта кода на указанном базовом коммите. Пути сверены с деревом репозитория; результаты проверок приложения указываются отдельно в PR/CI.
 
 ## 1. Точки входа и структура
@@ -90,6 +89,7 @@ MINT использует локальные файлы базы знаний, �
 | Поиск, RRF, релевантность | `mint/search.py`, `mint/bm25.py`, `mint/passages.py` | `tests/test_app.py`, `tests/test_eval.py` |
 | Загрузка и индексация | `mint/kb.py`, `mint/parsing.py` | `tests/test_app.py`, `tests/test_formats.py`, `tests/test_embedding_compatibility.py` |
 | DOCX/PDF | `mint/parsing.py`, `mint/pdfparse.py` | `tests/test_formats.py`, `tests/test_real_install.py`, DOCX parity CI |
+| Проверка качества ответов | `mint/evaluation.py`, `mint/ui/quality.py` | `tests/test_eval.py`, `tests/test_answer_evaluation.py` |
 | Чат, цитаты | `mint/chat.py`, `mint/citations.py` | `tests/test_app.py`, `tests/test_llm_requests.py` |
 | Консультант | `mint/consult.py`, `mint/ui/tab_consult.py` | `tests/test_consult.py` |
 | Аудит, качество замечаний | `mint/audit.py`, `mint/deep_checks.py` | `tests/test_audit_quality.py`, `tests/test_audit_noise.py`, `tests/test_deep_checks.py`, `tests/test_audit_completion.py`, `tests/test_audit_typos.py` |
@@ -117,3 +117,4 @@ MINT использует локальные файлы базы знаний, �
 **При следующей задаче:** сначала прочитать этот файл; сравнить SHA выше с актуальным `mint/main`; при изменении SHA посмотреть diff и соответствующий код. Код — источник истины. При изменении архитектуры обновить карту и SHA, при обычном изменении — проверить необходимость обновления. Отдельно сообщать, какие тесты действительно запускались и что проверил CI.
 
 - Профиль эмбеддингов хранится у документов в манифесте; `embeddings_compatible()` используется записью, поиском и статусом базы. Неизвестный/смешанный профиль отключает dense. `reindex_documents()` строит полную замену во временной папке под блокировкой; `_commit_kb()` подменяет файлы с откатом при ошибке публикации (это не журнал восстановления после аварийного завершения процесса).
+- `judge_answer().ok` оценивает только источники/ссылки. `Question.expected_answer` и `review_answer()` поддерживают независимую ручную оценку содержания (`content_review`). Методика формальных метрик имеет `evaluation_version=2`; неизвестная предыдущая версия не используется для сравнения.

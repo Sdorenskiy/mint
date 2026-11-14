@@ -207,8 +207,8 @@ base_res = {"answer": "Хранятся три года [Источник: Ре�
             "sources": ["📄 Регламент_ИБ.docx › 1.2"], "context": "=== ИСТОЧНИК: Регламент_ИБ.docx ===\nТри года."}
 q_ans, q_none = Q(1, "q", ["Регламент_ИБ"], [], ["три года"]), Q(2, "q2")
 check(app.judge_answer(q_ans, base_res)["ok"], "[unit] ссылка на нужный документ (имя записано иначе) — верно")
-check(app.judge_answer(q_ans, dict(base_res, sources=["📄 Другой.docx"]))["reason"] is None,
-      "[unit] поиск не нашёл, но ответ ссылается на нужный документ — засчитан")
+check(app.judge_answer(q_ans, dict(base_res, sources=["📄 Другой.docx"]))["reason"] == "search",
+      "[unit] ссылка не отменяет отсутствие нужного фрагмента")
 check(app.judge_answer(q_ans, dict(base_res, sources=["📄 Другой.docx"], answer="Нет ссылки."))["reason"] == "search",
       "[unit] нужного фрагмента нет в контексте — ошибка поиска")
 no_info_ = dict(base_res, answer="В предоставленных регламентах информация отсутствует.")

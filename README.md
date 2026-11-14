@@ -171,6 +171,13 @@ Abbreviations are collected automatically from uploaded documents (lists of abbr
 list to expand abbreviations in answers. Your own `glossary.json` is only needed for corrections: fix an
 expansion, add a missing one, or remove a wrong one with an empty value (`"ABC": ""`).
 
+Automatic answer evaluation checks expected context and formal citations, not factual correctness.
+`contains` remains a verbatim source phrase for retrieval evaluation. The optional `expected_answer`
+field provides a reference for human review. In the results, open “Review answer content”, mark each
+answer correct, partial, incorrect or unreviewed, and save. Verdicts are included in the report,
+`summary.json` and `answers.csv`. No extra model call or duplicate chat self-check is introduced.
+Legacy evaluation scores are not compared against the new method.
+
 ### Knowledge base
 
 Stored in `KB_DIR` (default `~/knowledge_base`). For every document MINT records which embedding model and
