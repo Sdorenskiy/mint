@@ -687,14 +687,17 @@ def run_task(task, cfg, attempts=1):
         entry["report"] = raw.strip()
     elif task["kind"] == "claims":
         data = extract_json(raw, kind="array")
+        entry["failed"] = (not isinstance(data, list) or any(
+            not isinstance(d, dict) or not str(d.get("claim") or "").strip() for d in data))
         section = (task["sections"] or [""])[0]
         for d in data if isinstance(data, list) else []:
             if isinstance(d, dict) and str(d.get("claim") or "").strip():
                 entry["claims"].append((str(d.get("topic") or "").strip(), str(d["claim"]).strip()[:400], section))
-        entry["report"] = "\n".join(f"- [{t}] {c}" for t, c, _s in entry["claims"]) or tr("Утверждений нет.")
-    elif is_clean_report(raw) or len(raw.strip()) < 15:
+        entry["report"] = raw if entry["failed"] else ("\n".join(f"- [{t}] {c}" for t, c, _s in entry["claims"]) or tr("Утверждений нет."))
+    elif is_clean_report(raw):
         entry["report"] = tr("Часть чистая")
     else:
+        entry["failed"] = not any(len(finding_from_line(line)["text"]) > 15 for line in parse_findings(raw))
         for line in parse_findings(raw):
             f = finding_from_line(line)
             if len(f["text"]) > 15:
@@ -702,7 +705,7 @@ def run_task(task, cfg, attempts=1):
                                           "check": task["kind"]})
         found = entry["findings"]
         entry["findings"], _over = cap_findings(found, DEEP_KIND_MAX.get(task["kind"], DEEP_FINDINGS_MAX))
-        entry["report"] = "\n".join(format_finding(f) for f in entry["findings"]) or tr("Часть чистая")
+        entry["report"] = raw if entry["failed"] else ("\n".join(format_finding(f) for f in entry["findings"]) or tr("Часть чистая"))
         over = [f for f in found if not any(f is k for k in entry["findings"])]
         if over:        # в логе видно, что отброшено сверх лимита на этот вопрос
             entry["report"] += ("\n\n" + tr("**Сверх лимита (в заключение не вошли):**") + "\n"

@@ -1349,7 +1349,7 @@ try:
     check(theme.audit_verdict(crit)[:2] == ("rework", "Требует доработки"), "критичное замечание → «Требует доработки»")
     check(theme.audit_verdict([{"severity": "СРЕДНИЙ"}])[0] == "remarks", "среднее → «Есть замечания»")
     check(theme.audit_verdict([], n_failed=1)[0] == "incomplete", "сбой разделов без замечаний — не «Согласовано»")
-    check(theme.audit_verdict([])[0] == "approved", "без замечаний и сбоев → «Согласовано»")
+    check(theme.audit_verdict([])[0] == "approved", "без замечаний и сбоев → нейтральный положительный штамп")
     vh = theme.audit_verdict_html(crit, 1, 4)
     check("--mint-n:1" in vh and "mint-verdict--rework" in vh and "1 из 4" in vh and 'class="mint-sr">1<' in vh,
           "штамп: счётчики, вид, примечание о сбое, число для экранного диктора")
