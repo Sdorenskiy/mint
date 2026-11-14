@@ -14,6 +14,8 @@ not an approver: you check every finding. Your "correct / wrong" marks are the m
   version number is at the bottom of the sidebar.
 - Installing from scratch — [INSTALL.md](INSTALL.md).
 
+**Typos and grammar.** In audit settings, enable “Check typos and grammar” when needed; it is off by default. This controls dedicated language requests during deep review and recognised language findings in the final report and exports. Other deep checks remain enabled. For a persistent choice, set `audit_typos: true` (or `false`) in `config.yaml`. Old saved reports are unchanged; run a new review to apply the setting.
+
 ## Document review
 
 1. The **"📋 Document review"** tab → upload the document: .docx is best (findings can then be added as Word

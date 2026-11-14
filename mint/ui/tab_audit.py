@@ -67,7 +67,7 @@ def _run_settings(cfg, use_wiki_rag):
             "use_kb": use_wiki_rag, "deep": st.session_state.get("tab2_deep", cfg.audit_deep),
             "whole": st.session_state.get("tab2_whole", False), "passes": audit_passes(cfg),
             "self_critique": cfg.use_self_critique, "reasoning": cfg.audit_reasoning,
-            "merge": cfg.audit_merge_duplicates, "basis_on": cfg.audit_basis_docs, "lang": get_lang()}
+            "typos": cfg.audit_typos, "merge": cfg.audit_merge_duplicates, "basis_on": cfg.audit_basis_docs, "lang": get_lang()}
 
 
 def _show(name, res, rows, review, log, aid, ctx, docx_review, reopened, meta=None):
