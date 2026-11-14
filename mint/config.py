@@ -95,7 +95,7 @@ class Settings:
     max_tokens: int = 1500            # максимальная длина ответа модели
     llm_timeout: int = 90             # сек на одну попытку
     llm_retries: int = 2              # попыток при таймауте и 502/503/504; на 429 — не меньше 4 (services.RATE_LIMIT_ATTEMPTS)
-    llm_no_reasoning: bool = False    # выключить рассуждения модели перед ответом (стандартный параметр vLLM, SGLang)
+    llm_no_reasoning: bool = True     # выключить рассуждения модели перед ответом (стандартный параметр vLLM, SGLang)
     llm_extra_body: str = ""          # свои параметры запроса к LLM, JSON-объект: {"top_p": 0.9}; config.yaml или .env
     llm_stream: bool = True           # аудит: ответ потоком — MINT обрывает слишком длинный или зациклившийся ответ
     request_timeout: int = 120        # сек на запрос к реранкеру

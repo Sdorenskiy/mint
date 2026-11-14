@@ -51,6 +51,9 @@ print("2. [unit] Настройки: config.yaml (словарём) и .env")
 cfg_y, notes = app.load_settings()
 check(cfg_y.llm_no_reasoning and app.extra_body(cfg_y) == {"top_p": 0.7} and not notes,
       f"в config.yaml — выключатель и параметры словарём: {cfg_y.llm_extra_body!r} {notes}")
+(W / "config.yaml").write_text("llm_no_reasoning: false\n", encoding="utf-8")
+explicit_off, _ = app.load_settings()
+check(not explicit_off.llm_no_reasoning, "явное false в YAML сохраняет выбор пользователя")
 os.environ.update({"LLM_NO_REASONING": "0", "LLM_EXTRA_BODY": '{"top_k": 20}'})
 cfg_e, _ = app.load_settings()
 check(not cfg_e.llm_no_reasoning and app.extra_body(cfg_e) == {"top_k": 20}, "окружение / .env важнее config.yaml")
@@ -64,7 +67,10 @@ cfg, _ = app.resolve_settings(cfg, app.resolve_model_limits(cfg, {}, None, {}), 
 print("3. [интеграция] Выключатель рассуждений и свои параметры в запросе")
 STATE["requests"].clear()
 app.ask_llm("Ты помощник.", "Привет", cfg)
-check("chat_template_kwargs" not in chats()[-1], "по умолчанию лишних полей нет — как настроено на сервере")
+check(cfg.llm_no_reasoning and chats()[-1].get("chat_template_kwargs") == {"enable_thinking": False, "thinking": False},
+      "по умолчанию галочка выключения рассуждений установлена")
+app.ask_llm("Ты помощник.", "Привет", replace(cfg, llm_no_reasoning=False))
+check("chat_template_kwargs" not in chats()[-1], "снятая галочка оставляет режим шлюза без дополнительных полей")
 app.ask_llm("Ты помощник.", "Привет", replace(cfg, llm_no_reasoning=True))
 check(chats()[-1].get("chat_template_kwargs") == {"enable_thinking": False, "thinking": False},
       f"выключатель — стандартный параметр шаблона чата: {chats()[-1].get('chat_template_kwargs')}")
@@ -86,7 +92,7 @@ app.ask_llm("Ты помощник.", "Ещё вопрос", strict)
 check([("chat_template_kwargs" in p) for p in chats()] == [False], "следующий запрос — сразу без выключателя")
 
 print("5. [интеграция] Модель рассуждает: распознаётся, таймаут подсказывает, что сделать")
-think = replace(cfg, llm_model="think-model", llm_timeout=1, llm_retries=1)
+think = replace(cfg, llm_no_reasoning=False, llm_model="think-model", llm_timeout=1, llm_retries=1)
 check(not app.model_reasons(think), "до первого ответа — неизвестно")
 check(not app.ask_llm("Ты помощник.", "Привет", think).startswith("❌") and app.model_reasons(think),
       "по полю reasoning_content понятно, что модель рассуждает")
@@ -98,7 +104,7 @@ t0 = time.time()
 fast = app.ask_llm("Ты помощник.", "Привет", replace(think, llm_no_reasoning=True))
 check(not fast.startswith("❌") and time.time() - t0 < 1.5, "с выключенными рассуждениями — ответ сразу")
 STATE["think_seconds"] = 0
-plain_to = app.timeout_message(cfg, "test-llm", 90)
+plain_to = app.timeout_message(replace(cfg, llm_no_reasoning=False), "test-llm", 90)
 check("Если модель рассуждает" in plain_to and "90" in plain_to, "без признаков рассуждений — подсказка с «если»")
 
 print("6. [интеграция] Аудит: раздел, на котором модель не ответила, проверяется ещё раз")
