@@ -11,6 +11,17 @@ EN = {
     'Переиндексация не завершена. База не изменена: {v}': 'Re-indexing did not complete. The base is unchanged: {v}',
     'Профиль эмбеддингов базы несовместим или неизвестен. Запись отменена. Переиндексируйте всю базу или верните прежние настройки эмбеддингов.': 'The embedding profile is incompatible or unknown. Write cancelled. Re-index the entire base or restore the previous embedding settings.',
     'Профиль эмбеддингов несовместим или неизвестен: векторный поиск отключён, доступен BM25. Переиндексируйте всю базу.': 'The embedding profile is incompatible or unknown: dense search is disabled; BM25 is available. Re-index the entire base.',
+    'Методика проверки изменилась: показатели ответов не сравниваются.': 'The evaluation method changed: answer metrics are not compared.',
+    'Ожидаемый ответ': 'Expected answer',
+    'Оценить содержание ответов': 'Review answer content',
+    'Оценка содержания': 'Content review',
+    'Оценка содержания — {label}: {n}': 'Content review — {label}: {n}',
+    'Сохранить оценки содержания': 'Save content reviews',
+    'Эта проверка оценивает источники и ссылки, а не правильность фактов. Содержание оценивается вручную.': 'These checks assess sources and citations, not factual correctness. Content is reviewed manually.',
+    'верно': 'correct',
+    'источники и ссылки прошли проверку': 'sources and citations passed the checks',
+    'не проверено': 'unreviewed',
+    'неверно': 'incorrect',
 
     'Проверять опечатки и грамматику': 'Check typos and grammar',
     'Опечатки и грамматика': 'Typos and grammar',
@@ -1538,8 +1549,6 @@ EN = {
         'no difference.',
     'Каждый вопрос задан чату с текущими настройками{rep}; ответы проверены без модели: ссылки сверены с найденными фрагментами, «информации нет» — по фразе chat_no_info из промпта. Промпты: **{v}**.':
         'Every question was asked in chat with the current settings{rep}; the answers were checked without a model: references against the fragments found, “no information” by the chat_no_info phrase of the prompt. Prompts: **{v}**.',
-    'верный ответ':
-        'right answer',
     'ложное «информации нет»':
         'false “no information”',
     'честное «информации нет»':

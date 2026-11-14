@@ -13,6 +13,7 @@ from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 SUITES = [
     ("Совместимость эмбеддингов и безопасная переиндексация", ["test_embedding_compatibility.py"]),
+    ("Источники и ручная оценка содержания ответов", ["test_answer_evaluation.py"]),
     ("Опечатки: настройка, фильтр, повторы", ["test_audit_typos.py"]),
     ("Полнота аудита: сбои, повтор, сохранение", ["test_audit_completion.py"]),
     ("Завершение ответа модели: поток, обрывы, пустой ответ", ["test_stream_completion.py"]),
