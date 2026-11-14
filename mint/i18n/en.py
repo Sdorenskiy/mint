@@ -22,6 +22,7 @@ EN = {
     'источники и ссылки прошли проверку': 'sources and citations passed the checks',
     'не проверено': 'unreviewed',
     'неверно': 'incorrect',
+    'Роль и правила ответа во вкладке «Консультант»: факты о ваших системах — из базы, со ссылками [Источник: …]; свои предложения модели — со значком 💡; ответ начинается с раздела «📄 …». Проверка текста без ссылок действует во всех разделах независимо от заголовков. Свои предложения помечайте 💡 в самом пункте.': 'Consultant response rules: facts about your systems come from the base with [Source: …] references; model proposals carry 💡; the response begins with a “📄 …” section. Missing-reference checks apply to all sections regardless of headings. Mark proposals with 💡 in the item itself.',
 
     'Проверять опечатки и грамматику': 'Check typos and grammar',
     'Опечатки и грамматика': 'Typos and grammar',
@@ -2876,8 +2877,6 @@ EN = {
         'Consultant',
     'Ответ консультанта':
         'Consultant answer',
-    'Роль и правила ответа во вкладке «Консультант»: факты о ваших системах — из базы, со ссылками [Источник: …]; свои предложения модели — со значком 💡; ответ начинается с раздела «📄 …». Ссылки, 📄 и 💡 обязательны: по ним MINT проверяет ссылки и отмечает пункты раздела 📄 без ссылки.':
-        'The role and answer rules of the "Consultant" tab: facts about your systems come from the base, with references [Source: …]; the model\'s own proposals carry the 💡 sign; the answer begins with the "📄 …" section. References, 📄 and 💡 are required: MINT uses them to check references and to mark items of the 📄 section without a reference.',
     'Разбор запроса: поиск по аспектам':
         'Request analysis: search by aspects',
     'Перед ответом модель определяет, что просят, и составляет несколько поисковых запросов к базе — по одному на каждую сторону вопроса. JSON-ответ с полями kind и queries обязателен.':

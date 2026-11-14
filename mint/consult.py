@@ -14,8 +14,8 @@
      раздела целиком (с подразделами), карточки упомянутых систем добавляются всегда. Объём — по окну модели.
   3. Ответ: модели можно предлагать своё (с пометкой 💡), факты о системах пользователя — только из базы, со
      ссылками; ответ начинается с раздела «📄 …» — как устроено сейчас. Прошлые реплики разговора — часть работы.
-  4. Проверка без модели: ссылки — по всем фрагментам, которые модель видела в разговоре; пункты раздела «📄» без
-     ссылки помечаются ❔ (mark_unsupported); код схем Mermaid выделяется для скачивания.
+  4. Проверка без модели: ссылки — по всем фрагментам, которые модель видела в разговоре; непустые строки ответа без ссылки или явной пометки предложения
+     помечаются ❔ независимо от заголовков (mark_unsupported); код схем Mermaid выделяется для скачивания.
 
 У текстов консультанта своя версия (prompts.consult_prompts_version): она пишется в отзывы, версия промптов чата
 и аудита от консультанта не зависит.
@@ -55,7 +55,7 @@ UNSUPPORTED_MARK = " ❔"
 
 _HEADING_RE = re.compile(r"^\s{0,3}(?:#{1,6}\s+\S|\*\*[^*]+\*\*:?\s*$)")
 _MERMAID_RE = re.compile(r"```\s*mermaid[^\n]*\n(.*?)```", re.S | re.I)
-_NOTHING_RE = re.compile(r"ничего не|не нашл|не найден|нет сведений|нет информации|не описан|nothing|not found|"
+_NOTHING_RE = re.compile(r"ничего не|не нашл|не найден|нет сведений|нет информации|нет описания|не описан|nothing|not found|"
                          r"no information|not described", re.I)
 _KIND_HINTS = (
     ("diagram", re.compile(r"нарисуй|схем|диаграмм|draw|diagram|chart", re.I)),
@@ -255,22 +255,31 @@ def gather_context(request, plan, cfg, glossary, budget, progress=None):
 
 
 def mark_unsupported(text):
-    """Пункты раздела «📄 …» (как устроено сейчас — по документам) без ссылки [Источник: …] помечаются ❔: модель
-    могла выдать догадку за содержание документов. Строки-вступления («…:»), «ничего не нашлось», код и пункты с 💡
-    не помечаются. Возвращает (текст, сколько помечено)."""
+    """Mark unsupported text throughout the answer, independently of heading labels.
+
+    This is a conservative formatting check, not verification of a fact's meaning.
+    Proposals must carry their own explicit 💡 marker (as required by the prompt);
+    a proposal heading does not exempt the following unmarked assertions.
+    """
     lines = (text or "").split("\n")
-    in_doc, fence, n = False, False, 0
+    fence, n = None, 0
     for i, line in enumerate(lines):
         s = line.strip()
-        if s.startswith("```"):
-            fence = not fence
-            continue
+        delimiter = re.match(r"^(`{3,}|~{3,})", s)
         if fence:
+            if delimiter and delimiter.group(1)[0] == fence[0] and len(delimiter.group(1)) >= len(fence):
+                fence = None
+            continue
+        if delimiter:
+            fence = delimiter.group(1)
             continue
         if _HEADING_RE.match(line):
-            in_doc = "📄" in s
             continue
-        if not in_doc or len(s) < 25 or s.endswith(":") or "💡" in s[:8] or has_citation(s) or _NOTHING_RE.search(s):
+        # No section state: headings, emojis and heading levels never switch checks off.
+        body = re.sub(r"^(?:[-*+]\s+|\d+[.)]\s+|>\s*)+", "", s).lstrip("*_")
+        if (not body or body.endswith(":") or body.startswith("💡") or has_citation(s)
+                or _NOTHING_RE.search(s) or s.endswith(UNSUPPORTED_MARK.strip())
+                or re.fullmatch(r"[|: \-]+", s)):
             continue
         lines[i] = line.rstrip() + UNSUPPORTED_MARK
         n += 1
@@ -288,7 +297,7 @@ def answer_consult(request, cfg, glossary=None, history=None, prev_context="", p
     history — прошлые реплики разговора (chat.chat_history(..., answer_chars=HISTORY_ANSWER_CHARS));
     prev_context — фрагменты, которые модель видела в прошлых репликах: ссылки на них в ответе — не ошибка;
     progress(stage, **info) — ход работы для интерфейса: "plan", "search" (i, n, query), "answer" (blocks, chars).
-    Возвращает словарь: answer, shown (ссылки мимо фрагментов — ⚠️, пункты 📄 без ссылки — ❔), kind, systems,
+    Возвращает словарь: answer, shown (ссылки мимо фрагментов — ⚠️, текст без ссылки или пометки предложения — ❔), kind, systems,
     queries, plan_ok, aspects, blocks, context, context_chars, budget, citations, citations_invalid, unsupported,
     diagrams, low_found, error, prompts (версия текстов консультанта), seconds."""
     started = time.time()

@@ -6,6 +6,7 @@
 
 - Reject incompatible or unknown embedding profiles even at equal dimensions; use BM25 until a complete, separately built re-index succeeds. Preserve the old base on missing sources, partial embeddings or publication errors.
 - Separate formal source/citation checks from factual correctness. Remove the citation override for missing expected context, add optional expected answers and human content verdicts, export reviews, and stop comparing legacy evaluation scores.
+- Check unsupported consultant text throughout the answer, regardless of heading names, emoji or Markdown levels. Short assertions are checked too; explicit proposals and fenced code remain exempt. The document-heading emoji is no longer required in custom prompts.
 
 - Disable model reasoning by default (`llm_no_reasoning=true`). Explicit YAML, environment and session overrides remain effective; the independent audit reasoning switch can still enable reasoning.
 

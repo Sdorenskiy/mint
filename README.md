@@ -227,8 +227,7 @@ systems are built and proposes solutions itself.
 3. **Answer**: "📄 How it works now" — only from the documents, with references; 💡 — the model's proposals and
    knowledge; for a problem — causes, 2–4 options (pros, cons, risks, effort) and a recommendation; for a diagram —
    a Mermaid diagram (MINT draws it in the answer) and the steps with references; at the end — what is not in the base and what to clarify.
-4. **Checks without a model**: references — against all fragments the model saw in the conversation; items of the
-   📄 section without a reference are marked ❔; the diagram code can be downloaded (.mmd, opens in draw.io and
+4. **Checks without a model**: references — against all fragments the model saw in the conversation; text in every section without a reference or explicit 💡 proposal marker are marked ❔; the diagram code can be downloaded (.mmd, opens in draw.io and
    Excalidraw).
 
 The consultant has a conversation of its own: earlier answers are part of the work and follow-ups build on them (the
