@@ -219,6 +219,12 @@ check("Справочник: да" in answer, f"модель получила с
 rr = [p for m, path, p in mock_server.STATE["requests"] if path.endswith("/rerank") and p and "АРМ" in p["query"]]
 check(rr and "средства защиты информации" in rr[-1]["query"], "расшифровка добавлена в запрос реранкера")
 check(all(len(d) <= cfg.rerank_doc_max_chars for d in rr[-1]["documents"]), "документы реранкера в пределах лимита")
+for weight in (1.0, 0.0):
+    scoped_cfg = replace(cfg, weight_dense=weight, initial_k=1)
+    items, _ = app.search_parent_child("СЗИ и резервное копирование", scoped_cfg, k_neighbors=2,
+                                       glossary=gl, return_items=True, exclude_sources=["Регламент_ИБ.docx"])
+    check(isinstance(items, list) and all(item["source"] != "Регламент_ИБ.docx" for item in items),
+          f"основание исключено до отбора норм при dense={weight}")
 eng = app.LightweightBM25(["Порядок хранения журналов событий", "Порядок резервного копирования данных"])
 sc = eng.get_scores("Сколько хранятся журналы?")
 check(sc[0] > 0 and sc[1] == 0, f"морфология BM25: «журналы» находит «журналов» ({sc})")

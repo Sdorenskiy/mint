@@ -238,6 +238,12 @@ depends on the model; if the base describes your systems sparingly, the answer i
 "🔎 What was found in the wiki" and in the "not in the base" section. Streamlit draws the diagram (part of Streamlit,
 no internet access); the layout is automatic — refine the diagram in draw.io or Excalidraw from the .mmd code.
 
+## Document drafting
+
+Select source documents from the wiki and upload a DOCX. **Template with instructions** fills identified locations in a copy while keeping its structure and fixed text. **Completed example** creates a new Word document using the example’s headings and simple table structure. The selected source documents supply the content.
+
+MINT fills existing cells and can add rows to a simple table with a fillable row. Complex cases may need manual insertion. The Word draft marks missing details, conflicts and issues found against retrieved norms. The tab lists extracted requirements, their evidence and transfer status. The result does not certify exhaustive extraction or compliance with the entire wiki.
+
 ## Document review
 
 1. The document is split into parts **by section**: a heading with its text and tables. Small neighbouring

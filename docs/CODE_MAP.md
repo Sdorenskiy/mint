@@ -2,7 +2,7 @@
 
 > Назначение: навигатор для разработчика и AI («задача → код → тесты»), а не копия подробной архитектуры.
 > Исходный код: [Sdorenskiy/mint](https://github.com/Sdorenskiy/mint).
-> Проверенный базовый коммит: `843c550` (`main` до этих доработок).
+> Проверенный базовый коммит: `701b3c9` (`main` до добавления черновиков Word).
 > Обновлено: 2026-11-14. Это статическая карта кода на указанном базовом коммите. Пути сверены с деревом репозитория; результаты проверок приложения указываются отдельно в PR/CI.
 
 ## 1. Точки входа и структура
@@ -20,6 +20,7 @@
 - Консультант: `mint/ui/tab_consult.py:render_consult_tab()` → `mint/consult.py:answer_consult()`.
 - Аудит: `mint/ui/tab_audit.py:render_audit_tab()` → `mint/audit.py:run_audit()`.
 - Контроль исправлений: `mint/ui/tab_review.py:render_review_tab()` → `mint/review.py:verify_remarks()`.
+- Черновик Word: `mint/ui/tab_template_draft.py` → `mint/template_draft.py:create_draft()`.
 - Загрузка документов: `mint/ui/sidebar.py:render_knowledge_base()` → `mint/kb.py:process_and_add_to_kb()`.
 
 ## 2. Карта связей (упрощённо)
@@ -55,6 +56,7 @@ flowchart TD
 | `mint/bm25.py`, `mint/glossary.py` | Лексический поиск, нормализация, сокращения |
 | `mint/search.py`, `mint/passages.py` | Гибридный поиск, RRF, выбор и объединение фрагментов |
 | `mint/chat.py`, `mint/citations.py` | Чат по источникам, обработка истории, проверка ссылок |
+| `mint/template_draft.py` | Черновики Word по шаблону или образцу, выбранные основания, строки таблиц и проверка по вики |
 | `mint/consult.py` | Консультант: план запроса, контекст, рекомендации |
 | `mint/audit.py`, `mint/deep_checks.py` | Аудит, замечания, дополнительные проверки |
 | `mint/review.py`, `mint/expert_review.py` | Контроль исправлений, экспертный разбор |
@@ -91,6 +93,7 @@ MINT использует локальные файлы базы знаний, �
 | DOCX/PDF | `mint/parsing.py`, `mint/pdfparse.py` | `tests/test_formats.py`, `tests/test_real_install.py`, DOCX parity CI |
 | Проверка качества ответов | `mint/evaluation.py`, `mint/ui/quality.py` | `tests/test_eval.py`, `tests/test_answer_evaluation.py` |
 | Чат, цитаты | `mint/chat.py`, `mint/citations.py` | `tests/test_app.py`, `tests/test_llm_requests.py` |
+| Черновики Word | `mint/template_draft.py`, `mint/ui/tab_template_draft.py` | `tests/test_template_draft.py` |
 | Консультант | `mint/consult.py`, `mint/ui/tab_consult.py` | `tests/test_consult.py` |
 | Аудит, качество замечаний | `mint/audit.py`, `mint/deep_checks.py` | `tests/test_audit_quality.py`, `tests/test_audit_noise.py`, `tests/test_deep_checks.py`, `tests/test_audit_completion.py`, `tests/test_audit_typos.py` |
 | Экспертный разбор, сохранение | `mint/expert_review.py`, `mint/audit_store.py` | `tests/test_expert_review.py` |

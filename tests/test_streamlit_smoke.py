@@ -190,7 +190,7 @@ print(f"  Streamlit {ver}")
 # ошибки — одной строкой: на GitHub в аннотацию попадают только строки с «✗», и трассировка видна целиком
 check(not res["errors"], "страница и действия без исключений", " ⏎ ".join(res["errors"]).replace("\n", " ⏎ ")[-3000:])
 check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
-check(res.get("tabs") == 4, f"четыре вкладки: {res.get('tabs')}")
+check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
 check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
       "«Новый чат» есть всегда: в пустом чате и сразу после первого ответа")
 cons = res.get("consult") or {}
@@ -208,7 +208,7 @@ rows = [json.loads(x) for x in fb.read_text(encoding="utf-8").splitlines()] if f
 check([x.get("rating") for x in rows] == ["up", "comment"], f"оценка и комментарий записаны: {[x.get('rating') for x in rows]}")
 check(res.get("messages_after_clear") == 0, "«Новый чат» очищает историю")
 check(any("An intelligent RAG system" in t for t in res.get("titles_en", [])) and "📋 Document review" in res.get("tabs_en", [])
-      and "🧠 Consultant" in res.get("tabs_en", []),
+      and "🧠 Consultant" in res.get("tabs_en", []) and "📝 Document drafting" in res.get("tabs_en", []),
       "переключатель языка: интерфейс на английском", f"{str(res.get('titles_en'))[-200:]}, {res.get('tabs_en')}")
 check(str(res.get("answer_en", "")).startswith("Answer from the context"), f"чат на английском: {res.get('answer_en')!r}")
 k0, k1 = res.get("keys") or ("", "")
