@@ -19,6 +19,7 @@ from .tab_audit import on_profile_change, render_audit_tab
 from .tab_chat import render_chat_tab
 from .tab_consult import render_consult_tab
 from .tab_review import render_review_tab
+from .tab_template_draft import render_template_draft_tab
 from .theme import inject_theme, render_header
 
 
@@ -77,11 +78,12 @@ def main():
         render_cards(cfg)         # и черновик карточки системы
         return
 
-    tab_chat, tab_consult, tab_audit, tab_review = st.tabs([
+    tab_chat, tab_consult, tab_audit, tab_review, tab_draft = st.tabs([
         tr("💬 Интерактивный чат (RAG)"),
         tr("🧠 Консультант"),
         tr("📋 Аудит документа"),
         tr("🔄 Контроль исправления замечаний"),
+        tr("📝 Документ по шаблону"),
     ])
 
     with tab_chat:
@@ -92,3 +94,6 @@ def main():
         render_audit_tab(cfg, gl)
     with tab_review:
         render_review_tab(cfg, gl)
+
+    with tab_draft:
+        render_template_draft_tab(cfg, gl)

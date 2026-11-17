@@ -15,7 +15,7 @@ profiles/<профиль>.<язык>.yaml. Профиль сеанса зада�
 
     prompt_text("chat_system")                    # действующий текст на языке интерфейса
     render("audit_user", section=text)            # с подстановками
-    prompts_version()                             # «ru-1a2b3c4d»: язык и хэш действующих текстов (кроме consult_*)
+    prompts_version()                             # «ru-1a2b3c4d»: язык и хэш действующих текстов (кроме consult_* и draft_*)
     consult_prompts_version()                     # «ru-consult-1a2b3c4d»: тексты консультанта — своя версия
 
 Версия набора пишется в отзывы, лог аудита и проверку качества: по ней видно, при каких текстах получен
@@ -557,6 +557,7 @@ def render(key, lang=None, **values):
 # Тексты консультанта (вкладка «Консультант») версионируются отдельно: их правка или появление не меняют версию
 # набора чата, аудита и контроля исправлений — результаты, полученные до консультанта, остаются сравнимыми.
 CONSULT_PREFIX = "consult_"
+DRAFT_PREFIX = "draft_"
 
 
 def _digest(texts):
@@ -565,9 +566,9 @@ def _digest(texts):
 
 def prompts_version(lang=None):
     """Версия набора промптов чата, аудита и контроля исправлений: «<язык>-<8 знаков хэша>» действующих текстов
-    (без текстов консультанта — у них consult_prompts_version). Меняется при любой правке."""
+    (без текстов консультанта и составления черновиков)."""
     lang = _lang(lang)
-    texts = {k: v for k, v in effective_prompts(lang).items() if not k.startswith(CONSULT_PREFIX)}
+    texts = {k: v for k, v in effective_prompts(lang).items() if not k.startswith((CONSULT_PREFIX, DRAFT_PREFIX))}
     return f"{lang}-{_digest(texts)}"
 
 

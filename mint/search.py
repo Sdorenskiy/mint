@@ -247,12 +247,13 @@ def is_low_confidence(best_rerank, lexical_cov, lists_agree, rerank_threshold, l
 
 def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_query=False,
                         annotate_low_confidence=False, return_items=False, glossary=None, diagnostics=None,
-                        also_query=None):
+                        also_query=None, exclude_sources=()):
     """
     Hybrid Parent-Child RAG + мягкий реранк (слияние RRF). Векторный поиск и реранкер получают исходный
     вопрос; BM25 — вопрос плюс расшифровки сокращений и слова расширения с малым весом.
     Если эмбеддинги недоступны — работает только BM25.
     diagnostics — словарь, который функция заполнит сигналами уверенности (для скрипта оценки).
+    exclude_sources — файлы, исключённые из отбора кандидатов.
     also_query — второй вопрос, по которому ищется наравне с первым: в чате это вопрос пользователя как он есть,
     когда первый переписан по истории диалога. Кандидаты обоих сливаются, реранкер берёт лучший из двух баллов —
     если при переписывании потерялись термин, сокращение или номер, нужный фрагмент найдётся по исходному вопросу.
@@ -285,9 +286,9 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
             split_idx = mid
         sub_k = max(2, k_neighbors // 2)
         c1, s1 = search_parent_child(search_query[:split_idx], cfg, sub_k, attempts + 1,
-                                     return_items=return_items, glossary=gl)
+                                     return_items=return_items, glossary=gl, exclude_sources=exclude_sources)
         c2, s2 = search_parent_child(search_query[split_idx:], cfg, sub_k, attempts + 1,
-                                     return_items=return_items, glossary=gl)
+                                     return_items=return_items, glossary=gl, exclude_sources=exclude_sources)
         if return_items:
             merged = {}
             for chunk in (c1, c2):
@@ -314,6 +315,10 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
     if query_np is None:
         logger.warning("⚠️ Эмбеддинг запроса недоступен — поиск только по BM25.")
 
+    excluded = frozenset(exclude_sources)
+    def eligible(parent_id):
+        return parent_id in parent_store and parent_store[parent_id].get("source") not in excluded
+
     best_child = {}   # parent_id → текст лучшего найденного child (для реранкера)
 
     def _parents_from_indices(idx_row):
@@ -322,14 +327,15 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
             if idx == -1 or idx >= len(child_metadata):
                 continue
             p = child_metadata[idx]["parent_id"]
-            if p not in seen_ids and p in parent_store:
+            if p not in seen_ids and eligible(p):
                 seen_ids.add(p)
                 order.append(p)
                 if p not in best_child and child_metadata[idx].get("text"):
                     best_child[p] = child_metadata[idx]["text"]
-        return order
+        return order[:cfg.initial_k] if excluded else order
 
-    k_dense = min(cfg.initial_k, index.ntotal)
+    excluded_children = sum(not eligible(child["parent_id"]) for child in child_metadata) if excluded else 0
+    k_dense = min(cfg.initial_k + excluded_children, index.ntotal)
     dense_order = []
     if query_np is not None:
         _distances, indices = index.search(query_np, k=k_dense)
@@ -368,6 +374,8 @@ def search_parent_child(user_query, cfg, k_neighbors=4, attempts=0, use_multi_qu
                 bm25_scores = np.maximum(bm25_scores, alt_scores * weight)
             except Exception:
                 pass
+        if excluded:
+            bm25_scores = np.where([eligible(p) for p in bm25_parent_ids], bm25_scores, 0.0)
         top_bm25 = np.argsort(bm25_scores)[::-1][:cfg.bm25_top_k]
         sparse_candidates = [
             (bm25_parent_ids[i], parent_store[bm25_parent_ids[i]])

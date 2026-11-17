@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Add Word drafting from a template or completed example, with sources selected from the knowledge base, simple table expansion, and visible findings from source and wiki checks.
+
 - Reject incompatible or unknown embedding profiles even at equal dimensions; use BM25 until a complete, separately built re-index succeeds. Preserve the old base on missing sources, partial embeddings or publication errors.
 - Separate formal source/citation checks from factual correctness. Remove the citation override for missing expected context, add optional expected answers and human content verdicts, export reviews, and stop comparing legacy evaluation scores.
 - Check unsupported consultant text throughout the answer, regardless of heading names, emoji or Markdown levels. Short assertions are checked too; explicit proposals and fenced code remain exempt. The document-heading emoji is no longer required in custom prompts.
