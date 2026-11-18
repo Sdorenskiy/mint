@@ -631,7 +631,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     for key, start, end, purpose, status, content, detail, refs, safe in sorted(edits, key=lambda x: (x[0], -x[1])):
         slot = slots[key]
         p = slot.paragraph
-        if slot.following and safe and status != "manual":
+        if slot.following and safe and status in {"checked", "conflict", "uncertain", "unchecked"}:
             end = len(p.text)
             for other in slot.following:
                 _replace(other, 0, len(other.text), "")
