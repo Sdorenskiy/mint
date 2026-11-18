@@ -1,7 +1,10 @@
 """Fill a copy of a Word template from selected originals in the knowledge base."""
+import contextvars
 import io
 import json
 import re
+import time
+from functools import wraps
 from copy import deepcopy
 from dataclasses import dataclass
 
@@ -15,6 +18,8 @@ from .services import TRUNCATED_MARKERS, ask_llm
 
 MAX_CHARS = 4000
 ROW_LIMIT = 20
+SECTION_PLAN_LIMIT = 24000
+_DRAFT_METRICS = contextvars.ContextVar('mint_draft_metrics', default=None)
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)?")
 _EXAMPLE = re.compile(r"^\s*(?:пример|example|sample)\s*[:：]", re.I)
 _PROTECTED = (".//w:fldChar | .//w:instrText | .//w:fldSimple | .//w:drawing | .//w:pict | .//w:object | "
@@ -36,7 +41,15 @@ def _json(cfg, stage, payload):
     system = render("draft_system") + "\n" + render("draft_" + stage)
     content = json.dumps(payload, ensure_ascii=False)
     for _ in range(2):
-        raw = ask_llm(system, content, cfg, temperature=0, max_tokens=min(3800, max(1500, cfg.max_tokens)))
+        t0 = time.perf_counter()
+        try:
+            raw = ask_llm(system, content, cfg, temperature=0, max_tokens=min(3800, max(1500, cfg.max_tokens)))
+        finally:
+            metrics = _DRAFT_METRICS.get()
+            if metrics is not None:
+                item = metrics["stages"].setdefault(stage, {"llm_calls": 0, "llm_seconds": 0.0})
+                item["llm_calls"] += 1
+                item["llm_seconds"] = round(item["llm_seconds"] + time.perf_counter() - t0, 3)
         if raw.startswith("❌"):
             break
         if any(marker in raw for marker in TRUNCATED_MARKERS):
@@ -48,6 +61,24 @@ def _json(cfg, stage, payload):
         except (ValueError, TypeError):
             pass
     raise DraftError(tr("Не удалось получить полный ответ модели для этапа «{stage}».", stage=stage))
+
+
+
+def _measure_draft(fn):
+    """Collect per-stage LLM cost without logging text or affecting other sessions."""
+    @wraps(fn)
+    def measured(*args, **kwargs):
+        metrics = {"stages": {}, "total_seconds": 0.0}
+        token = _DRAFT_METRICS.set(metrics)
+        started = time.perf_counter()
+        try:
+            result = fn(*args, **kwargs)
+            result["metrics"] = metrics
+            return result
+        finally:
+            metrics["total_seconds"] = round(time.perf_counter() - started, 3)
+            _DRAFT_METRICS.reset(token)
+    return measured
 
 
 def _records(data, key):
@@ -294,12 +325,13 @@ def _replace(paragraph, start, end, text):
 
 
 def _note(doc, paragraph, title, detail="", conflict=False):
-    from docx.enum.text import WD_COLOR_INDEX
-
-    run = paragraph.add_run(" [" + title + "]")
-    run.font.highlight_color = WD_COLOR_INDEX.DARK_YELLOW if conflict else WD_COLOR_INDEX.YELLOW
-    if detail and hasattr(doc, "add_comment"):
-        doc.add_comment(run, text=detail, author="MINT", initials="MINT")
+    """Review notes must never alter visible Word text, especially narrow cells."""
+    if not hasattr(doc, "add_comment"):
+        return
+    run = next((r for r in paragraph.runs if r.text.strip()), None)
+    if run is None:
+        run = paragraph.add_run("")  # zero-width anchor; no labels inside the document
+    doc.add_comment(run, text=title + (": " + detail if detail else ""), author="MINT", initials="MINT")
 
 
 def _safe_target(slot, target):
@@ -369,12 +401,12 @@ def _find_fields(cfg, slots, issues, emit):
     return fields, fixed
 
 
-def _candidates(purpose, requirements):
-    """Use lexical retrieval over verified excerpts, retaining candidates from each selected source."""
+def _candidates(purpose, requirements, size=MAX_CHARS * 2):
+    """Lexical ranking over selected source excerpts; maintain source diversity."""
     from .bm25 import LightweightBM25
 
     rows = list(requirements.values())
-    if sum(len(r["quote"]) + 95 for r in rows) <= MAX_CHARS * 2:
+    if sum(len(r["quote"]) + 95 for r in rows) <= size:
         return rows
     index = LightweightBM25([r["section"] + " " + r["quote"] for r in rows])
     scores = index.get_scores(purpose)
@@ -386,13 +418,61 @@ def _candidates(purpose, requirements):
             sources.add(row["source"])
         else:
             rest.append(row)
-    selected, size = [], 0
+    selected, used = [], 0
     for row in first + rest:
         cost = len(row["quote"]) + 95
-        if size + cost <= MAX_CHARS * 2:
+        if used + cost <= size:
             selected.append(row)
-            size += cost
+            used += cost
     return selected
+
+
+def _candidate_budget(cfg):
+    """Reserve response capacity for the model; do not assume unlimited context."""
+    limit = int(getattr(cfg, "llm_context_tokens", 0) or 0)
+    if limit <= 0:
+        return MAX_CHARS * 2  # unknown context window: preserve conservative default
+    output = min(3800, max(1500, int(cfg.max_tokens)))
+    ratio = float(getattr(cfg, "chars_per_token", 0) or 2.5)
+    # JSON wrapper, system prompt and safety margin also occupy the context.
+    return min(SECTION_PLAN_LIMIT, max(1500, int(max(600, limit - output - 1100) * ratio)))
+
+
+def _section_plan(cfg, fields, slots, requirements):
+    """Plan source coverage for each template section BEFORE filling any field.
+
+    A section-wide candidate pool complements field-specific retrieval, preventing
+    generic placeholders from discarding requirements mentioned in the heading.
+    Only verified quotations from selected documents may appear in this plan.
+    """
+    by_section = {}
+    for field_id, (key, _start, _end, purpose, _safe) in fields.items():
+        slot = slots[key]
+        by_section.setdefault(slot.section, []).append((field_id, purpose, slot.column))
+    budget = _candidate_budget(cfg)
+    field_candidates, summary = {}, {}
+    for section, entries in by_section.items():
+        section_query = " ".join([section] + [purpose + " " + column for _, purpose, column in entries])
+        group = _candidates(section_query, requirements, size=budget)
+        selected_ids = set()
+        for field_id, purpose, column in entries:
+            query = " ".join([section, purpose, column])
+            # Field-specific terms win, but the section context is not lost.
+            focused = _candidates(query, requirements, size=max(1500, budget // 2))
+            items, consumed, seen = [], 0, set()
+            for row in focused + group:
+                cost = len(row["quote"]) + 95
+                if row["id"] in seen or consumed + cost > budget:
+                    continue
+                items.append(row)
+                seen.add(row["id"])
+                consumed += cost
+            field_candidates[field_id] = items
+            selected_ids.update(seen)
+        summary[section or "—"] = {"fields": len(entries),
+                                   "selected_ids": sorted(selected_ids, key=lambda k: int(k[1:])),
+                                   "total_requirements": len(requirements)}
+    return field_candidates, summary
 
 
 def _wiki(cfg, query, glossary, sources):
@@ -481,6 +561,7 @@ def _mark_wiki(doc, paragraph, status, detail):
         _note(doc, paragraph, tr("Проверка по вики не завершена"))
 
 
+@_measure_draft
 def create_draft(template, cfg, sources, glossary=None, progress=None, *, example=False, reset_extract_cache=False):
     """Return a new DOCX plus field/requirement coverage. Never alter the input files."""
     from docx import Document
@@ -516,13 +597,14 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         fields, fixed = _find_fields(cfg, slots, issues, emit)
     requirements, chunks = _requirements(cfg, documents, issues, emit, reset_cache=reset_extract_cache)
     plans = _row_plans(cfg, tables, requirements, issues, emit) if requirements else {}
+    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, requirements)
     edits = []
     for i, (field, (key, start, end, purpose, safe)) in enumerate(fields.items(), 1):
         slot = slots[key]
         if slot.table in plans and slot.paragraph._p.getparent().getparent() is tables[slot.table].rows[-1]._tr:
             continue
         emit("fill", i)
-        candidates = _candidates(purpose + " " + slot.section + " " + slot.column, requirements)
+        candidates = candidates_by_field.get(field, [])
         allowed = {r["id"]: r for r in candidates}
         try:
             row = _json(cfg, "fill", {"field": purpose, "section": slot.section, "column": slot.column,
@@ -561,8 +643,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
                 _replace(p, start, end, "")
             _note(doc, p, tr("Противоречие в основаниях"), detail, conflict=True)
         elif status == "missing":
-            if safe:
-                _replace(p, start, end, "")
+            # Keep the original instruction: deleting it would erase what the editor must supply.
             _note(doc, p, tr("Требуется уточнение"), detail)
         elif status == "manual":
             _note(doc, p, tr("Требуется ручная вставка"), detail or purpose)
@@ -617,7 +698,8 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     buf = io.BytesIO()
     doc.save(buf)
     return {"docx": buf.getvalue(), "issues": issues, "results": results, "chunks": chunks,
-            "requirements": list(requirements.values()), "used": used, "removed_examples": len(examples) if remove_examples else 0}
+            "requirements": list(requirements.values()), "used": used,
+            "section_plan": section_plan, "removed_examples": len(examples) if remove_examples else 0}
 
 
 def _from_example(sample, issues):
