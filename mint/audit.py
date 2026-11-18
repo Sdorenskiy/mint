@@ -496,7 +496,9 @@ def _absorb(u, f):
         u["severity"] = f["severity"]
     u["quote"] = u.get("quote") or f.get("quote", "")
     # Keep both documented sources if two findings require one corrective action.
-    if source_reference(u.get("text", "")) and source_reference(f.get("text", "")):
+    proved = lambda e: isinstance(e, dict) and e.get("status") in {"conflict", "checked"}
+    if (source_reference(u.get("text", "")) and source_reference(f.get("text", ""))
+            and proved(u.get("evidence")) and proved(f.get("evidence"))):
         refs = list(dict.fromkeys(re.findall(r"\[(?:Источник|Source):[^\]]+\]", u["text"] + " " + f["text"], re.I)))
         for ref in refs:
             if ref not in u["text"]:
