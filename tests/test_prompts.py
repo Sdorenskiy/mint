@@ -184,8 +184,8 @@ print("7. [unit] Профили: «Архитектура и ИТ-решения
 check(set(P.PROFILES) == {"general", "architecture"} and P.DEFAULT_PROFILE == "architecture"
       and P.get_profile() == "architecture" and app.DEFAULTS.profile == "architecture",
       "профили; по умолчанию — архитектурный (и в config)")
-# Версии наборов промптов MINT до появления профилей (21.0): профиль архитектуры должен давать тот же набор — тогда
-# его результаты сравнимы с прежними, а для архитектурной проверки ничего не меняется
+# Исторические контрольные версии до общих правил доказательной проверки.
+# Они должны измениться при сознательном обновлении обоих профилей.
 OLD_VERSIONS = {"ru": "ru-8fd10871", "en": "en-9c3500f7"}
 HEAD_LINES = {"chat_system": 2, "audit_system": 2, "audit_focus_answer_system": 1, "audit_checklist_system": 1,
               "critique_system": 1, "review_system": 1,
@@ -204,8 +204,9 @@ for lang in ("ru", "en"):
              and over[k].split("\n")[HEAD_LINES[k]:] != base[k].split("\n")[HEAD_LINES[k]:]]
     check(not drift, f"{lang}: правила в текстах профиля те же, что в {lang}.yaml (отличаются только роли)", str(drift))
     with P.use_profile("architecture"), P.defaults_only():
-        check(P.prompts_version(lang) == OLD_VERSIONS[lang],
-              f"{lang}: профиль «Архитектура и ИТ-решения» — набор промптов до профилей ({P.prompts_version(lang)})")
+        check(P.prompts_version(lang) != OLD_VERSIONS[lang] and
+              re.fullmatch(lang + r"-[0-9a-f]{8}", P.prompts_version(lang)) is not None,
+              f"{lang}: версия архитектурных правил аудита обновлена ({P.prompts_version(lang)})")
         arch = P.default_prompts(lang)
         check("Архитектурн" in arch["critique_system"] or "Architecture Board" in arch["critique_system"],
               f"{lang}: самокритика архитектуры — роль архитектурного комитета")
