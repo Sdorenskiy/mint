@@ -157,9 +157,10 @@ orig_norms = app.build_norms_context
 app.ask_llm, app.build_norms_context = fake_audit, (lambda *a, **k: (norms, ["Регламент_ИБ.docx › 2.1 Хранение"]))
 res = app.run_audit("## 1 Хранение\n\nЖурналы хранятся год.", "Д.md", replace(cfg, use_self_critique=False), deep=False)
 app.ask_llm, app.build_norms_context = orig, orig_norms
-check([f["text"][:20] for f in res["findings"] if "Регламент_ИБ" in f["text"]] and
-      [u["unverified"] for u in res["unverified"]] == [["[Источник: Фантом.docx, 9.9]"]],
-      f"ссылка на приложенную норму — в заключении, на чужой файл — «не подтверждено»: {res['unverified']}")
+check(not any("Регламент_ИБ" in f["text"] for f in res["findings"]) and
+      any("Регламент_ИБ" in u["text"] for u in res["unverified"]) and
+      any(any("Фантом.docx" in why for why in u["unverified"]) for u in res["unverified"]),
+      f"ссылка на существующий файл без цитат и применимости ещё НЕ доказательство: {res['unverified']}")
 
 print("9. [интеграция] Сверка: сколько всего замечаний и сколько к эталону")
 cmp = app.compare_with_reference({"findings": mixed}, "Шаг 4 не описано как файл попадает в платформу\nНет резервного копирования",
