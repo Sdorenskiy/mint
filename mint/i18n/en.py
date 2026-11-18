@@ -3030,4 +3030,9 @@ EN = {
         'Nothing was found in the base for the request.',
     'уверенность низкая':
         'low confidence',
+    'Повторно разобрать основания (не использовать сохранённые результаты)':
+        'Re-extract source documents (ignore saved results)',
+    'Из кэша':
+        'Reused',
+
 }
