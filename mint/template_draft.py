@@ -476,6 +476,12 @@ def _section_plan(cfg, fields, slots, requirements):
     return field_candidates, summary
 
 
+def unresolved_candidates(section_plan, used):
+    """Review candidates, NOT verified omissions. Shared by drafting and evaluation."""
+    return {section: [rid for rid in plan["selected_ids"] if rid not in used]
+            for section, plan in section_plan.items()}
+
+
 def _wiki(cfg, query, glossary, sources):
     items, _ = search_parent_child(query[:cfg.max_query_chars], cfg, k_neighbors=5, return_items=True,
                                    glossary=glossary, exclude_sources=sources)
@@ -709,8 +715,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     return {"docx": buf.getvalue(), "issues": issues, "results": results, "chunks": chunks,
             "requirements": list(requirements.values()), "used": used,
             "section_plan": section_plan,
-            "unresolved_candidates": {section: [rid for rid in plan["selected_ids"] if rid not in used]
-                                      for section, plan in section_plan.items()},
+            "unresolved_candidates": unresolved_candidates(section_plan, used),
             "removed_examples": len(examples) if remove_examples else 0}
 
 
