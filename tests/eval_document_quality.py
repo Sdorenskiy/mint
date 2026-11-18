@@ -16,6 +16,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import harness  # noqa: E402  (setup offline test dependencies)
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mint import document_quality_benchmark as bench  # noqa: E402
 
 
