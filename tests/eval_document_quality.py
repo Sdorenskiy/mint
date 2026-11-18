@@ -151,7 +151,9 @@ def main(argv=None):
             json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         (opts.report_dir / "document_quality.md").write_text(report_md(result), encoding="utf-8")
         print(f"Локальный отчёт: {opts.report_dir / 'document_quality.md'}")
-    print("ИТОГ: размеченный набор, измерение precision/recall, полнота сценариев и проверка сравнимости")
+    print("ИТОГ: размеченный эталон, проверки сравнимости; "
+          + brief("Доказательность", result["evidence"]["scores"]) + "; "
+          + brief("Кандидаты пропусков", result["coverage"]["scores"]))
     return 0
 
 
