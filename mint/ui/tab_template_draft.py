@@ -1,5 +1,6 @@
 """Document drafting tab."""
 import hashlib
+import time
 
 import streamlit as st
 
@@ -37,7 +38,7 @@ def render_template_draft_tab(cfg, glossary):
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources) or bool(missing), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=True) as status:
-            extraction = {"total": 0, "cached": 0}
+            extraction = {"total": 0, "cached": 0, "durations": [], "started": None, "hit": False}
             stages = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
                       "table": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
                       "fixed": tr("Сверка требований шаблона")}
@@ -46,19 +47,30 @@ def render_template_draft_tab(cfg, glossary):
                 if stage == "extract_total":
                     extraction["total"] = index
                     return
-                if stage == "extract_cached":
-                    extraction["cached"] = index
-                    return
-                if stage == "extract_done":
-                    return
                 if stage == "extract":
-                    total = extraction["total"]
-                    label = f"{stages[stage]} · {index} / {total}" if total else f"{stages[stage]} · {index}"
-                    if extraction["cached"]:
-                        label += f" · " + tr("Из кэша") + f": {extraction['cached']}"
-                    status.update(label=label)
+                    extraction["started"] = time.monotonic()
+                    extraction["hit"] = False
+                elif stage == "extract_cached":
+                    extraction["cached"] = index
+                    extraction["hit"] = True
                     return
-                status.update(label=f"{stages[stage]} · {index}")
+                elif stage == "extract_done":
+                    if extraction["started"] is not None and not extraction["hit"]:
+                        extraction["durations"].append(time.monotonic() - extraction["started"])
+                    extraction["started"] = None
+                else:
+                    status.update(label=f"{stages[stage]} · {index}")
+                    return
+
+                total = extraction["total"]
+                label = f"{stages['extract']} · {index} / {total}" if total else f"{stages['extract']} · {index}"
+                if extraction["cached"]:
+                    label += " · " + tr("Из кэша") + f": {extraction['cached']}"
+                durations = extraction["durations"]
+                if total > index and len(durations) >= 3:
+                    remaining_minutes = round((total - index) * (sum(durations) / len(durations)) / 60)
+                    label += " · " + tr("Осталось примерно {minutes} мин", minutes=remaining_minutes)
+                status.update(label=label)
 
             try:
                 result = create_draft(raw, cfg, sources, glossary, progress, example=example,
