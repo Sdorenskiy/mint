@@ -6,6 +6,7 @@ from copy import deepcopy
 from dataclasses import dataclass
 
 from .i18n import tr
+from .draft_checkpoint import DraftExtractCheckpoint
 from .kb import source_path
 from .parsing import document_to_markdown
 from .prompts import render
@@ -101,29 +102,51 @@ def _split_section(section, lines):
             yield section, text
 
 
-def _requirements(cfg, documents, issues, emit):
-    requirements, seen, chunks = {}, set(), 0
+def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
+    """Extract verified requirements with durable per-fragment checkpoints."""
+    requirements, seen, chunks, reused = {}, set(), 0, 0
+    total = sum(1 for _, markdown in documents for _ in _source_chunks(markdown))
+    emit("extract_total", total)
     for name, markdown in documents:
-        for section, text in _source_chunks(markdown):
+        checkpoint = DraftExtractCheckpoint(cfg, name, markdown)
+        if reset_cache:
+            checkpoint.clear()
+        for local_index, (section, text) in enumerate(_source_chunks(markdown), 1):
             chunks += 1
             emit("extract", chunks)
-            try:
-                rows = _records(_json(cfg, "extract", {"source": name, "section": section, "text": text}),
-                                "requirements")
-            except DraftError:
-                issues.append(tr("Не удалось разобрать фрагмент основания: {source} › {section}.",
-                                 source=name, section=section or str(chunks)))
-                continue
-            for row in rows:
-                quote = _text(row, "quote")
-                if not quote or _normalized(quote) not in _normalized(text):
-                    issues.append(tr("В основании «{source}» не найдена цитата, указанная моделью.", source=name))
+            quotes = checkpoint.load(local_index, section, text)
+            if quotes is None:
+                try:
+                    rows = _records(_json(cfg, "extract", {"source": name, "section": section, "text": text}),
+                                    "requirements")
+                except DraftError:
+                    issues.append(tr("Не удалось разобрать фрагмент основания: {source} › {section}.",
+                                     source=name, section=section or str(chunks)))
+                    emit("extract_done", chunks)
                     continue
+                quotes = []
+                valid = True
+                for row in rows:
+                    quote = _text(row, "quote")
+                    if not quote or _normalized(quote) not in _normalized(text):
+                        issues.append(tr("В основании «{source}» не найдена цитата, указанная моделью.",
+                                         source=name))
+                        valid = False
+                        continue
+                    quotes.append(quote)
+                # A partially invalid response is NOT checkpointed: retry it next run.
+                if valid:
+                    checkpoint.save(local_index, section, text, quotes)
+            else:
+                reused += 1
+                emit("extract_cached", reused)
+            for quote in quotes:
                 key = (name, section, _normalized(quote))
                 if key not in seen:
                     seen.add(key)
                     rid = f"R{len(requirements) + 1}"
                     requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
+            emit("extract_done", chunks)
     return requirements, chunks
 
 
@@ -458,7 +481,7 @@ def _mark_wiki(doc, paragraph, status, detail):
         _note(doc, paragraph, tr("Проверка по вики не завершена"))
 
 
-def create_draft(template, cfg, sources, glossary=None, progress=None, *, example=False):
+def create_draft(template, cfg, sources, glossary=None, progress=None, *, example=False, reset_extract_cache=False):
     """Return a new DOCX plus field/requirement coverage. Never alter the input files."""
     from docx import Document
     from docx.table import _Row
@@ -491,7 +514,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     else:
         slots, tables, examples = _layout(doc)
         fields, fixed = _find_fields(cfg, slots, issues, emit)
-    requirements, chunks = _requirements(cfg, documents, issues, emit)
+    requirements, chunks = _requirements(cfg, documents, issues, emit, reset_cache=reset_extract_cache)
     plans = _row_plans(cfg, tables, requirements, issues, emit) if requirements else {}
     edits = []
     for i, (field, (key, start, end, purpose, safe)) in enumerate(fields.items(), 1):
