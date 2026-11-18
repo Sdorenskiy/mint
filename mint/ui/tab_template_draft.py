@@ -96,6 +96,23 @@ def render_template_draft_tab(cfg, glossary):
         st.warning(issue)
     st.caption(tr("Перенесено извлечённых пунктов: {used} из {total}. Прочитано фрагментов оснований: {chunks}.",
                   used=len(result["used"]), total=len(result["requirements"]), chunks=result["chunks"]))
+    metrics = result.get("metrics", {})
+    if metrics:
+        st.caption(tr("Время формирования: {seconds} с", seconds=metrics.get("total_seconds", 0)))
+        with st.expander(tr("Замеры этапов подготовки")):
+            stage_labels = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
+                            "rows": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
+                            "check": tr("Сверка требований шаблона")}
+            for stage, item in metrics.get("stages", {}).items():
+                st.text(f"{stage_labels.get(stage, stage)}: "
+                        + tr("{n} запросов к LLM, {s} с", n=item["llm_calls"], s=item["llm_seconds"]))
+    section_plan = result.get("section_plan", {})
+    if section_plan:
+        with st.expander(tr("План требований по разделам")):
+            for section, summary in section_plan.items():
+                st.text(f"{section}: " + tr("{selected} требований для {fields} полей из {total}",
+                                            selected=len(summary["selected_ids"]), fields=summary["fields"],
+                                            total=summary["total_requirements"]))
     if result["removed_examples"]:
         st.caption(tr("Удалено блоков с примерами: {n}.", n=result["removed_examples"]))
     statuses = {"checked": tr("Проверено по найденной норме"), "conflict": tr("Противоречие с вики"),
