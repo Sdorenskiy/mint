@@ -419,8 +419,11 @@ critique_system: |-
   - DROP — the finding is far-fetched, generic ("filler"), not supported by the text of the section, cites norms, tables or clauses that are neither in the reference context nor in the document, contradicts the norms; claims that something is missing although it is in another section of the document (if the document is given); or is entirely about another section of the document rather than the section under review; a wish like "requirements for … are not specified" that neither the document nor the norms require.
   Do not drop as "implementation details", "a design-stage question" or "obvious" findings about who performs a process step, through which system and how data is passed, whether the recipient can read or process it: these are gaps in the process description. Do not drop a finding based on what the document does not say (assumptions about what systems are for or about usual practice): drop it only if the text of the document or the norms refute it.
   For findings citing another file, also return: comparison (conflict, checked or uncertain), norm_quote (verbatim excerpt from THAT exact cited source), applicability (applicable, unclear or different_scope) and applicability_reason explaining why the requirement applies. These fields are empty for internal-only findings. Differences between table reference numbers are not a conflict.
+  For an applicable rule supply scope_quote: a VERBATIM excerpt FROM THE REVIEWED SECTION establishing
+  that the rule's conditions apply. An explicit denial ("does not process", "not applicable") is not supporting proof.
+  If the supplied section contains no such affirmative evidence, use applicability unclear, not a fabricated claim.
   Return ONLY a JSON array without explanations and without markdown, one object per finding:
-  [{"n": 1, "verdict": "KEEP|DROP", "severity": "CRITICAL|MEDIUM|LOW", "quote": "verbatim excerpt from the reviewed section", "text": "refined finding with [Source: …] where relevant", "reason": "substantive difference", "comparison": "conflict|checked|uncertain", "norm_quote": "verbatim excerpt from the cited rule", "applicability": "applicable|unclear|different_scope", "applicability_reason": "specific reason this requirement applies"}]
+  [{"n": 1, "verdict": "KEEP|DROP", "severity": "CRITICAL|MEDIUM|LOW", "quote": "verbatim excerpt from the reviewed section", "text": "refined finding with [Source: …] where relevant", "reason": "substantive difference", "comparison": "conflict|checked|uncertain", "norm_quote": "verbatim excerpt from the cited rule", "applicability": "applicable|unclear|different_scope", "applicability_reason": "specific reason this requirement applies", "scope_quote": "verbatim scope evidence from reviewed section"}]
 
 critique_user: |-
   {{document}}--- DOCUMENT SECTION ---
@@ -584,12 +587,19 @@ draft_fill: |-
   conditions and negation. Every fact must follow from the listed refs. Do not invent dates, identifiers or decisions.
   If evidence is absent, return status missing with empty text. If the sources disagree, return status conflict
   with empty text, both refs and an explanation in reason. Otherwise return status filled.
-  Return {"status":"filled","text":"insertion without a heading","refs":["R1"],"reason":""}.
+  For each listed ref include coverage: a verbatim contiguous excerpt from THE OUTPUT text showing
+  where that individual requirement was reflected. Do not copy a basis quote in place of an output excerpt.
+  If a ref has no corresponding statement in the output, leave it out of coverage; a bare ID proves nothing.
+  Return {"status":"filled","text":"insertion without a heading","refs":["R1"],
+          "coverage":{"R1":"verbatim phrase from output text"},"reason":""}.
 draft_rows: |-
   Use the caption, columns and prototype row to identify records directly supported by the requirements.
   Return one string per column of each row. Do not copy facts from the prototype.
   Leave unknown cells empty, including display-only numbering. Return an empty list if no rows are supported.
-  Return {"rows":[{"cells":["first cell","second cell"],"refs":["R1"]}]}.
+  For each ref include coverage: a verbatim phrase from this row's generated cell text
+  evidencing its inclusion. A reference ID alone does not prove the requirement was included.
+  Return {"rows":[{"cells":["first cell","second cell"],"refs":["R1"],
+                   "coverage":{"R1":"verbatim phrase from this row"}}]}.
 draft_check: |-
   If evidence is nonempty, first verify every claim against it. Set supported to false and explain in support_reason if any fact was
   added or a condition, unit, number, or obligation was changed or omitted.
@@ -599,9 +609,12 @@ draft_check: |-
   For conflict, checked or uncertain provide the selected norm identifier, a verbatim norm quote (quote),
   and a verbatim excerpt of the checked claim (claim_quote). Set applicability to applicable, unclear or
   different_scope and give an explicit applicability_reason explaining the norm's scope.
+  Supply scope_quote: verbatim evidence FROM claims showing the requirement's scope applies.
+  If no affirmative evidence is present or the condition is explicitly denied, choose uncertain.
   Different table numbers in two documents do not establish a substantive conflict.
   In reason explain the actual difference in obligations or constraints.
   Return {"supported":true,"support_reason":"","status":"conflict","ref":"N1",
           "quote":"verbatim norm quote","claim_quote":"verbatim draft quote",
           "applicability":"applicable","applicability_reason":"specific reason the rule applies",
+          "scope_quote":"verbatim supporting excerpt from claims",
           "reason":"substantive conflict explanation"}.
