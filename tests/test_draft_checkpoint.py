@@ -1,5 +1,6 @@
 """Crash-safe Word draft extraction checkpoints: no network required."""
 import json
+import os
 import sys
 from pathlib import Path
 from tempfile import TemporaryDirectory
@@ -54,7 +55,9 @@ def test_reuse_and_restart():
         checkpoints = list(Path(directory).rglob("*.json"))
         assert len(checkpoints) == 1
         assert "test-secret" not in checkpoints[0].read_text(encoding="utf-8")
-        assert checkpoints[0].stat().st_mode & 0o077 == 0
+        # Windows uses NTFS ACLs; st_mode is a synthetic POSIX value there.
+        if os.name == "posix":
+            assert checkpoints[0].stat().st_mode & 0o077 == 0
 
 
 def test_partial_recovery():
