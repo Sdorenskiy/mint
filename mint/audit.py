@@ -26,6 +26,7 @@ except ImportError:
 
 from .bm25 import BM25_STOP_WORDS, bm25_tokenize, normalize_token
 from .citations import check_citations
+from .evidence import quoted, source_context, source_reference, verify_comparison
 from .config import FALLBACK_LIMITS
 from .i18n import N_, tr
 from .limits import AUDIT_PROMPT_KEYS, AUDIT_RESERVE_CHARS, LIMIT_SAFETY
@@ -230,11 +231,24 @@ def critique_findings(section_text, norms_text, findings, cfg, special="", doc_b
             dropped.append(f"{f['text']} — {reason}")
             continue
         quote = str(v.get("quote") or "").strip().strip("«»\"")
+        updated = strip_list_marker(str(v.get("text") or "").strip()) or f["text"]
+        source = source_reference(updated)
+        proof = None
+        if source:
+            # The model may cite an existing file but quote an unrelated file's
+            # requirement. Check the text of THIS cited file, not the whole wiki.
+            proof = verify_comparison(
+                section_text, source_context(norms_text, source[0]),
+                {"status": v.get("comparison"), "claim_quote": quote,
+                 "norm_quote": v.get("norm_quote"), "applicability": v.get("applicability"),
+                 "applicability_reason": v.get("applicability_reason"),
+                 "reason": v.get("reason"), "source": source[0]})
         kept.append({
             **f,
             "severity": normalize_severity(v.get("severity"), default=f["severity"]),
-            "text": strip_list_marker(str(v.get("text") or "").strip()) or f["text"],
-            "quote": quote if quote_in_text(quote, section_text) else "",
+            "text": updated,
+            "quote": quote if quoted(quote, section_text) else "",
+            "evidence": proof,
         })
     return kept, dropped
 
@@ -481,6 +495,14 @@ def _absorb(u, f):
     if _RANK.get(f["severity"], 1) < _RANK.get(u["severity"], 1):
         u["severity"] = f["severity"]
     u["quote"] = u.get("quote") or f.get("quote", "")
+    # Keep both documented sources if two findings require one corrective action.
+    if source_reference(u.get("text", "")) and source_reference(f.get("text", "")):
+        refs = list(dict.fromkeys(re.findall(r"\[(?:Источник|Source):[^\]]+\]", u["text"] + " " + f["text"], re.I)))
+        for ref in refs:
+            if ref not in u["text"]:
+                u["text"] += " " + ref
+    if (not u.get("evidence") or u["evidence"].get("status") not in {"conflict", "checked"}):
+        u["evidence"] = f.get("evidence") or u.get("evidence")
     sections = list(u.get("sections") or [])
     for s in f.get("sections") or []:
         if s and s not in sections:
@@ -2077,6 +2099,13 @@ def _assemble(state, filename, cfg, emit=None):
         missing = unverified_refs(f["text"], sources, check_clauses)
         # [Источник: файл, раздел] — файл должен быть среди нормативных фрагментов, которые получила модель
         missing += [c["text"] for c in check_citations(f["text"], norms_all) if c["reason"] == "file"]
+        # A citation's file existing in the KB does not establish that its norm
+        # actually applies. When critique is disabled or misses proof, keep this
+        # in the unverified group rather than in the list of proven findings.
+        if source_reference(f["text"]):
+            proof = f.get("evidence")
+            if not proof or proof.get("status") not in {"conflict", "checked"}:
+                missing.append(tr("Не подтверждена применимость нормы и точные цитаты"))
         findings.append({**f, "unverified": list(dict.fromkeys(missing))})
     no_problem = [f for f in findings if not is_typo(f) and is_no_problem(f["text"])]
     findings = [f for f in findings if not any(f is x for x in no_problem)]
