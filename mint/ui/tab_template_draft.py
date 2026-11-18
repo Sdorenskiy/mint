@@ -6,6 +6,7 @@ import streamlit as st
 from ..i18n import tr
 from ..kb import list_kb_documents, source_path
 from ..template_draft import DraftError, create_draft
+from .draft_review_ui import render_draft_reviews
 
 
 def render_template_draft_tab(cfg, glossary):
@@ -86,6 +87,7 @@ def render_template_draft_tab(cfg, glossary):
 
     saved = st.session_state.get("draft_result")
     if not saved or saved[0] != key:
+        render_draft_reviews(cfg)
         return
     result = saved[1]
     st.download_button(tr("Скачать черновик Word"), result["docx"], file_name="MINT_draft.docx",
@@ -145,3 +147,5 @@ def render_template_draft_tab(cfg, glossary):
         for item in result["requirements"]:
             state = tr("Перенесено") if item["id"] in result["used"] else tr("Требует разбора")
             st.text(f"{item['id']} · {state} · {item['source']} › {item['section']}\n{item['quote']}")
+
+    render_draft_reviews(cfg, key, template.name if template else "", sources, result)
