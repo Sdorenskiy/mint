@@ -90,16 +90,22 @@ def self_test(evidence, coverage, result):
     assert result["coverage"]["scores"]["total"] == 26
     rows = result["evidence"]["cases"]
     for row in rows:
-        if row["group"] != "wrong_confident_scope":
-            assert row["status"] == row["expected_status"], (row["id"], row["status"], row["expected_status"])
+        assert row["status"] == row["expected_status"], (row["id"], row["status"], row["expected_status"])
+    # Explicitly negative scope quotes now abstain; misleading positive quotes
+    # can still produce false claims, and must remain visible in CI metrics.
+    assert all(x["status"] == "uncertain" for x in rows if x["id"] in ("E38", "E40"))
+    assert all(x["predicted"] for x in rows if x["id"] in ("E37", "E39"))
     assert not [x for x in rows if x["group"] in ("different_scope", "table_number_only",
                                                     "unclear", "bad_quote") and x["predicted"]]
     coverage_rows = {r["id"]: r for r in result["coverage"]["cases"]}
     assert coverage_rows["D08:R1"]["gold"] and coverage_rows["D08:R1"]["predicted"]
     assert coverage_rows["D08:R2"]["gold"] and coverage_rows["D08:R2"]["predicted"]
     assert coverage_rows["D08:R3"]["gold"] and coverage_rows["D08:R3"]["predicted"]
-    assert coverage_rows["D05:R1"]["gold"] and not coverage_rows["D05:R1"]["predicted"], (
-        "The current coverage metric cannot detect a fabricated used ID: keep this limitation visible"
+    assert coverage_rows["D05:R1"]["gold"] and coverage_rows["D05:R1"]["predicted"], (
+        "Cited but absent requirement must remain a review candidate"
+    )
+    assert coverage_rows["D06:R1"]["gold"] and not coverage_rows["D06:R1"]["predicted"], (
+        "A real but semantically irrelevant quote still fools the source-to-output proof"
     )
     assert bench.classification([{"gold": False, "predicted": False}])["precision"] is None
     assert bench.classification([{"gold": False, "predicted": False}])["recall"] is None
