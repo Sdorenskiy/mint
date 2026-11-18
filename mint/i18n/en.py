@@ -3038,4 +3038,15 @@ EN = {
     'Осталось примерно {minutes} мин':
         'About {minutes} min remaining',
 
+    'Время формирования: {seconds} с':
+        'Draft preparation time: {seconds} s',
+    'Замеры этапов подготовки':
+        'Draft preparation stage metrics',
+    '{n} запросов к LLM, {s} с':
+        '{n} LLM calls, {s} s',
+    'План требований по разделам':
+        'Requirements plan by section',
+    '{selected} требований для {fields} полей из {total}':
+        '{selected} requirements selected for {fields} fields out of {total}',
+
 }
