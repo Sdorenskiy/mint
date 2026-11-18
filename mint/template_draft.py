@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from .i18n import tr
 from .draft_checkpoint import DraftExtractCheckpoint
-from .evidence import verify_comparison
+from .evidence import quoted, verify_comparison
 from .kb import source_path
 from .parsing import document_to_markdown
 from .prompts import render
@@ -359,6 +359,19 @@ def _refs(row, requirements):
     return list(dict.fromkeys(ids))
 
 
+
+def covered_refs(text, refs, coverage):
+    """Source IDs with a contiguous, locatable quotation of their real draft text.
+
+    This proves the referenced content EXISTS in the output. It does not prove
+    that the output semantically satisfies the whole source requirement.
+    Missing/invalid mappings are review candidates, not confirmed omissions.
+    """
+    if not isinstance(coverage, dict):
+        return set()
+    return {rid for rid in refs if isinstance(coverage.get(rid), str) and quoted(coverage[rid], text)}
+
+
 def _numbers_supported(text, refs, requirements):
     numbers = lambda value: {n.replace(",", ".") for n in _NUMBER.findall(value)}
     found = set().union(*(numbers(requirements[k]["quote"]) for k in refs))
@@ -514,7 +527,8 @@ def _verify(cfg, text, refs, requirements, glossary, issues, sources):
         text, norm["quote"],
         {"status": _text(row, "status"), "ref": ref, "claim_quote": _text(row, "claim_quote"),
          "norm_quote": _text(row, "quote"), "applicability": _text(row, "applicability"),
-         "applicability_reason": _text(row, "applicability_reason"), "reason": _text(row, "reason"),
+         "applicability_reason": _text(row, "applicability_reason"),
+         "scope_quote": _text(row, "scope_quote"), "reason": _text(row, "reason"),
          "source": norm["source"]})
     status = proof["status"]
     if status == "unchecked":
@@ -556,8 +570,9 @@ def _row_plans(cfg, tables, requirements, issues, emit):
                     all(isinstance(x, str) for x in cells) and refs):
                 values = ["" if _number_column(h) else x.strip() for h, x in zip(headers, cells)]
                 if any(values) and _numbers_supported(" ".join(values), refs, allowed):
-                    if not any(values == other for other, _ in valid):
-                        valid.append((values, refs))
+                    coverage = covered_refs(" | ".join(values), refs, row.get("coverage"))
+                    if not any(values == other for other, _, _ in valid):
+                        valid.append((values, refs, coverage))
                     continue
             issues.append(tr("Одна из предложенных строк таблицы «{table}» требует проверки.", table=key))
         if len(rows) > ROW_LIMIT:
@@ -628,6 +643,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             row = {}
             issues.append(tr("Не удалось завершить заполнение поля: {field}.", field=purpose))
         refs, content = _refs(row, allowed), _text(row, "text")
+        grounded = covered_refs(content, refs, row.get("coverage"))
         decision = _text(row, "status")
         status, detail = "missing", _text(row, "reason") or purpose
         if decision == "conflict" and len({requirements[r]["source"] for r in refs}) > 1:
@@ -637,13 +653,14 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             if safe:
                 status, detail = _verify(cfg, content, refs, requirements, glossary, issues, sources)
                 if status != "manual":
-                    used.update(refs)
+                    used.update(grounded)
             else:
                 status = "manual"
-        edits.append((key, start, end, purpose, status, content, detail, refs, safe))
+        edits.append((key, start, end, purpose, status, content, detail, refs, grounded, safe))
 
     # Apply from right to left so offsets stay tied to the original template.
-    for key, start, end, purpose, status, content, detail, refs, safe in sorted(edits, key=lambda x: (x[0], -x[1])):
+    for key, start, end, purpose, status, content, detail, refs, grounded, safe in sorted(
+            edits, key=lambda x: (x[0], -x[1])):
         slot = slots[key]
         p = slot.paragraph
         if slot.following and safe and status in {"checked", "conflict", "uncertain", "unchecked"}:
@@ -662,7 +679,9 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             _note(doc, p, tr("Требуется уточнение"), detail)
         elif status == "manual":
             _note(doc, p, tr("Требуется ручная вставка"), detail or purpose)
-        results.append({"field": purpose, "status": status, "text": content, "detail": detail, "refs": refs})
+        results.append({"field": purpose, "status": status, "text": content, "detail": detail, "refs": refs,
+                        "unconfirmed_coverage": sorted(set(refs) - grounded) if status in
+                        {"checked", "conflict", "uncertain", "unchecked"} else []})
 
     for key, rows in plans.items():
         table = tables[key]
@@ -671,10 +690,11 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         content_columns = [i for i, h in enumerate(headers) if not _number_column(h)]
         pristine = deepcopy(prototype._tr)
         written = 0
-        for values, refs in rows:
+        for values, refs, grounded in rows:
             content = " | ".join(values)
             status, detail = _verify(cfg, content, refs, requirements, glossary, issues, sources)
-            results.append({"field": key, "status": status, "text": content, "detail": detail, "refs": refs})
+            results.append({"field": key, "status": status, "text": content, "detail": detail, "refs": refs,
+                            "unconfirmed_coverage": sorted(set(refs) - grounded) if status != "manual" else []})
             if status == "manual":
                 continue
             if written:
@@ -691,7 +711,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
                     _note(doc, p, tr("Уточнить"), headers[i])
             anchor = max((target.cells[i] for i in content_columns if values[i]), key=lambda c: c.width or 0)
             _mark_wiki(doc, anchor.paragraphs[0], status, detail)
-            used.update(refs)
+            used.update(grounded)
         if not written:
             anchor = max((prototype.cells[i] for i in content_columns), key=lambda c: c.width or 0)
             _note(doc, anchor.paragraphs[0], tr("Требуется ручная вставка"))

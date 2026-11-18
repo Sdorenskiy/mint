@@ -136,6 +136,9 @@ def render_template_draft_tab(cfg, glossary):
                 st.text(item["text"])
             if item["detail"]:
                 st.text(item["detail"])
+            if item.get("unconfirmed_coverage"):
+                st.warning(tr("Вставка не подтверждает перенос пунктов: {ids}. Проверьте текст.",
+                              ids=", ".join(item["unconfirmed_coverage"])))
             for key in item["refs"]:
                 source = refs[key]
                 st.text(f"{key} · {source['source']} › {source['section']}\n{source['quote']}")

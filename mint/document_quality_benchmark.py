@@ -13,7 +13,7 @@ from pathlib import Path
 
 from .evidence import quoted, verify_comparison
 
-EVALUATION_VERSION = "document-quality-v1"
+EVALUATION_VERSION = "document-quality-v2"
 
 
 def load_cases(path):
@@ -107,9 +107,10 @@ def coverage_results(cases):
     """Judge review *candidates*, not claims of verified omissions.
 
     The gold 'applicable/reflected' labels are deliberately independent of
-    selected/used: referencing a source ID does not guarantee faithful coverage.
+    selected/used/coverage: even an existing quotation does not guarantee
+    a semantic match with its individual source requirement.
     """
-    from .template_draft import unresolved_candidates
+    from .template_draft import covered_refs, unresolved_candidates
 
     rows = []
     for case in cases:
@@ -124,7 +125,10 @@ def coverage_results(cases):
         if not used <= set(selected):
             raise ValueError(f"{case.get('id')}: used references were not in section candidates")
         plan = {case["section"]: {"selected_ids": selected}}
-        pending = set(unresolved_candidates(plan, used)[case["section"]])
+        # Reproduce the real draft's narrower notion of "used": an ID plus
+        # a verbatim output anchor, not just an LLM-supplied source ID.
+        grounded = covered_refs(case.get("output_text", ""), used, case.get("coverage"))
+        pending = set(unresolved_candidates(plan, grounded)[case["section"]])
         for requirement in items:
             if not all(isinstance(requirement[k], bool) for k in ("applicable", "reflected", "selected", "used")):
                 raise ValueError(f"{case['id']}: invalid boolean label")
@@ -147,6 +151,7 @@ def evaluate(evidence_cases, coverage_cases, predictions=None):
                   "Scripted responses do not measure LLM or retrieval quality.",
                   "Correct quotations and a model's applicability explanation do not prove legal applicability.",
                   "Unresolved source IDs are review candidates, not confirmed omissions.",
+                  "A grounded output quotation alone cannot prove that the quoted text fulfils its individual source obligation.",
                   "No production documents or actual gateway calls are included.",
               ]}
     result["evidence"] = evidence_results(evidence_cases, predictions)

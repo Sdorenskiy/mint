@@ -73,7 +73,8 @@ def fake_model(_cfg, stage, payload):
             candidates = {r["quote"]: r["id"] for r in payload["requirements"]}
             assert all(quote in candidates for quote in FACTS), "section plan dropped a source-backed fact"
             return {"status": "filled", "text": "\n".join(FACTS),
-                    "refs": [candidates[q] for q in FACTS]}
+                    "refs": [candidates[q] for q in FACTS],
+                    "coverage": {candidates[q]: q for q in FACTS}}
         return {"status": "missing", "text": "", "refs": []}
     if stage == "check":
         # Source grounding succeeds; absence of wiki norms is not an error.
@@ -119,7 +120,8 @@ def test_golden_section_and_word():
             answer = fake_model(cfg_, stage, payload)
             if stage == "fill" and answer.get("status") == "filled":
                 answer["text"] = "\n".join(FACTS[:2])
-                answer["refs"] = answer["refs"][:2]
+                # Deliberately lie that all three sources were used. A missing
+                # contiguous output anchor must keep the third source unresolved.
             return answer
 
         with patch.object(draft, "_json", side_effect=partial_fill), patch.object(
@@ -128,6 +130,7 @@ def test_golden_section_and_word():
         omitted_id = next(req["id"] for req in partial["requirements"] if req["quote"] == FACTS[2])
         assert omitted_id not in partial["used"]
         assert any(omitted_id in ids for ids in partial["unresolved_candidates"].values())
+        assert any(omitted_id in row.get("unconfirmed_coverage", []) for row in partial["results"])
         # A candidate is not automatically an applicable obligation or a verified omission.
         assert not any(r.get("status") == "missing_requirement" for r in partial["results"])
 

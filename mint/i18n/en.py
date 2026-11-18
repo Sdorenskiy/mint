@@ -3053,4 +3053,6 @@ EN = {
         'Candidate requirements not reflected in the draft — review applicability',
     'Не подтверждена применимость нормы и точные цитаты':
         'Norm applicability and exact quotes have not been verified',
+    'Вставка не подтверждает перенос пунктов: {ids}. Проверьте текст.':
+        'The inserted text does not establish coverage of source items {ids}. Review the wording.',
 }
