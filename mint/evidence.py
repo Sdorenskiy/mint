@@ -13,6 +13,14 @@ _SOURCE_TAG = re.compile(r"\[(?:Источник|Source):\s*([^,\]\n]+)(?:,\s*([
 _SOURCE_HEADER = re.compile(r"(?m)^===\s*(?:ИСТОЧНИК|SOURCE):\s*([^|\n=]+)", re.I)
 _TABLE_NUMBER = re.compile(r"(?iu)\b(?:таблиц(?:а|е|ы|у|ей)|table)\s*(?:№|no\.?|#)?\s*\d+(?:\.\d+)*\b")
 _WHITESPACE = re.compile(r"\s+")
+# Conservative signals: explicit denial of a scope condition is not affirmative
+# evidence. Never reject "не менее", "не позднее" or quantitative obligations.
+_SCOPE_DENIAL = re.compile(
+    r"(?iu)\bне\s+(?:(?:может|должн\w*)\s+)?(?:обрабатыва\w*|относит\w*|"
+    r"выполня\w*|явля\w*|содерж\w*|использ\w*|предусматрива\w*|"
+    r"обеспечива\w*|хранит|применя\w*|имеет|ведёт|ведет)\b|"
+    r"\b(?:does\s+not|do\s+not|is\s+not|are\s+not|doesn't|don't|isn't|aren't)\b"
+)
 
 
 def quoted(quote, source_text):
@@ -65,11 +73,13 @@ def verify_comparison(claim_text, norm_text, model, *, claim_quote_required=True
     ref = str(model.get("ref") or "").strip()
     reason = str(model.get("reason") or "").strip()
     scope_reason = str(model.get("applicability_reason") or "").strip()
+    scope_quote = str(model.get("scope_quote") or "").strip()
     applicability = str(model.get("applicability") or "").strip().lower()
     decision = str(model.get("status") or "").strip().lower()
     result = {"status": "unchecked", "claim_quote": claim_quote, "norm_quote": norm_quote,
-              "ref": ref, "reason": reason, "applicability": applicability,
-              "applicability_reason": scope_reason, "source": str(model.get("source") or "").strip()}
+              "scope_quote": scope_quote, "ref": ref, "reason": reason,
+              "applicability": applicability, "applicability_reason": scope_reason,
+              "source": str(model.get("source") or "").strip()}
 
     if not norm_text or decision not in {"conflict", "checked", "uncertain"}:
         return result
@@ -81,6 +91,14 @@ def verify_comparison(claim_text, norm_text, model, *, claim_quote_required=True
         return result
     if applicability != "applicable" or not scope_reason:
         return {**result, "status": "uncertain", "reason": reason or "Applicability is not established"}
+    # An explanation is just a model assertion. Require an independently
+    # locatable piece of the checked text which the model used to determine
+    # the rule's scope. If that excerpt explicitly DENIES the condition,
+    # abstain: an exact quote alone does not make a false inference true.
+    if not quoted(scope_quote, claim_text):
+        return {**result, "status": "uncertain", "reason": "Scope quote missing from checked document"}
+    if _SCOPE_DENIAL.search(scope_quote):
+        return {**result, "status": "uncertain", "reason": "Scope evidence contains explicit negation"}
     if decision == "uncertain" or not reason:
         return {**result, "status": "uncertain", "reason": reason or "Semantic comparison is incomplete"}
     if decision == "conflict" and only_table_number_diff(claim_quote, norm_quote):
