@@ -10,6 +10,7 @@ from dataclasses import dataclass
 
 from .i18n import tr
 from .draft_checkpoint import DraftExtractCheckpoint
+from .evidence import verify_comparison
 from .kb import source_path
 from .parsing import document_to_markdown
 from .prompts import render
@@ -485,6 +486,7 @@ def _wiki(cfg, query, glossary, sources):
 
 
 def _verify(cfg, text, refs, requirements, glossary, issues, sources):
+    """Separate basis support from wiki comparison; verify evidence with shared rules."""
     try:
         norms = _wiki(cfg, text, glossary, sources)
     except Exception:
@@ -495,18 +497,25 @@ def _verify(cfg, text, refs, requirements, glossary, issues, sources):
                                   "norms": list(norms.values())})
     except DraftError:
         return "manual", tr("Модель не завершила проверку по основаниям.")
+    # Basis support is independent of the presence or relevance of KB documents.
     if refs and row.get("supported") is not True:
         return "manual", _text(row, "support_reason") or tr("Формулировка требует сверки с основаниями.")
-    status = _text(row, "status")
-    quote = _text(row, "quote")
-    norm = norms.get(_text(row, "ref"))
-    if status not in {"conflict", "uncertain", "checked"} or not norm or not quote or (
-            _normalized(quote) not in _normalized(norm["quote"])):
+    ref = _text(row, "ref")
+    norm = norms.get(ref)
+    if not norm:
         return "unchecked", ""
-    reason = _text(row, "reason")
-    if status in {"conflict", "uncertain"} and not reason:
-        return "unchecked", ""
-    return status, reason + "\n" + _format_ref({**norm, "quote": quote})
+    proof = verify_comparison(
+        text, norm["quote"],
+        {"status": _text(row, "status"), "ref": ref, "claim_quote": _text(row, "claim_quote"),
+         "norm_quote": _text(row, "quote"), "applicability": _text(row, "applicability"),
+         "applicability_reason": _text(row, "applicability_reason"), "reason": _text(row, "reason"),
+         "source": norm["source"]})
+    status = proof["status"]
+    if status == "unchecked":
+        return status, ""
+    detail = (proof["reason"] + "\n" if proof["reason"] else "")
+    detail += _format_ref({**norm, "quote": proof["norm_quote"]})
+    return status, detail
 
 
 def _number_column(header):
@@ -699,7 +708,10 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     doc.save(buf)
     return {"docx": buf.getvalue(), "issues": issues, "results": results, "chunks": chunks,
             "requirements": list(requirements.values()), "used": used,
-            "section_plan": section_plan, "removed_examples": len(examples) if remove_examples else 0}
+            "section_plan": section_plan,
+            "unresolved_candidates": {section: [rid for rid in plan["selected_ids"] if rid not in used]
+                                      for section, plan in section_plan.items()},
+            "removed_examples": len(examples) if remove_examples else 0}
 
 
 def _from_example(sample, issues):
