@@ -76,7 +76,7 @@ def test_partial_recovery():
         with patch.object(draft, "_json", side_effect=fail_second):
             requirements, count = draft._requirements(cfg, docs, error, lambda *_: None)
         assert count == 2 and len(requirements) == 1
-        assert calls == ["A", "B"] and error
+        assert sorted(calls) == ["A", "B"] and error  # LLM requests may begin in either order
 
         calls.clear()
 
@@ -92,7 +92,7 @@ def test_partial_recovery():
         # A different model must never consume a prior model's checkpoint.
         with patch.object(draft, "_json", side_effect=succeed):
             draft._requirements(config(directory, "new-model"), docs, [], lambda *_: None)
-        assert calls == ["B", "A", "B"]
+        assert calls[0] == "B" and sorted(calls[1:]) == ["A", "B"]
 
 
 def test_invalid_and_corrupt_checkpoints():

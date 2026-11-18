@@ -1,5 +1,8 @@
 """Fill a copy of a Word template from selected originals in the knowledge base."""
 import contextvars
+import threading
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 import io
 import json
 import re
@@ -21,6 +24,7 @@ MAX_CHARS = 4000
 ROW_LIMIT = 20
 SECTION_PLAN_LIMIT = 24000
 _DRAFT_METRICS = contextvars.ContextVar('mint_draft_metrics', default=None)
+_DRAFT_METRICS_LOCK = contextvars.ContextVar('mint_draft_metrics_lock', default=None)
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)?")
 _EXAMPLE = re.compile(r"^\s*(?:пример|example|sample)\s*[:：]", re.I)
 _PROTECTED = (".//w:fldChar | .//w:instrText | .//w:fldSimple | .//w:drawing | .//w:pict | .//w:object | "
@@ -48,9 +52,13 @@ def _json(cfg, stage, payload):
         finally:
             metrics = _DRAFT_METRICS.get()
             if metrics is not None:
-                item = metrics["stages"].setdefault(stage, {"llm_calls": 0, "llm_seconds": 0.0})
-                item["llm_calls"] += 1
-                item["llm_seconds"] = round(item["llm_seconds"] + time.perf_counter() - t0, 3)
+                lock = _DRAFT_METRICS_LOCK.get()
+                if lock is None:
+                    raise RuntimeError("Missing per-draft metrics lock")
+                with lock:
+                    item = metrics["stages"].setdefault(stage, {"llm_calls": 0, "llm_seconds": 0.0})
+                    item["llm_calls"] += 1
+                    item["llm_seconds"] = round(item["llm_seconds"] + time.perf_counter() - t0, 3)
         if raw.startswith("❌"):
             break
         if any(marker in raw for marker in TRUNCATED_MARKERS):
@@ -71,6 +79,7 @@ def _measure_draft(fn):
     def measured(*args, **kwargs):
         metrics = {"stages": {}, "total_seconds": 0.0}
         token = _DRAFT_METRICS.set(metrics)
+        lock_token = _DRAFT_METRICS_LOCK.set(threading.Lock())
         started = time.perf_counter()
         try:
             result = fn(*args, **kwargs)
@@ -79,6 +88,7 @@ def _measure_draft(fn):
         finally:
             metrics["total_seconds"] = round(time.perf_counter() - started, 3)
             _DRAFT_METRICS.reset(token)
+            _DRAFT_METRICS_LOCK.reset(lock_token)
     return measured
 
 
@@ -135,50 +145,99 @@ def _split_section(section, lines):
 
 
 def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
-    """Extract verified requirements with durable per-fragment checkpoints."""
-    requirements, seen, chunks, reused = {}, set(), 0, 0
+    """Verified extraction with bounded parallel requests and stable source ordering.
+
+    Only workers read/write individual checkpoint files and call the model.
+    Progress callbacks, requirement IDs and issues are assembled on the main
+    thread in input order. Worker contexts preserve language/profile/metrics.
+    """
     total = sum(1 for _, markdown in documents for _ in _source_chunks(markdown))
     emit("extract_total", total)
-    for name, markdown in documents:
-        checkpoint = DraftExtractCheckpoint(cfg, name, markdown)
-        if reset_cache:
-            checkpoint.clear()
-        for local_index, (section, text) in enumerate(_source_chunks(markdown), 1):
-            chunks += 1
-            emit("extract", chunks)
-            quotes = checkpoint.load(local_index, section, text)
-            if quotes is None:
-                try:
-                    rows = _records(_json(cfg, "extract", {"source": name, "section": section, "text": text}),
-                                    "requirements")
-                except DraftError:
-                    issues.append(tr("Не удалось разобрать фрагмент основания: {source} › {section}.",
-                                     source=name, section=section or str(chunks)))
-                    emit("extract_done", chunks)
-                    continue
-                quotes = []
-                valid = True
-                for row in rows:
-                    quote = _text(row, "quote")
-                    if not quote or _normalized(quote) not in _normalized(text):
-                        issues.append(tr("В основании «{source}» не найдена цитата, указанная моделью.",
-                                         source=name))
-                        valid = False
-                        continue
-                    quotes.append(quote)
-                # A partially invalid response is NOT checkpointed: retry it next run.
-                if valid:
-                    checkpoint.save(local_index, section, text, quotes)
+    workers = min(4, max(1, int(getattr(cfg, "draft_extract_parallel", 2))))
+    requirements, seen, chunks, reused = {}, set(), 0, 0
+
+    def jobs():
+        for name, markdown in documents:
+            checkpoint = DraftExtractCheckpoint(cfg, name, markdown)
+            if reset_cache:
+                checkpoint.clear()
+            for local_index, (section, text) in enumerate(_source_chunks(markdown), 1):
+                yield (name, section, text, local_index, checkpoint)
+
+    def process(job):
+        started = time.perf_counter()
+        name, section, text, local_index, checkpoint = job
+        cached = checkpoint.load(local_index, section, text)
+        if cached is not None:
+            return cached, True, [], False, time.perf_counter() - started
+        try:
+            rows = _records(_json(cfg, "extract", {"source": name, "section": section, "text": text}),
+                            "requirements")
+        except DraftError:
+            return [], False, [], True, time.perf_counter() - started
+        quotes, bad = [], False
+        for row in rows:
+            quote = _text(row, "quote")
+            if not quote or _normalized(quote) not in _normalized(text):
+                bad = True
             else:
-                reused += 1
-                emit("extract_cached", reused)
-            for quote in quotes:
-                key = (name, section, _normalized(quote))
-                if key not in seen:
-                    seen.add(key)
-                    rid = f"R{len(requirements) + 1}"
-                    requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
-            emit("extract_done", chunks)
+                quotes.append(quote)
+        # An incomplete model answer is never checkpointed, so it is retried later.
+        if not bad:
+            checkpoint.save(local_index, section, text, quotes)
+        return quotes, False, [name] if bad else [], False, time.perf_counter() - started
+
+    def accept(job, result):
+        nonlocal chunks, reused
+        name, section, _text_fragment, _index, _checkpoint = job
+        quotes, cached, invalid, failed, llm_elapsed = result
+        chunks += 1
+        emit("extract", chunks)
+        # Approximate remaining wall time, not sum of concurrent LLM times.
+        emit("extract_elapsed", llm_elapsed / workers if not cached else 0.0)
+        if cached:
+            reused += 1
+            emit("extract_cached", reused)
+        if failed:
+            issues.append(tr("Не удалось разобрать фрагмент основания: {source} › {section}.",
+                             source=name, section=section or str(chunks)))
+        for bad_source in invalid:
+            issues.append(tr("В основании «{source}» не найдена цитата, указанная моделью.",
+                             source=bad_source))
+        for quote in quotes:
+            key = (name, section, _normalized(quote))
+            if key not in seen:
+                seen.add(key)
+                rid = f"R{len(requirements) + 1}"
+                requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
+        emit("extract_done", chunks)
+
+    if workers == 1:
+        for job in jobs():
+            accept(job, process(job))
+    else:
+        pending = deque()
+        iterator = iter(jobs())
+
+        def queue_one(executor):
+            try:
+                job = next(iterator)
+            except StopIteration:
+                return False
+            # copy_context is per job: Context instances must not run
+            # simultaneously. Sharing metrics dict itself is safe via the lock.
+            context = contextvars.copy_context()
+            pending.append((job, executor.submit(context.run, process, job)))
+            return True
+
+        with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="mint-draft-extract") as executor:
+            for _ in range(workers):
+                if not queue_one(executor):
+                    break
+            while pending:
+                job, future = pending.popleft()
+                accept(job, future.result())
+                queue_one(executor)
     return requirements, chunks
 
 
