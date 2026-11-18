@@ -20,6 +20,7 @@ mint_offline*.zip
 
 # Результаты оценки и рабочие наборы вопросов (могут содержать внутренние формулировки)
 eval_results/
+local_eval/
 eval/questions.csv
 eval/questions.draft.csv
 
