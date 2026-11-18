@@ -73,7 +73,8 @@ def fake_model(_cfg, stage, payload):
             candidates = {r["quote"]: r["id"] for r in payload["requirements"]}
             assert all(quote in candidates for quote in FACTS), "section plan dropped a source-backed fact"
             return {"status": "filled", "text": "\n".join(FACTS),
-                    "refs": [candidates[q] for q in FACTS]}
+                    "refs": [candidates[q] for q in FACTS],
+                    "coverage": {candidates[q]: q for q in FACTS}}
         return {"status": "missing", "text": "", "refs": []}
     if stage == "check":
         # Source grounding succeeds; absence of wiki norms is not an error.
