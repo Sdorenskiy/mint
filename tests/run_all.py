@@ -13,6 +13,7 @@ from pathlib import Path
 TESTS = Path(__file__).resolve().parent
 SUITES = [
     ("Черновик Word из шаблона или образца", ["test_template_draft.py"]),
+    ("Эталонная генерация раздела Word и сохранение оформления", ["test_draft_golden.py"]),
     ("Контрольные точки разбора оснований", ["test_draft_checkpoint.py"]),
     ("Совместимость эмбеддингов и безопасная переиндексация", ["test_embedding_compatibility.py"]),
     ("Источники и ручная оценка содержания ответов", ["test_answer_evaluation.py"]),
