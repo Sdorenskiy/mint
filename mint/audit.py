@@ -242,6 +242,7 @@ def critique_findings(section_text, norms_text, findings, cfg, special="", doc_b
                 {"status": v.get("comparison"), "claim_quote": quote,
                  "norm_quote": v.get("norm_quote"), "applicability": v.get("applicability"),
                  "applicability_reason": v.get("applicability_reason"),
+                 "scope_quote": v.get("scope_quote"),
                  "reason": v.get("reason"), "source": source[0]})
         kept.append({
             **f,
