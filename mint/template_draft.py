@@ -165,15 +165,16 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
                 yield (name, section, text, local_index, checkpoint)
 
     def process(job):
+        started = time.perf_counter()
         name, section, text, local_index, checkpoint = job
         cached = checkpoint.load(local_index, section, text)
         if cached is not None:
-            return cached, True, [], False
+            return cached, True, [], False, time.perf_counter() - started
         try:
             rows = _records(_json(cfg, "extract", {"source": name, "section": section, "text": text}),
                             "requirements")
         except DraftError:
-            return [], False, [], True
+            return [], False, [], True, time.perf_counter() - started
         quotes, bad = [], False
         for row in rows:
             quote = _text(row, "quote")
@@ -184,14 +185,16 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
         # An incomplete model answer is never checkpointed, so it is retried later.
         if not bad:
             checkpoint.save(local_index, section, text, quotes)
-        return quotes, False, [name] if bad else [], False
+        return quotes, False, [name] if bad else [], False, time.perf_counter() - started
 
     def accept(job, result):
         nonlocal chunks, reused
         name, section, _text_fragment, _index, _checkpoint = job
-        quotes, cached, invalid, failed = result
+        quotes, cached, invalid, failed, llm_elapsed = result
         chunks += 1
         emit("extract", chunks)
+        # Approximate remaining wall time, not sum of concurrent LLM times.
+        emit("extract_elapsed", llm_elapsed / workers if not cached else 0.0)
         if cached:
             reused += 1
             emit("extract_cached", reused)
