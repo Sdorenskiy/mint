@@ -1,5 +1,6 @@
 """Document drafting tab."""
 import hashlib
+import time
 
 import streamlit as st
 
@@ -19,6 +20,8 @@ def render_template_draft_tab(cfg, glossary):
     missing = [name for name in sources if not source_path(cfg, name).is_file()]
     if missing:
         st.warning(tr("Для этих оснований нет оригиналов: {names}", names=", ".join(missing)))
+    reset_extract_cache = st.checkbox(tr("Повторно разобрать основания (не использовать сохранённые результаты)"),
+                                     value=False, key="draft_reset_extract")
     raw = template.getvalue() if template else b""
 
     def input_key():
@@ -35,15 +38,43 @@ def render_template_draft_tab(cfg, glossary):
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources) or bool(missing), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=True) as status:
+            extraction = {"total": 0, "cached": 0, "durations": [], "started": None, "hit": False}
             stages = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
                       "table": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
                       "fixed": tr("Сверка требований шаблона")}
 
             def progress(stage, index):
-                status.update(label=f"{stages[stage]} · {index}")
+                if stage == "extract_total":
+                    extraction["total"] = index
+                    return
+                if stage == "extract":
+                    extraction["started"] = time.monotonic()
+                    extraction["hit"] = False
+                elif stage == "extract_cached":
+                    extraction["cached"] = index
+                    extraction["hit"] = True
+                    return
+                elif stage == "extract_done":
+                    if extraction["started"] is not None and not extraction["hit"]:
+                        extraction["durations"].append(time.monotonic() - extraction["started"])
+                    extraction["started"] = None
+                else:
+                    status.update(label=f"{stages[stage]} · {index}")
+                    return
+
+                total = extraction["total"]
+                label = f"{stages['extract']} · {index} / {total}" if total else f"{stages['extract']} · {index}"
+                if extraction["cached"]:
+                    label += " · " + tr("Из кэша") + f": {extraction['cached']}"
+                durations = extraction["durations"]
+                if total > index and len(durations) >= 3:
+                    remaining_minutes = round((total - index) * (sum(durations) / len(durations)) / 60)
+                    label += " · " + tr("Осталось примерно {minutes} мин", minutes=remaining_minutes)
+                status.update(label=label)
 
             try:
-                result = create_draft(raw, cfg, sources, glossary, progress, example=example)
+                result = create_draft(raw, cfg, sources, glossary, progress, example=example,
+                                      reset_extract_cache=reset_extract_cache)
                 if input_key() != key:
                     raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
             except DraftError as exc:
