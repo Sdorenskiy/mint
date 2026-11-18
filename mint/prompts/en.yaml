@@ -596,6 +596,12 @@ draft_check: |-
   Compare draft claims only with applicable norms in the wiki excerpts. Project documents are not necessarily norms.
   Consider applicability, exceptions and revisions. Use conflict for a specific inconsistency, uncertain for unclear
   applicability, checked only for a confirmed applicable norm with no conflict found, or unchecked if no norm was found.
-  For the first three provide a verbatim contiguous quote and its identifier. In reason name the relevant claim
-  and explain the conflict or question; include all questions found in the supplied claim.
-  Return {"supported":true,"support_reason":"","status":"conflict","ref":"N1","quote":"norm text","reason":"comparison"}.
+  For conflict, checked or uncertain provide the selected norm identifier, a verbatim norm quote (quote),
+  and a verbatim excerpt of the checked claim (claim_quote). Set applicability to applicable, unclear or
+  different_scope and give an explicit applicability_reason explaining the norm's scope.
+  Different table numbers in two documents do not establish a substantive conflict.
+  In reason explain the actual difference in obligations or constraints.
+  Return {"supported":true,"support_reason":"","status":"conflict","ref":"N1",
+          "quote":"verbatim norm quote","claim_quote":"verbatim draft quote",
+          "applicability":"applicable","applicability_reason":"specific reason the rule applies",
+          "reason":"substantive conflict explanation"}.
