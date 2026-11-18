@@ -44,11 +44,15 @@ def mock_model(system, user, *_args, **_kwargs):
     elif "source" in data:
         result = {"requirements": [{"quote": line} for line in data["text"].splitlines() if line]}
     elif "columns" in data:
-        result = {"rows": [{"cells": ["Настройка", "7 дней"], "refs": ["R1"]},
-                           {"cells": ["Проверка", ""], "refs": ["R2"]},
-                           {"cells": ["Неподтвержденный срок", "90 дней"], "refs": ["R1"]}]}
+        result = {"rows": [{"cells": ["Настройка", "7 дней"], "refs": ["R1"],
+                           "coverage": {"R1": "Настройка | 7 дней"}},
+                           {"cells": ["Проверка входит в работы", ""], "refs": ["R2"],
+                           "coverage": {"R2": "Проверка входит в работы"}},
+                           {"cells": ["Неподтвержденный срок", "90 дней"], "refs": ["R1"],
+                           "coverage": {"R1": "90 дней"}}]}
     elif "field" in data:
-        result = ({"status": "filled", "text": "хранение 7 дней", "refs": ["R1"]}
+        result = ({"status": "filled", "text": "хранение 7 дней", "refs": ["R1"],
+                   "coverage": {"R1": "хранение 7 дней"}}
                   if data["field"] != "Срок" else {"status": "missing", "text": "", "refs": []})
     else:
         assert "evidence" in data
@@ -57,6 +61,7 @@ def mock_model(system, user, *_args, **_kwargs):
                   "ref": "N1", "quote": "минимум 30 дней",
                   "claim_quote": data["claims"] if conflict else "",
                   "applicability": "applicable", "applicability_reason": "Общее требование по сроку",
+                  "scope_quote": data["claims"] if conflict else "",
                   "reason": "7 дней меньше минимума"}
     return json.dumps(result)
 
