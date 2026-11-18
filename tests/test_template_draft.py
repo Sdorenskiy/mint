@@ -90,13 +90,15 @@ def test_draft():
             assert output.paragraphs[0].text == "Требования"
             assert output.paragraphs[1].runs[0].bold
             assert output.paragraphs[1].text.startswith("Обязательный текст. хранение 7 дней. Конец.")
-            assert "Противоречие с вики" in output.paragraphs[1].text
-            assert "Требуется уточнение" in output.paragraphs[2].text
-            assert not output.paragraphs[3].text
+            assert "Противоречие с вики" not in output.paragraphs[1].text
+            assert "Противоречие с вики" in " ".join(c.text for c in output.comments)
+            assert output.paragraphs[2].text.startswith("[Указываются сроки")
+            assert output.paragraphs[3].text == "с учетом условий.]"
             assert len(output.tables) == 1 and len(output.tables[0].rows) == 3
             assert "Настройка" in output.tables[0].cell(1, 0).text
             assert output.tables[0].cell(1, 1).text == "7 дней"
-            assert "Уточнить" in output.tables[0].cell(2, 1).text
+            assert not output.tables[0].cell(2, 1).text
+            assert "Уточнить" in " ".join(c.text for c in output.comments)
             assert any("норм" in c.text.lower() or "norm.md" in c.text for c in output.comments)
             assert result["used"] == {"R1", "R2"}
             assert any("требует проверки" in x for x in result["issues"])
