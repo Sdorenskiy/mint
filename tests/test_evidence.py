@@ -104,11 +104,20 @@ def test_audit_uses_common_proof():
 
     # Confirm that both source references survive a same-remedy merge.
     left = {"severity": "СРЕДНИЙ",
-            "text": "Недостаточный срок [Источник: Регламент А.docx, 1]", "quote": ""}
+            "text": "Недостаточный срок [Источник: Регламент А.docx, 1]", "quote": "",
+            "evidence": {"status": "conflict"}}
     right = {"severity": "СРЕДНИЙ",
-             "text": "Недостаточный срок [Источник: Регламент Б.docx, 2]", "quote": ""}
+             "text": "Недостаточный срок [Источник: Регламент Б.docx, 2]", "quote": "",
+             "evidence": {"status": "conflict"}}
     audit._absorb(left, right)
     assert "Регламент А.docx" in left["text"] and "Регламент Б.docx" in left["text"]
+    left2 = {"severity": "СРЕДНИЙ",
+             "text": "Недостаточный срок [Источник: Регламент А.docx, 1]", "quote": "",
+             "evidence": {"status": "conflict"}}
+    audit._absorb(left2, {"severity": "СРЕДНИЙ",
+             "text": "Недостаточный срок [Источник: Неизвестный.docx, 9]", "quote": "",
+             "evidence": {"status": "uncertain"}})
+    assert "Неизвестный.docx" not in left2["text"]
 
 
 if __name__ == "__main__":
