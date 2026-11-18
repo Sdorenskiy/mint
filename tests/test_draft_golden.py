@@ -115,6 +115,22 @@ def test_golden_section_and_word():
                                               for info in result["section_plan"].values())
         assert "metrics" in result and "total_seconds" in result["metrics"]
 
+        def partial_fill(cfg_, stage, payload):
+            answer = fake_model(cfg_, stage, payload)
+            if stage == "fill" and answer.get("status") == "filled":
+                answer["text"] = "\n".join(FACTS[:2])
+                answer["refs"] = answer["refs"][:2]
+            return answer
+
+        with patch.object(draft, "_json", side_effect=partial_fill), patch.object(
+                draft, "search_parent_child", return_value=([], [])):
+            partial = draft.create_draft(before, cfg, ["fictional_basis.md"])
+        omitted_id = next(req["id"] for req in partial["requirements"] if req["quote"] == FACTS[2])
+        assert omitted_id not in partial["used"]
+        assert any(omitted_id in ids for ids in partial["unresolved_candidates"].values())
+        # A candidate is not automatically an applicable obligation or a verified omission.
+        assert not any(r.get("status") == "missing_requirement" for r in partial["results"])
+
 
 def test_no_model_uses_for_docx_remarks():
     doc = Document()

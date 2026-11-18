@@ -3049,4 +3049,8 @@ EN = {
     '{selected} требований для {fields} полей из {total}':
         '{selected} requirements selected for {fields} fields out of {total}',
 
+    'Кандидаты требований, не отражённые в черновике — проверить применимость':
+        'Candidate requirements not reflected in the draft — review applicability',
+    'Не подтверждена применимость нормы и точные цитаты':
+        'Norm applicability and exact quotes have not been verified',
 }

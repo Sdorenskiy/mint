@@ -113,6 +113,16 @@ def render_template_draft_tab(cfg, glossary):
                 st.text(f"{section}: " + tr("{selected} требований для {fields} полей из {total}",
                                             selected=len(summary["selected_ids"]), fields=summary["fields"],
                                             total=summary["total_requirements"]))
+    unresolved = {section: ids for section, ids in result.get("unresolved_candidates", {}).items() if ids}
+    if unresolved:
+        with st.expander(tr("Кандидаты требований, не отражённые в черновике — проверить применимость")):
+            requirements = {item["id"]: item for item in result["requirements"]}
+            for section, ids in unresolved.items():
+                st.markdown(f"**{section}**")
+                for rid in ids:
+                    item = requirements.get(rid)
+                    if item:
+                        st.text(f"{rid}: {item['source']} › {item['section']} — {item['quote']}")
     if result["removed_examples"]:
         st.caption(tr("Удалено блоков с примерами: {n}.", n=result["removed_examples"]))
     statuses = {"checked": tr("Проверено по найденной норме"), "conflict": tr("Противоречие с вики"),

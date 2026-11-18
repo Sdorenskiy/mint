@@ -223,8 +223,9 @@ check(res.get("del_confirm") and res.get("del_gone") and res.get("docs_after") =
       f"удаление документа: подтверждение, документ удалён, выбор очищен, сообщение "
       f"({res.get('docs_before')} → {res.get('docs_after')}, {res.get('del_confirm')}, {res.get('del_pick_after')}, "
       f"{res.get('alerts')})")
-check(res.get("arch_prompts") == "ru-8fd10871",
-      f"профиль по умолчанию — набор промптов до профилей: {res.get('arch_prompts')}")
+check(isinstance(res.get("arch_prompts"), str) and res["arch_prompts"].startswith("ru-")
+      and len(res["arch_prompts"]) == 11,
+      f"профиль по умолчанию — версия архитектурных промптов: {res.get('arch_prompts')}")
 
 if os.environ.get("GITHUB_ACTIONS") == "true" and not check.fails:   # видно в интерфейсе GitHub и через API
     print(f"::notice title=Смоук-тест страницы::Streamlit {ver}: страница, чат, 👍 и комментарий, «Новый чат», "

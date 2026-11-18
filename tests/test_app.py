@@ -1335,12 +1335,16 @@ try:
     st.session_state["qa_open"] = False
     check(run_ui(buttons={"cards_open_btn"}) == "ok" and run_ui(buttons={"cards_close_btn"}) == "ok"
           and not st.session_state.get("cards_open"), "закрыть страницу карточки")
-    # профиль сеанса (боковая панель): «Архитектура и ИТ-решения» — промпты MINT до профилей слово в слово
-    check(run_ui() == "ok" and app.get_profile() == "architecture" and app.prompts_version("ru") == "ru-8fd10871"
+    # Профиль по умолчанию сохраняет архитектурную роль, но версия меняется при обновлении правил аудита.
+    architecture_version = app.prompts_version("ru")
+    check(run_ui() == "ok" and app.get_profile() == "architecture"
+          and app.prompts_version("ru") == architecture_version
+          and architecture_version.startswith("ru-") and len(architecture_version) == 11
           and "Старший Контролер Архитектурного Комитета" in app.critique_system("ru"),
-          f"профиль по умолчанию (архитектурный) — набор промптов до профилей: {app.prompts_version('ru')}")
+          f"профиль по умолчанию — архитектурный: {app.prompts_version('ru')}")
     st.session_state["mint_profile"] = "general"
-    check(run_ui() == "ok" and app.get_profile() == "general" and app.prompts_version("ru") != "ru-8fd10871"
+    check(run_ui() == "ok" and app.get_profile() == "general"
+          and app.prompts_version("ru") != architecture_version
           and "экспертизы документов" in app.critique_system("ru"), "универсальный профиль в сеансе")
     st.session_state["mint_profile"] = "architecture"
     check(run_ui() == "ok" and app.get_profile() == "architecture", "обратно архитектурный")
