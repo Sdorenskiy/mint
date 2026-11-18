@@ -64,7 +64,7 @@ def fake_model(_cfg, stage, payload):
             "fixed": []}
     if stage == "extract":
         return {"requirements": [{"quote": line} for line in payload["text"].splitlines()
-                                 if line.startswith("Сервис заявок") or line.startswith("При недоступности")]}
+                                 if line and not line.startswith("#")]}
     if stage == "rows":
         # Not a row-prototype test: the model correctly finds no justified plan.
         return {"rows": []}
