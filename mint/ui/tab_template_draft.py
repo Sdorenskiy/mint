@@ -1,6 +1,5 @@
 """Document drafting tab."""
 import hashlib
-import time
 
 import streamlit as st
 
@@ -38,7 +37,7 @@ def render_template_draft_tab(cfg, glossary):
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources) or bool(missing), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=True) as status:
-            extraction = {"total": 0, "cached": 0, "durations": [], "started": None, "hit": False}
+            extraction = {"total": 0, "cached": 0, "durations": [], "hit": False}
             stages = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
                       "table": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
                       "fixed": tr("Сверка требований шаблона")}
@@ -48,16 +47,16 @@ def render_template_draft_tab(cfg, glossary):
                     extraction["total"] = index
                     return
                 if stage == "extract":
-                    extraction["started"] = time.monotonic()
                     extraction["hit"] = False
+                elif stage == "extract_elapsed":
+                    extraction["durations"].append(index)
+                    return
                 elif stage == "extract_cached":
                     extraction["cached"] = index
                     extraction["hit"] = True
                     return
                 elif stage == "extract_done":
-                    if extraction["started"] is not None and not extraction["hit"]:
-                        extraction["durations"].append(time.monotonic() - extraction["started"])
-                    extraction["started"] = None
+                    pass
                 else:
                     status.update(label=f"{stages[stage]} · {index}")
                     return
