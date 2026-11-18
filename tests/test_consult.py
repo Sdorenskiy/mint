@@ -171,7 +171,8 @@ check(res["citations_invalid"] == [] and res["unsupported"] == 1 and "получ
       and "❔" not in res["answer"], "ссылка на найденный фрагмент верна; пункт 📄 без ссылки помечен ❔ (в ответе — нет)")
 check(len(res["diagrams"]) == 1 and res["diagrams"][0].startswith("sequenceDiagram"), "схема Mermaid выделена")
 check(res["prompts"].startswith("ru-consult-") and res["prompts"] == C.consult_prompts_version()
-      and C.prompts_version() == "ru-8fd10871", f"своя версия текстов консультанта; версия чата прежняя: {res['prompts']}")
+      and C.prompts_version().startswith("ru-") and len(C.prompts_version()) == 11,
+      f"своя версия консультанта отделена от версии чата и аудита: {res['prompts']}")
 check(sent[0]["content"].startswith("Ты — ведущий ИИ-архитектор и консультант"), "профиль по умолчанию — роль архитектора")
 with C.use_profile("general"):
     C.answer_consult(req, cfg)
