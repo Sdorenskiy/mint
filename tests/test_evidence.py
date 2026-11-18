@@ -25,7 +25,8 @@ def proposal(**changes):
     v = {"status": "conflict", "ref": "N1", "claim_quote": "Журналы операций хранятся 20 суток.",
          "norm_quote": NORM, "reason": "20 меньше обязательного минимума 30",
          "applicability": "applicable",
-         "applicability_reason": "Портал-2 обрабатывает персональные данные"}
+         "applicability_reason": "Портал-2 обрабатывает персональные данные",
+         "scope_quote": "Система Портал-2 обрабатывает персональные данные."}
     return {**v, **changes}
 
 
@@ -42,6 +43,16 @@ def test_evidence():
         norm_quote=OTHER))["status"] == "uncertain"
     assert evidence.verify_comparison(CLAIM, NORM, proposal(
         claim_quote="Таблица 12 из другого документа"))["status"] == "uncertain"
+    assert evidence.verify_comparison(CLAIM, NORM, proposal(scope_quote=""))["status"] == "uncertain"
+    denial = "Система Портал-2 не обрабатывает персональные данные. Журналы хранятся 20 суток."
+    assert evidence.verify_comparison(denial, NORM, proposal(
+        claim_quote="Журналы хранятся 20 суток.",
+        scope_quote="Система Портал-2 не обрабатывает персональные данные."))["status"] == "uncertain"
+    assert not evidence._SCOPE_DENIAL.search("Журналы хранятся не менее 30 суток")
+    assert draft.covered_refs(CLAIM, ["R1"], {"R1": "Журналы операций хранятся 20 суток."}) == {"R1"}
+    assert not draft.covered_refs(CLAIM, ["R1"], {"R1": "Здесь несуществующая цитата."})
+    assert not draft.covered_refs(CLAIM, ["R1"], {"R1": "Журналы"})
+    assert not draft.covered_refs(CLAIM, ["R1"], None)
 
     # No difference other than a local table identifier: not a semantic clash.
     table_claim = "План работ представлен в таблице 7."
@@ -50,7 +61,8 @@ def test_evidence():
     assert evidence.verify_comparison(table_claim, table_norm, {
         "status": "conflict", "ref": "N1", "claim_quote": table_claim,
         "norm_quote": table_norm, "reason": "номера различаются",
-        "applicability": "applicable", "applicability_reason": "общий план"})["status"] == "unchecked"
+        "applicability": "applicable", "applicability_reason": "общий план",
+        "scope_quote": table_claim})["status"] == "unchecked"
 
     norms = ("=== ИСТОЧНИК: Регламент_ИБ.docx | Раздел в начале фрагмента: 2.1 ===\n" + NORM +
              "\n=== ИСТОЧНИК: Описание_Архива.md | Раздел в начале фрагмента: Логи ===\n" + OTHER)
@@ -68,7 +80,8 @@ def test_draft_uses_common_proof():
     base = {"supported": True, "status": "conflict", "ref": "N1",
             "claim_quote": proposal()["claim_quote"], "quote": NORM,
             "reason": proposal()["reason"], "applicability": "applicable",
-            "applicability_reason": proposal()["applicability_reason"]}
+            "applicability_reason": proposal()["applicability_reason"],
+            "scope_quote": proposal()["scope_quote"]}
     issues = []
     with patch.object(draft, "_wiki", return_value=norms), patch.object(draft, "_json", return_value=base):
         status, detail = draft._verify(cfg, CLAIM, ["R1"], reqs, None, issues, ["Основание.md"])
@@ -92,7 +105,8 @@ def test_audit_uses_common_proof():
                "quote": proposal()["claim_quote"], "text": finding["text"],
                "norm_quote": NORM, "comparison": "conflict", "reason": proposal()["reason"],
                "applicability": "applicable",
-               "applicability_reason": proposal()["applicability_reason"]}]
+               "applicability_reason": proposal()["applicability_reason"],
+               "scope_quote": proposal()["scope_quote"]}]
     with patch.object(audit, "ask_llm", return_value=json.dumps(answer, ensure_ascii=False)):
         kept, dropped = audit.critique_findings(CLAIM, norms, [finding], SimpleNamespace())
     assert not dropped
