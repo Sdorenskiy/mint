@@ -3051,4 +3051,6 @@ EN = {
 
     'Кандидаты требований, не отражённые в черновике — проверить применимость':
         'Candidate requirements not reflected in the draft — review applicability',
+    'Не подтверждена применимость нормы и точные цитаты':
+        'Norm applicability and exact quotes have not been verified',
 }
