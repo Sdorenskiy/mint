@@ -55,7 +55,7 @@ def mock_model(system, user, *_args, **_kwargs):
         conflict = "7 дней" in data["claims"]
         result = {"supported": True, "status": "conflict" if conflict else "unchecked",
                   "ref": "N1", "quote": "минимум 30 дней",
-                  "claim_quote": "7 дней" if conflict else "",
+                  "claim_quote": data["claims"] if conflict else "",
                   "applicability": "applicable", "applicability_reason": "Общее требование по сроку",
                   "reason": "7 дней меньше минимума"}
     return json.dumps(result)
