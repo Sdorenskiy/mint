@@ -4,7 +4,7 @@ import math
 
 import streamlit as st
 
-from ..draft_review import export_summary, list_runs, load_run, save_marks, save_run, summary
+from ..draft_review import compare, export_summary, list_runs, load_run, save_marks, save_run, summary
 from ..i18n import tr
 from ..prompts import render
 
@@ -78,6 +78,21 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                       "Это не полнота всех требований исходных документов.",
                       rate="—" if metrics["coverage_of_reviewed_applicable"] is None else
                       f'{100 * metrics["coverage_of_reviewed_applicable"]:.1f}%'))
+        peers = [r for r in runs if r["id"] != run_id
+                 and r["input_fingerprint"] == run["meta"]["input_fingerprint"]]
+        if peers:
+            if st.checkbox(tr("Сравнить с другим разбором того же комплекта"),
+                           key=f"draft_review_compare_toggle_{run_id}"):
+                other_id = st.selectbox(tr("Другая сохранённая оценка"),
+                                        [r["id"] for r in peers], key=f"draft_review_peer_{run_id}")
+                other = load_run(cfg, other_id)
+                if other:
+                    changes = compare(other, run)
+                    st.caption(tr("Изменение числа корректно перенесённых: {covered}; пропусков: {missing}; "
+                                  "утверждений без основания: {unsupported}.",
+                                  covered=changes["covered_delta"], missing=changes["missed_delta"],
+                                  unsupported=changes["unsupported_delta"]))
+                    st.caption(tr("Сравнение предварительное: состав извлечённых и размеченных требований мог отличаться."))
         st.download_button(tr("Скачать обезличенную сводку оценки"),
                            json.dumps(export_summary(run), ensure_ascii=False, indent=2),
                            file_name="mint_draft_review_summary.json", mime="application/json",
