@@ -3035,4 +3035,7 @@ EN = {
     'Из кэша':
         'Reused',
 
+    'Осталось примерно {minutes} мин':
+        'About {minutes} min remaining',
+
 }
