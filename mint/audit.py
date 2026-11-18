@@ -496,7 +496,7 @@ def _absorb(u, f):
         u["severity"] = f["severity"]
     u["quote"] = u.get("quote") or f.get("quote", "")
     # Keep both documented sources if two findings require one corrective action.
-    proved = lambda e: isinstance(e, dict) and e.get("status") in {"conflict", "checked"}
+    proved = lambda e: isinstance(e, dict) and e.get("status") == "conflict"
     if (source_reference(u.get("text", "")) and source_reference(f.get("text", ""))
             and proved(u.get("evidence")) and proved(f.get("evidence"))):
         refs = list(dict.fromkeys(re.findall(r"\[(?:Источник|Source):[^\]]+\]", u["text"] + " " + f["text"], re.I)))
@@ -2106,7 +2106,7 @@ def _assemble(state, filename, cfg, emit=None):
         # in the unverified group rather than in the list of proven findings.
         if source_reference(f["text"]):
             proof = f.get("evidence")
-            if not proof or proof.get("status") not in {"conflict", "checked"}:
+            if not proof or proof.get("status") != "conflict":
                 missing.append(tr("Не подтверждена применимость нормы и точные цитаты"))
         findings.append({**f, "unverified": list(dict.fromkeys(missing))})
     no_problem = [f for f in findings if not is_typo(f) and is_no_problem(f["text"])]
