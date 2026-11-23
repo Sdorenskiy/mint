@@ -1,0 +1,70 @@
+name: Publish Mint release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - release/manifest.json
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.repository == 'Sdorenskiy/mint' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate release manifest and disallow private data files
+        id: metadata
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import re
+          import subprocess
+          from pathlib import Path
+
+          data = json.loads(Path("release/manifest.json").read_text(encoding="utf-8"))
+          tag, notes = data["tag"], data["notes"]
+          if not isinstance(tag, str) or not re.fullmatch(r"v[0-9]+\.[0-9]+(?:\.[0-9]+)?", tag):
+              raise SystemExit("Invalid release tag")
+          if notes != f"docs/releases/{tag}.md" or not Path(notes).is_file():
+              raise SystemExit("Missing or unexpected public release notes")
+          names = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
+          forbidden = []
+          for name in filter(None, names):
+              parts = name.split("/")
+              if (name.endswith((".doc", ".docx", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"))
+                      or any(part in {"knowledge_base", "sources", "mint_logs", "local_eval", "eval_results"}
+                             for part in parts)
+                      or parts[-1] in {".env", "config.yaml", "secrets.toml", "feedback.jsonl"}):
+                  forbidden.append(name)
+          if forbidden:
+              raise SystemExit("Potentially confidential files are tracked; release blocked")
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as output:
+              output.write(f"tag={tag}\nnotes={notes}\n")
+          PY
+
+      - name: Publish source-only GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.metadata.outputs.tag }}
+          RELEASE_NOTES: ${{ steps.metadata.outputs.notes }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release already exists; refusing to change a published version."
+            exit 0
+          fi
+          gh release create "$RELEASE_TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Mint $RELEASE_TAG" \
+            --notes-file "$RELEASE_NOTES" \
+            --latest
