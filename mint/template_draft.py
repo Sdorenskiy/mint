@@ -921,12 +921,16 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
                 _replace(p, start, end, "")
             issues.append((tr("Требуется уточнение") if status == "missing" else
                            tr("Требуется ручная вставка")) + ": " + purpose)
-        results.append({"field": purpose, "status": status, "text": content, "detail": detail, "refs": refs,
-                        "unconfirmed_coverage": sorted(set(refs) - grounded) if status in
+        confirmed = sorted(grounded) if status in {"checked", "conflict", "uncertain", "unchecked"} else []
+        results.append({"field": purpose, "section": slot.section, "kind": "field",
+                        "status": status, "text": content, "detail": detail, "refs": refs,
+                        "confirmed_refs": confirmed,
+                        "unconfirmed_coverage": sorted(set(refs) - grounded) if confirmed or status in
                         {"checked", "conflict", "uncertain", "unchecked"} else []})
 
     for key, rows in plans.items():
         table = tables[key]
+        table_section = next((slot.section for slot in slots.values() if slot.table == key), "")
         prototype = table.rows[-1]
         headers = [c.text for c in table.rows[0].cells]
         content_columns = [i for i, h in enumerate(headers) if not _number_column(h)]
@@ -935,7 +939,9 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         for values, refs, grounded in rows:
             content = " | ".join(values)
             status, detail = _verify(cfg, content, refs, requirements, glossary, issues, sources)
-            results.append({"field": key, "status": status, "text": content, "detail": detail, "refs": refs,
+            results.append({"field": key, "section": table_section, "kind": "table",
+                            "status": status, "text": content, "detail": detail, "refs": refs,
+                            "confirmed_refs": sorted(grounded) if status != "manual" else [],
                             "unconfirmed_coverage": sorted(set(refs) - grounded) if status != "manual" else []})
             if status == "manual":
                 continue
@@ -971,8 +977,9 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         status, detail = _verify(cfg, slot.text, [], requirements, glossary, issues, sources)
         if status in {"conflict", "uncertain"}:
             _mark_wiki(doc, slot.paragraph, status, detail)
-            results.append({"field": slot.section, "status": status, "text": slot.text,
-                            "detail": detail, "refs": []})
+            results.append({"field": slot.section, "section": slot.section, "kind": "fixed",
+                            "status": status, "text": slot.text, "detail": detail,
+                            "refs": [], "confirmed_refs": []})
 
     if not fields and not plans:
         issues.append(tr("В шаблоне не удалось определить места заполнения."))

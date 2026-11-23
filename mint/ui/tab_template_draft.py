@@ -9,6 +9,7 @@ from ..template_draft import DraftError, create_draft
 from .draft_review_ui import render_draft_reviews
 from .document_edit_chat import render_draft_edit_chat
 from .draft_context_ui import render_draft_context
+from .draft_traceability_ui import render_draft_traceability
 
 
 def render_template_draft_tab(cfg, glossary):
@@ -95,6 +96,7 @@ def render_template_draft_tab(cfg, glossary):
         render_draft_reviews(cfg)
         return
     result = saved[1]
+    render_draft_traceability(result, sources)
     edited_docx = render_draft_edit_chat(cfg, key, result)
     st.download_button(tr("Скачать черновик Word"), edited_docx, file_name="MINT_draft.docx",
                        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
