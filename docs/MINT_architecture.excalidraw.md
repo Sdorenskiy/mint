@@ -12,7 +12,7 @@ tags: [excalidraw]
 ## Text Elements
 MINT — solution architecture ^MEgp2krG
 
-An intelligent RAG system: knowledge base chat, document review, verification of fixes. Python + Streamlit, mint/ package; English and Russian ^KMGeyBAP
+A local RAG system: chat, document review, correction verification and traceable Word drafting. Python + Streamlit, mint/ package; Russian and English. ^KMGeyBAP
 
 Documents for the base (.docx,
 .pdf, .md, .txt): regulations,
@@ -370,6 +370,67 @@ answer in the base
 
 If the embedding service is unavailable, only the “Words” channel works. The reranker with a dashed frame is optional: without it search runs through steps 1–3 and 5. ^alP4MKd2
 
+Word drafting — a separate workflow from review and correction verification ^xS85cGzF
+
+Source requirements are not automatically applicable: first confirm the target system, then classify each requirement by obligated actor. ^CMVVPV5h
+
+Mint v21.4.1 ^qTobGY3e
+
+1. Word template and sources
+
+The user selects a DOCX template and
+original documents from the local
+knowledge base. Originals are never
+uploaded to GitHub. ^phvLg0F1
+
+2. Infer context
+
+The model proposes the target system,
+objective, scope and participants
+from the template; sources can
+describe different systems. ^zkwy92jY
+
+3. Human confirmation
+
+Before drafting, the user verifies
+the context. It guides search but is
+not evidence of factual obligations. ^leq8ut5p
+
+4. Extract requirements
+
+Quotes are checked against the
+original text; errors and uncertainty
+remain visible for expert review. ^loAcQiAx
+
+5. Classify applicability by actor
+
+Target / shared / external
+interaction / another system /
+uncertain. Other systems' duties are
+not assigned to the target. ^LwKD4Klc
+
+6. Draft Word
+
+Section planning, filling fields and
+tables, source verification, and
+preservation of protected formatting. ^bjxl3eOv
+
+7. Two-way evidence links
+
+Word section → requirements; source →
+Word sections. A text match does not
+prove semantic completeness. ^JbjFZK0o
+
+8. Accepted chat edits
+
+Exact requirement ID → proposal and
+diff → accept, reject or undo.
+Changed evidence links require
+revalidation. ^InVh793w
+
+Traceability covers extracted requirements; it does not guarantee complete coverage of the source documents. The initial Word draft is
+evaluated separately; user-approved edits do not rewrite the initial generation result. ^pDc5xBAk
+
 %%
 ## Drawing
 ```json
@@ -378,6 +439,36 @@ If the embedding service is unavailable, only the “Words” channel works. The
   "version": 2,
   "source": "https://excalidraw.com",
   "elements": [
+    {
+      "id": "BbYr0DNr",
+      "type": "rectangle",
+      "x": -50,
+      "y": 4041.0,
+      "width": 1710,
+      "height": 653.5,
+      "angle": 0,
+      "strokeColor": "#95779c",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 643486892,
+      "version": 1,
+      "versionNonce": 2045375074,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "a0"
+    },
     {
       "id": "JbOT9pPk",
       "type": "rectangle",
@@ -403,10 +494,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "a0"
+      "index": "a1"
     },
     {
       "id": "000XjC8l",
@@ -433,10 +524,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "a1"
+      "index": "a2"
     },
     {
       "id": "5Q9oYRkV",
@@ -463,10 +554,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 573793694,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "a2"
+      "index": "a3"
     },
     {
       "id": "ybyQpWeD",
@@ -498,10 +589,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "efio1e5v"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "a3"
+      "index": "a4"
     },
     {
       "id": "MEgp2krG",
@@ -526,7 +617,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "MINT — solution architecture",
@@ -538,14 +629,14 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "MINT — solution architecture",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a4"
+      "index": "a5"
     },
     {
       "id": "KMGeyBAP",
       "type": "text",
       "x": 0,
       "y": 54,
-      "width": 1533.6,
+      "width": 1630.8,
       "height": 22.5,
       "angle": 0,
       "strokeColor": "#868e96",
@@ -563,19 +654,19 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "text": "An intelligent RAG system: knowledge base chat, document review, verification of fixes. Python + Streamlit, mint/ package; English and Russian",
+      "text": "A local RAG system: chat, document review, correction verification and traceable Word drafting. Python + Streamlit, mint/ package; Russian and English.",
       "fontSize": 18,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "An intelligent RAG system: knowledge base chat, document review, verification of fixes. Python + Streamlit, mint/ package; English and Russian",
+      "originalText": "A local RAG system: chat, document review, correction verification and traceable Word drafting. Python + Streamlit, mint/ package; Russian and English.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a5"
+      "index": "a6"
     },
     {
       "id": "0oaWIKSc",
@@ -611,10 +702,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "cacUobET"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "a6"
+      "index": "a7"
     },
     {
       "id": "CMIJ6m5h",
@@ -639,7 +730,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Documents for the base (.docx,\n.pdf, .md, .txt): regulations,\nstandards",
@@ -651,7 +742,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Documents for the base (.docx,\n.pdf, .md, .txt): regulations,\nstandards",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a7"
+      "index": "a8"
     },
     {
       "id": "HKutuPIh",
@@ -687,10 +778,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "a8"
+      "index": "a9"
     },
     {
       "id": "O8slPZY2",
@@ -715,7 +806,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "User question",
@@ -727,7 +818,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "User question",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a9"
+      "index": "aA"
     },
     {
       "id": "BqcDo4pZ",
@@ -763,10 +854,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "yjVfkkvt"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aA"
+      "index": "aB"
     },
     {
       "id": "uJcbtyhc",
@@ -791,7 +882,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Document submitted for approval\n(.docx, .pdf, .md, .txt),\ncriteria and “special attention”",
@@ -803,7 +894,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Document submitted for approval\n(.docx, .pdf, .md, .txt),\ncriteria and “special attention”",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aB"
+      "index": "aC"
     },
     {
       "id": "DhYvPR6K",
@@ -839,10 +930,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "lCjxa3JM"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aC"
+      "index": "aD"
     },
     {
       "id": "VYktHA1f",
@@ -867,7 +958,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Issued comments and the new\nrevision of the document (.docx,\n.pdf, .md, .txt)",
@@ -879,7 +970,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Issued comments and the new\nrevision of the document (.docx,\n.pdf, .md, .txt)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aD"
+      "index": "aE"
     },
     {
       "id": "ZDbBQfJM",
@@ -904,7 +995,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Interface — Streamlit",
@@ -916,7 +1007,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Interface — Streamlit",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aE"
+      "index": "aF"
     },
     {
       "id": "qIHhG3z1",
@@ -956,10 +1047,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aF"
+      "index": "aG"
     },
     {
       "id": "9EeuGh20",
@@ -984,7 +1075,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Sidebar: base documents, settings,\nmodels and limits, abbreviations,\nexpert rules and system cards (a\ncard draft — from the base),\nquality check, prompts, language\nEN / RU, feedback",
@@ -996,7 +1087,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Sidebar: base documents, settings,\nmodels and limits, abbreviations,\nexpert rules and system cards (a\ncard draft — from the base),\nquality check, prompts, language\nEN / RU, feedback",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aG"
+      "index": "aH"
     },
     {
       "id": "siuavdXh",
@@ -1036,10 +1127,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "fz2Zr53c"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aH"
+      "index": "aI"
     },
     {
       "id": "rX2XoBEz",
@@ -1064,7 +1155,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "“Chat” tab",
@@ -1076,7 +1167,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "“Chat” tab",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aI"
+      "index": "aJ"
     },
     {
       "id": "nZj9aaF1",
@@ -1116,10 +1207,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aJ"
+      "index": "aK"
     },
     {
       "id": "x1vUqZsn",
@@ -1144,7 +1235,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "“Document review” tab: the\ndocument, criteria, “special\nattention”, ⚙️ review settings in\none block, “Saved reviews”",
@@ -1156,7 +1247,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "“Document review” tab: the\ndocument, criteria, “special\nattention”, ⚙️ review settings in\none block, “Saved reviews”",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aK"
+      "index": "aL"
     },
     {
       "id": "W6098L0A",
@@ -1196,10 +1287,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "MO75qxS5"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aL"
+      "index": "aM"
     },
     {
       "id": "nukixQmd",
@@ -1224,7 +1315,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "“Verification of fixes” tab",
@@ -1236,7 +1327,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "“Verification of fixes” tab",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aM"
+      "index": "aN"
     },
     {
       "id": "cacUobET",
@@ -1263,7 +1354,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 962771986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -1300,7 +1391,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aN"
+      "index": "aO"
     },
     {
       "id": "WM7zl9XZ",
@@ -1327,7 +1418,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -1364,7 +1455,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aO"
+      "index": "aP"
     },
     {
       "id": "yjVfkkvt",
@@ -1391,7 +1482,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -1428,7 +1519,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aP"
+      "index": "aQ"
     },
     {
       "id": "lCjxa3JM",
@@ -1455,7 +1546,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -1492,7 +1583,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aQ"
+      "index": "aR"
     },
     {
       "id": "T7mEkfFQ",
@@ -1536,10 +1627,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aR"
+      "index": "aS"
     },
     {
       "id": "mZpXKQNv",
@@ -1564,7 +1655,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 397301692,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "ADDING DOCUMENTS TO THE BASE\n\n1. Parsing: .docx — Docling; .pdf\n   — without models (headings from\n   bookmarks, the contents page,\n   font size); .md, .txt → text,\n   headings, tables\n2. Chunking at paragraph and\n   sentence boundaries: parent\n   2500 chars for the LLM, child\n   400 chars for search; tables —\n   by rows\n3. Child embeddings (together with\n   the heading path)\n4. Write to the store: vectors,\n   fragments, word index\n5. Abbreviations collected from\n   documents; the manifest records\n   the model and the chunking\n   parameters\n6. A system card draft (a button\n   on the sidebar): for each card\n   section — a search of the base\n   and an LLM answer only from\n   what was found, every fact with\n   its source, gaps — “not in the\n   base”; the expert checks it,\n   fills it in and loads the card\n   into the base",
@@ -1576,7 +1667,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "ADDING DOCUMENTS TO THE BASE\n\n1. Parsing: .docx — Docling; .pdf\n   — without models (headings from\n   bookmarks, the contents page,\n   font size); .md, .txt → text,\n   headings, tables\n2. Chunking at paragraph and\n   sentence boundaries: parent\n   2500 chars for the LLM, child\n   400 chars for search; tables —\n   by rows\n3. Child embeddings (together with\n   the heading path)\n4. Write to the store: vectors,\n   fragments, word index\n5. Abbreviations collected from\n   documents; the manifest records\n   the model and the chunking\n   parameters\n6. A system card draft (a button\n   on the sidebar): for each card\n   section — a search of the base\n   and an LLM answer only from\n   what was found, every fact with\n   its source, gaps — “not in the\n   base”; the expert checks it,\n   fills it in and loads the card\n   into the base",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aS"
+      "index": "aT"
     },
     {
       "id": "TN1jFYgS",
@@ -1616,10 +1707,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "ixFn3XEj"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aT"
+      "index": "aU"
     },
     {
       "id": "m25FKYcq",
@@ -1644,7 +1735,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 723834894,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "CHAT OVER THE KNOWLEDGE BASE\n\n1. A follow-up question is\n   rewritten into a self-contained\n   one using the conversation\n   history\n2. Search the base → the 4–5 best\n   fragments\n3. Context: fragments with file\n   and sections (neighbours as one\n   block, long ones around the\n   match) + abbreviation reference\n4. The LLM answers from the\n   context only\n5. Answer with [file, section]\n   references and a source list;\n   references are checked against\n   the retrieved fragments, wrong\n   ones are marked ⚠; feedback:\n   rating and comment",
@@ -1656,7 +1747,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "CHAT OVER THE KNOWLEDGE BASE\n\n1. A follow-up question is\n   rewritten into a self-contained\n   one using the conversation\n   history\n2. Search the base → the 4–5 best\n   fragments\n3. Context: fragments with file\n   and sections (neighbours as one\n   block, long ones around the\n   match) + abbreviation reference\n4. The LLM answers from the\n   context only\n5. Answer with [file, section]\n   references and a source list;\n   references are checked against\n   the retrieved fragments, wrong\n   ones are marked ⚠; feedback:\n   rating and comment",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aU"
+      "index": "aV"
     },
     {
       "id": "GtxUZ3NF",
@@ -1696,10 +1787,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "XCyBVpqO"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aV"
+      "index": "aW"
     },
     {
       "id": "d7Q1WHl9",
@@ -1724,7 +1815,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1240655623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW (MAP → REDUCE)\n\n1. Parsing the document → .md →\n   parts by section up to 4500\n   chars (a section with its table\n   — whole); for comparison — the\n   whole document in one request\n2. MAP: each part — with norms\n   from the base, basis documents\n   (by the document's references\n   to them), expert rules, the\n   cards of mentioned systems and\n   the whole document for\n   reference (if it does not fit\n   into the window — with the\n   outline) → the LLM writes\n   findings; a described process —\n   step by step; optionally — with\n   model reasoning\n3. Self-critique (can be turned\n   off): keep or drop, severity,\n   verbatim quote; a finding about\n   a clause of another part is\n   dropped\n4. Deep review: narrow questions —\n   each pair of process steps,\n   each requirement, the\n   boundaries; contradictions\n   between sections; figures (the\n   program calculates); typos\n5. Passes 2–3 (optional): the\n   sections and the process and\n   figures questions once more at\n   temperature ≥ 0.4; what several\n   passes found ranks higher\n6. “Special attention” and the\n   checklist for the document type\n   — an answer per item from the\n   whole document, together with\n   the findings other checks\n   already made; what the document\n   requires from each mentioned\n   system\n7. Without the model:\n   abbreviations, formatting;\n   references and figures in\n   findings are checked against\n   the document and the norms\n8. REDUCE: duplicates — by words\n   (more leniently in the pieces\n   of one long table) and by the\n   model (findings about different\n   process steps are not merged);\n   findings by document section,\n   in document order; “Key points”\n   — an editor model picks the\n   most important\n9. Report .md, the document with\n   Word comments, the review log\n   and raw model answers .md;\n   comparison with a reference;\n   feedback: rating and comment\n10. The review is saved\n   (LOG_DIR/audits) and can be\n   opened later; the expert marks\n   the findings (“keep” / “minor”\n   / “wrong” with a reason) and\n   adds their own → “My findings”\n   as Word / .md and an assessment\n   file for improving MINT",
@@ -1736,7 +1827,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "DOCUMENT REVIEW (MAP → REDUCE)\n\n1. Parsing the document → .md →\n   parts by section up to 4500\n   chars (a section with its table\n   — whole); for comparison — the\n   whole document in one request\n2. MAP: each part — with norms\n   from the base, basis documents\n   (by the document's references\n   to them), expert rules, the\n   cards of mentioned systems and\n   the whole document for\n   reference (if it does not fit\n   into the window — with the\n   outline) → the LLM writes\n   findings; a described process —\n   step by step; optionally — with\n   model reasoning\n3. Self-critique (can be turned\n   off): keep or drop, severity,\n   verbatim quote; a finding about\n   a clause of another part is\n   dropped\n4. Deep review: narrow questions —\n   each pair of process steps,\n   each requirement, the\n   boundaries; contradictions\n   between sections; figures (the\n   program calculates); typos\n5. Passes 2–3 (optional): the\n   sections and the process and\n   figures questions once more at\n   temperature ≥ 0.4; what several\n   passes found ranks higher\n6. “Special attention” and the\n   checklist for the document type\n   — an answer per item from the\n   whole document, together with\n   the findings other checks\n   already made; what the document\n   requires from each mentioned\n   system\n7. Without the model:\n   abbreviations, formatting;\n   references and figures in\n   findings are checked against\n   the document and the norms\n8. REDUCE: duplicates — by words\n   (more leniently in the pieces\n   of one long table) and by the\n   model (findings about different\n   process steps are not merged);\n   findings by document section,\n   in document order; “Key points”\n   — an editor model picks the\n   most important\n9. Report .md, the document with\n   Word comments, the review log\n   and raw model answers .md;\n   comparison with a reference;\n   feedback: rating and comment\n10. The review is saved\n   (LOG_DIR/audits) and can be\n   opened later; the expert marks\n   the findings (“keep” / “minor”\n   / “wrong” with a reason) and\n   adds their own → “My findings”\n   as Word / .md and an assessment\n   file for improving MINT",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aW"
+      "index": "aX"
     },
     {
       "id": "NxT10CQ0",
@@ -1776,10 +1867,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "hD5ZeGLD"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "aX"
+      "index": "aY"
     },
     {
       "id": "cOzZf5k5",
@@ -1804,7 +1895,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1773752865,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "VERIFICATION OF FIXES\n\n1. New revision of the document →\n   sections\n2. For each comment — matching\n   sections (vector + words +\n   reranker) and, optionally,\n   norms from the base\n3. LLM: status “fixed / partially\n   / not fixed” and a verbatim\n   quote\n4. The quote is checked against\n   the revision text\n5. Verification matrix .md /\n   .docx; feedback: rating and\n   comment",
@@ -1816,7 +1907,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "VERIFICATION OF FIXES\n\n1. New revision of the document →\n   sections\n2. For each comment — matching\n   sections (vector + words +\n   reranker) and, optionally,\n   norms from the base\n3. LLM: status “fixed / partially\n   / not fixed” and a verbatim\n   quote\n4. The quote is checked against\n   the revision text\n5. Verification matrix .md /\n   .docx; feedback: rating and\n   comment",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aY"
+      "index": "aZ"
     },
     {
       "id": "dwllkuSp",
@@ -1843,7 +1934,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -1880,7 +1971,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aZ"
+      "index": "aa"
     },
     {
       "id": "fz2Zr53c",
@@ -1907,7 +1998,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1747155805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -1944,7 +2035,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aa"
+      "index": "ab"
     },
     {
       "id": "0azVOzgo",
@@ -1971,7 +2062,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -2008,7 +2099,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ab"
+      "index": "ac"
     },
     {
       "id": "MO75qxS5",
@@ -2035,7 +2126,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 331251064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -2072,7 +2163,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ac"
+      "index": "ad"
     },
     {
       "id": "fSKUH9E4",
@@ -2124,10 +2215,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "ad"
+      "index": "ae"
     },
     {
       "id": "za0DMpYx",
@@ -2152,7 +2243,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 234782881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Search engine (shared by chat, review and verification of fixes)\nvector (FAISS, meaning) + words (BM25: stems of Russian and English words, abbreviation expansions) → rank\nfusion (RRF) → reranker (optional) → best fragments + the “low confidence” signal. Details — in the diagram\nbelow.",
@@ -2164,7 +2255,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Search engine (shared by chat, review and verification of fixes)\nvector (FAISS, meaning) + words (BM25: stems of Russian and English words, abbreviation expansions) → rank\nfusion (RRF) → reranker (optional) → best fragments + the “low confidence” signal. Details — in the diagram\nbelow.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ae"
+      "index": "af"
     },
     {
       "id": "ixFn3XEj",
@@ -2191,7 +2282,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1562140317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -2228,7 +2319,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "af"
+      "index": "ag"
     },
     {
       "id": "XCyBVpqO",
@@ -2255,7 +2346,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -2292,7 +2383,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ag"
+      "index": "ah"
     },
     {
       "id": "hD5ZeGLD",
@@ -2319,7 +2410,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1713103680,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -2356,7 +2447,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ah"
+      "index": "ai"
     },
     {
       "id": "HmY8FuFN",
@@ -2388,7 +2479,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "tmov1cS1"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -2429,7 +2520,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ai"
+      "index": "aj"
     },
     {
       "id": "tmov1cS1",
@@ -2454,7 +2545,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1139303386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "card draft",
@@ -2466,7 +2557,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "card draft",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aj"
+      "index": "ak"
     },
     {
       "id": "HQQ0tDBz",
@@ -2491,7 +2582,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 493025635,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "MINT core — Python",
@@ -2503,7 +2594,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "MINT core — Python",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ak"
+      "index": "al"
     },
     {
       "id": "oUvIAzvS",
@@ -2539,10 +2630,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "al"
+      "index": "am"
     },
     {
       "id": "o4snPTpc",
@@ -2567,7 +2658,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 942050464,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Knowledge base store — the KB_DIR folder on the machine",
@@ -2579,7 +2670,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Knowledge base store — the KB_DIR folder on the machine",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "am"
+      "index": "an"
     },
     {
       "id": "frPxmTX3",
@@ -2611,10 +2702,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "KKTFtVje"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "an"
+      "index": "ao"
     },
     {
       "id": "KKTFtVje",
@@ -2639,7 +2730,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "FAISS — child vectors (searched by\n“vector”)",
@@ -2651,7 +2742,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "FAISS — child vectors (searched by\n“vector”)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ao"
+      "index": "ap"
     },
     {
       "id": "hMCVRlIk",
@@ -2683,10 +2774,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "bzt8ESso"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "ap"
+      "index": "aq"
     },
     {
       "id": "bzt8ESso",
@@ -2711,7 +2802,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "parent_store.json — parent fragments\n(read by the LLM)",
@@ -2723,7 +2814,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "parent_store.json — parent fragments\n(read by the LLM)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aq"
+      "index": "ar"
     },
     {
       "id": "zJXSKFhC",
@@ -2755,10 +2846,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "ar"
+      "index": "as"
     },
     {
       "id": "KyOaS2OB",
@@ -2783,7 +2874,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl — word index by stems",
@@ -2795,7 +2886,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "bm25_index.pkl — word index by stems",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "as"
+      "index": "at"
     },
     {
       "id": "GUq1zeZx",
@@ -2827,10 +2918,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "p0abAhKA"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "at"
+      "index": "au"
     },
     {
       "id": "p0abAhKA",
@@ -2855,7 +2946,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2048044620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json — abbreviations\nfrom documents",
@@ -2867,7 +2958,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "auto_glossary.json — abbreviations\nfrom documents",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "au"
+      "index": "av"
     },
     {
       "id": "3QZgUSQg",
@@ -2899,10 +2990,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "jXvBssE7"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "av"
+      "index": "aw"
     },
     {
       "id": "jXvBssE7",
@@ -2927,7 +3018,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "manifest.json — embedding model and\nchunking of each document;\naudit_roles.json — expert rules and\nsystem cards for the review",
@@ -2939,7 +3030,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "manifest.json — embedding model and\nchunking of each document;\naudit_roles.json — expert rules and\nsystem cards for the review",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aw"
+      "index": "ax"
     },
     {
       "id": "HKhEQe0Z",
@@ -2971,10 +3062,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "p07PEz84"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "ax"
+      "index": "ay"
     },
     {
       "id": "p07PEz84",
@@ -2999,7 +3090,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "sources/ — original documents for\nre-indexing",
@@ -3011,7 +3102,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "sources/ — original documents for\nre-indexing",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ay"
+      "index": "az"
     },
     {
       "id": "NeN18c5t",
@@ -3043,10 +3134,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "efio1e5v"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "az"
+      "index": "b10"
     },
     {
       "id": "baST1uPq",
@@ -3071,7 +3162,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "External services",
@@ -3083,7 +3174,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "External services",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b10"
+      "index": "b11"
     },
     {
       "id": "1T4SNQGj",
@@ -3108,7 +3199,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "any OpenAI-compatible API",
@@ -3120,7 +3211,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "any OpenAI-compatible API",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b11"
+      "index": "b12"
     },
     {
       "id": "A8h7VLvV",
@@ -3152,10 +3243,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "nBcm18E7"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b12"
+      "index": "b13"
     },
     {
       "id": "nBcm18E7",
@@ -3180,7 +3271,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1076978060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "LLM — answers, findings,\ncritique, “Key points”, card\ndrafts",
@@ -3192,7 +3283,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "LLM — answers, findings,\ncritique, “Key points”, card\ndrafts",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b13"
+      "index": "b14"
     },
     {
       "id": "lMqa6dyn",
@@ -3224,10 +3315,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "zDX0XsOI"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b14"
+      "index": "b15"
     },
     {
       "id": "zDX0XsOI",
@@ -3252,7 +3343,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1231588435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Embedding model — vectors",
@@ -3264,7 +3355,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Embedding model — vectors",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b15"
+      "index": "b16"
     },
     {
       "id": "0IIzxMCH",
@@ -3296,10 +3387,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "L0k8cF7P"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b16"
+      "index": "b17"
     },
     {
       "id": "L0k8cF7P",
@@ -3324,7 +3415,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 224550167,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Reranker — relevance (optional)",
@@ -3336,7 +3427,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Reranker — relevance (optional)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b17"
+      "index": "b18"
     },
     {
       "id": "wIPjVgMP",
@@ -3368,7 +3459,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "zAZSSevu"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -3405,7 +3496,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b18"
+      "index": "b19"
     },
     {
       "id": "zAZSSevu",
@@ -3430,7 +3521,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 130875986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "write",
@@ -3442,7 +3533,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "write",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b19"
+      "index": "b1A"
     },
     {
       "id": "wZnhXokE",
@@ -3474,7 +3565,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "vwSuw7eL"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -3511,7 +3602,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1A"
+      "index": "b1B"
     },
     {
       "id": "vwSuw7eL",
@@ -3536,7 +3627,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 634279936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "read",
@@ -3548,7 +3639,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "read",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1B"
+      "index": "b1C"
     },
     {
       "id": "efio1e5v",
@@ -3580,7 +3671,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "zufR1oa1"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -3617,7 +3708,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1C"
+      "index": "b1D"
     },
     {
       "id": "zufR1oa1",
@@ -3642,7 +3733,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2138346186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "HTTP",
@@ -3654,7 +3745,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "HTTP",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1D"
+      "index": "b1E"
     },
     {
       "id": "MN45msGt",
@@ -3686,10 +3777,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "m4ESFAMB"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1E"
+      "index": "b1F"
     },
     {
       "id": "m4ESFAMB",
@@ -3714,7 +3805,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1356830984,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Settings\n• .env — API addresses, keys, models, folders,\n   language (MINT_LANG)\n• config.yaml — search and review parameters\n   (optional)\n• glossary.json — your own abbreviation expansions\n   (optional)\n• checklists.yaml — your own review checklists by\n   document type (example —\n   checklists.example.yaml; a file outside the\n   program folder — its path in MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — default prompt\n   texts; your own edits — prompts.yaml (the\n   “Prompts” page); the version of the set goes\n   into feedback, the review log and the quality\n   check\n• sidebar — changes for the current session\n• LOG_DIR — work log, user feedback\n   (feedback.jsonl), quality checks (eval/), saved\n   reviews with expert assessments (audits/)",
@@ -3726,7 +3817,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Settings\n• .env — API addresses, keys, models, folders,\n   language (MINT_LANG)\n• config.yaml — search and review parameters\n   (optional)\n• glossary.json — your own abbreviation expansions\n   (optional)\n• checklists.yaml — your own review checklists by\n   document type (example —\n   checklists.example.yaml; a file outside the\n   program folder — its path in MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — default prompt\n   texts; your own edits — prompts.yaml (the\n   “Prompts” page); the version of the set goes\n   into feedback, the review log and the quality\n   check\n• sidebar — changes for the current session\n• LOG_DIR — work log, user feedback\n   (feedback.jsonl), quality checks (eval/), saved\n   reviews with expert assessments (audits/)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1F"
+      "index": "b1G"
     },
     {
       "id": "d9PJHN50",
@@ -3758,10 +3849,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "VI6vaxks"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1G"
+      "index": "b1H"
     },
     {
       "id": "VI6vaxks",
@@ -3786,7 +3877,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 494807491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Default sizes (MINT adapts them to the model\nlimits)\n• parent 2500 chars ≈ 1–1.5 pages — goes into the\n   LLM context\n• child 400 chars ≈ 2–3 sentences — the unit of\n   vector search\n• document section in review 4500 chars ≈ 3–4 pages\n• fragment for the reranker 800 chars",
@@ -3798,7 +3889,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Default sizes (MINT adapts them to the model\nlimits)\n• parent 2500 chars ≈ 1–1.5 pages — goes into the\n   LLM context\n• child 400 chars ≈ 2–3 sentences — the unit of\n   vector search\n• document section in review 4500 chars ≈ 3–4 pages\n• fragment for the reranker 800 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1H"
+      "index": "b1I"
     },
     {
       "id": "JhZOGm7N",
@@ -3830,10 +3921,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "lTJ2LlMC"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1I"
+      "index": "b1J"
     },
     {
       "id": "lTJ2LlMC",
@@ -3858,7 +3949,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Checks and quality evaluation\n• check_install.py — installation self-check:\n   packages, .docx and .pdf parsing, model\n   connections, the page\n• “Quality check” in the sidebar (from the console\n   — eval_search.py) — questions from the base run\n   through search in several variants (vector,\n   words, hybrid, hybrid + reranker): hit@k, MRR,\n   whether a difference is chance, the “low\n   confidence” threshold, recommendations;\n   optionally chat answers: a search or a model\n   error, compared by prompt version\n• expert assessments of findings (assessment files)\n   — tools/review_stats.py: the share of correct\n   findings by check kind, reasons for errors, what\n   MINT missed\n• tests/ — automated tests without network or\n   models, GitHub Actions",
@@ -3870,7 +3961,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Checks and quality evaluation\n• check_install.py — installation self-check:\n   packages, .docx and .pdf parsing, model\n   connections, the page\n• “Quality check” in the sidebar (from the console\n   — eval_search.py) — questions from the base run\n   through search in several variants (vector,\n   words, hybrid, hybrid + reranker): hit@k, MRR,\n   whether a difference is chance, the “low\n   confidence” threshold, recommendations;\n   optionally chat answers: a search or a model\n   error, compared by prompt version\n• expert assessments of findings (assessment files)\n   — tools/review_stats.py: the share of correct\n   findings by check kind, reasons for errors, what\n   MINT missed\n• tests/ — automated tests without network or\n   models, GitHub Actions",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1J"
+      "index": "b1K"
     },
     {
       "id": "QNKeGZEh",
@@ -3895,7 +3986,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Searching the base — how the right fragment is found",
@@ -3907,7 +3998,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Searching the base — how the right fragment is found",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1K"
+      "index": "b1L"
     },
     {
       "id": "rB1WYiMd",
@@ -3932,7 +4023,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "Steps 1–5 are shared by chat, review and verification of fixes; steps 6–7 — the chat answer.",
@@ -3944,7 +4035,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "Steps 1–5 are shared by chat, review and verification of fixes; steps 6–7 — the chat answer.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1L"
+      "index": "b1M"
     },
     {
       "id": "VAiZBjYp",
@@ -3984,10 +4075,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1M"
+      "index": "b1N"
     },
     {
       "id": "zq5QqHWI",
@@ -4012,7 +4103,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "1. Question\n\nin chat a\nfollow-up is\nrewritten using\nthe conversation\nhistory",
@@ -4024,7 +4115,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "1. Question\n\nin chat a\nfollow-up is\nrewritten using\nthe conversation\nhistory",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1N"
+      "index": "b1O"
     },
     {
       "id": "8SXdDbVH",
@@ -4064,10 +4155,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "ink1rcEm"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1O"
+      "index": "b1P"
     },
     {
       "id": "OhrcaOXe",
@@ -4092,7 +4183,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "2a. Vector\n   (meaning)\n\nquestion embedding\n(with an\ninstruction if the\nmodel needs one) →\nFAISS → 50 nearest\nchildren → their\nparents",
@@ -4104,7 +4195,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "2a. Vector\n   (meaning)\n\nquestion embedding\n(with an\ninstruction if the\nmodel needs one) →\nFAISS → 50 nearest\nchildren → their\nparents",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1P"
+      "index": "b1Q"
     },
     {
       "id": "bRHim8qr",
@@ -4144,10 +4235,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1Q"
+      "index": "b1R"
     },
     {
       "id": "NqXrwvw9",
@@ -4172,7 +4263,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "2b. Words (BM25)\n\nword stems\n(Russian and\nEnglish) +\nabbreviation\nexpansions → 20\nbest parents",
@@ -4184,7 +4275,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "2b. Words (BM25)\n\nword stems\n(Russian and\nEnglish) +\nabbreviation\nexpansions → 20\nbest parents",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1R"
+      "index": "b1S"
     },
     {
       "id": "qkdFilPg",
@@ -4228,10 +4319,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "QiDuXTvv"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1S"
+      "index": "b1T"
     },
     {
       "id": "bULLNvq3",
@@ -4256,7 +4347,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "3. Rank fusion\n   (RRF)\n\n16 candidates;\n   those found by\n   both channels\n   rank higher",
@@ -4268,7 +4359,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "3. Rank fusion\n   (RRF)\n\n16 candidates;\n   those found by\n   both channels\n   rank higher",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1T"
+      "index": "b1U"
     },
     {
       "id": "RoPDjkGG",
@@ -4308,10 +4399,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1U"
+      "index": "b1V"
     },
     {
       "id": "hMgyc1Ik",
@@ -4336,7 +4427,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "4. Reranker\n\noptional: scores\nall 16 by their\nmost relevant\nfragment (≤ 800\nchars); its vote\nis added to the\nfusion",
@@ -4348,7 +4439,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "4. Reranker\n\noptional: scores\nall 16 by their\nmost relevant\nfragment (≤ 800\nchars); its vote\nis added to the\nfusion",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1V"
+      "index": "b1W"
     },
     {
       "id": "xWDkXwe4",
@@ -4388,10 +4479,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "6mtwEXMY"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1W"
+      "index": "b1X"
     },
     {
       "id": "mavdOV9b",
@@ -4416,7 +4507,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "5. Select 4–5\n   fragments\n\nno duplicates, at\nmost 2 parts of\none table; the\n“low confidence”\nsignal — by the\nreranker score,\nwithout one — by\nthe question words",
@@ -4428,7 +4519,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "5. Select 4–5\n   fragments\n\nno duplicates, at\nmost 2 parts of\none table; the\n“low confidence”\nsignal — by the\nreranker score,\nwithout one — by\nthe question words",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1X"
+      "index": "b1Y"
     },
     {
       "id": "MNEr0YvH",
@@ -4468,10 +4559,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1Y"
+      "index": "b1Z"
     },
     {
       "id": "noOzI47H",
@@ -4496,7 +4587,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "6. Context for the\n   LLM\n\nparent fragments\nwith file and\nsections:\nneighbours as one\nblock, long ones\naround the match;\n+ abbreviation\nreference",
@@ -4508,7 +4599,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "6. Context for the\n   LLM\n\nparent fragments\nwith file and\nsections:\nneighbours as one\nblock, long ones\naround the match;\n+ abbreviation\nreference",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1Z"
+      "index": "b1a"
     },
     {
       "id": "nWYhUPjG",
@@ -4544,10 +4635,10 @@ If the embedding service is unavailable, only the “Words” channel works. The
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
-      "index": "b1a"
+      "index": "b1b"
     },
     {
       "id": "uX8z8N1E",
@@ -4572,7 +4663,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "7. Answer\n\nfrom the context\nonly, with [file,\nsection]\nreferences;\nreferences are\nchecked against\nthe context; no\nanswer in the base\n— it says so",
@@ -4584,7 +4675,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "7. Answer\n\nfrom the context\nonly, with [file,\nsection]\nreferences;\nreferences are\nchecked against\nthe context; no\nanswer in the base\n— it says so",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1b"
+      "index": "b1c"
     },
     {
       "id": "qWuQ5Tyt",
@@ -4611,7 +4702,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 160393074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -4648,7 +4739,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1c"
+      "index": "b1d"
     },
     {
       "id": "wFtpo5SN",
@@ -4675,7 +4766,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -4712,7 +4803,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1d"
+      "index": "b1e"
     },
     {
       "id": "ink1rcEm",
@@ -4739,7 +4830,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1602413674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -4776,7 +4867,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1e"
+      "index": "b1f"
     },
     {
       "id": "7xQsVvsf",
@@ -4803,7 +4894,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -4840,7 +4931,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1f"
+      "index": "b1g"
     },
     {
       "id": "QiDuXTvv",
@@ -4867,7 +4958,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 1163602303,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -4904,7 +4995,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1g"
+      "index": "b1h"
     },
     {
       "id": "4dLMpfoB",
@@ -4931,7 +5022,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -4968,7 +5059,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1h"
+      "index": "b1i"
     },
     {
       "id": "6mtwEXMY",
@@ -4995,7 +5086,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 574790563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -5032,7 +5123,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1i"
+      "index": "b1j"
     },
     {
       "id": "Stk5L1Iq",
@@ -5059,7 +5150,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "points": [
@@ -5096,7 +5187,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1j"
+      "index": "b1k"
     },
     {
       "id": "alP4MKd2",
@@ -5121,7 +5212,7 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "versionNonce": 783411893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435890,
+      "updated": 1795462135009,
       "link": null,
       "locked": false,
       "text": "If the embedding service is unavailable, only the “Words” channel works. The reranker with a dashed frame is optional: without it search runs through steps 1–3 and 5.",
@@ -5133,7 +5224,1243 @@ If the embedding service is unavailable, only the “Words” channel works. The
       "originalText": "If the embedding service is unavailable, only the “Words” channel works. The reranker with a dashed frame is optional: without it search runs through steps 1–3 and 5.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1k"
+      "index": "b1l"
+    },
+    {
+      "id": "xS85cGzF",
+      "type": "text",
+      "x": 0,
+      "y": 4071.0,
+      "width": 1350.0,
+      "height": 37.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 729443278,
+      "version": 1,
+      "versionNonce": 1127199645,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "Word drafting — a separate workflow from review and correction verification",
+      "fontSize": 30,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Word drafting — a separate workflow from review and correction verification",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1m"
+    },
+    {
+      "id": "CMVVPV5h",
+      "type": "text",
+      "x": 0,
+      "y": 4119.0,
+      "width": 1479.6,
+      "height": 22.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 53402587,
+      "version": 1,
+      "versionNonce": 1841050973,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "Source requirements are not automatically applicable: first confirm the target system, then classify each requirement by obligated actor.",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Source requirements are not automatically applicable: first confirm the target system, then classify each requirement by obligated actor.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1n"
+    },
+    {
+      "id": "qTobGY3e",
+      "type": "text",
+      "x": 0,
+      "y": 4155.0,
+      "width": 100.8,
+      "height": 17.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 22310855,
+      "version": 1,
+      "versionNonce": 1963743434,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "Mint v21.4.1",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Mint v21.4.1",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1o"
+    },
+    {
+      "id": "DK8kB7DT",
+      "type": "rectangle",
+      "x": 0,
+      "y": 4185.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 623848252,
+      "version": 1,
+      "versionNonce": 529228002,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "phvLg0F1"
+        },
+        {
+          "type": "arrow",
+          "id": "oi99SUzt"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b1p"
+    },
+    {
+      "id": "phvLg0F1",
+      "type": "text",
+      "x": 12,
+      "y": 4197.0,
+      "width": 345.6,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 282155046,
+      "version": 1,
+      "versionNonce": 2048913134,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "1. Word template and sources\n\nThe user selects a DOCX template and\noriginal documents from the local\nknowledge base. Originals are never\nuploaded to GitHub.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "DK8kB7DT",
+      "originalText": "1. Word template and sources\n\nThe user selects a DOCX template and\noriginal documents from the local\nknowledge base. Originals are never\nuploaded to GitHub.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1q"
+    },
+    {
+      "id": "WjKtxsaI",
+      "type": "rectangle",
+      "x": 410,
+      "y": 4185.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 895863929,
+      "version": 1,
+      "versionNonce": 2008305028,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zkwy92jY"
+        },
+        {
+          "type": "arrow",
+          "id": "oi99SUzt"
+        },
+        {
+          "type": "arrow",
+          "id": "z3x9ZzAb"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b1r"
+    },
+    {
+      "id": "zkwy92jY",
+      "type": "text",
+      "x": 422,
+      "y": 4197.0,
+      "width": 355.2,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 547590450,
+      "version": 1,
+      "versionNonce": 677440757,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "2. Infer context\n\nThe model proposes the target system,\nobjective, scope and participants\nfrom the template; sources can\ndescribe different systems.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "WjKtxsaI",
+      "originalText": "2. Infer context\n\nThe model proposes the target system,\nobjective, scope and participants\nfrom the template; sources can\ndescribe different systems.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1s"
+    },
+    {
+      "id": "zQH8lyYT",
+      "type": "rectangle",
+      "x": 820,
+      "y": 4185.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 208246326,
+      "version": 1,
+      "versionNonce": 159965943,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "leq8ut5p"
+        },
+        {
+          "type": "arrow",
+          "id": "z3x9ZzAb"
+        },
+        {
+          "type": "arrow",
+          "id": "pI5SbfaH"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b1t"
+    },
+    {
+      "id": "leq8ut5p",
+      "type": "text",
+      "x": 832,
+      "y": 4197.0,
+      "width": 345.6,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1543061831,
+      "version": 1,
+      "versionNonce": 1842945878,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "3. Human confirmation\n\nBefore drafting, the user verifies\nthe context. It guides search but is\nnot evidence of factual obligations.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "zQH8lyYT",
+      "originalText": "3. Human confirmation\n\nBefore drafting, the user verifies\nthe context. It guides search but is\nnot evidence of factual obligations.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1u"
+    },
+    {
+      "id": "bSvmNXvi",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 4185.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#ebfbee",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 437366288,
+      "version": 1,
+      "versionNonce": 1227045389,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "loAcQiAx"
+        },
+        {
+          "type": "arrow",
+          "id": "pI5SbfaH"
+        },
+        {
+          "type": "arrow",
+          "id": "dCsLXsLf"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b1v"
+    },
+    {
+      "id": "loAcQiAx",
+      "type": "text",
+      "x": 1242,
+      "y": 4197.0,
+      "width": 355.2,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1004901289,
+      "version": 1,
+      "versionNonce": 1935139015,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "4. Extract requirements\n\nQuotes are checked against the\noriginal text; errors and uncertainty\nremain visible for expert review.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "bSvmNXvi",
+      "originalText": "4. Extract requirements\n\nQuotes are checked against the\noriginal text; errors and uncertainty\nremain visible for expert review.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1w"
+    },
+    {
+      "id": "yEH4qwrM",
+      "type": "rectangle",
+      "x": 0,
+      "y": 4429.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 123991336,
+      "version": 1,
+      "versionNonce": 1212830340,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "LwKD4Klc"
+        },
+        {
+          "type": "arrow",
+          "id": "lvogpKBa"
+        },
+        {
+          "type": "arrow",
+          "id": "dCsLXsLf"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b1x"
+    },
+    {
+      "id": "LwKD4Klc",
+      "type": "text",
+      "x": 12,
+      "y": 4441.0,
+      "width": 345.6,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1102470740,
+      "version": 1,
+      "versionNonce": 851939754,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "5. Classify applicability by actor\n\nTarget / shared / external\ninteraction / another system /\nuncertain. Other systems' duties are\nnot assigned to the target.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "yEH4qwrM",
+      "originalText": "5. Classify applicability by actor\n\nTarget / shared / external\ninteraction / another system /\nuncertain. Other systems' duties are\nnot assigned to the target.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1y"
+    },
+    {
+      "id": "ioigz0CL",
+      "type": "rectangle",
+      "x": 410,
+      "y": 4429.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1532727676,
+      "version": 1,
+      "versionNonce": 595102377,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "bjxl3eOv"
+        },
+        {
+          "type": "arrow",
+          "id": "lvogpKBa"
+        },
+        {
+          "type": "arrow",
+          "id": "D5eOHAZA"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b1z"
+    },
+    {
+      "id": "bjxl3eOv",
+      "type": "text",
+      "x": 422,
+      "y": 4441.0,
+      "width": 355.2,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1254692628,
+      "version": 1,
+      "versionNonce": 1489119380,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "6. Draft Word\n\nSection planning, filling fields and\ntables, source verification, and\npreservation of protected formatting.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "ioigz0CL",
+      "originalText": "6. Draft Word\n\nSection planning, filling fields and\ntables, source verification, and\npreservation of protected formatting.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b20"
+    },
+    {
+      "id": "XPO1mpIS",
+      "type": "rectangle",
+      "x": 820,
+      "y": 4429.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1384016763,
+      "version": 1,
+      "versionNonce": 1334356844,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "JbjFZK0o"
+        },
+        {
+          "type": "arrow",
+          "id": "D5eOHAZA"
+        },
+        {
+          "type": "arrow",
+          "id": "FHj0cwfr"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b21"
+    },
+    {
+      "id": "JbjFZK0o",
+      "type": "text",
+      "x": 832,
+      "y": 4441.0,
+      "width": 355.2,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 914315966,
+      "version": 1,
+      "versionNonce": 1847393126,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "7. Two-way evidence links\n\nWord section → requirements; source →\nWord sections. A text match does not\nprove semantic completeness.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "XPO1mpIS",
+      "originalText": "7. Two-way evidence links\n\nWord section → requirements; source →\nWord sections. A text match does not\nprove semantic completeness.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b22"
+    },
+    {
+      "id": "53CpRO9g",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 4429.0,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#ebfbee",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1092503176,
+      "version": 1,
+      "versionNonce": 1161721694,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "InVh793w"
+        },
+        {
+          "type": "arrow",
+          "id": "FHj0cwfr"
+        }
+      ],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "index": "b23"
+    },
+    {
+      "id": "InVh793w",
+      "type": "text",
+      "x": 1242,
+      "y": 4441.0,
+      "width": 336.0,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 700893575,
+      "version": 1,
+      "versionNonce": 1566900065,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "8. Accepted chat edits\n\nExact requirement ID → proposal and\ndiff → accept, reject or undo.\nChanged evidence links require\nrevalidation.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "53CpRO9g",
+      "originalText": "8. Accepted chat edits\n\nExact requirement ID → proposal and\ndiff → accept, reject or undo.\nChanged evidence links require\nrevalidation.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b24"
+    },
+    {
+      "id": "oi99SUzt",
+      "type": "arrow",
+      "x": 386,
+      "y": 4263.0,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 305102513,
+      "version": 1,
+      "versionNonce": 218354747,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "DK8kB7DT",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "WjKtxsaI",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b25"
+    },
+    {
+      "id": "z3x9ZzAb",
+      "type": "arrow",
+      "x": 796,
+      "y": 4263.0,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2091969909,
+      "version": 1,
+      "versionNonce": 1449011898,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "WjKtxsaI",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "zQH8lyYT",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b26"
+    },
+    {
+      "id": "pI5SbfaH",
+      "type": "arrow",
+      "x": 1206,
+      "y": 4263.0,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 147294018,
+      "version": 1,
+      "versionNonce": 1556626306,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "zQH8lyYT",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "bSvmNXvi",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b27"
+    },
+    {
+      "id": "lvogpKBa",
+      "type": "arrow",
+      "x": 386,
+      "y": 4507.0,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1813708853,
+      "version": 1,
+      "versionNonce": 613515443,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "yEH4qwrM",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "ioigz0CL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b28"
+    },
+    {
+      "id": "D5eOHAZA",
+      "type": "arrow",
+      "x": 796,
+      "y": 4507.0,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1983139577,
+      "version": 1,
+      "versionNonce": 670435843,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "ioigz0CL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "XPO1mpIS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b29"
+    },
+    {
+      "id": "FHj0cwfr",
+      "type": "arrow",
+      "x": 1206,
+      "y": 4507.0,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1778696208,
+      "version": 1,
+      "versionNonce": 1166402109,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "XPO1mpIS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "53CpRO9g",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b2A"
+    },
+    {
+      "id": "dCsLXsLf",
+      "type": "arrow",
+      "x": 1420.0,
+      "y": 4347.0,
+      "width": 1230.0,
+      "height": 76.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1364318110,
+      "version": 1,
+      "versionNonce": 348668764,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          37.0
+        ],
+        [
+          -1230.0,
+          37.0
+        ],
+        [
+          -1230.0,
+          76.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "bSvmNXvi",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "yEH4qwrM",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b2B"
+    },
+    {
+      "id": "pDc5xBAk",
+      "type": "text",
+      "x": 0,
+      "y": 4617.0,
+      "width": 1366.8,
+      "height": 42.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 2121128288,
+      "version": 1,
+      "versionNonce": 1287752845,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135009,
+      "link": null,
+      "locked": false,
+      "text": "Traceability covers extracted requirements; it does not guarantee complete coverage of the source documents. The initial Word draft is\nevaluated separately; user-approved edits do not rewrite the initial generation result.",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Traceability covers extracted requirements; it does not guarantee complete coverage of the source documents. The initial Word draft is\nevaluated separately; user-approved edits do not rewrite the initial generation result.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b2C"
     }
   ],
   "appState": {

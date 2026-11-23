@@ -2314,6 +2314,64 @@ child / embed_batch_size
 Память и диск (один процесс Streamlit на всех пользователей): FAISS IndexFlatL2 в памяти — child × размерность × 4 байта (Qwen3-Embedding-4B, 2560: ≈ 10 КБ на child, 10 000 child ≈ 100 МБ); BM25 — позиции слов всех parent; кэш _process_cache()
 держит базу одним экземпляром. Диск KB_DIR: индексы + оригиналы sources/. LOG_DIR: mint_system.log (до 60 МБ с ротацией) и feedback.jsonl — растёт с числом отзывов. ^fdHqXOIZ
 
+Mint v21.4.1 ^vxxEtbWZ
+
+10. Формирование Word: основания, применимость и правки ^e9a1ZHqG
+
+Отдельный поток от аудита: шаблон и выбранные основания → контекст и применимость → Word → проверяемые связи. ^6BckAk3e
+
+Задание из Word
+tab_template_draft.py: шаблон или пример и
+выбранные исходные документы. Данные
+остаются в локальной базе знаний. ^nxUpPSu8
+
+Контекст
+document_context.py: infer_context()
+предлагает target, objective, scope,
+participants по заголовкам шаблона.
+confirm_context() требует подтверждения
+человеком. ^9ZAyUH9g
+
+Извлечение
+template_draft.py: create_draft() обходит
+шаблон, извлекает точные цитаты оснований;
+кэш и параллельный разбор не меняют порядок
+требований. ^LCDRemXz
+
+Применимость
+requirement_scope.py: classify() отделяет
+target/shared от
+interaction/other/uncertain; без исполнителя
+нельзя уверенно назначить обязанность. ^Mj6j61Xp
+
+Сборка Word
+template_draft.py: разделы, абзацы и таблицы
+заполняются доказуемым содержанием;
+форматирование и защищённые поля
+сохраняются. ^3aiQ1Rgi
+
+Двусторонние связи
+draft_traceability.py: build_traceability() сопоставляет
+извлечённые требования с разделами и цитатами. От Word к
+основанию и от основания к Word. ^2a2ZxCSR
+
+От основания в чат
+draft_traceability_ui.py передаёт точный ID требования;
+document_edit.py сохраняет применимость: внешние
+обязанности не становятся обязательствами цели. ^h9s09UKW
+
+Правка с решением человека
+document_edit_chat.py: propose_edit() → сравнение →
+подтверждение, отклонение или undo_accepted_version().
+Весь документ заново не генерируется. ^Pdk8g2am
+
+Изменённые связи
+mark_stale_after_edits() помечает прежние связи
+устаревшими. История изменённых разделов полная;
+последние 10 DOCX-снимков нужны только для отмены. ^gOcFE9WQ
+
+Ограничение: связи не доказывают, что извлечены ВСЕ требования широкого основания. Экспертная оценка после генерации остаётся необходимой; зелёные CI-тесты на синтетических документах не означают качество на реальном шаблоне. ^JCtzuwPd
+
 %%
 ## Drawing
 ```json
@@ -2347,7 +2405,7 @@ child / embed_batch_size
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a0"
@@ -2377,7 +2435,7 @@ child / embed_batch_size
       "versionNonce": 318228129,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a1"
@@ -2407,7 +2465,7 @@ child / embed_batch_size
       "versionNonce": 421009957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a2"
@@ -2437,7 +2495,7 @@ child / embed_batch_size
       "versionNonce": 1930857069,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a3"
@@ -2467,7 +2525,7 @@ child / embed_batch_size
       "versionNonce": 1990962993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a4"
@@ -2497,7 +2555,7 @@ child / embed_batch_size
       "versionNonce": 1044727257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a5"
@@ -2527,7 +2585,7 @@ child / embed_batch_size
       "versionNonce": 1619057106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a6"
@@ -2557,7 +2615,7 @@ child / embed_batch_size
       "versionNonce": 66655498,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a7"
@@ -2587,10 +2645,40 @@ child / embed_batch_size
       "versionNonce": 247438911,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "index": "a8"
+    },
+    {
+      "id": "wLFpUxag",
+      "type": "rectangle",
+      "x": 0,
+      "y": 16951.0,
+      "width": 2400,
+      "height": 493.25,
+      "angle": 0,
+      "strokeColor": "#95779c",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2022124569,
+      "version": 1,
+      "versionNonce": 966883474,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "a9"
     },
     {
       "id": "MEgp2krG",
@@ -2615,7 +2703,7 @@ child / embed_batch_size
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "MINT — инженерная схема: устройство и настройка параметров",
@@ -2627,7 +2715,7 @@ child / embed_batch_size
       "originalText": "MINT — инженерная схема: устройство и настройка параметров",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a9"
+      "index": "aA"
     },
     {
       "id": "KMGeyBAP",
@@ -2652,7 +2740,7 @@ child / embed_batch_size
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "По коду MINT 20.1 и новее (пакет mint/) и eval_search.py. Для администратора: что задать при установке, что MINT рассчитает сам, что подобрать тестами на своих данных и от каких особенностей компании это зависит.\nКаждый факт указан в одном месте; «панель N» — где искать подробности.",
@@ -2664,7 +2752,7 @@ child / embed_batch_size
       "originalText": "По коду MINT 20.1 и новее (пакет mint/) и eval_search.py. Для администратора: что задать при установке, что MINT рассчитает сам, что подобрать тестами на своих данных и от каких особенностей компании это зависит.\nКаждый факт указан в одном месте; «панель N» — где искать подробности.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aA"
+      "index": "aB"
     },
     {
       "id": "0oaWIKSc",
@@ -2696,10 +2784,10 @@ child / embed_batch_size
           "id": "CMIJ6m5h"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aB"
+      "index": "aC"
     },
     {
       "id": "CMIJ6m5h",
@@ -2724,7 +2812,7 @@ child / embed_batch_size
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] ВРУЧНУЮ — задаёт администратор:\n.env, config.yaml, панель",
@@ -2736,7 +2824,7 @@ child / embed_batch_size
       "originalText": "[Р] ВРУЧНУЮ — задаёт администратор:\n.env, config.yaml, панель",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aC"
+      "index": "aD"
     },
     {
       "id": "HKutuPIh",
@@ -2768,10 +2856,10 @@ child / embed_batch_size
           "id": "O8slPZY2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aD"
+      "index": "aE"
     },
     {
       "id": "O8slPZY2",
@@ -2796,7 +2884,7 @@ child / embed_batch_size
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] АВТО — MINT рассчитывает по\nмоделям и базе; трогать, если есть\nпредупреждение или так требуют\nтесты",
@@ -2808,7 +2896,7 @@ child / embed_batch_size
       "originalText": "[А] АВТО — MINT рассчитывает по\nмоделям и базе; трогать, если есть\nпредупреждение или так требуют\nтесты",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aE"
+      "index": "aF"
     },
     {
       "id": "BqcDo4pZ",
@@ -2840,10 +2928,10 @@ child / embed_batch_size
           "id": "uJcbtyhc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aF"
+      "index": "aG"
     },
     {
       "id": "uJcbtyhc",
@@ -2868,7 +2956,7 @@ child / embed_batch_size
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] ТЕСТ — подбирается проверкой\nкачества на своём наборе вопросов",
@@ -2880,7 +2968,7 @@ child / embed_batch_size
       "originalText": "[Т] ТЕСТ — подбирается проверкой\nкачества на своём наборе вопросов",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aG"
+      "index": "aH"
     },
     {
       "id": "DhYvPR6K",
@@ -2912,10 +3000,10 @@ child / embed_batch_size
           "id": "VYktHA1f"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aH"
+      "index": "aI"
     },
     {
       "id": "VYktHA1f",
@@ -2940,7 +3028,7 @@ child / embed_batch_size
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] ПРОВЕРКА — подбирается вручную\nна живых примерах",
@@ -2952,7 +3040,7 @@ child / embed_batch_size
       "originalText": "[П] ПРОВЕРКА — подбирается вручную\nна живых примерах",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aI"
+      "index": "aJ"
     },
     {
       "id": "5Q9oYRkV",
@@ -2984,10 +3072,10 @@ child / embed_batch_size
           "id": "ZDbBQfJM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aJ"
+      "index": "aK"
     },
     {
       "id": "ZDbBQfJM",
@@ -3012,7 +3100,7 @@ child / embed_batch_size
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] УМОЛЧАНИЕ — обычно не трогать",
@@ -3024,7 +3112,7 @@ child / embed_batch_size
       "originalText": "[У] УМОЛЧАНИЕ — обычно не трогать",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aK"
+      "index": "aL"
     },
     {
       "id": "qIHhG3z1",
@@ -3056,10 +3144,10 @@ child / embed_batch_size
           "id": "9EeuGh20"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aL"
+      "index": "aM"
     },
     {
       "id": "9EeuGh20",
@@ -3084,7 +3172,7 @@ child / embed_batch_size
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "♻ — действует на документы, загруженные\nпосле изменения; уже загруженные —\nпереиндексация",
@@ -3096,7 +3184,7 @@ child / embed_batch_size
       "originalText": "♻ — действует на документы, загруженные\nпосле изменения; уже загруженные —\nпереиндексация",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aM"
+      "index": "aN"
     },
     {
       "id": "siuavdXh",
@@ -3128,10 +3216,10 @@ child / embed_batch_size
           "id": "rX2XoBEz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aN"
+      "index": "aO"
     },
     {
       "id": "rX2XoBEz",
@@ -3156,7 +3244,7 @@ child / embed_batch_size
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ ОПОРНЫЙ ПАРАМЕТР — от него MINT рассчитывает другие: лимиты моделей, chars_per_token, max_tokens, top_k и\nпромежуточные chat_budget / llm_budget. Меняете его — меняются зависимые.",
@@ -3168,7 +3256,7 @@ child / embed_batch_size
       "originalText": "◆ ОПОРНЫЙ ПАРАМЕТР — от него MINT рассчитывает другие: лимиты моделей, chars_per_token, max_tokens, top_k и\nпромежуточные chat_budget / llm_budget. Меняете его — меняются зависимые.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aO"
+      "index": "aP"
     },
     {
       "id": "nZj9aaF1",
@@ -3200,10 +3288,10 @@ child / embed_batch_size
           "id": "x1vUqZsn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aP"
+      "index": "aQ"
     },
     {
       "id": "x1vUqZsn",
@@ -3228,7 +3316,7 @@ child / embed_batch_size
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ ВЛИЯЕТ НА СОСЕДНИЙ — от него зависят 1–2 параметра той же группы (parent_size → parent_overlap, audit_map_size →\naudit_context_max_chars …). Зависимые перечислены в колонке «Ограничения и зависимости».",
@@ -3240,7 +3328,7 @@ child / embed_batch_size
       "originalText": "◇ ВЛИЯЕТ НА СОСЕДНИЙ — от него зависят 1–2 параметра той же группы (parent_size → parent_overlap, audit_map_size →\naudit_context_max_chars …). Зависимые перечислены в колонке «Ограничения и зависимости».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aQ"
+      "index": "aR"
     },
     {
       "id": "W6098L0A",
@@ -3272,10 +3360,10 @@ child / embed_batch_size
           "id": "nukixQmd"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aR"
+      "index": "aS"
     },
     {
       "id": "nukixQmd",
@@ -3300,7 +3388,7 @@ child / embed_batch_size
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ТОКЕНЫ И СИМВОЛЫ — две единицы длины текста на этой схеме\n• [ток.] токены — так длину считают модели: токен — кусок слова (часто 2–4 буквы). В токенах заданы лимиты моделей\n   (llm_context_tokens, embed_max_tokens, rerank_max_tokens) и длина ответа max_tokens.\n• [симв.] символы — так текст режет MINT (фрагменты, разделы документа, контекст). Все размеры фрагментов и объёмы\n   контекста — в символах.\n• Перевод: chars(t) = t × chars_per_token × 0.85, где 0.85 (LIMIT_SAFETY) — запас 15 % на неточность оценки. Пример:\n   1000 ток. × 2.5 × 0.85 = 2125 симв., которые MINT позволит себе отправить.",
@@ -3312,7 +3400,7 @@ child / embed_batch_size
       "originalText": "ТОКЕНЫ И СИМВОЛЫ — две единицы длины текста на этой схеме\n• [ток.] токены — так длину считают модели: токен — кусок слова (часто 2–4 буквы). В токенах заданы лимиты моделей\n   (llm_context_tokens, embed_max_tokens, rerank_max_tokens) и длина ответа max_tokens.\n• [симв.] символы — так текст режет MINT (фрагменты, разделы документа, контекст). Все размеры фрагментов и объёмы\n   контекста — в символах.\n• Перевод: chars(t) = t × chars_per_token × 0.85, где 0.85 (LIMIT_SAFETY) — запас 15 % на неточность оценки. Пример:\n   1000 ток. × 2.5 × 0.85 = 2125 симв., которые MINT позволит себе отправить.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aS"
+      "index": "aT"
     },
     {
       "id": "cacUobET",
@@ -3344,10 +3432,10 @@ child / embed_batch_size
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aT"
+      "index": "aU"
     },
     {
       "id": "WM7zl9XZ",
@@ -3372,7 +3460,7 @@ child / embed_batch_size
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "СКОЛЬКО СИМВОЛОВ В ТОКЕНЕ (chars_per_token)\n• русский текст: 2.3–3 на современных многоязычных токенизаторах (Qwen2.5 / Qwen3, Llama 3); 1.5–2 на старых,\n   «английских» (Llama 2, ранние Mistral)\n• английский текст: ≈ 4 (3.5–4.5);  таблицы, номера, коды: 1.5–2.5\n• 2.5 — НЕ вычисляется само: это типовое значение (FALLBACK_LIMITS), пока ничего не измерено. Вычисляется только по\n   кнопке «Определить у сервера»: measure_chars_per_token() отправляет LLM образец на языке базы (kb_language():\n   русская — русский, английская — английский, смешанная или пустая — оба, берётся меньшее) и он же × 4, cpt = разница\n   символов / разница prompt_tokens (служебные токены сокращаются). Результат живёт до перезапуска MINT — закрепить:\n   config.yaml → models: chars_per_token.\n• одно значение берётся и для эмбеддингов, и для реранкера, хотя токенизаторы у них свои — ещё одна причина для запаса\n   15 %.",
@@ -3384,7 +3472,7 @@ child / embed_batch_size
       "originalText": "СКОЛЬКО СИМВОЛОВ В ТОКЕНЕ (chars_per_token)\n• русский текст: 2.3–3 на современных многоязычных токенизаторах (Qwen2.5 / Qwen3, Llama 3); 1.5–2 на старых,\n   «английских» (Llama 2, ранние Mistral)\n• английский текст: ≈ 4 (3.5–4.5);  таблицы, номера, коды: 1.5–2.5\n• 2.5 — НЕ вычисляется само: это типовое значение (FALLBACK_LIMITS), пока ничего не измерено. Вычисляется только по\n   кнопке «Определить у сервера»: measure_chars_per_token() отправляет LLM образец на языке базы (kb_language():\n   русская — русский, английская — английский, смешанная или пустая — оба, берётся меньшее) и он же × 4, cpt = разница\n   символов / разница prompt_tokens (служебные токены сокращаются). Результат живёт до перезапуска MINT — закрепить:\n   config.yaml → models: chars_per_token.\n• одно значение берётся и для эмбеддингов, и для реранкера, хотя токенизаторы у них свои — ещё одна причина для запаса\n   15 %.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aU"
+      "index": "aV"
     },
     {
       "id": "yjVfkkvt",
@@ -3409,7 +3497,7 @@ child / embed_batch_size
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1. Как MINT устанавливает параметры при запуске",
@@ -3421,7 +3509,7 @@ child / embed_batch_size
       "originalText": "1. Как MINT устанавливает параметры при запуске",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aV"
+      "index": "aW"
     },
     {
       "id": "lCjxa3JM",
@@ -3446,7 +3534,7 @@ child / embed_batch_size
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Каждый перезапуск страницы: main() → _base_settings() → resolve_model_limits() → resolve_settings(). Слева — откуда берутся значения, в центре — функции, которые их соединяют, справа — что чего важнее.",
@@ -3458,7 +3546,7 @@ child / embed_batch_size
       "originalText": "Каждый перезапуск страницы: main() → _base_settings() → resolve_model_limits() → resolve_settings(). Слева — откуда берутся значения, в центре — функции, которые их соединяют, справа — что чего важнее.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aW"
+      "index": "aX"
     },
     {
       "id": "za0DMpYx",
@@ -3494,10 +3582,10 @@ child / embed_batch_size
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aX"
+      "index": "aY"
     },
     {
       "id": "T7mEkfFQ",
@@ -3522,7 +3610,7 @@ child / embed_batch_size
       "versionNonce": 1587784481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Откуда берутся значения",
@@ -3534,7 +3622,7 @@ child / embed_batch_size
       "originalText": "Откуда берутся значения",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aY"
+      "index": "aZ"
     },
     {
       "id": "mZpXKQNv",
@@ -3566,10 +3654,10 @@ child / embed_batch_size
           "id": "TN1jFYgS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aZ"
+      "index": "aa"
     },
     {
       "id": "TN1jFYgS",
@@ -3594,7 +3682,7 @@ child / embed_batch_size
       "versionNonce": 1878699547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] .env → load_settings() → _load_env_files()\nкуда подключаться: адреса и ключи API, имена моделей, папки,\nсертификат. Полный список — панель 3, «Подключения».",
@@ -3606,7 +3694,7 @@ child / embed_batch_size
       "originalText": "[Р] .env → load_settings() → _load_env_files()\nкуда подключаться: адреса и ключи API, имена моделей, папки,\nсертификат. Полный список — панель 3, «Подключения».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aa"
+      "index": "ab"
     },
     {
       "id": "m25FKYcq",
@@ -3638,10 +3726,10 @@ child / embed_batch_size
           "id": "GtxUZ3NF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "ab"
+      "index": "ac"
     },
     {
       "id": "GtxUZ3NF",
@@ -3666,7 +3754,7 @@ child / embed_batch_size
       "versionNonce": 832090367,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] config.yaml → load_settings()\nкак работать: лимиты моделей, поиск, аудит. Указанные параметры\nзапоминаются (explicit_fields); подключения здесь игнорируются,\nнеизвестные параметры — предупреждение в панели.",
@@ -3678,7 +3766,7 @@ child / embed_batch_size
       "originalText": "[Р] config.yaml → load_settings()\nкак работать: лимиты моделей, поиск, аудит. Указанные параметры\nзапоминаются (explicit_fields); подключения здесь игнорируются,\nнеизвестные параметры — предупреждение в панели.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ac"
+      "index": "ad"
     },
     {
       "id": "d7Q1WHl9",
@@ -3710,10 +3798,10 @@ child / embed_batch_size
           "id": "NxT10CQ0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "ad"
+      "index": "ae"
     },
     {
       "id": "NxT10CQ0",
@@ -3738,7 +3826,7 @@ child / embed_batch_size
       "versionNonce": 544731864,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] Серверы моделей → detect_server_info()\nGET …/models → context_from_model_info(): окно LLM (max_model_len,\ncontext_length, n_ctx …), вход эмбеддингов и реранкера — если\nсервер сообщает; кэш 10 мин.",
@@ -3750,7 +3838,7 @@ child / embed_batch_size
       "originalText": "[А] Серверы моделей → detect_server_info()\nGET …/models → context_from_model_info(): окно LLM (max_model_len,\ncontext_length, n_ctx …), вход эмбеддингов и реранкера — если\nсервер сообщает; кэш 10 мин.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ae"
+      "index": "af"
     },
     {
       "id": "cOzZf5k5",
@@ -3782,10 +3870,10 @@ child / embed_batch_size
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "af"
+      "index": "ag"
     },
     {
       "id": "dwllkuSp",
@@ -3810,7 +3898,7 @@ child / embed_batch_size
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] Кнопка «Определить у сервера» → measure_chars_per_token()\nизмеряет «символов на токен» на языке базы (как — блок «Токены и\nсимволы» вверху).",
@@ -3822,7 +3910,7 @@ child / embed_batch_size
       "originalText": "[А] Кнопка «Определить у сервера» → measure_chars_per_token()\nизмеряет «символов на токен» на языке базы (как — блок «Токены и\nсимволы» вверху).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ag"
+      "index": "ah"
     },
     {
       "id": "fz2Zr53c",
@@ -3854,10 +3942,10 @@ child / embed_batch_size
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "ah"
+      "index": "ai"
     },
     {
       "id": "0azVOzgo",
@@ -3882,7 +3970,7 @@ child / embed_batch_size
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] Боковая панель → st.session_state\n«Модели и лимиты», «Экспертные настройки»: изменения на время\nсеанса; «Сбросить изменения сеанса» возвращает как было.",
@@ -3894,7 +3982,7 @@ child / embed_batch_size
       "originalText": "[Р] Боковая панель → st.session_state\n«Модели и лимиты», «Экспертные настройки»: изменения на время\nсеанса; «Сбросить изменения сеанса» возвращает как было.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ai"
+      "index": "aj"
     },
     {
       "id": "MO75qxS5",
@@ -3926,10 +4014,10 @@ child / embed_batch_size
           "id": "fSKUH9E4"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "aj"
+      "index": "ak"
     },
     {
       "id": "fSKUH9E4",
@@ -3954,7 +4042,7 @@ child / embed_batch_size
       "versionNonce": 1583187137,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] База знаний → kb_default_top_k()\nесли top_k не задан (0), предлагает его по числу фрагментов в базе\n— 4 или 5 (подробно — панель 3, top_k).",
@@ -3966,7 +4054,7 @@ child / embed_batch_size
       "originalText": "[А] База знаний → kb_default_top_k()\nесли top_k не задан (0), предлагает его по числу фрагментов в базе\n— 4 или 5 (подробно — панель 3, top_k).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ak"
+      "index": "al"
     },
     {
       "id": "ixFn3XEj",
@@ -4006,10 +4094,10 @@ child / embed_batch_size
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "al"
+      "index": "am"
     },
     {
       "id": "XCyBVpqO",
@@ -4034,7 +4122,7 @@ child / embed_batch_size
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "resolve_model_limits() ← лимиты из источников слева\nдля каждого из 4 лимитов моделей выбирает источник по приоритету (справа);\nничего нет — типовое значение (почему такие — панель 3).",
@@ -4046,7 +4134,7 @@ child / embed_batch_size
       "originalText": "resolve_model_limits() ← лимиты из источников слева\nдля каждого из 4 лимитов моделей выбирает источник по приоритету (справа);\nничего нет — типовое значение (почему такие — панель 3).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "am"
+      "index": "an"
     },
     {
       "id": "hD5ZeGLD",
@@ -4086,10 +4174,10 @@ child / embed_batch_size
           "id": "hMCVRlIk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "an"
+      "index": "ao"
     },
     {
       "id": "HmY8FuFN",
@@ -4114,7 +4202,7 @@ child / embed_batch_size
       "versionNonce": 1777859923,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "embed_prefix_preset(EMBED_MODEL)\nподбирает префиксы запроса и документа по имени модели эмбеддингов (таблица\n— панель 3, embed_query_prefix).",
@@ -4126,7 +4214,7 @@ child / embed_batch_size
       "originalText": "embed_prefix_preset(EMBED_MODEL)\nподбирает префиксы запроса и документа по имени модели эмбеддингов (таблица\n— панель 3, embed_query_prefix).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ao"
+      "index": "ap"
     },
     {
       "id": "tmov1cS1",
@@ -4170,10 +4258,10 @@ child / embed_batch_size
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "ap"
+      "index": "aq"
     },
     {
       "id": "ybyQpWeD",
@@ -4198,7 +4286,7 @@ child / embed_batch_size
       "versionNonce": 2006891536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "resolve_settings() → _derive() ← параметры из источников слева\nрассчитывает 12 параметров по лимитам моделей. Правило: значение = меньшее\nиз умолчания и потолка модели. Большое окно не раздувает фрагменты (длинный\nконтекст добавляет шум), маленькое уменьшает их, чтобы ничего не обрезалось.\nФормулы — колонка «Ограничения» в панели 3, наглядно — панель 2. Итог: cfg\n(неизменяемый Settings) и info {value, auto, ceiling, source} → блок «MINT\nрассчитал».",
@@ -4210,7 +4298,7 @@ child / embed_batch_size
       "originalText": "resolve_settings() → _derive() ← параметры из источников слева\nрассчитывает 12 параметров по лимитам моделей. Правило: значение = меньшее\nиз умолчания и потолка модели. Большое окно не раздувает фрагменты (длинный\nконтекст добавляет шум), маленькое уменьшает их, чтобы ничего не обрезалось.\nФормулы — колонка «Ограничения» в панели 3, наглядно — панель 2. Итог: cfg\n(неизменяемый Settings) и info {value, auto, ceiling, source} → блок «MINT\nрассчитал».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aq"
+      "index": "ar"
     },
     {
       "id": "HQQ0tDBz",
@@ -4250,10 +4338,10 @@ child / embed_batch_size
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "ar"
+      "index": "as"
     },
     {
       "id": "oUvIAzvS",
@@ -4278,7 +4366,7 @@ child / embed_batch_size
       "versionNonce": 1679127538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "limits_warnings()\nпредупреждение в «Модели и лимиты», если значение больше потолка или модели\nне хватает места.",
@@ -4290,7 +4378,7 @@ child / embed_batch_size
       "originalText": "limits_warnings()\nпредупреждение в «Модели и лимиты», если значение больше потолка или модели\nне хватает места.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "as"
+      "index": "at"
     },
     {
       "id": "o4snPTpc",
@@ -4326,10 +4414,10 @@ child / embed_batch_size
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "at"
+      "index": "au"
     },
     {
       "id": "frPxmTX3",
@@ -4354,7 +4442,7 @@ child / embed_batch_size
       "versionNonce": 386724997,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ask_llm() при каждом вызове\nесли окно LLM известно (сервер, config.yaml или панель): оценивает запрос в\nтокенах; свободно < 256 ток. — ошибка «КОНТЕКСТ НЕ ПОМЕЩАЕТСЯ»; ответу мало\nместа — max_tokens уменьшается. При типовом окне запрос не проверяется.",
@@ -4366,7 +4454,7 @@ child / embed_batch_size
       "originalText": "ask_llm() при каждом вызове\nесли окно LLM известно (сервер, config.yaml или панель): оценивает запрос в\nтокенах; свободно < 256 ток. — ошибка «КОНТЕКСТ НЕ ПОМЕЩАЕТСЯ»; ответу мало\nместа — max_tokens уменьшается. При типовом окне запрос не проверяется.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "au"
+      "index": "av"
     },
     {
       "id": "KKTFtVje",
@@ -4393,7 +4481,7 @@ child / embed_batch_size
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -4430,7 +4518,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "av"
+      "index": "aw"
     },
     {
       "id": "hMCVRlIk",
@@ -4457,7 +4545,7 @@ child / embed_batch_size
       "versionNonce": 3324235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -4494,7 +4582,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aw"
+      "index": "ax"
     },
     {
       "id": "bzt8ESso",
@@ -4521,7 +4609,7 @@ child / embed_batch_size
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -4558,7 +4646,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ax"
+      "index": "ay"
     },
     {
       "id": "zJXSKFhC",
@@ -4585,7 +4673,7 @@ child / embed_batch_size
       "versionNonce": 22369781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -4622,7 +4710,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ay"
+      "index": "az"
     },
     {
       "id": "KyOaS2OB",
@@ -4649,7 +4737,7 @@ child / embed_batch_size
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -4686,7 +4774,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "az"
+      "index": "b10"
     },
     {
       "id": "GUq1zeZx",
@@ -4713,7 +4801,7 @@ child / embed_batch_size
       "versionNonce": 780732774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -4750,7 +4838,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b10"
+      "index": "b11"
     },
     {
       "id": "p0abAhKA",
@@ -4782,10 +4870,10 @@ child / embed_batch_size
           "id": "3QZgUSQg"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b11"
+      "index": "b12"
     },
     {
       "id": "3QZgUSQg",
@@ -4810,7 +4898,7 @@ child / embed_batch_size
       "versionNonce": 1416799419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПРИОРИТЕТ ИСТОЧНИКОВ — один для всех параметров\n(его применяют resolve_model_limits() и resolve_settings())\n\n• подключения (адреса, ключи, модели, папки): переменные окружения\n   системы > .env\n• лимиты моделей: панель (сеанс) > config.yaml > сервер / измерение >\n   типовое значение\n• остальные параметры: панель (сеанс) > config.yaml > расчёт MINT (для\n   [А]) > умолчание в коде\n\nЯвно заданное значение (панель или config.yaml) всегда важнее найденного\nу сервера и рассчитанного. [А]-параметр, зафиксированный вручную, MINT\nне пересчитывает, но предупредит, если он больше потолка модели\n(limits_warnings).",
@@ -4822,7 +4910,7 @@ child / embed_batch_size
       "originalText": "ПРИОРИТЕТ ИСТОЧНИКОВ — один для всех параметров\n(его применяют resolve_model_limits() и resolve_settings())\n\n• подключения (адреса, ключи, модели, папки): переменные окружения\n   системы > .env\n• лимиты моделей: панель (сеанс) > config.yaml > сервер / измерение >\n   типовое значение\n• остальные параметры: панель (сеанс) > config.yaml > расчёт MINT (для\n   [А]) > умолчание в коде\n\nЯвно заданное значение (панель или config.yaml) всегда важнее найденного\nу сервера и рассчитанного. [А]-параметр, зафиксированный вручную, MINT\nне пересчитывает, но предупредит, если он больше потолка модели\n(limits_warnings).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b12"
+      "index": "b13"
     },
     {
       "id": "HKhEQe0Z",
@@ -4847,7 +4935,7 @@ child / embed_batch_size
       "versionNonce": 1913301777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2. Как делится окно модели: что занимает место и сколько остаётся тексту из базы",
@@ -4859,7 +4947,7 @@ child / embed_batch_size
       "originalText": "2. Как делится окно модели: что занимает место и сколько остаётся тексту из базы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b13"
+      "index": "b14"
     },
     {
       "id": "p07PEz84",
@@ -4884,7 +4972,7 @@ child / embed_batch_size
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Слева — общий вид (масштаб условный), справа — те же полосы на числах: окно LLM 32768 ток., max_tokens 1500, chars_per_token 2.5, top_k 5, вход эмбеддингов и реранкера 8192 ток., Qwen3-Embedding. Узкие части на правых полосах\nпоказаны шире, чем в масштабе. Формула каждой части — колонка «Ограничения» в панели 3.",
@@ -4896,7 +4984,7 @@ child / embed_batch_size
       "originalText": "Слева — общий вид (масштаб условный), справа — те же полосы на числах: окно LLM 32768 ток., max_tokens 1500, chars_per_token 2.5, top_k 5, вход эмбеддингов и реранкера 8192 ток., Qwen3-Embedding. Узкие части на правых полосах\nпоказаны шире, чем в масштабе. Формула каждой части — колонка «Ограничения» в панели 3.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b14"
+      "index": "b15"
     },
     {
       "id": "NeN18c5t",
@@ -4921,7 +5009,7 @@ child / embed_batch_size
       "versionNonce": 590271204,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ОБЩИЙ ВИД",
@@ -4933,7 +5021,7 @@ child / embed_batch_size
       "originalText": "ОБЩИЙ ВИД",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b15"
+      "index": "b16"
     },
     {
       "id": "baST1uPq",
@@ -4958,7 +5046,7 @@ child / embed_batch_size
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПРИМЕР НА ЧИСЛАХ",
@@ -4970,7 +5058,7 @@ child / embed_batch_size
       "originalText": "ПРИМЕР НА ЧИСЛАХ",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b16"
+      "index": "b17"
     },
     {
       "id": "1T4SNQGj",
@@ -4995,7 +5083,7 @@ child / embed_batch_size
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЧАТ — один вызов LLM на вопрос.  Вся полоса = llm_context_tokens [ток.]",
@@ -5007,7 +5095,7 @@ child / embed_batch_size
       "originalText": "ЧАТ — один вызов LLM на вопрос.  Вся полоса = llm_context_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b17"
+      "index": "b18"
     },
     {
       "id": "A8h7VLvV",
@@ -5032,7 +5120,7 @@ child / embed_batch_size
       "versionNonce": 1275421862,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЧАТ, окно 32768 ток.",
@@ -5044,7 +5132,7 @@ child / embed_batch_size
       "originalText": "ЧАТ, окно 32768 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b18"
+      "index": "b19"
     },
     {
       "id": "nBcm18E7",
@@ -5076,10 +5164,10 @@ child / embed_batch_size
           "id": "lMqa6dyn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b19"
+      "index": "b1A"
     },
     {
       "id": "lMqa6dyn",
@@ -5104,7 +5192,7 @@ child / embed_batch_size
       "versionNonce": 1668778927,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт, вопрос, история,\nсокращения\nCHAT_RESERVE 800 ток.",
@@ -5116,7 +5204,7 @@ child / embed_batch_size
       "originalText": "промпт, вопрос, история,\nсокращения\nCHAT_RESERVE 800 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1A"
+      "index": "b1B"
     },
     {
       "id": "zDX0XsOI",
@@ -5148,10 +5236,10 @@ child / embed_batch_size
           "id": "0IIzxMCH"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1B"
+      "index": "b1C"
     },
     {
       "id": "0IIzxMCH",
@@ -5176,7 +5264,7 @@ child / embed_batch_size
       "versionNonce": 638186731,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\nmax_tokens [ток.]",
@@ -5188,7 +5276,7 @@ child / embed_batch_size
       "originalText": "ответ\nmax_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1C"
+      "index": "b1D"
     },
     {
       "id": "L0k8cF7P",
@@ -5220,10 +5308,10 @@ child / embed_batch_size
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1D"
+      "index": "b1E"
     },
     {
       "id": "wIPjVgMP",
@@ -5248,7 +5336,7 @@ child / embed_batch_size
       "versionNonce": 1575679632,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас 15 %\n(× 0.85)",
@@ -5260,7 +5348,7 @@ child / embed_batch_size
       "originalText": "запас 15 %\n(× 0.85)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1E"
+      "index": "b1F"
     },
     {
       "id": "zAZSSevu",
@@ -5292,10 +5380,10 @@ child / embed_batch_size
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1F"
+      "index": "b1G"
     },
     {
       "id": "wZnhXokE",
@@ -5320,7 +5408,7 @@ child / embed_batch_size
       "versionNonce": 1117002960,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "chat_budget\nостаток → в символы",
@@ -5332,7 +5420,7 @@ child / embed_batch_size
       "originalText": "chat_budget\nостаток → в символы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1G"
+      "index": "b1H"
     },
     {
       "id": "vwSuw7eL",
@@ -5364,10 +5452,10 @@ child / embed_batch_size
           "id": "efio1e5v"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1H"
+      "index": "b1I"
     },
     {
       "id": "efio1e5v",
@@ -5392,7 +5480,7 @@ child / embed_batch_size
       "versionNonce": 621027637,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт и пр.\n800 ток.",
@@ -5404,7 +5492,7 @@ child / embed_batch_size
       "originalText": "промпт и пр.\n800 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1I"
+      "index": "b1J"
     },
     {
       "id": "zufR1oa1",
@@ -5436,10 +5524,10 @@ child / embed_batch_size
           "id": "MN45msGt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1J"
+      "index": "b1K"
     },
     {
       "id": "MN45msGt",
@@ -5464,7 +5552,7 @@ child / embed_batch_size
       "versionNonce": 737651295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -5476,7 +5564,7 @@ child / embed_batch_size
       "originalText": "ответ\n1500 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1K"
+      "index": "b1L"
     },
     {
       "id": "m4ESFAMB",
@@ -5508,10 +5596,10 @@ child / embed_batch_size
           "id": "d9PJHN50"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1L"
+      "index": "b1M"
     },
     {
       "id": "d9PJHN50",
@@ -5536,7 +5624,7 @@ child / embed_batch_size
       "versionNonce": 1934321891,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас 15 %\n4 570 ток.",
@@ -5548,7 +5636,7 @@ child / embed_batch_size
       "originalText": "запас 15 %\n4 570 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1M"
+      "index": "b1N"
     },
     {
       "id": "VI6vaxks",
@@ -5580,10 +5668,10 @@ child / embed_batch_size
           "id": "JhZOGm7N"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1N"
+      "index": "b1O"
     },
     {
       "id": "JhZOGm7N",
@@ -5608,7 +5696,7 @@ child / embed_batch_size
       "versionNonce": 1438249924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "chat_budget\n25 898 ток. × 2.5 = 64 744 симв.",
@@ -5620,7 +5708,7 @@ child / embed_batch_size
       "originalText": "chat_budget\n25 898 ток. × 2.5 = 64 744 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1O"
+      "index": "b1P"
     },
     {
       "id": "lTJ2LlMC",
@@ -5645,7 +5733,7 @@ child / embed_batch_size
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -5671,7 +5759,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1P"
+      "index": "b1Q"
     },
     {
       "id": "000XjC8l",
@@ -5696,7 +5784,7 @@ child / embed_batch_size
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "llm_context_tokens [ток.] — окно модели целиком",
@@ -5708,7 +5796,7 @@ child / embed_batch_size
       "originalText": "llm_context_tokens [ток.] — окно модели целиком",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1Q"
+      "index": "b1R"
     },
     {
       "id": "QNKeGZEh",
@@ -5733,7 +5821,7 @@ child / embed_batch_size
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -5759,7 +5847,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1R"
+      "index": "b1S"
     },
     {
       "id": "rB1WYiMd",
@@ -5784,7 +5872,7 @@ child / embed_batch_size
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "32 768 ток. = 800 + 1 500 + 4 570 + 25 898",
@@ -5796,7 +5884,7 @@ child / embed_batch_size
       "originalText": "32 768 ток. = 800 + 1 500 + 4 570 + 25 898",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1S"
+      "index": "b1T"
     },
     {
       "id": "VAiZBjYp",
@@ -5821,7 +5909,7 @@ child / embed_batch_size
       "versionNonce": 722724126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -5839,7 +5927,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1T"
+      "index": "b1U"
     },
     {
       "id": "zq5QqHWI",
@@ -5864,7 +5952,7 @@ child / embed_batch_size
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -5882,7 +5970,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1U"
+      "index": "b1V"
     },
     {
       "id": "8SXdDbVH",
@@ -5907,7 +5995,7 @@ child / embed_batch_size
       "versionNonce": 584673810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -5925,7 +6013,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1V"
+      "index": "b1W"
     },
     {
       "id": "OhrcaOXe",
@@ -5950,7 +6038,7 @@ child / embed_batch_size
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -5968,7 +6056,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1W"
+      "index": "b1X"
     },
     {
       "id": "bRHim8qr",
@@ -6000,10 +6088,10 @@ child / embed_batch_size
           "id": "NqXrwvw9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1X"
+      "index": "b1Y"
     },
     {
       "id": "NqXrwvw9",
@@ -6028,7 +6116,7 @@ child / embed_batch_size
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "фрагмент 1\n≤ smart_truncate_chars",
@@ -6040,7 +6128,7 @@ child / embed_batch_size
       "originalText": "фрагмент 1\n≤ smart_truncate_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1Y"
+      "index": "b1Z"
     },
     {
       "id": "qkdFilPg",
@@ -6072,10 +6160,10 @@ child / embed_batch_size
           "id": "bULLNvq3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1Z"
+      "index": "b1a"
     },
     {
       "id": "bULLNvq3",
@@ -6100,7 +6188,7 @@ child / embed_batch_size
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "фрагмент 2",
@@ -6112,7 +6200,7 @@ child / embed_batch_size
       "originalText": "фрагмент 2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1a"
+      "index": "b1b"
     },
     {
       "id": "RoPDjkGG",
@@ -6144,10 +6232,10 @@ child / embed_batch_size
           "id": "hMgyc1Ik"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1b"
+      "index": "b1c"
     },
     {
       "id": "hMgyc1Ik",
@@ -6172,7 +6260,7 @@ child / embed_batch_size
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "…",
@@ -6184,7 +6272,7 @@ child / embed_batch_size
       "originalText": "…",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1c"
+      "index": "b1d"
     },
     {
       "id": "xWDkXwe4",
@@ -6216,10 +6304,10 @@ child / embed_batch_size
           "id": "mavdOV9b"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1d"
+      "index": "b1e"
     },
     {
       "id": "mavdOV9b",
@@ -6244,7 +6332,7 @@ child / embed_batch_size
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "фрагмент top_k",
@@ -6256,7 +6344,7 @@ child / embed_batch_size
       "originalText": "фрагмент top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1e"
+      "index": "b1f"
     },
     {
       "id": "MNEr0YvH",
@@ -6288,10 +6376,10 @@ child / embed_batch_size
           "id": "noOzI47H"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1f"
+      "index": "b1g"
     },
     {
       "id": "noOzI47H",
@@ -6316,7 +6404,7 @@ child / embed_batch_size
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно, если фрагменты короче",
@@ -6328,7 +6416,7 @@ child / embed_batch_size
       "originalText": "свободно, если фрагменты короче",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1g"
+      "index": "b1h"
     },
     {
       "id": "nWYhUPjG",
@@ -6360,10 +6448,10 @@ child / embed_batch_size
           "id": "uX8z8N1E"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1h"
+      "index": "b1i"
     },
     {
       "id": "uX8z8N1E",
@@ -6388,7 +6476,7 @@ child / embed_batch_size
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1\n2500",
@@ -6400,7 +6488,7 @@ child / embed_batch_size
       "originalText": "1\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1i"
+      "index": "b1j"
     },
     {
       "id": "qWuQ5Tyt",
@@ -6432,10 +6520,10 @@ child / embed_batch_size
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1j"
+      "index": "b1k"
     },
     {
       "id": "wFtpo5SN",
@@ -6460,7 +6548,7 @@ child / embed_batch_size
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2\n2500",
@@ -6472,7 +6560,7 @@ child / embed_batch_size
       "originalText": "2\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1k"
+      "index": "b1l"
     },
     {
       "id": "ink1rcEm",
@@ -6504,10 +6592,10 @@ child / embed_batch_size
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1l"
+      "index": "b1m"
     },
     {
       "id": "7xQsVvsf",
@@ -6532,7 +6620,7 @@ child / embed_batch_size
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3\n2500",
@@ -6544,7 +6632,7 @@ child / embed_batch_size
       "originalText": "3\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1m"
+      "index": "b1n"
     },
     {
       "id": "QiDuXTvv",
@@ -6576,10 +6664,10 @@ child / embed_batch_size
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1n"
+      "index": "b1o"
     },
     {
       "id": "4dLMpfoB",
@@ -6604,7 +6692,7 @@ child / embed_batch_size
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4\n2500",
@@ -6616,7 +6704,7 @@ child / embed_batch_size
       "originalText": "4\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1o"
+      "index": "b1p"
     },
     {
       "id": "6mtwEXMY",
@@ -6648,10 +6736,10 @@ child / embed_batch_size
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1p"
+      "index": "b1q"
     },
     {
       "id": "Stk5L1Iq",
@@ -6676,7 +6764,7 @@ child / embed_batch_size
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5\n2500",
@@ -6688,7 +6776,7 @@ child / embed_batch_size
       "originalText": "5\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1q"
+      "index": "b1r"
     },
     {
       "id": "alP4MKd2",
@@ -6720,10 +6808,10 @@ child / embed_batch_size
           "id": "JbOT9pPk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1r"
+      "index": "b1s"
     },
     {
       "id": "JbOT9pPk",
@@ -6748,7 +6836,7 @@ child / embed_batch_size
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно 52 244 симв.\n(значения ограничены умолчаниями)",
@@ -6760,7 +6848,7 @@ child / embed_batch_size
       "originalText": "свободно 52 244 симв.\n(значения ограничены умолчаниями)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1s"
+      "index": "b1t"
     },
     {
       "id": "xS85cGzF",
@@ -6785,7 +6873,7 @@ child / embed_batch_size
       "versionNonce": 1127199645,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -6811,7 +6899,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1t"
+      "index": "b1u"
     },
     {
       "id": "CMVVPV5h",
@@ -6836,7 +6924,7 @@ child / embed_batch_size
       "versionNonce": 1841050973,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "chat_budget [симв.] = top_k фрагментов + свободное место",
@@ -6848,7 +6936,7 @@ child / embed_batch_size
       "originalText": "chat_budget [симв.] = top_k фрагментов + свободное место",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1u"
+      "index": "b1v"
     },
     {
       "id": "qTobGY3e",
@@ -6873,7 +6961,7 @@ child / embed_batch_size
       "versionNonce": 1963743434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -6899,7 +6987,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1v"
+      "index": "b1w"
     },
     {
       "id": "DK8kB7DT",
@@ -6924,7 +7012,7 @@ child / embed_batch_size
       "versionNonce": 529228002,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "64 744 симв.: 5 × 2500 = 12 500 занято, 52 244 свободно",
@@ -6936,7 +7024,7 @@ child / embed_batch_size
       "originalText": "64 744 симв.: 5 × 2500 = 12 500 занято, 52 244 свободно",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1w"
+      "index": "b1x"
     },
     {
       "id": "phvLg0F1",
@@ -6968,10 +7056,10 @@ child / embed_batch_size
           "id": "WjKtxsaI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b1x"
+      "index": "b1y"
     },
     {
       "id": "WjKtxsaI",
@@ -6996,7 +7084,7 @@ child / embed_batch_size
       "versionNonce": 2008305028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПОЧЕМУ 32768 ток. → ≈ 64 700 симв., А 4096 ток. → ЛИШЬ ≈ 3 800 симв.\nИз окна сначала вычитаются части фиксированного размера: ответ 1500 + промпт 800 = 2300 ток. Они одинаковы для\nлюбого окна:\n• 32768 − 2300 = 30 468 ток. × 2.5 × 0.85 = 64 744 симв.  — фиксированные части заняли 7 % окна\n• 4096 − 2300 = 1 796 ток. × 2.5 × 0.85 = 3 816 симв.  — фиксированные части заняли 56 % окна\nОкно меньше в 8 раз, а бюджет — в 17 раз.",
@@ -7008,7 +7096,7 @@ child / embed_batch_size
       "originalText": "ПОЧЕМУ 32768 ток. → ≈ 64 700 симв., А 4096 ток. → ЛИШЬ ≈ 3 800 симв.\nИз окна сначала вычитаются части фиксированного размера: ответ 1500 + промпт 800 = 2300 ток. Они одинаковы для\nлюбого окна:\n• 32768 − 2300 = 30 468 ток. × 2.5 × 0.85 = 64 744 симв.  — фиксированные части заняли 7 % окна\n• 4096 − 2300 = 1 796 ток. × 2.5 × 0.85 = 3 816 симв.  — фиксированные части заняли 56 % окна\nОкно меньше в 8 раз, а бюджет — в 17 раз.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1y"
+      "index": "b1z"
     },
     {
       "id": "zkwy92jY",
@@ -7033,7 +7121,7 @@ child / embed_batch_size
       "versionNonce": 677440757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЧАТ, окно 4096 ток. — то же самое на маленькой модели",
@@ -7045,7 +7133,7 @@ child / embed_batch_size
       "originalText": "ЧАТ, окно 4096 ток. — то же самое на маленькой модели",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1z"
+      "index": "b20"
     },
     {
       "id": "zQH8lyYT",
@@ -7077,10 +7165,10 @@ child / embed_batch_size
           "id": "leq8ut5p"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b20"
+      "index": "b21"
     },
     {
       "id": "leq8ut5p",
@@ -7105,7 +7193,7 @@ child / embed_batch_size
       "versionNonce": 1842945878,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт и пр.\n800 ток.",
@@ -7117,7 +7205,7 @@ child / embed_batch_size
       "originalText": "промпт и пр.\n800 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b21"
+      "index": "b22"
     },
     {
       "id": "bSvmNXvi",
@@ -7149,10 +7237,10 @@ child / embed_batch_size
           "id": "loAcQiAx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b22"
+      "index": "b23"
     },
     {
       "id": "loAcQiAx",
@@ -7177,7 +7265,7 @@ child / embed_batch_size
       "versionNonce": 1935139015,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -7189,7 +7277,7 @@ child / embed_batch_size
       "originalText": "ответ\n1500 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b23"
+      "index": "b24"
     },
     {
       "id": "yEH4qwrM",
@@ -7221,10 +7309,10 @@ child / embed_batch_size
           "id": "LwKD4Klc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b24"
+      "index": "b25"
     },
     {
       "id": "LwKD4Klc",
@@ -7249,7 +7337,7 @@ child / embed_batch_size
       "versionNonce": 851939754,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n269 ток.",
@@ -7261,7 +7349,7 @@ child / embed_batch_size
       "originalText": "запас\n269 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b25"
+      "index": "b26"
     },
     {
       "id": "ioigz0CL",
@@ -7293,10 +7381,10 @@ child / embed_batch_size
           "id": "bjxl3eOv"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b26"
+      "index": "b27"
     },
     {
       "id": "bjxl3eOv",
@@ -7321,7 +7409,7 @@ child / embed_batch_size
       "versionNonce": 1489119380,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "chat_budget\n1 527 ток. × 2.5 = 3 816 симв.",
@@ -7333,7 +7421,7 @@ child / embed_batch_size
       "originalText": "chat_budget\n1 527 ток. × 2.5 = 3 816 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b27"
+      "index": "b28"
     },
     {
       "id": "XPO1mpIS",
@@ -7358,7 +7446,7 @@ child / embed_batch_size
       "versionNonce": 1334356844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -7376,7 +7464,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b28"
+      "index": "b29"
     },
     {
       "id": "JbjFZK0o",
@@ -7401,7 +7489,7 @@ child / embed_batch_size
       "versionNonce": 1847393126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -7419,7 +7507,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b29"
+      "index": "b2A"
     },
     {
       "id": "53CpRO9g",
@@ -7451,10 +7539,10 @@ child / embed_batch_size
           "id": "InVh793w"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2A"
+      "index": "b2B"
     },
     {
       "id": "InVh793w",
@@ -7479,7 +7567,7 @@ child / embed_batch_size
       "versionNonce": 1566900065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1\n763",
@@ -7491,7 +7579,7 @@ child / embed_batch_size
       "originalText": "1\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2B"
+      "index": "b2C"
     },
     {
       "id": "oi99SUzt",
@@ -7523,10 +7611,10 @@ child / embed_batch_size
           "id": "z3x9ZzAb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2C"
+      "index": "b2D"
     },
     {
       "id": "z3x9ZzAb",
@@ -7551,7 +7639,7 @@ child / embed_batch_size
       "versionNonce": 1449011898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2\n763",
@@ -7563,7 +7651,7 @@ child / embed_batch_size
       "originalText": "2\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2D"
+      "index": "b2E"
     },
     {
       "id": "pI5SbfaH",
@@ -7595,10 +7683,10 @@ child / embed_batch_size
           "id": "lvogpKBa"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2E"
+      "index": "b2F"
     },
     {
       "id": "lvogpKBa",
@@ -7623,7 +7711,7 @@ child / embed_batch_size
       "versionNonce": 613515443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3\n763",
@@ -7635,7 +7723,7 @@ child / embed_batch_size
       "originalText": "3\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2F"
+      "index": "b2G"
     },
     {
       "id": "D5eOHAZA",
@@ -7667,10 +7755,10 @@ child / embed_batch_size
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2G"
+      "index": "b2H"
     },
     {
       "id": "FHj0cwfr",
@@ -7695,7 +7783,7 @@ child / embed_batch_size
       "versionNonce": 1166402109,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4\n763",
@@ -7707,7 +7795,7 @@ child / embed_batch_size
       "originalText": "4\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2H"
+      "index": "b2I"
     },
     {
       "id": "dCsLXsLf",
@@ -7739,10 +7827,10 @@ child / embed_batch_size
           "id": "pDc5xBAk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2I"
+      "index": "b2J"
     },
     {
       "id": "pDc5xBAk",
@@ -7767,7 +7855,7 @@ child / embed_batch_size
       "versionNonce": 1287752845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5\n763",
@@ -7779,7 +7867,7 @@ child / embed_batch_size
       "originalText": "5\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2J"
+      "index": "b2K"
     },
     {
       "id": "BbYr0DNr",
@@ -7804,7 +7892,7 @@ child / embed_batch_size
       "versionNonce": 2045375074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -7830,7 +7918,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b2K"
+      "index": "b2L"
     },
     {
       "id": "VjHkLAXa",
@@ -7855,7 +7943,7 @@ child / embed_batch_size
       "versionNonce": 248780357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3 816 симв. / 5 = 763 симв. на фрагмент: MINT уменьшит parent_size и smart_truncate_chars до 763 и покажет это в «MINT\n   рассчитал»",
@@ -7867,7 +7955,7 @@ child / embed_batch_size
       "originalText": "3 816 симв. / 5 = 763 симв. на фрагмент: MINT уменьшит parent_size и smart_truncate_chars до 763 и покажет это в «MINT\n   рассчитал»",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2L"
+      "index": "b2M"
     },
     {
       "id": "EYKnsdF5",
@@ -7892,7 +7980,7 @@ child / embed_batch_size
       "versionNonce": 666412184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА — один вызов LLM (проверка одного раздела).  Вся полоса = llm_context_tokens [ток.]",
@@ -7904,7 +7992,7 @@ child / embed_batch_size
       "originalText": "АУДИТ ДОКУМЕНТА — один вызов LLM (проверка одного раздела).  Вся полоса = llm_context_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2M"
+      "index": "b2N"
     },
     {
       "id": "fI4GQqfW",
@@ -7929,7 +8017,7 @@ child / embed_batch_size
       "versionNonce": 242970542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "АУДИТ, окно 32768 ток.: chars(32768 − 1500) = 66 444 симв.",
@@ -7941,7 +8029,7 @@ child / embed_batch_size
       "originalText": "АУДИТ, окно 32768 ток.: chars(32768 − 1500) = 66 444 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2N"
+      "index": "b2O"
     },
     {
       "id": "0j3k8I4J",
@@ -7973,10 +8061,10 @@ child / embed_batch_size
           "id": "7rdFv432"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2O"
+      "index": "b2P"
     },
     {
       "id": "7rdFv432",
@@ -8001,7 +8089,7 @@ child / embed_batch_size
       "versionNonce": 1102567897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\nmax_tokens [ток.]",
@@ -8013,7 +8101,7 @@ child / embed_batch_size
       "originalText": "ответ\nmax_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2P"
+      "index": "b2Q"
     },
     {
       "id": "wnaaTxJf",
@@ -8045,10 +8133,10 @@ child / embed_batch_size
           "id": "t16gQ7r9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2Q"
+      "index": "b2R"
     },
     {
       "id": "t16gQ7r9",
@@ -8073,7 +8161,7 @@ child / embed_batch_size
       "versionNonce": 1848237837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -8085,7 +8173,7 @@ child / embed_batch_size
       "originalText": "запас\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2R"
+      "index": "b2S"
     },
     {
       "id": "sKkgF9SD",
@@ -8117,10 +8205,10 @@ child / embed_batch_size
           "id": "v324B2u5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2S"
+      "index": "b2T"
     },
     {
       "id": "v324B2u5",
@@ -8145,7 +8233,7 @@ child / embed_batch_size
       "versionNonce": 1380429683,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт с критериями\nAUDIT_RESERVE 3500 симв.",
@@ -8157,7 +8245,7 @@ child / embed_batch_size
       "originalText": "промпт с критериями\nAUDIT_RESERVE 3500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2T"
+      "index": "b2U"
     },
     {
       "id": "fvsNA25Z",
@@ -8189,10 +8277,10 @@ child / embed_batch_size
           "id": "Yw1heHdw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2U"
+      "index": "b2V"
     },
     {
       "id": "Yw1heHdw",
@@ -8217,7 +8305,7 @@ child / embed_batch_size
       "versionNonce": 623651357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "раздел документа\naudit_map_size",
@@ -8229,7 +8317,7 @@ child / embed_batch_size
       "originalText": "раздел документа\naudit_map_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2V"
+      "index": "b2W"
     },
     {
       "id": "TR2CHYcF",
@@ -8261,10 +8349,10 @@ child / embed_batch_size
           "id": "MKAIv9RY"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2W"
+      "index": "b2X"
     },
     {
       "id": "MKAIv9RY",
@@ -8289,7 +8377,7 @@ child / embed_batch_size
       "versionNonce": 373411918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "нормы из базы —\nцелые parent\naudit_context_max_chars",
@@ -8301,7 +8389,7 @@ child / embed_batch_size
       "originalText": "нормы из базы —\nцелые parent\naudit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2X"
+      "index": "b2Y"
     },
     {
       "id": "iz2RHLkF",
@@ -8333,10 +8421,10 @@ child / embed_batch_size
           "id": "3oHHcuXC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2Y"
+      "index": "b2Z"
     },
     {
       "id": "3oHHcuXC",
@@ -8361,7 +8449,7 @@ child / embed_batch_size
       "versionNonce": 1194067783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -8373,7 +8461,7 @@ child / embed_batch_size
       "originalText": "свободно",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2Z"
+      "index": "b2a"
     },
     {
       "id": "DlULn0T8",
@@ -8405,10 +8493,10 @@ child / embed_batch_size
           "id": "UWYNgYTm"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2a"
+      "index": "b2b"
     },
     {
       "id": "UWYNgYTm",
@@ -8433,7 +8521,7 @@ child / embed_batch_size
       "versionNonce": 2140098237,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -8445,7 +8533,7 @@ child / embed_batch_size
       "originalText": "ответ\n1500 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2b"
+      "index": "b2c"
     },
     {
       "id": "YRUXvHae",
@@ -8477,10 +8565,10 @@ child / embed_batch_size
           "id": "5wetaWmd"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2c"
+      "index": "b2d"
     },
     {
       "id": "5wetaWmd",
@@ -8505,7 +8593,7 @@ child / embed_batch_size
       "versionNonce": 977443932,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n4 690 ток.",
@@ -8517,7 +8605,7 @@ child / embed_batch_size
       "originalText": "запас\n4 690 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2d"
+      "index": "b2e"
     },
     {
       "id": "1lPVEy0F",
@@ -8549,10 +8637,10 @@ child / embed_batch_size
           "id": "nwBQd5Yt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2e"
+      "index": "b2f"
     },
     {
       "id": "nwBQd5Yt",
@@ -8577,7 +8665,7 @@ child / embed_batch_size
       "versionNonce": 611520879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт\n3500 симв.",
@@ -8589,7 +8677,7 @@ child / embed_batch_size
       "originalText": "промпт\n3500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2f"
+      "index": "b2g"
     },
     {
       "id": "ug4V9ZJ5",
@@ -8621,10 +8709,10 @@ child / embed_batch_size
           "id": "KlWg4sOl"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2g"
+      "index": "b2h"
     },
     {
       "id": "KlWg4sOl",
@@ -8649,7 +8737,7 @@ child / embed_batch_size
       "versionNonce": 1365719569,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "раздел\n4500 симв.",
@@ -8661,7 +8749,7 @@ child / embed_batch_size
       "originalText": "раздел\n4500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2h"
+      "index": "b2i"
     },
     {
       "id": "iTiSNH0I",
@@ -8693,10 +8781,10 @@ child / embed_batch_size
           "id": "SOxNTm64"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2i"
+      "index": "b2j"
     },
     {
       "id": "SOxNTm64",
@@ -8721,7 +8809,7 @@ child / embed_batch_size
       "versionNonce": 811674068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "нормы ≤ 9000\nсимв.\n(≈ 3 целых\nparent)",
@@ -8733,7 +8821,7 @@ child / embed_batch_size
       "originalText": "нормы ≤ 9000\nсимв.\n(≈ 3 целых\nparent)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2j"
+      "index": "b2k"
     },
     {
       "id": "gGZ8K9hx",
@@ -8765,10 +8853,10 @@ child / embed_batch_size
           "id": "hv4VvuyZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2k"
+      "index": "b2l"
     },
     {
       "id": "hv4VvuyZ",
@@ -8793,7 +8881,7 @@ child / embed_batch_size
       "versionNonce": 1926862321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно\n49 444 симв.",
@@ -8805,7 +8893,7 @@ child / embed_batch_size
       "originalText": "свободно\n49 444 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2l"
+      "index": "b2m"
     },
     {
       "id": "2PyncogU",
@@ -8830,7 +8918,7 @@ child / embed_batch_size
       "versionNonce": 832351319,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -8856,7 +8944,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b2m"
+      "index": "b2n"
     },
     {
       "id": "Lx61MPMD",
@@ -8881,7 +8969,7 @@ child / embed_batch_size
       "versionNonce": 1116584361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "llm_budget [симв.]",
@@ -8893,7 +8981,7 @@ child / embed_batch_size
       "originalText": "llm_budget [симв.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2n"
+      "index": "b2o"
     },
     {
       "id": "FvFHW0Zi",
@@ -8918,7 +9006,7 @@ child / embed_batch_size
       "versionNonce": 968813686,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -8944,7 +9032,7 @@ child / embed_batch_size
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b2o"
+      "index": "b2p"
     },
     {
       "id": "uIyRjJQG",
@@ -8969,7 +9057,7 @@ child / embed_batch_size
       "versionNonce": 257588578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "llm_budget = 66 444 − 3 500 = 62 944 симв.",
@@ -8981,7 +9069,7 @@ child / embed_batch_size
       "originalText": "llm_budget = 66 444 − 3 500 = 62 944 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2p"
+      "index": "b2q"
     },
     {
       "id": "yFMSjSy9",
@@ -9006,7 +9094,7 @@ child / embed_batch_size
       "versionNonce": 748399043,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ — один вызов LLM на замечание.  Вся полоса = llm_context_tokens [ток.]",
@@ -9018,7 +9106,7 @@ child / embed_batch_size
       "originalText": "КОНТРОЛЬ ИСПРАВЛЕНИЙ — один вызов LLM на замечание.  Вся полоса = llm_context_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2q"
+      "index": "b2r"
     },
     {
       "id": "UNX9d21J",
@@ -9043,7 +9131,7 @@ child / embed_batch_size
       "versionNonce": 1965113445,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ, окно 32768 ток.",
@@ -9055,7 +9143,7 @@ child / embed_batch_size
       "originalText": "КОНТРОЛЬ, окно 32768 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2r"
+      "index": "b2s"
     },
     {
       "id": "yM76eDxM",
@@ -9087,10 +9175,10 @@ child / embed_batch_size
           "id": "LajGgGfY"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2s"
+      "index": "b2t"
     },
     {
       "id": "LajGgGfY",
@@ -9115,7 +9203,7 @@ child / embed_batch_size
       "versionNonce": 2008784886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\nmax_tokens",
@@ -9127,7 +9215,7 @@ child / embed_batch_size
       "originalText": "ответ\nmax_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2t"
+      "index": "b2u"
     },
     {
       "id": "uGjqop81",
@@ -9159,10 +9247,10 @@ child / embed_batch_size
           "id": "ShtISKym"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2u"
+      "index": "b2v"
     },
     {
       "id": "ShtISKym",
@@ -9187,7 +9275,7 @@ child / embed_batch_size
       "versionNonce": 1784713809,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -9199,7 +9287,7 @@ child / embed_batch_size
       "originalText": "запас\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2v"
+      "index": "b2w"
     },
     {
       "id": "osIyFSGk",
@@ -9231,10 +9319,10 @@ child / embed_batch_size
           "id": "ZPO29Z85"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2w"
+      "index": "b2x"
     },
     {
       "id": "ZPO29Z85",
@@ -9259,7 +9347,7 @@ child / embed_batch_size
       "versionNonce": 49090000,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт\n3500 симв.",
@@ -9271,7 +9359,7 @@ child / embed_batch_size
       "originalText": "промпт\n3500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2x"
+      "index": "b2y"
     },
     {
       "id": "CqybfNvR",
@@ -9303,10 +9391,10 @@ child / embed_batch_size
           "id": "Q8pcOgCV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b2y"
+      "index": "b2z"
     },
     {
       "id": "Q8pcOgCV",
@@ -9331,7 +9419,7 @@ child / embed_batch_size
       "versionNonce": 1700388050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "замечание\n≈ 1000 симв.",
@@ -9343,7 +9431,7 @@ child / embed_batch_size
       "originalText": "замечание\n≈ 1000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2z"
+      "index": "b30"
     },
     {
       "id": "mcILQBbL",
@@ -9375,10 +9463,10 @@ child / embed_batch_size
           "id": "KC1H2ntF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b30"
+      "index": "b31"
     },
     {
       "id": "KC1H2ntF",
@@ -9403,7 +9491,7 @@ child / embed_batch_size
       "versionNonce": 1377316762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "нормы —\nцелые parent\naudit_context_max_chars",
@@ -9415,7 +9503,7 @@ child / embed_batch_size
       "originalText": "нормы —\nцелые parent\naudit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b31"
+      "index": "b32"
     },
     {
       "id": "EYmDset2",
@@ -9447,10 +9535,10 @@ child / embed_batch_size
           "id": "meKGw7dv"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b32"
+      "index": "b33"
     },
     {
       "id": "meKGw7dv",
@@ -9475,7 +9563,7 @@ child / embed_batch_size
       "versionNonce": 1800598225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "разделы новой редакции\nreview_context_max_chars",
@@ -9487,7 +9575,7 @@ child / embed_batch_size
       "originalText": "разделы новой редакции\nreview_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b33"
+      "index": "b34"
     },
     {
       "id": "tLviKLJK",
@@ -9519,10 +9607,10 @@ child / embed_batch_size
           "id": "PAcdQHdw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b34"
+      "index": "b35"
     },
     {
       "id": "PAcdQHdw",
@@ -9547,7 +9635,7 @@ child / embed_batch_size
       "versionNonce": 801671152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -9559,7 +9647,7 @@ child / embed_batch_size
       "originalText": "свободно",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b35"
+      "index": "b36"
     },
     {
       "id": "SvmHaA8Z",
@@ -9591,10 +9679,10 @@ child / embed_batch_size
           "id": "Ev2N9r9I"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b36"
+      "index": "b37"
     },
     {
       "id": "Ev2N9r9I",
@@ -9619,7 +9707,7 @@ child / embed_batch_size
       "versionNonce": 1993208942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -9631,7 +9719,7 @@ child / embed_batch_size
       "originalText": "ответ\n1500 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b37"
+      "index": "b38"
     },
     {
       "id": "uQsSGFF3",
@@ -9663,10 +9751,10 @@ child / embed_batch_size
           "id": "hDqrCRD7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b38"
+      "index": "b39"
     },
     {
       "id": "hDqrCRD7",
@@ -9691,7 +9779,7 @@ child / embed_batch_size
       "versionNonce": 1356140762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n4 690 ток.",
@@ -9703,7 +9791,7 @@ child / embed_batch_size
       "originalText": "запас\n4 690 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b39"
+      "index": "b3A"
     },
     {
       "id": "lu9njCuA",
@@ -9735,10 +9823,10 @@ child / embed_batch_size
           "id": "fdMC3RjW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3A"
+      "index": "b3B"
     },
     {
       "id": "fdMC3RjW",
@@ -9763,7 +9851,7 @@ child / embed_batch_size
       "versionNonce": 837135875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "промпт\n3500",
@@ -9775,7 +9863,7 @@ child / embed_batch_size
       "originalText": "промпт\n3500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3B"
+      "index": "b3C"
     },
     {
       "id": "pMQCO7NZ",
@@ -9807,10 +9895,10 @@ child / embed_batch_size
           "id": "j5fgYzkQ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3C"
+      "index": "b3D"
     },
     {
       "id": "j5fgYzkQ",
@@ -9835,7 +9923,7 @@ child / embed_batch_size
       "versionNonce": 1296323541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "замечание\n1000",
@@ -9847,7 +9935,7 @@ child / embed_batch_size
       "originalText": "замечание\n1000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3D"
+      "index": "b3E"
     },
     {
       "id": "evM6GfER",
@@ -9879,10 +9967,10 @@ child / embed_batch_size
           "id": "071tN1nF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3E"
+      "index": "b3F"
     },
     {
       "id": "071tN1nF",
@@ -9907,7 +9995,7 @@ child / embed_batch_size
       "versionNonce": 1792505757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "нормы\n≤ 9000",
@@ -9919,7 +10007,7 @@ child / embed_batch_size
       "originalText": "нормы\n≤ 9000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3F"
+      "index": "b3G"
     },
     {
       "id": "h1TJlQ2Z",
@@ -9951,10 +10039,10 @@ child / embed_batch_size
           "id": "8ShPd4X4"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3G"
+      "index": "b3H"
     },
     {
       "id": "8ShPd4X4",
@@ -9979,7 +10067,7 @@ child / embed_batch_size
       "versionNonce": 1354835712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "разделы\n12 000 симв.",
@@ -9991,7 +10079,7 @@ child / embed_batch_size
       "originalText": "разделы\n12 000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3H"
+      "index": "b3I"
     },
     {
       "id": "N6UjAXdJ",
@@ -10023,10 +10111,10 @@ child / embed_batch_size
           "id": "zPfZUBWj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3I"
+      "index": "b3J"
     },
     {
       "id": "zPfZUBWj",
@@ -10051,7 +10139,7 @@ child / embed_batch_size
       "versionNonce": 89975457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно\n40 944 симв.",
@@ -10063,7 +10151,7 @@ child / embed_batch_size
       "originalText": "свободно\n40 944 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3J"
+      "index": "b3K"
     },
     {
       "id": "nkYtsxF7",
@@ -10088,7 +10176,7 @@ child / embed_batch_size
       "versionNonce": 1393172046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЭМБЕДДИНГИ — один child при индексации.  Вся полоса = embed_max_tokens [ток.]",
@@ -10100,7 +10188,7 @@ child / embed_batch_size
       "originalText": "ЭМБЕДДИНГИ — один child при индексации.  Вся полоса = embed_max_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3K"
+      "index": "b3L"
     },
     {
       "id": "OBPpucuv",
@@ -10125,7 +10213,7 @@ child / embed_batch_size
       "versionNonce": 948614400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЭМБЕДДИНГИ, вход 8192 ток.: chars(8192) = 17 408 симв.",
@@ -10137,7 +10225,7 @@ child / embed_batch_size
       "originalText": "ЭМБЕДДИНГИ, вход 8192 ток.: chars(8192) = 17 408 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3L"
+      "index": "b3M"
     },
     {
       "id": "YxjyM9W5",
@@ -10169,10 +10257,10 @@ child / embed_batch_size
           "id": "oqJGgArB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3M"
+      "index": "b3N"
     },
     {
       "id": "oqJGgArB",
@@ -10197,7 +10285,7 @@ child / embed_batch_size
       "versionNonce": 1428735309,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -10209,7 +10297,7 @@ child / embed_batch_size
       "originalText": "запас\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3N"
+      "index": "b3O"
     },
     {
       "id": "j0X6p8FW",
@@ -10241,10 +10329,10 @@ child / embed_batch_size
           "id": "Deoo4by7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3O"
+      "index": "b3P"
     },
     {
       "id": "Deoo4by7",
@@ -10269,7 +10357,7 @@ child / embed_batch_size
       "versionNonce": 1302404610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "путь заголовков\n250 симв.",
@@ -10281,7 +10369,7 @@ child / embed_batch_size
       "originalText": "путь заголовков\n250 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3P"
+      "index": "b3Q"
     },
     {
       "id": "BuSA9h4y",
@@ -10313,10 +10401,10 @@ child / embed_batch_size
           "id": "MBfCmbN6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3Q"
+      "index": "b3R"
     },
     {
       "id": "MBfCmbN6",
@@ -10341,7 +10429,7 @@ child / embed_batch_size
       "versionNonce": 2105701991,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "префикс\nдокумента",
@@ -10353,7 +10441,7 @@ child / embed_batch_size
       "originalText": "префикс\nдокумента",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3R"
+      "index": "b3S"
     },
     {
       "id": "VOPISSxW",
@@ -10385,10 +10473,10 @@ child / embed_batch_size
           "id": "hlFd0jRk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3S"
+      "index": "b3T"
     },
     {
       "id": "hlFd0jRk",
@@ -10413,7 +10501,7 @@ child / embed_batch_size
       "versionNonce": 2052374652,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child_size [симв.]",
@@ -10425,7 +10513,7 @@ child / embed_batch_size
       "originalText": "child_size [симв.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3T"
+      "index": "b3U"
     },
     {
       "id": "rTSC88gj",
@@ -10457,10 +10545,10 @@ child / embed_batch_size
           "id": "5Tg8R9VK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3U"
+      "index": "b3V"
     },
     {
       "id": "5Tg8R9VK",
@@ -10485,7 +10573,7 @@ child / embed_batch_size
       "versionNonce": 831166826,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -10497,7 +10585,7 @@ child / embed_batch_size
       "originalText": "свободно",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3V"
+      "index": "b3W"
     },
     {
       "id": "BMRP2PIs",
@@ -10529,10 +10617,10 @@ child / embed_batch_size
           "id": "TD31j2ot"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3W"
+      "index": "b3X"
     },
     {
       "id": "TD31j2ot",
@@ -10557,7 +10645,7 @@ child / embed_batch_size
       "versionNonce": 956259476,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n1 229 ток.",
@@ -10569,7 +10657,7 @@ child / embed_batch_size
       "originalText": "запас\n1 229 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3X"
+      "index": "b3Y"
     },
     {
       "id": "ZnMsofUz",
@@ -10601,10 +10689,10 @@ child / embed_batch_size
           "id": "3dSKBFot"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3Y"
+      "index": "b3Z"
     },
     {
       "id": "3dSKBFot",
@@ -10629,7 +10717,7 @@ child / embed_batch_size
       "versionNonce": 141713803,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "заголовки\n250",
@@ -10641,7 +10729,7 @@ child / embed_batch_size
       "originalText": "заголовки\n250",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3Z"
+      "index": "b3a"
     },
     {
       "id": "aQT5SwIo",
@@ -10673,10 +10761,10 @@ child / embed_batch_size
           "id": "q7ybY5xb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3a"
+      "index": "b3b"
     },
     {
       "id": "q7ybY5xb",
@@ -10701,7 +10789,7 @@ child / embed_batch_size
       "versionNonce": 838572558,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "префикс\n0 (Qwen3)",
@@ -10713,7 +10801,7 @@ child / embed_batch_size
       "originalText": "префикс\n0 (Qwen3)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3b"
+      "index": "b3c"
     },
     {
       "id": "ouBN85cR",
@@ -10745,10 +10833,10 @@ child / embed_batch_size
           "id": "1laxvKml"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3c"
+      "index": "b3d"
     },
     {
       "id": "1laxvKml",
@@ -10773,7 +10861,7 @@ child / embed_batch_size
       "versionNonce": 896537800,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child\n400",
@@ -10785,7 +10873,7 @@ child / embed_batch_size
       "originalText": "child\n400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3d"
+      "index": "b3e"
     },
     {
       "id": "bR7w1ha5",
@@ -10817,10 +10905,10 @@ child / embed_batch_size
           "id": "rLchd2IL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3e"
+      "index": "b3f"
     },
     {
       "id": "rLchd2IL",
@@ -10845,7 +10933,7 @@ child / embed_batch_size
       "versionNonce": 1545726614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно 16 758 симв.",
@@ -10857,7 +10945,7 @@ child / embed_batch_size
       "originalText": "свободно 16 758 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3f"
+      "index": "b3g"
     },
     {
       "id": "GoYxJ62j",
@@ -10882,7 +10970,7 @@ child / embed_batch_size
       "versionNonce": 1675313614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Такой же вход у раздела документа при подборе разделов (section_embed_chars) и у запроса аудита (audit_query_chars) — числа\nсправа.",
@@ -10894,7 +10982,7 @@ child / embed_batch_size
       "originalText": "Такой же вход у раздела документа при подборе разделов (section_embed_chars) и у запроса аудита (audit_query_chars) — числа\nсправа.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3g"
+      "index": "b3h"
     },
     {
       "id": "N7teg5Qi",
@@ -10919,7 +11007,7 @@ child / embed_batch_size
       "versionNonce": 1217422132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Раздел: 0 + 4000 симв.; запрос аудита: префикс 171 симв. + 2000 — всё помещается в 17 408. Модель с входом 512 ток. → 1 088\nсимв.: child 400 ещё помещается, section_embed_chars уменьшится до 1 088.",
@@ -10931,7 +11019,7 @@ child / embed_batch_size
       "originalText": "Раздел: 0 + 4000 симв.; запрос аудита: префикс 171 симв. + 2000 — всё помещается в 17 408. Модель с входом 512 ток. → 1 088\nсимв.: child 400 ещё помещается, section_embed_chars уменьшится до 1 088.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3h"
+      "index": "b3i"
     },
     {
       "id": "xUgefH6a",
@@ -10956,7 +11044,7 @@ child / embed_batch_size
       "versionNonce": 1789039515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "РЕРАНКЕР — одна пара «запрос + документ».  Вся полоса = rerank_max_tokens [ток.]",
@@ -10968,7 +11056,7 @@ child / embed_batch_size
       "originalText": "РЕРАНКЕР — одна пара «запрос + документ».  Вся полоса = rerank_max_tokens [ток.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3i"
+      "index": "b3j"
     },
     {
       "id": "H7u0YOdP",
@@ -10993,7 +11081,7 @@ child / embed_batch_size
       "versionNonce": 395955641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "РЕРАНКЕР, вход 8192 ток.: chars(8192) = 17 408 симв.",
@@ -11005,7 +11093,7 @@ child / embed_batch_size
       "originalText": "РЕРАНКЕР, вход 8192 ток.: chars(8192) = 17 408 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3j"
+      "index": "b3k"
     },
     {
       "id": "n0z9n8Du",
@@ -11037,10 +11125,10 @@ child / embed_batch_size
           "id": "XPIYe9qr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3k"
+      "index": "b3l"
     },
     {
       "id": "XPIYe9qr",
@@ -11065,7 +11153,7 @@ child / embed_batch_size
       "versionNonce": 967462205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -11077,7 +11165,7 @@ child / embed_batch_size
       "originalText": "запас\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3l"
+      "index": "b3m"
     },
     {
       "id": "tfUQstZU",
@@ -11109,10 +11197,10 @@ child / embed_batch_size
           "id": "9Q32E6aD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3m"
+      "index": "b3n"
     },
     {
       "id": "9Q32E6aD",
@@ -11137,7 +11225,7 @@ child / embed_batch_size
       "versionNonce": 1012576463,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запрос + сокращения\nrerank_query_max_chars",
@@ -11149,7 +11237,7 @@ child / embed_batch_size
       "originalText": "запрос + сокращения\nrerank_query_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3n"
+      "index": "b3o"
     },
     {
       "id": "mApgjHRk",
@@ -11181,10 +11269,10 @@ child / embed_batch_size
           "id": "q1MCxcQW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3o"
+      "index": "b3p"
     },
     {
       "id": "q1MCxcQW",
@@ -11209,7 +11297,7 @@ child / embed_batch_size
       "versionNonce": 574789849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "документ с именем файла и разделом\nrerank_doc_max_chars",
@@ -11221,7 +11309,7 @@ child / embed_batch_size
       "originalText": "документ с именем файла и разделом\nrerank_doc_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3p"
+      "index": "b3q"
     },
     {
       "id": "DqMvpFI0",
@@ -11253,10 +11341,10 @@ child / embed_batch_size
           "id": "K5P4QAaa"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3q"
+      "index": "b3r"
     },
     {
       "id": "K5P4QAaa",
@@ -11281,7 +11369,7 @@ child / embed_batch_size
       "versionNonce": 741104059,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -11293,7 +11381,7 @@ child / embed_batch_size
       "originalText": "свободно",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3r"
+      "index": "b3s"
     },
     {
       "id": "tNCV1Zcy",
@@ -11325,10 +11413,10 @@ child / embed_batch_size
           "id": "MoUIp0R3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3s"
+      "index": "b3t"
     },
     {
       "id": "MoUIp0R3",
@@ -11353,7 +11441,7 @@ child / embed_batch_size
       "versionNonce": 821999673,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запас\n1 229 ток.",
@@ -11365,7 +11453,7 @@ child / embed_batch_size
       "originalText": "запас\n1 229 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3t"
+      "index": "b3u"
     },
     {
       "id": "l9eSjMdB",
@@ -11397,10 +11485,10 @@ child / embed_batch_size
           "id": "MGULSd3Y"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3u"
+      "index": "b3v"
     },
     {
       "id": "MGULSd3Y",
@@ -11425,7 +11513,7 @@ child / embed_batch_size
       "versionNonce": 791129361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запрос\n1500",
@@ -11437,7 +11525,7 @@ child / embed_batch_size
       "originalText": "запрос\n1500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3v"
+      "index": "b3w"
     },
     {
       "id": "yRJo8Z4K",
@@ -11469,10 +11557,10 @@ child / embed_batch_size
           "id": "MKOGAK66"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3w"
+      "index": "b3x"
     },
     {
       "id": "MKOGAK66",
@@ -11497,7 +11585,7 @@ child / embed_batch_size
       "versionNonce": 848094804,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "документ\n800",
@@ -11509,7 +11597,7 @@ child / embed_batch_size
       "originalText": "документ\n800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3x"
+      "index": "b3y"
     },
     {
       "id": "NgBmFuxQ",
@@ -11541,10 +11629,10 @@ child / embed_batch_size
           "id": "4t3SVbse"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b3y"
+      "index": "b3z"
     },
     {
       "id": "4t3SVbse",
@@ -11569,7 +11657,7 @@ child / embed_batch_size
       "versionNonce": 167843790,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "свободно 15 108 симв.",
@@ -11581,7 +11669,7 @@ child / embed_batch_size
       "originalText": "свободно 15 108 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3z"
+      "index": "b40"
     },
     {
       "id": "e2wg8x66",
@@ -11606,7 +11694,7 @@ child / embed_batch_size
       "versionNonce": 1278540953,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Что получится при разных моделях (EMBED_MODEL = Qwen3-Embedding, top_k = 5); значения — [симв.]",
@@ -11618,7 +11706,7 @@ child / embed_batch_size
       "originalText": "Что получится при разных моделях (EMBED_MODEL = Qwen3-Embedding, top_k = 5); значения — [симв.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b40"
+      "index": "b41"
     },
     {
       "id": "a59B0jdZ",
@@ -11645,10 +11733,10 @@ child / embed_batch_size
       "versionNonce": 102288853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b41"
+      "index": "b42"
     },
     {
       "id": "tyJWVPkD",
@@ -11673,7 +11761,7 @@ child / embed_batch_size
       "versionNonce": 630593088,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Параметр",
@@ -11685,7 +11773,7 @@ child / embed_batch_size
       "originalText": "Параметр",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b42"
+      "index": "b43"
     },
     {
       "id": "LHYf01Gi",
@@ -11710,7 +11798,7 @@ child / embed_batch_size
       "versionNonce": 1393229085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4k / 512 / 512",
@@ -11722,7 +11810,7 @@ child / embed_batch_size
       "originalText": "4k / 512 / 512",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b43"
+      "index": "b44"
     },
     {
       "id": "qDuUgkSV",
@@ -11747,7 +11835,7 @@ child / embed_batch_size
       "versionNonce": 950927209,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "8k / 512 / 1k",
@@ -11759,7 +11847,7 @@ child / embed_batch_size
       "originalText": "8k / 512 / 1k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b44"
+      "index": "b45"
     },
     {
       "id": "yBckgFdj",
@@ -11784,7 +11872,7 @@ child / embed_batch_size
       "versionNonce": 121150401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "32k / 8k / 8k ★",
@@ -11796,7 +11884,7 @@ child / embed_batch_size
       "originalText": "32k / 8k / 8k ★",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b45"
+      "index": "b46"
     },
     {
       "id": "ADwQY9QD",
@@ -11821,7 +11909,7 @@ child / embed_batch_size
       "versionNonce": 1260964420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "128k / 32k / 8k",
@@ -11833,7 +11921,7 @@ child / embed_batch_size
       "originalText": "128k / 32k / 8k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b46"
+      "index": "b47"
     },
     {
       "id": "9COPABte",
@@ -11858,7 +11946,7 @@ child / embed_batch_size
       "versionNonce": 1066784076,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "smart_truncate_chars",
@@ -11870,7 +11958,7 @@ child / embed_batch_size
       "originalText": "smart_truncate_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b47"
+      "index": "b48"
     },
     {
       "id": "UwZNqLrY",
@@ -11895,7 +11983,7 @@ child / embed_batch_size
       "versionNonce": 466324693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "763",
@@ -11907,7 +11995,7 @@ child / embed_batch_size
       "originalText": "763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b48"
+      "index": "b49"
     },
     {
       "id": "pwYMJd17",
@@ -11932,7 +12020,7 @@ child / embed_batch_size
       "versionNonce": 1889062173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2504",
@@ -11944,7 +12032,7 @@ child / embed_batch_size
       "originalText": "2504",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b49"
+      "index": "b4A"
     },
     {
       "id": "kaPWvPGO",
@@ -11969,7 +12057,7 @@ child / embed_batch_size
       "versionNonce": 460433098,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -11981,7 +12069,7 @@ child / embed_batch_size
       "originalText": "3500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4A"
+      "index": "b4B"
     },
     {
       "id": "ZvINBrw3",
@@ -12006,7 +12094,7 @@ child / embed_batch_size
       "versionNonce": 599065165,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12018,7 +12106,7 @@ child / embed_batch_size
       "originalText": "3500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4B"
+      "index": "b4C"
     },
     {
       "id": "QS7USJci",
@@ -12043,7 +12131,7 @@ child / embed_batch_size
       "versionNonce": 700056294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "parent_size ♻",
@@ -12055,7 +12143,7 @@ child / embed_batch_size
       "originalText": "parent_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4C"
+      "index": "b4D"
     },
     {
       "id": "CUk33Pb8",
@@ -12080,7 +12168,7 @@ child / embed_batch_size
       "versionNonce": 450904853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "763",
@@ -12092,7 +12180,7 @@ child / embed_batch_size
       "originalText": "763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4D"
+      "index": "b4E"
     },
     {
       "id": "IBFG0jLt",
@@ -12117,7 +12205,7 @@ child / embed_batch_size
       "versionNonce": 1836365578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12129,7 +12217,7 @@ child / embed_batch_size
       "originalText": "2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4E"
+      "index": "b4F"
     },
     {
       "id": "Rah8axWo",
@@ -12154,7 +12242,7 @@ child / embed_batch_size
       "versionNonce": 2119690112,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12166,7 +12254,7 @@ child / embed_batch_size
       "originalText": "2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4F"
+      "index": "b4G"
     },
     {
       "id": "JtoXqDuJ",
@@ -12191,7 +12279,7 @@ child / embed_batch_size
       "versionNonce": 1543977157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12203,7 +12291,7 @@ child / embed_batch_size
       "originalText": "2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4G"
+      "index": "b4H"
     },
     {
       "id": "ML8UFeQb",
@@ -12228,7 +12316,7 @@ child / embed_batch_size
       "versionNonce": 1202584896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "parent_overlap ♻",
@@ -12240,7 +12328,7 @@ child / embed_batch_size
       "originalText": "parent_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4H"
+      "index": "b4I"
     },
     {
       "id": "bBnXv1bZ",
@@ -12265,7 +12353,7 @@ child / embed_batch_size
       "versionNonce": 969616860,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "152",
@@ -12277,7 +12365,7 @@ child / embed_batch_size
       "originalText": "152",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4I"
+      "index": "b4J"
     },
     {
       "id": "SmrBy6ln",
@@ -12302,7 +12390,7 @@ child / embed_batch_size
       "versionNonce": 1032254950,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12314,7 +12402,7 @@ child / embed_batch_size
       "originalText": "300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4J"
+      "index": "b4K"
     },
     {
       "id": "JCkGGVZe",
@@ -12339,7 +12427,7 @@ child / embed_batch_size
       "versionNonce": 917325805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12351,7 +12439,7 @@ child / embed_batch_size
       "originalText": "300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4K"
+      "index": "b4L"
     },
     {
       "id": "dSUfGKne",
@@ -12376,7 +12464,7 @@ child / embed_batch_size
       "versionNonce": 1227813481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12388,7 +12476,7 @@ child / embed_batch_size
       "originalText": "300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4L"
+      "index": "b4M"
     },
     {
       "id": "uPTl7dEC",
@@ -12413,7 +12501,7 @@ child / embed_batch_size
       "versionNonce": 1654205182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child_size ♻",
@@ -12425,7 +12513,7 @@ child / embed_batch_size
       "originalText": "child_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4M"
+      "index": "b4N"
     },
     {
       "id": "mzHCF7TL",
@@ -12450,7 +12538,7 @@ child / embed_batch_size
       "versionNonce": 680441240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12462,7 +12550,7 @@ child / embed_batch_size
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4N"
+      "index": "b4O"
     },
     {
       "id": "MX2RUok5",
@@ -12487,7 +12575,7 @@ child / embed_batch_size
       "versionNonce": 1843089189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12499,7 +12587,7 @@ child / embed_batch_size
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4O"
+      "index": "b4P"
     },
     {
       "id": "l7NlLSM4",
@@ -12524,7 +12612,7 @@ child / embed_batch_size
       "versionNonce": 1964904436,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12536,7 +12624,7 @@ child / embed_batch_size
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4P"
+      "index": "b4Q"
     },
     {
       "id": "NQyDfeBC",
@@ -12561,7 +12649,7 @@ child / embed_batch_size
       "versionNonce": 636680058,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12573,7 +12661,7 @@ child / embed_batch_size
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4Q"
+      "index": "b4R"
     },
     {
       "id": "ypquTKcp",
@@ -12598,7 +12686,7 @@ child / embed_batch_size
       "versionNonce": 1680046293,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child_overlap ♻",
@@ -12610,7 +12698,7 @@ child / embed_batch_size
       "originalText": "child_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4R"
+      "index": "b4S"
     },
     {
       "id": "EkGFURQ6",
@@ -12635,7 +12723,7 @@ child / embed_batch_size
       "versionNonce": 2138991201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12647,7 +12735,7 @@ child / embed_batch_size
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4S"
+      "index": "b4T"
     },
     {
       "id": "FxJkxigX",
@@ -12672,7 +12760,7 @@ child / embed_batch_size
       "versionNonce": 479869036,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12684,7 +12772,7 @@ child / embed_batch_size
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4T"
+      "index": "b4U"
     },
     {
       "id": "Xbqc924D",
@@ -12709,7 +12797,7 @@ child / embed_batch_size
       "versionNonce": 569567297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12721,7 +12809,7 @@ child / embed_batch_size
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4U"
+      "index": "b4V"
     },
     {
       "id": "BKeINy2C",
@@ -12746,7 +12834,7 @@ child / embed_batch_size
       "versionNonce": 1437266301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12758,7 +12846,7 @@ child / embed_batch_size
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4V"
+      "index": "b4W"
     },
     {
       "id": "VLwuD6aL",
@@ -12783,7 +12871,7 @@ child / embed_batch_size
       "versionNonce": 268176082,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "section_embed_chars",
@@ -12795,7 +12883,7 @@ child / embed_batch_size
       "originalText": "section_embed_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4W"
+      "index": "b4X"
     },
     {
       "id": "8fFLYyhc",
@@ -12820,7 +12908,7 @@ child / embed_batch_size
       "versionNonce": 673049817,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12832,7 +12920,7 @@ child / embed_batch_size
       "originalText": "1088",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4X"
+      "index": "b4Y"
     },
     {
       "id": "U6PL36uK",
@@ -12857,7 +12945,7 @@ child / embed_batch_size
       "versionNonce": 2022736918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12869,7 +12957,7 @@ child / embed_batch_size
       "originalText": "1088",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4Y"
+      "index": "b4Z"
     },
     {
       "id": "2jnh7T0y",
@@ -12894,7 +12982,7 @@ child / embed_batch_size
       "versionNonce": 395700189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -12906,7 +12994,7 @@ child / embed_batch_size
       "originalText": "4000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4Z"
+      "index": "b4a"
     },
     {
       "id": "sHx0uYDZ",
@@ -12931,7 +13019,7 @@ child / embed_batch_size
       "versionNonce": 828959356,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -12943,7 +13031,7 @@ child / embed_batch_size
       "originalText": "4000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4a"
+      "index": "b4b"
     },
     {
       "id": "IjuTYaGC",
@@ -12968,7 +13056,7 @@ child / embed_batch_size
       "versionNonce": 205894361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "audit_query_chars",
@@ -12980,7 +13068,7 @@ child / embed_batch_size
       "originalText": "audit_query_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4b"
+      "index": "b4c"
     },
     {
       "id": "xRYASd8H",
@@ -13005,7 +13093,7 @@ child / embed_batch_size
       "versionNonce": 1013405264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13017,7 +13105,7 @@ child / embed_batch_size
       "originalText": "917",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4c"
+      "index": "b4d"
     },
     {
       "id": "6vng9dCz",
@@ -13042,7 +13130,7 @@ child / embed_batch_size
       "versionNonce": 554681883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13054,7 +13142,7 @@ child / embed_batch_size
       "originalText": "917",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4d"
+      "index": "b4e"
     },
     {
       "id": "dfcKxsMi",
@@ -13079,7 +13167,7 @@ child / embed_batch_size
       "versionNonce": 2130327751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13091,7 +13179,7 @@ child / embed_batch_size
       "originalText": "2000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4e"
+      "index": "b4f"
     },
     {
       "id": "PNSGjn0Q",
@@ -13116,7 +13204,7 @@ child / embed_batch_size
       "versionNonce": 1393923198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13128,7 +13216,7 @@ child / embed_batch_size
       "originalText": "2000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4f"
+      "index": "b4g"
     },
     {
       "id": "pJPoence",
@@ -13153,7 +13241,7 @@ child / embed_batch_size
       "versionNonce": 1869709538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "audit_map_size",
@@ -13165,7 +13253,7 @@ child / embed_batch_size
       "originalText": "audit_map_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4g"
+      "index": "b4h"
     },
     {
       "id": "OArKlipS",
@@ -13190,7 +13278,7 @@ child / embed_batch_size
       "versionNonce": 163400435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13202,7 +13290,7 @@ child / embed_batch_size
       "originalText": "1000 ⚠",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4h"
+      "index": "b4i"
     },
     {
       "id": "EYJEEuUl",
@@ -13227,7 +13315,7 @@ child / embed_batch_size
       "versionNonce": 420086255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3216",
@@ -13239,7 +13327,7 @@ child / embed_batch_size
       "originalText": "3216",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4i"
+      "index": "b4j"
     },
     {
       "id": "SkC6hhAP",
@@ -13264,7 +13352,7 @@ child / embed_batch_size
       "versionNonce": 1897697012,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13276,7 +13364,7 @@ child / embed_batch_size
       "originalText": "4500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4j"
+      "index": "b4k"
     },
     {
       "id": "Ktynq6hT",
@@ -13301,7 +13389,7 @@ child / embed_batch_size
       "versionNonce": 858504554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13313,7 +13401,7 @@ child / embed_batch_size
       "originalText": "4500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4k"
+      "index": "b4l"
     },
     {
       "id": "P0DW6nzE",
@@ -13338,7 +13426,7 @@ child / embed_batch_size
       "versionNonce": 927587867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "audit_context_max_chars",
@@ -13350,7 +13438,7 @@ child / embed_batch_size
       "originalText": "audit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4l"
+      "index": "b4m"
     },
     {
       "id": "2vdlfo0g",
@@ -13375,7 +13463,7 @@ child / embed_batch_size
       "versionNonce": 1964355952,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1016",
@@ -13387,7 +13475,7 @@ child / embed_batch_size
       "originalText": "1016",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4m"
+      "index": "b4n"
     },
     {
       "id": "nMV9mUYI",
@@ -13412,7 +13500,7 @@ child / embed_batch_size
       "versionNonce": 1184283972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "7504",
@@ -13424,7 +13512,7 @@ child / embed_batch_size
       "originalText": "7504",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4n"
+      "index": "b4o"
     },
     {
       "id": "HgEL1hbO",
@@ -13449,7 +13537,7 @@ child / embed_batch_size
       "versionNonce": 2014922567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13461,7 +13549,7 @@ child / embed_batch_size
       "originalText": "9000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4o"
+      "index": "b4p"
     },
     {
       "id": "lVgfkXIw",
@@ -13486,7 +13574,7 @@ child / embed_batch_size
       "versionNonce": 1596915033,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13498,7 +13586,7 @@ child / embed_batch_size
       "originalText": "9000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4p"
+      "index": "b4q"
     },
     {
       "id": "8g2CTOje",
@@ -13523,7 +13611,7 @@ child / embed_batch_size
       "versionNonce": 903994887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "review_context_max_chars",
@@ -13535,7 +13623,7 @@ child / embed_batch_size
       "originalText": "review_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4q"
+      "index": "b4r"
     },
     {
       "id": "YdXZqORY",
@@ -13560,7 +13648,7 @@ child / embed_batch_size
       "versionNonce": 909678414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13572,7 +13660,7 @@ child / embed_batch_size
       "originalText": "1000 ⚠",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4r"
+      "index": "b4s"
     },
     {
       "id": "tzJFRLr7",
@@ -13597,7 +13685,7 @@ child / embed_batch_size
       "versionNonce": 1481757579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2216 ▼",
@@ -13609,7 +13697,7 @@ child / embed_batch_size
       "originalText": "2216 ▼",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4s"
+      "index": "b4t"
     },
     {
       "id": "R1USFED9",
@@ -13634,7 +13722,7 @@ child / embed_batch_size
       "versionNonce": 1272213233,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13646,7 +13734,7 @@ child / embed_batch_size
       "originalText": "12000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4t"
+      "index": "b4u"
     },
     {
       "id": "PcxWyLeF",
@@ -13671,7 +13759,7 @@ child / embed_batch_size
       "versionNonce": 1104820697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13683,7 +13771,7 @@ child / embed_batch_size
       "originalText": "12000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4u"
+      "index": "b4v"
     },
     {
       "id": "qdoi8ZMK",
@@ -13708,7 +13796,7 @@ child / embed_batch_size
       "versionNonce": 988089562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "rerank_query_max_chars",
@@ -13720,7 +13808,7 @@ child / embed_batch_size
       "originalText": "rerank_query_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4v"
+      "index": "b4w"
     },
     {
       "id": "DwlglYYG",
@@ -13745,7 +13833,7 @@ child / embed_batch_size
       "versionNonce": 636050863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "362",
@@ -13757,7 +13845,7 @@ child / embed_batch_size
       "originalText": "362",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4w"
+      "index": "b4x"
     },
     {
       "id": "GoybSw4G",
@@ -13782,7 +13870,7 @@ child / embed_batch_size
       "versionNonce": 1267914377,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "725",
@@ -13794,7 +13882,7 @@ child / embed_batch_size
       "originalText": "725",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4x"
+      "index": "b4y"
     },
     {
       "id": "x7f1MBP1",
@@ -13819,7 +13907,7 @@ child / embed_batch_size
       "versionNonce": 1136933881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13831,7 +13919,7 @@ child / embed_batch_size
       "originalText": "1500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4y"
+      "index": "b4z"
     },
     {
       "id": "weZVFHuy",
@@ -13856,7 +13944,7 @@ child / embed_batch_size
       "versionNonce": 896434533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13868,7 +13956,7 @@ child / embed_batch_size
       "originalText": "1500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4z"
+      "index": "b50"
     },
     {
       "id": "PXWAz4tE",
@@ -13893,7 +13981,7 @@ child / embed_batch_size
       "versionNonce": 1502561313,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "rerank_doc_max_chars",
@@ -13905,7 +13993,7 @@ child / embed_batch_size
       "originalText": "rerank_doc_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b50"
+      "index": "b51"
     },
     {
       "id": "ys3nxAHE",
@@ -13930,7 +14018,7 @@ child / embed_batch_size
       "versionNonce": 958219321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "726",
@@ -13942,7 +14030,7 @@ child / embed_batch_size
       "originalText": "726",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b51"
+      "index": "b52"
     },
     {
       "id": "crdSvM7X",
@@ -13967,7 +14055,7 @@ child / embed_batch_size
       "versionNonce": 381657276,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "800",
@@ -13979,7 +14067,7 @@ child / embed_batch_size
       "originalText": "800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b52"
+      "index": "b53"
     },
     {
       "id": "EOQogCRt",
@@ -14004,7 +14092,7 @@ child / embed_batch_size
       "versionNonce": 536329791,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14016,7 +14104,7 @@ child / embed_batch_size
       "originalText": "800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b53"
+      "index": "b54"
     },
     {
       "id": "n6EVTMUt",
@@ -14041,7 +14129,7 @@ child / embed_batch_size
       "versionNonce": 666178832,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14053,7 +14141,7 @@ child / embed_batch_size
       "originalText": "800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b54"
+      "index": "b55"
     },
     {
       "id": "Wde2e7w0",
@@ -14078,7 +14166,7 @@ child / embed_batch_size
       "versionNonce": 1238808030,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Столбцы: окно LLM / вход эмбеддингов / вход реранкера, [ток.]; символов на токен 2.5 (в последнем — 3.0). ★ — типовые лимиты:\nзначения совпадают с умолчаниями. ⚠ — модели не хватает места: MINT берёт минимум и показывает предупреждение. ▼ — сильно\nурезано: контроль исправлений видит малую часть новой редакции, вероятны ложные «не исправлено». 128k даёт те же значения, что\n32k: умолчания — потолок (правило — панель 1).",
@@ -14090,7 +14178,7 @@ child / embed_batch_size
       "originalText": "Столбцы: окно LLM / вход эмбеддингов / вход реранкера, [ток.]; символов на токен 2.5 (в последнем — 3.0). ★ — типовые лимиты:\nзначения совпадают с умолчаниями. ⚠ — модели не хватает места: MINT берёт минимум и показывает предупреждение. ▼ — сильно\nурезано: контроль исправлений видит малую часть новой редакции, вероятны ложные «не исправлено». 128k даёт те же значения, что\n32k: умолчания — потолок (правило — панель 1).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b55"
+      "index": "b56"
     },
     {
       "id": "UlPcpV3W",
@@ -14122,10 +14210,10 @@ child / embed_batch_size
           "id": "9vQ3016Q"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b56"
+      "index": "b57"
     },
     {
       "id": "9vQ3016Q",
@@ -14150,7 +14238,7 @@ child / embed_batch_size
       "versionNonce": 772674090,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "БОЛЬШОЕ ОКНО LLM (200k, 1M …) — ЧТО ТОГДА\nПредела окна в MINT нет (поле в панели принимает до 4 млн токенов). Большое окно поднимает потолки, но значения не\nвыше умолчаний: в чат уходит ≈ top_k × 2500 симв., в аудит — раздел 4500 и нормы до 9000 симв. (3–4 целых parent).\nТак задумано: лишний контекст добавляет шум, время и стоимость, а точность от него обычно не растёт.\n\nЧтобы использовать большое окно — поднять вручную в config.yaml:\n• больше фрагментов в чате: top_k 8–12 → [Т] прогоны --k 5 / 8 / 12 и [П] живая проверка ответов\n• больше норм в аудите: audit_context_max_chars 13 000 (5 целых parent) … 20 000+; крупнее разделы: audit_map_size\n   12 000–30 000 (меньше вызовов, модель видит больше документа сразу) → [П] на документах с известными замечаниями\n• контроль исправлений: review_top_sections 5–8, review_context_max_chars 30 000+; длинные ответы — max_tokens\n• parent_size ♻ обычно не трогать: больше контекста лучше набирать числом фрагментов (top_k)\n\nОкно LLM не влияет на эмбеддинги и реранкер — у них свои лимиты.",
@@ -14162,7 +14250,7 @@ child / embed_batch_size
       "originalText": "БОЛЬШОЕ ОКНО LLM (200k, 1M …) — ЧТО ТОГДА\nПредела окна в MINT нет (поле в панели принимает до 4 млн токенов). Большое окно поднимает потолки, но значения не\nвыше умолчаний: в чат уходит ≈ top_k × 2500 симв., в аудит — раздел 4500 и нормы до 9000 симв. (3–4 целых parent).\nТак задумано: лишний контекст добавляет шум, время и стоимость, а точность от него обычно не растёт.\n\nЧтобы использовать большое окно — поднять вручную в config.yaml:\n• больше фрагментов в чате: top_k 8–12 → [Т] прогоны --k 5 / 8 / 12 и [П] живая проверка ответов\n• больше норм в аудите: audit_context_max_chars 13 000 (5 целых parent) … 20 000+; крупнее разделы: audit_map_size\n   12 000–30 000 (меньше вызовов, модель видит больше документа сразу) → [П] на документах с известными замечаниями\n• контроль исправлений: review_top_sections 5–8, review_context_max_chars 30 000+; длинные ответы — max_tokens\n• parent_size ♻ обычно не трогать: больше контекста лучше набирать числом фрагментов (top_k)\n\nОкно LLM не влияет на эмбеддинги и реранкер — у них свои лимиты.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b57"
+      "index": "b58"
     },
     {
       "id": "UcTByZ1D",
@@ -14187,7 +14275,7 @@ child / embed_batch_size
       "versionNonce": 101331283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3. Справочник параметров: определения, значения, ограничения",
@@ -14199,7 +14287,7 @@ child / embed_batch_size
       "originalText": "3. Справочник параметров: определения, значения, ограничения",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b58"
+      "index": "b59"
     },
     {
       "id": "1N0hg5e2",
@@ -14224,7 +14312,7 @@ child / embed_batch_size
       "versionNonce": 490281628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Единицы: ток. — токены, симв. — символы. «В панели» — диапазон ползунка (если значение из config.yaml больше, ползунок расширяется). config.yaml проверяет только тип значения; защита от несовместимых значений — в коде (колонка\n«Ограничения»).",
@@ -14236,7 +14324,7 @@ child / embed_batch_size
       "originalText": "Единицы: ток. — токены, симв. — символы. «В панели» — диапазон ползунка (если значение из config.yaml больше, ползунок расширяется). config.yaml проверяет только тип значения; защита от несовместимых значений — в коде (колонка\n«Ограничения»).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b59"
+      "index": "b5A"
     },
     {
       "id": "ciO3a5zO",
@@ -14268,10 +14356,10 @@ child / embed_batch_size
           "id": "CLcF2KMf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5A"
+      "index": "b5B"
     },
     {
       "id": "CLcF2KMf",
@@ -14296,7 +14384,7 @@ child / embed_batch_size
       "versionNonce": 44620693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "КАК ЧИТАТЬ «0 = авто: ① сервер ② иначе 32768 ток.»\nЭто шаги по порядку: что стоит в коде → откуда MINT берёт значение.\n• 0 — значение в коде и в config.yaml по умолчанию: «не задано — определить автоматически». Ноль, а не число, нужен,\n   чтобы MINT отличал «администратор ничего не указал» от явного значения (приоритет — панель 1).\n• ① сервер — первый шаг: MINT спрашивает лимит у сервера модели (detect_server_info, панель 1). Ответил — берётся это\n   число; в «Модели и лимиты» видно «Сервер: …».\n• ② иначе 32768 — сервер не сообщил (часто у корпоративных шлюзов и облачных API): берётся типовое значение —\n   безопасная догадка (почему именно такое — справа).\nТиповое значение может не совпасть с вашей моделью: при нём MINT размер запроса не проверяет. Чем грозит ошибка —\nстрока llm_context_tokens; лимит лучше указать вручную (панель или config.yaml).",
@@ -14308,7 +14396,7 @@ child / embed_batch_size
       "originalText": "КАК ЧИТАТЬ «0 = авто: ① сервер ② иначе 32768 ток.»\nЭто шаги по порядку: что стоит в коде → откуда MINT берёт значение.\n• 0 — значение в коде и в config.yaml по умолчанию: «не задано — определить автоматически». Ноль, а не число, нужен,\n   чтобы MINT отличал «администратор ничего не указал» от явного значения (приоритет — панель 1).\n• ① сервер — первый шаг: MINT спрашивает лимит у сервера модели (detect_server_info, панель 1). Ответил — берётся это\n   число; в «Модели и лимиты» видно «Сервер: …».\n• ② иначе 32768 — сервер не сообщил (часто у корпоративных шлюзов и облачных API): берётся типовое значение —\n   безопасная догадка (почему именно такое — справа).\nТиповое значение может не совпасть с вашей моделью: при нём MINT размер запроса не проверяет. Чем грозит ошибка —\nстрока llm_context_tokens; лимит лучше указать вручную (панель или config.yaml).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5B"
+      "index": "b5C"
     },
     {
       "id": "7TSDGZLr",
@@ -14340,10 +14428,10 @@ child / embed_batch_size
           "id": "U4HzW8Hd"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5C"
+      "index": "b5D"
     },
     {
       "id": "U4HzW8Hd",
@@ -14368,7 +14456,7 @@ child / embed_batch_size
       "versionNonce": 1060881568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПОЧЕМУ ИМЕННО ЭТИ ТИПОВЫЕ ЗНАЧЕНИЯ (FALLBACK_LIMITS)\n• окно LLM 32768 ток. — обычное окно открытых моделей при развёртывании (Qwen2.5 / Qwen3, Llama 3.x, Mistral на vLLM);\n   почти все современные модели не меньше.\n• вход эмбеддингов 8192 ток. — Qwen3-Embedding, bge-m3, gte-Qwen; модели на 512 ток. — см. embed_max_tokens.\n• вход реранкера 8192 ток. — bge-reranker-v2-m3.\n• 2.5 симв./ток. — см. блок «Токены и символы» вверху.\n\nЧИСЛО У [А]-ПАРАМЕТРА (например, 3500 симв.)\nЭто умолчание. Расчёт может только уменьшить его под маленькую модель (формула — колонка «Ограничения»), но не\nувеличивает.",
@@ -14380,7 +14468,7 @@ child / embed_batch_size
       "originalText": "ПОЧЕМУ ИМЕННО ЭТИ ТИПОВЫЕ ЗНАЧЕНИЯ (FALLBACK_LIMITS)\n• окно LLM 32768 ток. — обычное окно открытых моделей при развёртывании (Qwen2.5 / Qwen3, Llama 3.x, Mistral на vLLM);\n   почти все современные модели не меньше.\n• вход эмбеддингов 8192 ток. — Qwen3-Embedding, bge-m3, gte-Qwen; модели на 512 ток. — см. embed_max_tokens.\n• вход реранкера 8192 ток. — bge-reranker-v2-m3.\n• 2.5 симв./ток. — см. блок «Токены и символы» вверху.\n\nЧИСЛО У [А]-ПАРАМЕТРА (например, 3500 симв.)\nЭто умолчание. Расчёт может только уменьшить его под маленькую модель (формула — колонка «Ограничения»), но не\nувеличивает.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5D"
+      "index": "b5E"
     },
     {
       "id": "jG1HfMMk",
@@ -14412,10 +14500,10 @@ child / embed_batch_size
           "id": "2YQ5MS7L"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5E"
+      "index": "b5F"
     },
     {
       "id": "2YQ5MS7L",
@@ -14440,7 +14528,7 @@ child / embed_batch_size
       "versionNonce": 1032825751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Параметр",
@@ -14452,7 +14540,7 @@ child / embed_batch_size
       "originalText": "Параметр",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5F"
+      "index": "b5G"
     },
     {
       "id": "eDGzaI4K",
@@ -14484,10 +14572,10 @@ child / embed_batch_size
           "id": "9KNAbksk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5G"
+      "index": "b5H"
     },
     {
       "id": "9KNAbksk",
@@ -14512,7 +14600,7 @@ child / embed_batch_size
       "versionNonce": 361100277,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Что это",
@@ -14524,7 +14612,7 @@ child / embed_batch_size
       "originalText": "Что это",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5H"
+      "index": "b5I"
     },
     {
       "id": "8l0YR9UY",
@@ -14556,10 +14644,10 @@ child / embed_batch_size
           "id": "puwzidOM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5I"
+      "index": "b5J"
     },
     {
       "id": "puwzidOM",
@@ -14584,7 +14672,7 @@ child / embed_batch_size
       "versionNonce": 1814733556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "По умолчанию",
@@ -14596,7 +14684,7 @@ child / embed_batch_size
       "originalText": "По умолчанию",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5J"
+      "index": "b5K"
     },
     {
       "id": "OjkY8viH",
@@ -14628,10 +14716,10 @@ child / embed_batch_size
           "id": "VGbp4dm8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5K"
+      "index": "b5L"
     },
     {
       "id": "VGbp4dm8",
@@ -14656,7 +14744,7 @@ child / embed_batch_size
       "versionNonce": 1086220258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "В панели",
@@ -14668,7 +14756,7 @@ child / embed_batch_size
       "originalText": "В панели",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5L"
+      "index": "b5M"
     },
     {
       "id": "NGzfhwJn",
@@ -14700,10 +14788,10 @@ child / embed_batch_size
           "id": "wsDhi5dq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5M"
+      "index": "b5N"
     },
     {
       "id": "wsDhi5dq",
@@ -14728,7 +14816,7 @@ child / embed_batch_size
       "versionNonce": 133979656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ограничения и зависимости",
@@ -14740,7 +14828,7 @@ child / embed_batch_size
       "originalText": "Ограничения и зависимости",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5N"
+      "index": "b5O"
     },
     {
       "id": "mxX9cJAs",
@@ -14772,10 +14860,10 @@ child / embed_batch_size
           "id": "0KKnZWXi"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5O"
+      "index": "b5P"
     },
     {
       "id": "0KKnZWXi",
@@ -14800,7 +14888,7 @@ child / embed_batch_size
       "versionNonce": 1464481216,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПОДКЛЮЧЕНИЯ — .env",
@@ -14812,7 +14900,7 @@ child / embed_batch_size
       "originalText": "ПОДКЛЮЧЕНИЯ — .env",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5P"
+      "index": "b5Q"
     },
     {
       "id": "C91AXths",
@@ -14844,10 +14932,10 @@ child / embed_batch_size
           "id": "yggj69o9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5Q"
+      "index": "b5R"
     },
     {
       "id": "yggj69o9",
@@ -14872,7 +14960,7 @@ child / embed_batch_size
       "versionNonce": 2142958805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] LLM_API_URL",
@@ -14884,7 +14972,7 @@ child / embed_batch_size
       "originalText": "[Р] LLM_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5R"
+      "index": "b5S"
     },
     {
       "id": "IOJY7tlJ",
@@ -14916,10 +15004,10 @@ child / embed_batch_size
           "id": "ESOuFabo"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5S"
+      "index": "b5T"
     },
     {
       "id": "ESOuFabo",
@@ -14944,7 +15032,7 @@ child / embed_batch_size
       "versionNonce": 1012750916,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Базовый адрес OpenAI-совместимого API языковой модели (…/v1); к нему добавляются\n/chat/completions и /models.",
@@ -14956,7 +15044,7 @@ child / embed_batch_size
       "originalText": "Базовый адрес OpenAI-совместимого API языковой модели (…/v1); к нему добавляются\n/chat/completions и /models.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5T"
+      "index": "b5U"
     },
     {
       "id": "tQecK9OY",
@@ -14988,10 +15076,10 @@ child / embed_batch_size
           "id": "77bb0qUc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5U"
+      "index": "b5V"
     },
     {
       "id": "77bb0qUc",
@@ -15016,7 +15104,7 @@ child / embed_batch_size
       "versionNonce": 1315767751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "— (обязательно)",
@@ -15028,7 +15116,7 @@ child / embed_batch_size
       "originalText": "— (обязательно)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5V"
+      "index": "b5W"
     },
     {
       "id": "rudnEjFS",
@@ -15060,10 +15148,10 @@ child / embed_batch_size
           "id": "Ht61a5na"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5W"
+      "index": "b5X"
     },
     {
       "id": "Ht61a5na",
@@ -15088,7 +15176,7 @@ child / embed_batch_size
       "versionNonce": 1722526171,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15100,7 +15188,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5X"
+      "index": "b5Y"
     },
     {
       "id": "jPOm4N8S",
@@ -15132,10 +15220,10 @@ child / embed_batch_size
           "id": "32RI4Vax"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5Y"
+      "index": "b5Z"
     },
     {
       "id": "32RI4Vax",
@@ -15160,7 +15248,7 @@ child / embed_batch_size
       "versionNonce": 1488369257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Пусто — ошибка в панели: чат, аудит и контроль не работают.",
@@ -15172,7 +15260,7 @@ child / embed_batch_size
       "originalText": "Пусто — ошибка в панели: чат, аудит и контроль не работают.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5Z"
+      "index": "b5a"
     },
     {
       "id": "DWOYjBI5",
@@ -15204,10 +15292,10 @@ child / embed_batch_size
           "id": "KTEWklEb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5a"
+      "index": "b5b"
     },
     {
       "id": "KTEWklEb",
@@ -15232,7 +15320,7 @@ child / embed_batch_size
       "versionNonce": 877373401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] EMBED_API_URL",
@@ -15244,7 +15332,7 @@ child / embed_batch_size
       "originalText": "[Р] EMBED_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5b"
+      "index": "b5c"
     },
     {
       "id": "ONreHZ23",
@@ -15276,10 +15364,10 @@ child / embed_batch_size
           "id": "MclAyQ4e"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5c"
+      "index": "b5d"
     },
     {
       "id": "MclAyQ4e",
@@ -15304,7 +15392,7 @@ child / embed_batch_size
       "versionNonce": 1480905548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Полный адрес эндпоинта эмбеддингов (…/v1/embeddings).",
@@ -15316,7 +15404,7 @@ child / embed_batch_size
       "originalText": "Полный адрес эндпоинта эмбеддингов (…/v1/embeddings).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5d"
+      "index": "b5e"
     },
     {
       "id": "LGOObTx6",
@@ -15348,10 +15436,10 @@ child / embed_batch_size
           "id": "ZcjfMvsO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5e"
+      "index": "b5f"
     },
     {
       "id": "ZcjfMvsO",
@@ -15376,7 +15464,7 @@ child / embed_batch_size
       "versionNonce": 559213718,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "— (обязательно)",
@@ -15388,7 +15476,7 @@ child / embed_batch_size
       "originalText": "— (обязательно)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5f"
+      "index": "b5g"
     },
     {
       "id": "TR4iTsB2",
@@ -15420,10 +15508,10 @@ child / embed_batch_size
           "id": "htbKFycS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5g"
+      "index": "b5h"
     },
     {
       "id": "htbKFycS",
@@ -15448,7 +15536,7 @@ child / embed_batch_size
       "versionNonce": 1496972470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15460,7 +15548,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5h"
+      "index": "b5i"
     },
     {
       "id": "M37jsMEV",
@@ -15492,10 +15580,10 @@ child / embed_batch_size
           "id": "m9R4H4ku"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5i"
+      "index": "b5j"
     },
     {
       "id": "m9R4H4ku",
@@ -15520,7 +15608,7 @@ child / embed_batch_size
       "versionNonce": 55367169,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Пусто — загрузка документов невозможна, поиск только по словам (BM25).",
@@ -15532,7 +15620,7 @@ child / embed_batch_size
       "originalText": "Пусто — загрузка документов невозможна, поиск только по словам (BM25).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5j"
+      "index": "b5k"
     },
     {
       "id": "mRSN0CMT",
@@ -15564,10 +15652,10 @@ child / embed_batch_size
           "id": "xJ8zGawf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5k"
+      "index": "b5l"
     },
     {
       "id": "xJ8zGawf",
@@ -15592,7 +15680,7 @@ child / embed_batch_size
       "versionNonce": 181990875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] RERANK_API_URL",
@@ -15604,7 +15692,7 @@ child / embed_batch_size
       "originalText": "[Р] RERANK_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5l"
+      "index": "b5m"
     },
     {
       "id": "4o4o6ovp",
@@ -15636,10 +15724,10 @@ child / embed_batch_size
           "id": "cbO9Y31d"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5m"
+      "index": "b5n"
     },
     {
       "id": "cbO9Y31d",
@@ -15664,7 +15752,7 @@ child / embed_batch_size
       "versionNonce": 949336474,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Полный адрес реранкера (…/v1/rerank).",
@@ -15676,7 +15764,7 @@ child / embed_batch_size
       "originalText": "Полный адрес реранкера (…/v1/rerank).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5n"
+      "index": "b5o"
     },
     {
       "id": "7pb1AkdQ",
@@ -15708,10 +15796,10 @@ child / embed_batch_size
           "id": "yRhgnasM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5o"
+      "index": "b5p"
     },
     {
       "id": "yRhgnasM",
@@ -15736,7 +15824,7 @@ child / embed_batch_size
       "versionNonce": 581769304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "пусто — без реранкера",
@@ -15748,7 +15836,7 @@ child / embed_batch_size
       "originalText": "пусто — без реранкера",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5p"
+      "index": "b5q"
     },
     {
       "id": "l6U5LxMc",
@@ -15780,10 +15868,10 @@ child / embed_batch_size
           "id": "3Zc9FmxD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5q"
+      "index": "b5r"
     },
     {
       "id": "3Zc9FmxD",
@@ -15808,7 +15896,7 @@ child / embed_batch_size
       "versionNonce": 929912376,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15820,7 +15908,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5r"
+      "index": "b5s"
     },
     {
       "id": "9W3SLBS7",
@@ -15852,10 +15940,10 @@ child / embed_batch_size
           "id": "DKTOy7v0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5s"
+      "index": "b5t"
     },
     {
       "id": "DKTOy7v0",
@@ -15880,7 +15968,7 @@ child / embed_batch_size
       "versionNonce": 1127614340,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Необязателен: без него порядок задают векторный поиск и BM25.",
@@ -15892,7 +15980,7 @@ child / embed_batch_size
       "originalText": "Необязателен: без него порядок задают векторный поиск и BM25.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5t"
+      "index": "b5u"
     },
     {
       "id": "gw6zjVeY",
@@ -15924,10 +16012,10 @@ child / embed_batch_size
           "id": "JemVd0g8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5u"
+      "index": "b5v"
     },
     {
       "id": "JemVd0g8",
@@ -15952,7 +16040,7 @@ child / embed_batch_size
       "versionNonce": 1511252339,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] LLM_API_KEY, EMBED_API_KEY,\nRERANK_API_KEY",
@@ -15964,7 +16052,7 @@ child / embed_batch_size
       "originalText": "[Р] LLM_API_KEY, EMBED_API_KEY,\nRERANK_API_KEY",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5v"
+      "index": "b5w"
     },
     {
       "id": "mYCfgnKM",
@@ -15996,10 +16084,10 @@ child / embed_batch_size
           "id": "ZE1GDn3r"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5w"
+      "index": "b5x"
     },
     {
       "id": "ZE1GDn3r",
@@ -16024,7 +16112,7 @@ child / embed_batch_size
       "versionNonce": 1813782780,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ключи доступа (Bearer).",
@@ -16036,7 +16124,7 @@ child / embed_batch_size
       "originalText": "Ключи доступа (Bearer).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5x"
+      "index": "b5y"
     },
     {
       "id": "TvQKokCD",
@@ -16068,10 +16156,10 @@ child / embed_batch_size
           "id": "tr3oPwIk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b5y"
+      "index": "b5z"
     },
     {
       "id": "tr3oPwIk",
@@ -16096,7 +16184,7 @@ child / embed_batch_size
       "versionNonce": 308331613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "пусто",
@@ -16108,7 +16196,7 @@ child / embed_batch_size
       "originalText": "пусто",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5z"
+      "index": "b60"
     },
     {
       "id": "fJf5yJZw",
@@ -16140,10 +16228,10 @@ child / embed_batch_size
           "id": "RW6sIRIG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b60"
+      "index": "b61"
     },
     {
       "id": "RW6sIRIG",
@@ -16168,7 +16256,7 @@ child / embed_batch_size
       "versionNonce": 1232645777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -16180,7 +16268,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b61"
+      "index": "b62"
     },
     {
       "id": "jQSN7Hbf",
@@ -16212,10 +16300,10 @@ child / embed_batch_size
           "id": "7G3o96NV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b62"
+      "index": "b63"
     },
     {
       "id": "7G3o96NV",
@@ -16240,7 +16328,7 @@ child / embed_batch_size
       "versionNonce": 1955071434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Пустые EMBED_ / RERANK_ — берётся LLM_API_KEY; пустой LLM_API_KEY — запросы без\nавторизации.",
@@ -16252,7 +16340,7 @@ child / embed_batch_size
       "originalText": "Пустые EMBED_ / RERANK_ — берётся LLM_API_KEY; пустой LLM_API_KEY — запросы без\nавторизации.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b63"
+      "index": "b64"
     },
     {
       "id": "vSyemDws",
@@ -16284,10 +16372,10 @@ child / embed_batch_size
           "id": "2tgq89z2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b64"
+      "index": "b65"
     },
     {
       "id": "2tgq89z2",
@@ -16312,7 +16400,7 @@ child / embed_batch_size
       "versionNonce": 1952950688,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] LLM_MODEL",
@@ -16324,7 +16412,7 @@ child / embed_batch_size
       "originalText": "[Р] LLM_MODEL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b65"
+      "index": "b66"
     },
     {
       "id": "tkaDqejM",
@@ -16356,10 +16444,10 @@ child / embed_batch_size
           "id": "mRPMzkCp"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b66"
+      "index": "b67"
     },
     {
       "id": "mRPMzkCp",
@@ -16384,7 +16472,7 @@ child / embed_batch_size
       "versionNonce": 744333812,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Модель по умолчанию в списке «Модель ИИ» (старое имя — DEFAULT_LLM_MODEL).",
@@ -16396,7 +16484,7 @@ child / embed_batch_size
       "originalText": "Модель по умолчанию в списке «Модель ИИ» (старое имя — DEFAULT_LLM_MODEL).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b67"
+      "index": "b68"
     },
     {
       "id": "xLL4ElyU",
@@ -16428,10 +16516,10 @@ child / embed_batch_size
           "id": "K5dA1G96"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b68"
+      "index": "b69"
     },
     {
       "id": "K5dA1G96",
@@ -16456,7 +16544,7 @@ child / embed_batch_size
       "versionNonce": 981406186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "первая из списка сервера",
@@ -16468,7 +16556,7 @@ child / embed_batch_size
       "originalText": "первая из списка сервера",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b69"
+      "index": "b6A"
     },
     {
       "id": "sGW7BUUy",
@@ -16500,10 +16588,10 @@ child / embed_batch_size
           "id": "emH7nN39"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6A"
+      "index": "b6B"
     },
     {
       "id": "emH7nN39",
@@ -16528,7 +16616,7 @@ child / embed_batch_size
       "versionNonce": 1795396205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "список моделей",
@@ -16540,7 +16628,7 @@ child / embed_batch_size
       "originalText": "список моделей",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6B"
+      "index": "b6C"
     },
     {
       "id": "sQHeeWtl",
@@ -16572,10 +16660,10 @@ child / embed_batch_size
           "id": "AStw5ic1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6C"
+      "index": "b6D"
     },
     {
       "id": "AStw5ic1",
@@ -16600,7 +16688,7 @@ child / embed_batch_size
       "versionNonce": 1464035852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Список запрашивается у сервера; модель из .env добавляется в список, даже если сервер\nеё не вернул.",
@@ -16612,7 +16700,7 @@ child / embed_batch_size
       "originalText": "Список запрашивается у сервера; модель из .env добавляется в список, даже если сервер\nеё не вернул.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6D"
+      "index": "b6E"
     },
     {
       "id": "LZSigOFi",
@@ -16644,10 +16732,10 @@ child / embed_batch_size
           "id": "XKXJAvUN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6E"
+      "index": "b6F"
     },
     {
       "id": "XKXJAvUN",
@@ -16672,7 +16760,7 @@ child / embed_batch_size
       "versionNonce": 2005035337,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] EMBED_MODEL ♻",
@@ -16684,7 +16772,7 @@ child / embed_batch_size
       "originalText": "[Р] EMBED_MODEL ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6F"
+      "index": "b6G"
     },
     {
       "id": "WTcD0fPk",
@@ -16716,10 +16804,10 @@ child / embed_batch_size
           "id": "f33ycfJe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6G"
+      "index": "b6H"
     },
     {
       "id": "f33ycfJe",
@@ -16744,7 +16832,7 @@ child / embed_batch_size
       "versionNonce": 647636602,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Модель эмбеддингов; записывается в manifest каждого документа.",
@@ -16756,7 +16844,7 @@ child / embed_batch_size
       "originalText": "Модель эмбеддингов; записывается в manifest каждого документа.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6H"
+      "index": "b6I"
     },
     {
       "id": "sHNSboID",
@@ -16788,10 +16876,10 @@ child / embed_batch_size
           "id": "IqsZLI99"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6I"
+      "index": "b6J"
     },
     {
       "id": "IqsZLI99",
@@ -16816,7 +16904,7 @@ child / embed_batch_size
       "versionNonce": 1300755931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "qwen3-embedding-4b",
@@ -16828,7 +16916,7 @@ child / embed_batch_size
       "originalText": "qwen3-embedding-4b",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6J"
+      "index": "b6K"
     },
     {
       "id": "DaACDznC",
@@ -16860,10 +16948,10 @@ child / embed_batch_size
           "id": "BAx6HfQF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6K"
+      "index": "b6L"
     },
     {
       "id": "BAx6HfQF",
@@ -16888,7 +16976,7 @@ child / embed_batch_size
       "versionNonce": 703525944,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -16900,7 +16988,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6L"
+      "index": "b6M"
     },
     {
       "id": "OpGEdso4",
@@ -16932,10 +17020,10 @@ child / embed_batch_size
           "id": "h6aJNanA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6M"
+      "index": "b6N"
     },
     {
       "id": "h6aJNanA",
@@ -16960,7 +17048,7 @@ child / embed_batch_size
       "versionNonce": 186779429,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Смена — переиндексация; другая размерность векторов — векторный поиск выключается до\nпереиндексации.",
@@ -16972,7 +17060,7 @@ child / embed_batch_size
       "originalText": "Смена — переиндексация; другая размерность векторов — векторный поиск выключается до\nпереиндексации.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6N"
+      "index": "b6O"
     },
     {
       "id": "JwdgS3Iy",
@@ -17004,10 +17092,10 @@ child / embed_batch_size
           "id": "0SZyn6i8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6O"
+      "index": "b6P"
     },
     {
       "id": "0SZyn6i8",
@@ -17032,7 +17120,7 @@ child / embed_batch_size
       "versionNonce": 447267511,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] RERANK_MODEL",
@@ -17044,7 +17132,7 @@ child / embed_batch_size
       "originalText": "[Р] RERANK_MODEL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6P"
+      "index": "b6Q"
     },
     {
       "id": "IO8ucXej",
@@ -17076,10 +17164,10 @@ child / embed_batch_size
           "id": "dTHkDFbI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6Q"
+      "index": "b6R"
     },
     {
       "id": "dTHkDFbI",
@@ -17104,7 +17192,7 @@ child / embed_batch_size
       "versionNonce": 1205814253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Модель реранкера.",
@@ -17116,7 +17204,7 @@ child / embed_batch_size
       "originalText": "Модель реранкера.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6R"
+      "index": "b6S"
     },
     {
       "id": "sJjgDzRL",
@@ -17148,10 +17236,10 @@ child / embed_batch_size
           "id": "WqUMpLwW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6S"
+      "index": "b6T"
     },
     {
       "id": "WqUMpLwW",
@@ -17176,7 +17264,7 @@ child / embed_batch_size
       "versionNonce": 1267512368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "bge-reranker-v2-m3",
@@ -17188,7 +17276,7 @@ child / embed_batch_size
       "originalText": "bge-reranker-v2-m3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6T"
+      "index": "b6U"
     },
     {
       "id": "KO1mW2BD",
@@ -17220,10 +17308,10 @@ child / embed_batch_size
           "id": "yyIG25jv"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6U"
+      "index": "b6V"
     },
     {
       "id": "yyIG25jv",
@@ -17248,7 +17336,7 @@ child / embed_batch_size
       "versionNonce": 469094310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17260,7 +17348,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6V"
+      "index": "b6W"
     },
     {
       "id": "84yfvPz9",
@@ -17292,10 +17380,10 @@ child / embed_batch_size
           "id": "MUB5C9Wl"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6W"
+      "index": "b6X"
     },
     {
       "id": "MUB5C9Wl",
@@ -17320,7 +17408,7 @@ child / embed_batch_size
       "versionNonce": 367170949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17332,7 +17420,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6X"
+      "index": "b6Y"
     },
     {
       "id": "NjBS5LWQ",
@@ -17364,10 +17452,10 @@ child / embed_batch_size
           "id": "GxKMyF0K"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6Y"
+      "index": "b6Z"
     },
     {
       "id": "GxKMyF0K",
@@ -17392,7 +17480,7 @@ child / embed_batch_size
       "versionNonce": 1436421028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] CA_BUNDLE_PATH, SSL_INSECURE",
@@ -17404,7 +17492,7 @@ child / embed_batch_size
       "originalText": "[Р] CA_BUNDLE_PATH, SSL_INSECURE",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6Z"
+      "index": "b6a"
     },
     {
       "id": "bBPthivA",
@@ -17436,10 +17524,10 @@ child / embed_batch_size
           "id": "q5RvEk1j"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6a"
+      "index": "b6b"
     },
     {
       "id": "q5RvEk1j",
@@ -17464,7 +17552,7 @@ child / embed_batch_size
       "versionNonce": 1582016170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сертификат для TLS; SSL_INSECURE = 1 отключает проверку.",
@@ -17476,7 +17564,7 @@ child / embed_batch_size
       "originalText": "Сертификат для TLS; SSL_INSECURE = 1 отключает проверку.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6b"
+      "index": "b6c"
     },
     {
       "id": "R7GGWTve",
@@ -17508,10 +17596,10 @@ child / embed_batch_size
           "id": "BMfh4W2E"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6c"
+      "index": "b6d"
     },
     {
       "id": "BMfh4W2E",
@@ -17536,7 +17624,7 @@ child / embed_batch_size
       "versionNonce": 95466538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "системный файл сертификатов\n(Windows — хранилище Windows);\nвыкл.",
@@ -17548,7 +17636,7 @@ child / embed_batch_size
       "originalText": "системный файл сертификатов\n(Windows — хранилище Windows);\nвыкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6d"
+      "index": "b6e"
     },
     {
       "id": "jkU89hMc",
@@ -17580,10 +17668,10 @@ child / embed_batch_size
           "id": "GLTaFNm6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6e"
+      "index": "b6f"
     },
     {
       "id": "GLTaFNm6",
@@ -17608,7 +17696,7 @@ child / embed_batch_size
       "versionNonce": 1264503417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17620,7 +17708,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6f"
+      "index": "b6g"
     },
     {
       "id": "p1ZrC4u5",
@@ -17652,10 +17740,10 @@ child / embed_batch_size
           "id": "PGbfPC1N"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6g"
+      "index": "b6h"
     },
     {
       "id": "PGbfPC1N",
@@ -17680,7 +17768,7 @@ child / embed_batch_size
       "versionNonce": 1869244182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Файла нет — системные сертификаты; на Windows — через truststore. SSL_INSECURE —\nтолько во внутренней сети.",
@@ -17692,7 +17780,7 @@ child / embed_batch_size
       "originalText": "Файла нет — системные сертификаты; на Windows — через truststore. SSL_INSECURE —\nтолько во внутренней сети.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6h"
+      "index": "b6i"
     },
     {
       "id": "DVgV3kWo",
@@ -17724,10 +17812,10 @@ child / embed_batch_size
           "id": "yVqN2Tnj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6i"
+      "index": "b6j"
     },
     {
       "id": "yVqN2Tnj",
@@ -17752,7 +17840,7 @@ child / embed_batch_size
       "versionNonce": 2123426261,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] KB_DIR, LOG_DIR,\nGLOSSARY_PATH, MINT_CONFIG",
@@ -17764,7 +17852,7 @@ child / embed_batch_size
       "originalText": "[Р] KB_DIR, LOG_DIR,\nGLOSSARY_PATH, MINT_CONFIG",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6j"
+      "index": "b6k"
     },
     {
       "id": "lMi8kImd",
@@ -17796,10 +17884,10 @@ child / embed_batch_size
           "id": "1OYpN5Qt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6k"
+      "index": "b6l"
     },
     {
       "id": "1OYpN5Qt",
@@ -17824,7 +17912,7 @@ child / embed_batch_size
       "versionNonce": 574710040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Папка базы, папка логов и отзывов, путь к glossary.json и к config.yaml.",
@@ -17836,7 +17924,7 @@ child / embed_batch_size
       "originalText": "Папка базы, папка логов и отзывов, путь к glossary.json и к config.yaml.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6l"
+      "index": "b6m"
     },
     {
       "id": "5vqBmjI4",
@@ -17868,10 +17956,10 @@ child / embed_batch_size
           "id": "oouQcXeR"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6m"
+      "index": "b6n"
     },
     {
       "id": "oouQcXeR",
@@ -17896,7 +17984,7 @@ child / embed_batch_size
       "versionNonce": 78474149,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "~/knowledge_base; ~/mint_logs;\nрядом с программой",
@@ -17908,7 +17996,7 @@ child / embed_batch_size
       "originalText": "~/knowledge_base; ~/mint_logs;\nрядом с программой",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6n"
+      "index": "b6o"
     },
     {
       "id": "HO3Sjkgu",
@@ -17940,10 +18028,10 @@ child / embed_batch_size
           "id": "HPeu2WZ2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6o"
+      "index": "b6p"
     },
     {
       "id": "HPeu2WZ2",
@@ -17968,7 +18056,7 @@ child / embed_batch_size
       "versionNonce": 676437166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17980,7 +18068,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6p"
+      "index": "b6q"
     },
     {
       "id": "k34Hr61B",
@@ -18012,10 +18100,10 @@ child / embed_batch_size
           "id": "URKjBaOM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6q"
+      "index": "b6r"
     },
     {
       "id": "URKjBaOM",
@@ -18040,7 +18128,7 @@ child / embed_batch_size
       "versionNonce": 273261022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Лог — mint_system.log с ротацией 10 МБ × 5; отзывы пользователей — feedback.jsonl.",
@@ -18052,7 +18140,7 @@ child / embed_batch_size
       "originalText": "Лог — mint_system.log с ротацией 10 МБ × 5; отзывы пользователей — feedback.jsonl.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6r"
+      "index": "b6s"
     },
     {
       "id": "lIjgauaX",
@@ -18084,10 +18172,10 @@ child / embed_batch_size
           "id": "3rITogdG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6s"
+      "index": "b6t"
     },
     {
       "id": "3rITogdG",
@@ -18112,7 +18200,7 @@ child / embed_batch_size
       "versionNonce": 1942424467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] MINT_LANG",
@@ -18124,7 +18212,7 @@ child / embed_batch_size
       "originalText": "[Р] MINT_LANG",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6t"
+      "index": "b6u"
     },
     {
       "id": "XPGmLXNM",
@@ -18156,10 +18244,10 @@ child / embed_batch_size
           "id": "0UWnNv8Z"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6u"
+      "index": "b6v"
     },
     {
       "id": "0UWnNv8Z",
@@ -18184,7 +18272,7 @@ child / embed_batch_size
       "versionNonce": 1656278656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Язык интерфейса, промптов и отчётов: ru или en.",
@@ -18196,7 +18284,7 @@ child / embed_batch_size
       "originalText": "Язык интерфейса, промптов и отчётов: ru или en.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6v"
+      "index": "b6w"
     },
     {
       "id": "tkJJ4vlA",
@@ -18228,10 +18316,10 @@ child / embed_batch_size
           "id": "F8QpDSIv"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6w"
+      "index": "b6x"
     },
     {
       "id": "F8QpDSIv",
@@ -18256,7 +18344,7 @@ child / embed_batch_size
       "versionNonce": 409918936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "язык ОС (ru → ru, иначе en)",
@@ -18268,7 +18356,7 @@ child / embed_batch_size
       "originalText": "язык ОС (ru → ru, иначе en)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6x"
+      "index": "b6y"
     },
     {
       "id": "KjoDn20H",
@@ -18300,10 +18388,10 @@ child / embed_batch_size
           "id": "te5PjqQt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b6y"
+      "index": "b6z"
     },
     {
       "id": "te5PjqQt",
@@ -18328,7 +18416,7 @@ child / embed_batch_size
       "versionNonce": 1755316998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "переключатель в\nпанели",
@@ -18340,7 +18428,7 @@ child / embed_batch_size
       "originalText": "переключатель в\nпанели",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6z"
+      "index": "b70"
     },
     {
       "id": "TKxzBAXZ",
@@ -18372,10 +18460,10 @@ child / embed_batch_size
           "id": "T4V1fqRU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b70"
+      "index": "b71"
     },
     {
       "id": "T4V1fqRU",
@@ -18400,7 +18488,7 @@ child / embed_batch_size
       "versionNonce": 101711426,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Переключатель меняет язык на сеанс; check_install.py тоже пишет на этом языке.",
@@ -18412,7 +18500,7 @@ child / embed_batch_size
       "originalText": "Переключатель меняет язык на сеанс; check_install.py тоже пишет на этом языке.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b71"
+      "index": "b72"
     },
     {
       "id": "g1SFzn6U",
@@ -18444,10 +18532,10 @@ child / embed_batch_size
           "id": "sxHaOQ3S"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b72"
+      "index": "b73"
     },
     {
       "id": "sxHaOQ3S",
@@ -18472,7 +18560,7 @@ child / embed_batch_size
       "versionNonce": 977189084,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЛИМИТЫ МОДЕЛЕЙ — config.yaml, раздел models",
@@ -18484,7 +18572,7 @@ child / embed_batch_size
       "originalText": "ЛИМИТЫ МОДЕЛЕЙ — config.yaml, раздел models",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b73"
+      "index": "b74"
     },
     {
       "id": "8Kjr9N2l",
@@ -18516,10 +18604,10 @@ child / embed_batch_size
           "id": "2RK8kfoY"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b74"
+      "index": "b75"
     },
     {
       "id": "2RK8kfoY",
@@ -18544,7 +18632,7 @@ child / embed_batch_size
       "versionNonce": 2123128102,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [А] llm_context_tokens",
@@ -18556,7 +18644,7 @@ child / embed_batch_size
       "originalText": "◆ [А] llm_context_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b75"
+      "index": "b76"
     },
     {
       "id": "Yc1MiJuB",
@@ -18588,10 +18676,10 @@ child / embed_batch_size
           "id": "NrYlESGT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b76"
+      "index": "b77"
     },
     {
       "id": "NrYlESGT",
@@ -18616,7 +18704,7 @@ child / embed_batch_size
       "versionNonce": 1840043612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Окно контекста LLM, токенов: всё, что модель принимает за один вызов — промпт +\nнайденные фрагменты + история + ответ.",
@@ -18628,7 +18716,7 @@ child / embed_batch_size
       "originalText": "Окно контекста LLM, токенов: всё, что модель принимает за один вызов — промпт +\nнайденные фрагменты + история + ответ.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b77"
+      "index": "b78"
     },
     {
       "id": "kq6KNCaM",
@@ -18660,10 +18748,10 @@ child / embed_batch_size
           "id": "HK25jv5j"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b78"
+      "index": "b79"
     },
     {
       "id": "HK25jv5j",
@@ -18688,7 +18776,7 @@ child / embed_batch_size
       "versionNonce": 970812766,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① сервер (/models)\n② иначе 32768 ток.",
@@ -18700,7 +18788,7 @@ child / embed_batch_size
       "originalText": "0 = авто:\n① сервер (/models)\n② иначе 32768 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b79"
+      "index": "b7A"
     },
     {
       "id": "dsyKihKU",
@@ -18732,10 +18820,10 @@ child / embed_batch_size
           "id": "U1TSLbQx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7A"
+      "index": "b7B"
     },
     {
       "id": "U1TSLbQx",
@@ -18760,7 +18848,7 @@ child / embed_batch_size
       "versionNonce": 260939886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "128 … 4 млн",
@@ -18772,7 +18860,7 @@ child / embed_batch_size
       "originalText": "128 … 4 млн",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7B"
+      "index": "b7C"
     },
     {
       "id": "mA4jGdOd",
@@ -18804,10 +18892,10 @@ child / embed_batch_size
           "id": "jlswWGu6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7C"
+      "index": "b7D"
     },
     {
       "id": "jlswWGu6",
@@ -18832,7 +18920,7 @@ child / embed_batch_size
       "versionNonce": 565545273,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Предела сверху нет. От него: chat_budget, llm_budget — а через них потолки\nsmart_truncate_chars, parent_size, audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
@@ -18844,7 +18932,7 @@ child / embed_batch_size
       "originalText": "Предела сверху нет. От него: chat_budget, llm_budget — а через них потолки\nsmart_truncate_chars, parent_size, audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7D"
+      "index": "b7E"
     },
     {
       "id": "mhpKqWUh",
@@ -18876,10 +18964,10 @@ child / embed_batch_size
           "id": "6BJh4DHO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7E"
+      "index": "b7F"
     },
     {
       "id": "6BJh4DHO",
@@ -18904,7 +18992,7 @@ child / embed_batch_size
       "versionNonce": 1373321844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: главный лимит MINT. Указывайте то, что реально пропускает сервер: если шлюз режет запросы раньше окна модели — предел шлюза. Ошибка в бо́льшую сторону опаснее: MINT посчитает, что всё помещается, а сервер\nвернёт «ОШИБКА ШЛЮЗА: код 400» (vLLM) или молча обрежет начало промпта (Ollama). Ошибка в меньшую — только фрагменты короче, чем можно.",
@@ -18916,7 +19004,7 @@ child / embed_batch_size
       "originalText": "Подробнее: главный лимит MINT. Указывайте то, что реально пропускает сервер: если шлюз режет запросы раньше окна модели — предел шлюза. Ошибка в бо́льшую сторону опаснее: MINT посчитает, что всё помещается, а сервер\nвернёт «ОШИБКА ШЛЮЗА: код 400» (vLLM) или молча обрежет начало промпта (Ollama). Ошибка в меньшую — только фрагменты короче, чем можно.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7F"
+      "index": "b7G"
     },
     {
       "id": "lM4HhMjo",
@@ -18948,10 +19036,10 @@ child / embed_batch_size
           "id": "D2gVABen"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7G"
+      "index": "b7H"
     },
     {
       "id": "D2gVABen",
@@ -18976,7 +19064,7 @@ child / embed_batch_size
       "versionNonce": 934582497,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [А] embed_max_tokens",
@@ -18988,7 +19076,7 @@ child / embed_batch_size
       "originalText": "◆ [А] embed_max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7H"
+      "index": "b7I"
     },
     {
       "id": "YMFctjUn",
@@ -19020,10 +19108,10 @@ child / embed_batch_size
           "id": "GaldY6FJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7I"
+      "index": "b7J"
     },
     {
       "id": "GaldY6FJ",
@@ -19048,7 +19136,7 @@ child / embed_batch_size
       "versionNonce": 1672635998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Максимальная длина входа модели эмбеддингов, токенов.",
@@ -19060,7 +19148,7 @@ child / embed_batch_size
       "originalText": "Максимальная длина входа модели эмбеддингов, токенов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7J"
+      "index": "b7K"
     },
     {
       "id": "xDuzmyq8",
@@ -19092,10 +19180,10 @@ child / embed_batch_size
           "id": "UVAOK3Ed"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7K"
+      "index": "b7L"
     },
     {
       "id": "UVAOK3Ed",
@@ -19120,7 +19208,7 @@ child / embed_batch_size
       "versionNonce": 1992030496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① сервер (/models)\n② иначе 8192 ток.",
@@ -19132,7 +19220,7 @@ child / embed_batch_size
       "originalText": "0 = авто:\n① сервер (/models)\n② иначе 8192 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7L"
+      "index": "b7M"
     },
     {
       "id": "lrdPMayw",
@@ -19164,10 +19252,10 @@ child / embed_batch_size
           "id": "WRbuAtf7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7M"
+      "index": "b7N"
     },
     {
       "id": "WRbuAtf7",
@@ -19192,7 +19280,7 @@ child / embed_batch_size
       "versionNonce": 1620026778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "128 … 4 млн",
@@ -19204,7 +19292,7 @@ child / embed_batch_size
       "originalText": "128 … 4 млн",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7N"
+      "index": "b7O"
     },
     {
       "id": "lhT2Tf3Z",
@@ -19236,10 +19324,10 @@ child / embed_batch_size
           "id": "PLu3b4Ri"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7O"
+      "index": "b7P"
     },
     {
       "id": "PLu3b4Ri",
@@ -19264,7 +19352,7 @@ child / embed_batch_size
       "versionNonce": 1096561344,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "От него: child_size ♻, section_embed_chars, audit_query_chars, embed_input_max_chars.",
@@ -19276,7 +19364,7 @@ child / embed_batch_size
       "originalText": "От него: child_size ♻, section_embed_chars, audit_query_chars, embed_input_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7P"
+      "index": "b7Q"
     },
     {
       "id": "PO8Ox4Mf",
@@ -19308,10 +19396,10 @@ child / embed_batch_size
           "id": "R1VaztrS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7Q"
+      "index": "b7R"
     },
     {
       "id": "R1VaztrS",
@@ -19336,7 +19424,7 @@ child / embed_batch_size
       "versionNonce": 1208516040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: для моделей с входом 512 токенов (e5, ruBERT и другие BERT-подобные) обязательно указать 512, если сервер не сообщает: иначе MINT будет считать, что вход 8192, и отправлять разделы по 4000 симв. (≈ 1600\nтокенов) — сервер их обрежет или вернёт ошибку. Смена значения меняет child_size — нужна переиндексация ♻.",
@@ -19348,7 +19436,7 @@ child / embed_batch_size
       "originalText": "Подробнее: для моделей с входом 512 токенов (e5, ruBERT и другие BERT-подобные) обязательно указать 512, если сервер не сообщает: иначе MINT будет считать, что вход 8192, и отправлять разделы по 4000 симв. (≈ 1600\nтокенов) — сервер их обрежет или вернёт ошибку. Смена значения меняет child_size — нужна переиндексация ♻.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7R"
+      "index": "b7S"
     },
     {
       "id": "W2c6OzeY",
@@ -19380,10 +19468,10 @@ child / embed_batch_size
           "id": "ZQ9G7OhT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7S"
+      "index": "b7T"
     },
     {
       "id": "ZQ9G7OhT",
@@ -19408,7 +19496,7 @@ child / embed_batch_size
       "versionNonce": 1587147883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [А] rerank_max_tokens",
@@ -19420,7 +19508,7 @@ child / embed_batch_size
       "originalText": "◆ [А] rerank_max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7T"
+      "index": "b7U"
     },
     {
       "id": "DEd5uS67",
@@ -19452,10 +19540,10 @@ child / embed_batch_size
           "id": "c0YlFrZ1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7U"
+      "index": "b7V"
     },
     {
       "id": "c0YlFrZ1",
@@ -19480,7 +19568,7 @@ child / embed_batch_size
       "versionNonce": 106716420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Максимальная длина пары «запрос + документ» у реранкера, токенов.",
@@ -19492,7 +19580,7 @@ child / embed_batch_size
       "originalText": "Максимальная длина пары «запрос + документ» у реранкера, токенов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7V"
+      "index": "b7W"
     },
     {
       "id": "agYfacNF",
@@ -19524,10 +19612,10 @@ child / embed_batch_size
           "id": "UtHp1h8Q"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7W"
+      "index": "b7X"
     },
     {
       "id": "UtHp1h8Q",
@@ -19552,7 +19640,7 @@ child / embed_batch_size
       "versionNonce": 777172821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① сервер (/models)\n② иначе 8192 ток.",
@@ -19564,7 +19652,7 @@ child / embed_batch_size
       "originalText": "0 = авто:\n① сервер (/models)\n② иначе 8192 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7X"
+      "index": "b7Y"
     },
     {
       "id": "svK0mL6G",
@@ -19596,10 +19684,10 @@ child / embed_batch_size
           "id": "qch1xBp5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7Y"
+      "index": "b7Z"
     },
     {
       "id": "qch1xBp5",
@@ -19624,7 +19712,7 @@ child / embed_batch_size
       "versionNonce": 1173804549,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "128 … 4 млн",
@@ -19636,7 +19724,7 @@ child / embed_batch_size
       "originalText": "128 … 4 млн",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7Z"
+      "index": "b7a"
     },
     {
       "id": "aKMEk8dR",
@@ -19668,10 +19756,10 @@ child / embed_batch_size
           "id": "74CJP4MZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7a"
+      "index": "b7b"
     },
     {
       "id": "74CJP4MZ",
@@ -19696,7 +19784,7 @@ child / embed_batch_size
       "versionNonce": 1809129674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "От него: rerank_query_max_chars, rerank_doc_max_chars.",
@@ -19708,7 +19796,7 @@ child / embed_batch_size
       "originalText": "От него: rerank_query_max_chars, rerank_doc_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7b"
+      "index": "b7c"
     },
     {
       "id": "DVZrhwfk",
@@ -19740,10 +19828,10 @@ child / embed_batch_size
           "id": "hFMugV1w"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7c"
+      "index": "b7d"
     },
     {
       "id": "hFMugV1w",
@@ -19768,7 +19856,7 @@ child / embed_batch_size
       "versionNonce": 868100489,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [А] chars_per_token",
@@ -19780,7 +19868,7 @@ child / embed_batch_size
       "originalText": "◆ [А] chars_per_token",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7d"
+      "index": "b7e"
     },
     {
       "id": "YvfiLDcu",
@@ -19812,10 +19900,10 @@ child / embed_batch_size
           "id": "OLLWyLz8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7e"
+      "index": "b7f"
     },
     {
       "id": "OLLWyLz8",
@@ -19840,7 +19928,7 @@ child / embed_batch_size
       "versionNonce": 2080517786,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько символов текста приходится на один токен; переводит лимиты моделей из\nтокенов в символы.",
@@ -19852,7 +19940,7 @@ child / embed_batch_size
       "originalText": "Сколько символов текста приходится на один токен; переводит лимиты моделей из\nтокенов в символы.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7f"
+      "index": "b7g"
     },
     {
       "id": "kSryvkvK",
@@ -19884,10 +19972,10 @@ child / embed_batch_size
           "id": "DPoaTctN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7g"
+      "index": "b7h"
     },
     {
       "id": "DPoaTctN",
@@ -19912,7 +20000,7 @@ child / embed_batch_size
       "versionNonce": 1569553532,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① измерение кнопкой\n② иначе 2.5 симв./ток.",
@@ -19924,7 +20012,7 @@ child / embed_batch_size
       "originalText": "0 = авто:\n① измерение кнопкой\n② иначе 2.5 симв./ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7h"
+      "index": "b7i"
     },
     {
       "id": "q9ybbyXc",
@@ -19956,10 +20044,10 @@ child / embed_batch_size
           "id": "lqRVNdkw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7i"
+      "index": "b7j"
     },
     {
       "id": "lqRVNdkw",
@@ -19984,7 +20072,7 @@ child / embed_batch_size
       "versionNonce": 1629028389,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1.0 … 8.0",
@@ -19996,7 +20084,7 @@ child / embed_batch_size
       "originalText": "1.0 … 8.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7j"
+      "index": "b7k"
     },
     {
       "id": "O2zw4zDX",
@@ -20028,10 +20116,10 @@ child / embed_batch_size
           "id": "HYiFhGsw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7k"
+      "index": "b7l"
     },
     {
       "id": "HYiFhGsw",
@@ -20056,7 +20144,7 @@ child / embed_batch_size
       "versionNonce": 1795378404,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Измерение принимается в пределах 1 … 8. Как измеряется и какие значения обычны — блок\n«Токены и символы» вверху.",
@@ -20068,7 +20156,7 @@ child / embed_batch_size
       "originalText": "Измерение принимается в пределах 1 … 8. Как измеряется и какие значения обычны — блок\n«Токены и символы» вверху.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7l"
+      "index": "b7m"
     },
     {
       "id": "o8z5Vi8g",
@@ -20100,10 +20188,10 @@ child / embed_batch_size
           "id": "yDcEyhDr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7m"
+      "index": "b7n"
     },
     {
       "id": "yDcEyhDr",
@@ -20128,7 +20216,7 @@ child / embed_batch_size
       "versionNonce": 225296398,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: участвует во всех формулах, где лимит модели переводится в символы. Меньше реального — MINT перестраховывается (фрагменты короче, чем можно). Больше реального — запросы могут не поместиться в модель.",
@@ -20140,7 +20228,7 @@ child / embed_batch_size
       "originalText": "Подробнее: участвует во всех формулах, где лимит модели переводится в символы. Меньше реального — MINT перестраховывается (фрагменты короче, чем можно). Больше реального — запросы могут не поместиться в модель.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7n"
+      "index": "b7o"
     },
     {
       "id": "y1T1lQxH",
@@ -20172,10 +20260,10 @@ child / embed_batch_size
           "id": "HSjPlUzV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7o"
+      "index": "b7p"
     },
     {
       "id": "HSjPlUzV",
@@ -20200,7 +20288,7 @@ child / embed_batch_size
       "versionNonce": 1231921184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] embed_query_prefix",
@@ -20212,7 +20300,7 @@ child / embed_batch_size
       "originalText": "◇ [А] embed_query_prefix",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7p"
+      "index": "b7q"
     },
     {
       "id": "Sbyu0ZAw",
@@ -20244,10 +20332,10 @@ child / embed_batch_size
           "id": "fQGMeKu5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7q"
+      "index": "b7r"
     },
     {
       "id": "fQGMeKu5",
@@ -20272,7 +20360,7 @@ child / embed_batch_size
       "versionNonce": 147998566,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Инструкция перед текстом запроса для моделей эмбеддингов с инструкцией.",
@@ -20284,7 +20372,7 @@ child / embed_batch_size
       "originalText": "Инструкция перед текстом запроса для моделей эмбеддингов с инструкцией.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7r"
+      "index": "b7s"
     },
     {
       "id": "bE03W6tI",
@@ -20316,10 +20404,10 @@ child / embed_batch_size
           "id": "cRZae0ap"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7s"
+      "index": "b7t"
     },
     {
       "id": "cRZae0ap",
@@ -20344,7 +20432,7 @@ child / embed_batch_size
       "versionNonce": 1630425493,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "по имени модели",
@@ -20356,7 +20444,7 @@ child / embed_batch_size
       "originalText": "по имени модели",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7t"
+      "index": "b7u"
     },
     {
       "id": "gcGbwUZy",
@@ -20388,10 +20476,10 @@ child / embed_batch_size
           "id": "MqaRRet2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7u"
+      "index": "b7v"
     },
     {
       "id": "MqaRRet2",
@@ -20416,7 +20504,7 @@ child / embed_batch_size
       "versionNonce": 1085597234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -20428,7 +20516,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7v"
+      "index": "b7w"
     },
     {
       "id": "Gkwf628D",
@@ -20460,10 +20548,10 @@ child / embed_batch_size
           "id": "q1CplQku"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7w"
+      "index": "b7x"
     },
     {
       "id": "q1CplQku",
@@ -20488,7 +20576,7 @@ child / embed_batch_size
       "versionNonce": 1795380914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Уменьшает audit_query_chars на свою длину. Смена переиндексации не требует.",
@@ -20500,7 +20588,7 @@ child / embed_batch_size
       "originalText": "Уменьшает audit_query_chars на свою длину. Смена переиндексации не требует.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7x"
+      "index": "b7y"
     },
     {
       "id": "FW4YWdFv",
@@ -20532,10 +20620,10 @@ child / embed_batch_size
           "id": "AOCl6ED2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b7y"
+      "index": "b7z"
     },
     {
       "id": "AOCl6ED2",
@@ -20560,7 +20648,7 @@ child / embed_batch_size
       "versionNonce": 885066649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: что это: многие модели эмбеддингов обучены на парах «вопрос — документ», где вопрос помечен особой фразой. Без пометки такая модель ищет заметно хуже (вопрос и документ «звучат» для неё одинаково). Откуда\nберётся: embed_prefix_preset() сравнивает имя EMBED_MODEL с таблицей EMBED_PREFIX_PRESETS — Qwen3-Embedding, gte-Qwen, e5-instruct → «Instruct: <задача поиска>\\nQuery:» (171 симв.; задача — константа EMBED_TASK: «найти\nфрагменты регламентов и архитектурных документов, относящиеся к вопросу или фрагменту проверяемого документа»); e5 → «query: »; nomic-embed, FRIDA, ru-en-RoSBERTa → «search_query: »; bge-m3 и все остальные → без\nпрефикса. Значение из config.yaml важнее таблицы. Где применяется: вопрос чата, начало раздела документа при поиске норм (аудит), замечание при подборе разделов (контроль). Что выбрано — видно в «Модели и лимиты»:\n«Префикс запроса для модели эмбеддингов (…)».",
@@ -20572,7 +20660,7 @@ child / embed_batch_size
       "originalText": "Подробнее: что это: многие модели эмбеддингов обучены на парах «вопрос — документ», где вопрос помечен особой фразой. Без пометки такая модель ищет заметно хуже (вопрос и документ «звучат» для неё одинаково). Откуда\nберётся: embed_prefix_preset() сравнивает имя EMBED_MODEL с таблицей EMBED_PREFIX_PRESETS — Qwen3-Embedding, gte-Qwen, e5-instruct → «Instruct: <задача поиска>\\nQuery:» (171 симв.; задача — константа EMBED_TASK: «найти\nфрагменты регламентов и архитектурных документов, относящиеся к вопросу или фрагменту проверяемого документа»); e5 → «query: »; nomic-embed, FRIDA, ru-en-RoSBERTa → «search_query: »; bge-m3 и все остальные → без\nпрефикса. Значение из config.yaml важнее таблицы. Где применяется: вопрос чата, начало раздела документа при поиске норм (аудит), замечание при подборе разделов (контроль). Что выбрано — видно в «Модели и лимиты»:\n«Префикс запроса для модели эмбеддингов (…)».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7z"
+      "index": "b80"
     },
     {
       "id": "SnI8lK0i",
@@ -20604,10 +20692,10 @@ child / embed_batch_size
           "id": "vfmIQ5DO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b80"
+      "index": "b81"
     },
     {
       "id": "vfmIQ5DO",
@@ -20632,7 +20720,7 @@ child / embed_batch_size
       "versionNonce": 553004478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] embed_doc_prefix ♻",
@@ -20644,7 +20732,7 @@ child / embed_batch_size
       "originalText": "◇ [А] embed_doc_prefix ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b81"
+      "index": "b82"
     },
     {
       "id": "NqlDbZ28",
@@ -20676,10 +20764,10 @@ child / embed_batch_size
           "id": "95JUzx5W"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b82"
+      "index": "b83"
     },
     {
       "id": "95JUzx5W",
@@ -20704,7 +20792,7 @@ child / embed_batch_size
       "versionNonce": 724499649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Префикс перед текстом документа (e5, nomic, FRIDA).",
@@ -20716,7 +20804,7 @@ child / embed_batch_size
       "originalText": "Префикс перед текстом документа (e5, nomic, FRIDA).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b83"
+      "index": "b84"
     },
     {
       "id": "J4oofpYG",
@@ -20748,10 +20836,10 @@ child / embed_batch_size
           "id": "RVv24QcT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b84"
+      "index": "b85"
     },
     {
       "id": "RVv24QcT",
@@ -20776,7 +20864,7 @@ child / embed_batch_size
       "versionNonce": 1992257830,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "по имени модели",
@@ -20788,7 +20876,7 @@ child / embed_batch_size
       "originalText": "по имени модели",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b85"
+      "index": "b86"
     },
     {
       "id": "wqz5FJIu",
@@ -20820,10 +20908,10 @@ child / embed_batch_size
           "id": "TLlcos7T"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b86"
+      "index": "b87"
     },
     {
       "id": "TLlcos7T",
@@ -20848,7 +20936,7 @@ child / embed_batch_size
       "versionNonce": 193557779,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -20860,7 +20948,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b87"
+      "index": "b88"
     },
     {
       "id": "JmwAUkvW",
@@ -20892,10 +20980,10 @@ child / embed_batch_size
           "id": "Cz02NF26"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b88"
+      "index": "b89"
     },
     {
       "id": "Cz02NF26",
@@ -20920,7 +21008,7 @@ child / embed_batch_size
       "versionNonce": 1073934881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Смена — переиндексация (сравнивается с manifest). Уменьшает child_size и\nsection_embed_chars.",
@@ -20932,7 +21020,7 @@ child / embed_batch_size
       "originalText": "Смена — переиндексация (сравнивается с manifest). Уменьшает child_size и\nsection_embed_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b89"
+      "index": "b8A"
     },
     {
       "id": "PDW9go1E",
@@ -20964,10 +21052,10 @@ child / embed_batch_size
           "id": "UW4UMKMT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8A"
+      "index": "b8B"
     },
     {
       "id": "UW4UMKMT",
@@ -20992,7 +21080,7 @@ child / embed_batch_size
       "versionNonce": 1605045284,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: пара к префиксу запроса — пометка текста документа: e5 → «passage: », nomic, FRIDA, RoSBERTa → «search_document: »; Qwen3-Embedding и bge-m3 — без префикса (у Qwen3 инструкция только у запроса). Добавляется к\nкаждому child при индексации и к разделам новой редакции на вкладке контроля. Если модель на шлюзе названа по-своему (например, «emb-prod») и не распознана — оба префикса пустые: задайте их в config.yaml по документации\nмодели и сравните проверкой качества до и после.",
@@ -21004,7 +21092,7 @@ child / embed_batch_size
       "originalText": "Подробнее: пара к префиксу запроса — пометка текста документа: e5 → «passage: », nomic, FRIDA, RoSBERTa → «search_document: »; Qwen3-Embedding и bge-m3 — без префикса (у Qwen3 инструкция только у запроса). Добавляется к\nкаждому child при индексации и к разделам новой редакции на вкладке контроля. Если модель на шлюзе названа по-своему (например, «emb-prod») и не распознана — оба префикса пустые: задайте их в config.yaml по документации\nмодели и сравните проверкой качества до и после.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8B"
+      "index": "b8C"
     },
     {
       "id": "gaKeUkUG",
@@ -21036,10 +21124,10 @@ child / embed_batch_size
           "id": "Dg8JUkmk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8C"
+      "index": "b8D"
     },
     {
       "id": "Dg8JUkmk",
@@ -21064,7 +21152,7 @@ child / embed_batch_size
       "versionNonce": 135781157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПРОМЕЖУТОЧНЫЕ ВЕЛИЧИНЫ — рассчитываются в _derive(), не задаются: меняются через лимиты моделей и max_tokens",
@@ -21076,7 +21164,7 @@ child / embed_batch_size
       "originalText": "ПРОМЕЖУТОЧНЫЕ ВЕЛИЧИНЫ — рассчитываются в _derive(), не задаются: меняются через лимиты моделей и max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8D"
+      "index": "b8E"
     },
     {
       "id": "oEO3q0uN",
@@ -21108,10 +21196,10 @@ child / embed_batch_size
           "id": "himPpGc3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8E"
+      "index": "b8F"
     },
     {
       "id": "himPpGc3",
@@ -21136,7 +21224,7 @@ child / embed_batch_size
       "versionNonce": 1375635301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [А] chat_budget",
@@ -21148,7 +21236,7 @@ child / embed_batch_size
       "originalText": "◆ [А] chat_budget",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8F"
+      "index": "b8G"
     },
     {
       "id": "GBQlng3z",
@@ -21180,10 +21268,10 @@ child / embed_batch_size
           "id": "54VNtikx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8G"
+      "index": "b8H"
     },
     {
       "id": "54VNtikx",
@@ -21208,7 +21296,7 @@ child / embed_batch_size
       "versionNonce": 350814852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Бюджет контекста чата: сколько символов найденных фрагментов помещается в окно\nLLM при ответе в чате — после того как из окна вычтено место под ответ и под\nпромпт, вопрос и историю.",
@@ -21220,7 +21308,7 @@ child / embed_batch_size
       "originalText": "Бюджет контекста чата: сколько символов найденных фрагментов помещается в окно\nLLM при ответе в чате — после того как из окна вычтено место под ответ и под\nпромпт, вопрос и историю.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8H"
+      "index": "b8I"
     },
     {
       "id": "eQ0XYuSd",
@@ -21252,10 +21340,10 @@ child / embed_batch_size
           "id": "tN6V0zqv"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8I"
+      "index": "b8J"
     },
     {
       "id": "tN6V0zqv",
@@ -21280,7 +21368,7 @@ child / embed_batch_size
       "versionNonce": 1332392301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 64 700 симв.\n(окно 32768, ответ 1500)",
@@ -21292,7 +21380,7 @@ child / embed_batch_size
       "originalText": "≈ 64 700 симв.\n(окно 32768, ответ 1500)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8J"
+      "index": "b8K"
     },
     {
       "id": "KCdDNDv1",
@@ -21324,10 +21412,10 @@ child / embed_batch_size
           "id": "II8Ns4pz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8K"
+      "index": "b8L"
     },
     {
       "id": "II8Ns4pz",
@@ -21352,7 +21440,7 @@ child / embed_batch_size
       "versionNonce": 1405749183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "не задаётся",
@@ -21364,7 +21452,7 @@ child / embed_batch_size
       "originalText": "не задаётся",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8L"
+      "index": "b8M"
     },
     {
       "id": "0fLKd8lM",
@@ -21396,10 +21484,10 @@ child / embed_batch_size
           "id": "lymZvK5z"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8M"
+      "index": "b8N"
     },
     {
       "id": "lymZvK5z",
@@ -21424,7 +21512,7 @@ child / embed_batch_size
       "versionNonce": 538768156,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens − 800); 800 ток. — CHAT_RESERVE_TOKENS\n(промпт, вопрос, история). От него: smart_truncate_chars, parent_size.",
@@ -21436,7 +21524,7 @@ child / embed_batch_size
       "originalText": "= chars(llm_context_tokens − max_tokens − 800); 800 ток. — CHAT_RESERVE_TOKENS\n(промпт, вопрос, история). От него: smart_truncate_chars, parent_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8N"
+      "index": "b8O"
     },
     {
       "id": "XYFoMi5O",
@@ -21468,10 +21556,10 @@ child / embed_batch_size
           "id": "iAfH9byQ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8O"
+      "index": "b8P"
     },
     {
       "id": "iAfH9byQ",
@@ -21496,7 +21584,7 @@ child / embed_batch_size
       "versionNonce": 1610322258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: увеличить бюджет можно бо́льшим окном (если модель позволяет) или меньшим max_tokens. Почему окно 4096 даёт бюджет в 17 раз меньше, чем 32768, — разбор на числах в панели 2.",
@@ -21508,7 +21596,7 @@ child / embed_batch_size
       "originalText": "Подробнее: увеличить бюджет можно бо́льшим окном (если модель позволяет) или меньшим max_tokens. Почему окно 4096 даёт бюджет в 17 раз меньше, чем 32768, — разбор на числах в панели 2.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8P"
+      "index": "b8Q"
     },
     {
       "id": "vJecvJZc",
@@ -21540,10 +21628,10 @@ child / embed_batch_size
           "id": "vZjlZ4ea"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8Q"
+      "index": "b8R"
     },
     {
       "id": "vZjlZ4ea",
@@ -21568,7 +21656,7 @@ child / embed_batch_size
       "versionNonce": 882252771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [А] llm_budget",
@@ -21580,7 +21668,7 @@ child / embed_batch_size
       "originalText": "◆ [А] llm_budget",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8R"
+      "index": "b8S"
     },
     {
       "id": "Q0r9Y1eW",
@@ -21612,10 +21700,10 @@ child / embed_batch_size
           "id": "sm6EvWbR"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8S"
+      "index": "b8T"
     },
     {
       "id": "sm6EvWbR",
@@ -21640,7 +21728,7 @@ child / embed_batch_size
       "versionNonce": 493078871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Бюджет контекста аудита и контроля исправлений: сколько символов (раздел\nдокумента + нормы из базы + разделы новой редакции) помещается в окно LLM.",
@@ -21652,7 +21740,7 @@ child / embed_batch_size
       "originalText": "Бюджет контекста аудита и контроля исправлений: сколько символов (раздел\nдокумента + нормы из базы + разделы новой редакции) помещается в окно LLM.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8T"
+      "index": "b8U"
     },
     {
       "id": "YJ0L0hEy",
@@ -21684,10 +21772,10 @@ child / embed_batch_size
           "id": "g6QyYmfL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8U"
+      "index": "b8V"
     },
     {
       "id": "g6QyYmfL",
@@ -21712,7 +21800,7 @@ child / embed_batch_size
       "versionNonce": 1585837053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 62 900 симв.\n(окно 32768, ответ 1500)",
@@ -21724,7 +21812,7 @@ child / embed_batch_size
       "originalText": "≈ 62 900 симв.\n(окно 32768, ответ 1500)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8V"
+      "index": "b8W"
     },
     {
       "id": "XV2Y6Iz9",
@@ -21756,10 +21844,10 @@ child / embed_batch_size
           "id": "VeJBFlAD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8W"
+      "index": "b8X"
     },
     {
       "id": "VeJBFlAD",
@@ -21784,7 +21872,7 @@ child / embed_batch_size
       "versionNonce": 781495067,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "не задаётся",
@@ -21796,7 +21884,7 @@ child / embed_batch_size
       "originalText": "не задаётся",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8X"
+      "index": "b8Y"
     },
     {
       "id": "oeajY1gb",
@@ -21828,10 +21916,10 @@ child / embed_batch_size
           "id": "KVshIk7E"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8Y"
+      "index": "b8Z"
     },
     {
       "id": "KVshIk7E",
@@ -21856,7 +21944,7 @@ child / embed_batch_size
       "versionNonce": 164434957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens) − 3500; 3500 симв. — AUDIT_RESERVE_CHARS\n(промпт с критериями). От него: audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
@@ -21868,7 +21956,7 @@ child / embed_batch_size
       "originalText": "= chars(llm_context_tokens − max_tokens) − 3500; 3500 симв. — AUDIT_RESERVE_CHARS\n(промпт с критериями). От него: audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8Z"
+      "index": "b8a"
     },
     {
       "id": "x8KMWn9G",
@@ -21900,10 +21988,10 @@ child / embed_batch_size
           "id": "NNTlhvIG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8a"
+      "index": "b8b"
     },
     {
       "id": "NNTlhvIG",
@@ -21928,7 +22016,7 @@ child / embed_batch_size
       "versionNonce": 843716051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] embed_input_max_chars",
@@ -21940,7 +22028,7 @@ child / embed_batch_size
       "originalText": "[А] embed_input_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8b"
+      "index": "b8c"
     },
     {
       "id": "EL4Kn7oQ",
@@ -21972,10 +22060,10 @@ child / embed_batch_size
           "id": "AxyJxng3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8c"
+      "index": "b8d"
     },
     {
       "id": "AxyJxng3",
@@ -22000,7 +22088,7 @@ child / embed_batch_size
       "versionNonce": 1987308604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Предельная длина текста, отправляемого в модель эмбеддингов; длиннее — обрезается\nперед отправкой (_embed_input).",
@@ -22012,7 +22100,7 @@ child / embed_batch_size
       "originalText": "Предельная длина текста, отправляемого в модель эмбеддингов; длиннее — обрезается\nперед отправкой (_embed_input).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8d"
+      "index": "b8e"
     },
     {
       "id": "qqkZuBiv",
@@ -22044,10 +22132,10 @@ child / embed_batch_size
           "id": "m9PrWQw5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8e"
+      "index": "b8f"
     },
     {
       "id": "m9PrWQw5",
@@ -22072,7 +22160,7 @@ child / embed_batch_size
       "versionNonce": 6991822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 17 400 симв.\n(вход 8192)",
@@ -22084,7 +22172,7 @@ child / embed_batch_size
       "originalText": "≈ 17 400 симв.\n(вход 8192)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8f"
+      "index": "b8g"
     },
     {
       "id": "8jWW7CdU",
@@ -22116,10 +22204,10 @@ child / embed_batch_size
           "id": "81oPE1bs"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8g"
+      "index": "b8h"
     },
     {
       "id": "81oPE1bs",
@@ -22144,7 +22232,7 @@ child / embed_batch_size
       "versionNonce": 687035628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "не задаётся",
@@ -22156,7 +22244,7 @@ child / embed_batch_size
       "originalText": "не задаётся",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8h"
+      "index": "b8i"
     },
     {
       "id": "lkkkIUxY",
@@ -22188,10 +22276,10 @@ child / embed_batch_size
           "id": "4oxQdtM9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8i"
+      "index": "b8j"
     },
     {
       "id": "4oxQdtM9",
@@ -22216,7 +22304,7 @@ child / embed_batch_size
       "versionNonce": 2065424422,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "= chars(embed_max_tokens). Страховка: ни один запрос к эмбеддингам не превысит вход\nмодели.",
@@ -22228,7 +22316,7 @@ child / embed_batch_size
       "originalText": "= chars(embed_max_tokens). Страховка: ни один запрос к эмбеддингам не превысит вход\nмодели.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8j"
+      "index": "b8k"
     },
     {
       "id": "UZbLIfc6",
@@ -22260,10 +22348,10 @@ child / embed_batch_size
           "id": "JolIvO6B"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8k"
+      "index": "b8l"
     },
     {
       "id": "JolIvO6B",
@@ -22288,7 +22376,7 @@ child / embed_batch_size
       "versionNonce": 34079664,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЯЗЫКОВАЯ МОДЕЛЬ",
@@ -22300,7 +22388,7 @@ child / embed_batch_size
       "originalText": "ЯЗЫКОВАЯ МОДЕЛЬ",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8l"
+      "index": "b8m"
     },
     {
       "id": "ikjsCnYm",
@@ -22332,10 +22420,10 @@ child / embed_batch_size
           "id": "LdT1rwS8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8m"
+      "index": "b8n"
     },
     {
       "id": "LdT1rwS8",
@@ -22360,7 +22448,7 @@ child / embed_batch_size
       "versionNonce": 418965385,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] temperature",
@@ -22372,7 +22460,7 @@ child / embed_batch_size
       "originalText": "[П] temperature",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8n"
+      "index": "b8o"
     },
     {
       "id": "kQgXArMs",
@@ -22404,10 +22492,10 @@ child / embed_batch_size
           "id": "sRJYQM5D"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8o"
+      "index": "b8p"
     },
     {
       "id": "sRJYQM5D",
@@ -22432,7 +22520,7 @@ child / embed_batch_size
       "versionNonce": 414097207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Случайность ответа LLM.",
@@ -22444,7 +22532,7 @@ child / embed_batch_size
       "originalText": "Случайность ответа LLM.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8p"
+      "index": "b8q"
     },
     {
       "id": "5GgKksWS",
@@ -22476,10 +22564,10 @@ child / embed_batch_size
           "id": "tlWCqnrT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8q"
+      "index": "b8r"
     },
     {
       "id": "tlWCqnrT",
@@ -22504,7 +22592,7 @@ child / embed_batch_size
       "versionNonce": 1686832598,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.1",
@@ -22516,7 +22604,7 @@ child / embed_batch_size
       "originalText": "0.1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8r"
+      "index": "b8s"
     },
     {
       "id": "ykJTax5f",
@@ -22548,10 +22636,10 @@ child / embed_batch_size
           "id": "yrMkZMCP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8s"
+      "index": "b8t"
     },
     {
       "id": "yrMkZMCP",
@@ -22576,7 +22664,7 @@ child / embed_batch_size
       "versionNonce": 1176029364,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.0 … 1.0",
@@ -22588,7 +22676,7 @@ child / embed_batch_size
       "originalText": "0.0 … 1.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8t"
+      "index": "b8u"
     },
     {
       "id": "KRuWfwY6",
@@ -22620,10 +22708,10 @@ child / embed_batch_size
           "id": "9NOTJDXJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8u"
+      "index": "b8v"
     },
     {
       "id": "9NOTJDXJ",
@@ -22648,7 +22736,7 @@ child / embed_batch_size
       "versionNonce": 563665863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Действует на ответы чата, аудит, самокритику аудита и контроль исправлений.\nИсключение — служебный шаг чата condense_question(): уточняющий вопрос («а для\nвторого контура?») переписывается в самостоятельный всегда с temperature 0, чтобы\nпоиск получал одну и ту же формулировку. К самокритике это не относится.",
@@ -22660,7 +22748,7 @@ child / embed_batch_size
       "originalText": "Действует на ответы чата, аудит, самокритику аудита и контроль исправлений.\nИсключение — служебный шаг чата condense_question(): уточняющий вопрос («а для\nвторого контура?») переписывается в самостоятельный всегда с temperature 0, чтобы\nпоиск получал одну и ту же формулировку. К самокритике это не относится.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8v"
+      "index": "b8w"
     },
     {
       "id": "bOxOUYcC",
@@ -22692,10 +22780,10 @@ child / embed_batch_size
           "id": "WgbNYoYF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8w"
+      "index": "b8x"
     },
     {
       "id": "WgbNYoYF",
@@ -22720,7 +22808,7 @@ child / embed_batch_size
       "versionNonce": 46654347,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [П] max_tokens",
@@ -22732,7 +22820,7 @@ child / embed_batch_size
       "originalText": "◆ [П] max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8x"
+      "index": "b8y"
     },
     {
       "id": "KjC6TZ2L",
@@ -22764,10 +22852,10 @@ child / embed_batch_size
           "id": "EV9HMxPc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b8y"
+      "index": "b8z"
     },
     {
       "id": "EV9HMxPc",
@@ -22792,7 +22880,7 @@ child / embed_batch_size
       "versionNonce": 1538000357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Максимальная длина ответа модели, токенов.",
@@ -22804,7 +22892,7 @@ child / embed_batch_size
       "originalText": "Максимальная длина ответа модели, токенов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8z"
+      "index": "b90"
     },
     {
       "id": "7XzYwtzq",
@@ -22836,10 +22924,10 @@ child / embed_batch_size
           "id": "aNL9mWhI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b90"
+      "index": "b91"
     },
     {
       "id": "aNL9mWhI",
@@ -22864,7 +22952,7 @@ child / embed_batch_size
       "versionNonce": 1159348457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1500 ток.",
@@ -22876,7 +22964,7 @@ child / embed_batch_size
       "originalText": "1500 ток.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b91"
+      "index": "b92"
     },
     {
       "id": "z2oSvcYh",
@@ -22908,10 +22996,10 @@ child / embed_batch_size
           "id": "FM1u4tZ2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b92"
+      "index": "b93"
     },
     {
       "id": "FM1u4tZ2",
@@ -22936,7 +23024,7 @@ child / embed_batch_size
       "versionNonce": 250078666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "256 … 8000",
@@ -22948,7 +23036,7 @@ child / embed_batch_size
       "originalText": "256 … 8000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b93"
+      "index": "b94"
     },
     {
       "id": "t5uqtYzn",
@@ -22980,10 +23068,10 @@ child / embed_batch_size
           "id": "z9L9ZHcI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b94"
+      "index": "b95"
     },
     {
       "id": "z9L9ZHcI",
@@ -23008,7 +23096,7 @@ child / embed_batch_size
       "versionNonce": 1129957131,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "От него: chat_budget, llm_budget.",
@@ -23020,7 +23108,7 @@ child / embed_batch_size
       "originalText": "От него: chat_budget, llm_budget.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b95"
+      "index": "b96"
     },
     {
       "id": "h24T5JiL",
@@ -23052,10 +23140,10 @@ child / embed_batch_size
           "id": "HlFnvawl"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b96"
+      "index": "b97"
     },
     {
       "id": "HlFnvawl",
@@ -23080,7 +23168,7 @@ child / embed_batch_size
       "versionNonce": 25234788,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: место под ответ резервируется в окне заранее, даже если ответ окажется коротким: каждые +1000 ток. ответа отнимают ≈ 2 100 симв. у chat_budget и llm_budget. На окне 32k это незаметно, на 4–8k — существенно.\nМодели с рассуждениями — панель 4.",
@@ -23092,7 +23180,7 @@ child / embed_batch_size
       "originalText": "Подробнее: место под ответ резервируется в окне заранее, даже если ответ окажется коротким: каждые +1000 ток. ответа отнимают ≈ 2 100 симв. у chat_budget и llm_budget. На окне 32k это незаметно, на 4–8k — существенно.\nМодели с рассуждениями — панель 4.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b97"
+      "index": "b98"
     },
     {
       "id": "aoa2KKWw",
@@ -23124,10 +23212,10 @@ child / embed_batch_size
           "id": "ZLk9v5UP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b98"
+      "index": "b99"
     },
     {
       "id": "ZLk9v5UP",
@@ -23152,7 +23240,7 @@ child / embed_batch_size
       "versionNonce": 365693240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] llm_timeout",
@@ -23164,7 +23252,7 @@ child / embed_batch_size
       "originalText": "[Р] llm_timeout",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b99"
+      "index": "b9A"
     },
     {
       "id": "sh9bngE6",
@@ -23196,10 +23284,10 @@ child / embed_batch_size
           "id": "X2N33JGe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9A"
+      "index": "b9B"
     },
     {
       "id": "X2N33JGe",
@@ -23224,7 +23312,7 @@ child / embed_batch_size
       "versionNonce": 1517064354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ожидание ответа LLM на одну попытку, сек.",
@@ -23236,7 +23324,7 @@ child / embed_batch_size
       "originalText": "Ожидание ответа LLM на одну попытку, сек.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9B"
+      "index": "b9C"
     },
     {
       "id": "3cmHygjz",
@@ -23268,10 +23356,10 @@ child / embed_batch_size
           "id": "LaTgdZOT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9C"
+      "index": "b9D"
     },
     {
       "id": "LaTgdZOT",
@@ -23296,7 +23384,7 @@ child / embed_batch_size
       "versionNonce": 420629132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "90",
@@ -23308,7 +23396,7 @@ child / embed_batch_size
       "originalText": "90",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9D"
+      "index": "b9E"
     },
     {
       "id": "eXUIfr5S",
@@ -23340,10 +23428,10 @@ child / embed_batch_size
           "id": "06PEziuw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9E"
+      "index": "b9F"
     },
     {
       "id": "06PEziuw",
@@ -23368,7 +23456,7 @@ child / embed_batch_size
       "versionNonce": 1847041914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "30 … 300",
@@ -23380,7 +23468,7 @@ child / embed_batch_size
       "originalText": "30 … 300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9F"
+      "index": "b9G"
     },
     {
       "id": "UJOmJV5S",
@@ -23412,10 +23500,10 @@ child / embed_batch_size
           "id": "si4s3Jib"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9G"
+      "index": "b9H"
     },
     {
       "id": "si4s3Jib",
@@ -23440,7 +23528,7 @@ child / embed_batch_size
       "versionNonce": 773012138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Истёк — следующая попытка (llm_retries).",
@@ -23452,7 +23540,7 @@ child / embed_batch_size
       "originalText": "Истёк — следующая попытка (llm_retries).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9H"
+      "index": "b9I"
     },
     {
       "id": "rdtiA2O0",
@@ -23484,10 +23572,10 @@ child / embed_batch_size
           "id": "0poqev9l"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9I"
+      "index": "b9J"
     },
     {
       "id": "0poqev9l",
@@ -23512,7 +23600,7 @@ child / embed_batch_size
       "versionNonce": 307768080,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] llm_retries",
@@ -23524,7 +23612,7 @@ child / embed_batch_size
       "originalText": "[У] llm_retries",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9J"
+      "index": "b9K"
     },
     {
       "id": "224Nhaqm",
@@ -23556,10 +23644,10 @@ child / embed_batch_size
           "id": "EHPDAX2N"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9K"
+      "index": "b9L"
     },
     {
       "id": "EHPDAX2N",
@@ -23584,7 +23672,7 @@ child / embed_batch_size
       "versionNonce": 195675575,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Число попыток при таймауте и 502 / 503 / 504; на 429 — не меньше 4, с общей\nпаузой.",
@@ -23596,7 +23684,7 @@ child / embed_batch_size
       "originalText": "Число попыток при таймауте и 502 / 503 / 504; на 429 — не меньше 4, с общей\nпаузой.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9L"
+      "index": "b9M"
     },
     {
       "id": "YGm4ghhb",
@@ -23628,10 +23716,10 @@ child / embed_batch_size
           "id": "000HmX7c"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9M"
+      "index": "b9N"
     },
     {
       "id": "000HmX7c",
@@ -23656,7 +23744,7 @@ child / embed_batch_size
       "versionNonce": 1498851070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2",
@@ -23668,7 +23756,7 @@ child / embed_batch_size
       "originalText": "2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9N"
+      "index": "b9O"
     },
     {
       "id": "QmsIMGXs",
@@ -23700,10 +23788,10 @@ child / embed_batch_size
           "id": "xgP8dwB7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9O"
+      "index": "b9P"
     },
     {
       "id": "xgP8dwB7",
@@ -23728,7 +23816,7 @@ child / embed_batch_size
       "versionNonce": 829894513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 … 5",
@@ -23740,7 +23828,7 @@ child / embed_batch_size
       "originalText": "1 … 5",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9P"
+      "index": "b9Q"
     },
     {
       "id": "L78QZNgg",
@@ -23772,10 +23860,10 @@ child / embed_batch_size
           "id": "tgHldk8A"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9Q"
+      "index": "b9R"
     },
     {
       "id": "tgHldk8A",
@@ -23800,7 +23888,7 @@ child / embed_batch_size
       "versionNonce": 1738486712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Пауза растёт: ≈ 2 с, 4 с … (+ случайная); 401 / 403 — сразу ошибка.",
@@ -23812,7 +23900,7 @@ child / embed_batch_size
       "originalText": "Пауза растёт: ≈ 2 с, 4 с … (+ случайная); 401 / 403 — сразу ошибка.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9R"
+      "index": "b9S"
     },
     {
       "id": "GZ9un3fy",
@@ -23844,10 +23932,10 @@ child / embed_batch_size
           "id": "OMWw4xpz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9S"
+      "index": "b9T"
     },
     {
       "id": "OMWw4xpz",
@@ -23872,7 +23960,7 @@ child / embed_batch_size
       "versionNonce": 134755326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] request_timeout",
@@ -23884,7 +23972,7 @@ child / embed_batch_size
       "originalText": "[У] request_timeout",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9T"
+      "index": "b9U"
     },
     {
       "id": "aexhGT3P",
@@ -23916,10 +24004,10 @@ child / embed_batch_size
           "id": "6CmTuZgj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9U"
+      "index": "b9V"
     },
     {
       "id": "6CmTuZgj",
@@ -23944,7 +24032,7 @@ child / embed_batch_size
       "versionNonce": 266171333,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ожидание ответа реранкера, сек.",
@@ -23956,7 +24044,7 @@ child / embed_batch_size
       "originalText": "Ожидание ответа реранкера, сек.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9V"
+      "index": "b9W"
     },
     {
       "id": "GkIOyEyG",
@@ -23988,10 +24076,10 @@ child / embed_batch_size
           "id": "qf7vv8ha"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9W"
+      "index": "b9X"
     },
     {
       "id": "qf7vv8ha",
@@ -24016,7 +24104,7 @@ child / embed_batch_size
       "versionNonce": 139910239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "120",
@@ -24028,7 +24116,7 @@ child / embed_batch_size
       "originalText": "120",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9X"
+      "index": "b9Y"
     },
     {
       "id": "ZbSMYkdW",
@@ -24060,10 +24148,10 @@ child / embed_batch_size
           "id": "puPOymQn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9Y"
+      "index": "b9Z"
     },
     {
       "id": "puPOymQn",
@@ -24088,7 +24176,7 @@ child / embed_batch_size
       "versionNonce": 1840327698,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -24100,7 +24188,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9Z"
+      "index": "b9a"
     },
     {
       "id": "WHmJ284C",
@@ -24132,10 +24220,10 @@ child / embed_batch_size
           "id": "jnBwc1i7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9a"
+      "index": "b9b"
     },
     {
       "id": "jnBwc1i7",
@@ -24160,7 +24248,7 @@ child / embed_batch_size
       "versionNonce": 426607353,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -24172,7 +24260,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9b"
+      "index": "b9c"
     },
     {
       "id": "kpR0GfcU",
@@ -24204,10 +24292,10 @@ child / embed_batch_size
           "id": "A4JyTH9F"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9c"
+      "index": "b9d"
     },
     {
       "id": "A4JyTH9F",
@@ -24232,7 +24320,7 @@ child / embed_batch_size
       "versionNonce": 1946661933,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ИНДЕКСАЦИЯ ♻",
@@ -24244,7 +24332,7 @@ child / embed_batch_size
       "originalText": "ИНДЕКСАЦИЯ ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9d"
+      "index": "b9e"
     },
     {
       "id": "DfZI851t",
@@ -24276,10 +24364,10 @@ child / embed_batch_size
           "id": "yPzi4fdo"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9e"
+      "index": "b9f"
     },
     {
       "id": "yPzi4fdo",
@@ -24304,7 +24392,7 @@ child / embed_batch_size
       "versionNonce": 239055789,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] parent_size ♻",
@@ -24316,7 +24404,7 @@ child / embed_batch_size
       "originalText": "◇ [А] parent_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9f"
+      "index": "b9g"
     },
     {
       "id": "v1nCxrts",
@@ -24348,10 +24436,10 @@ child / embed_batch_size
           "id": "iTsB05Ut"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9g"
+      "index": "b9h"
     },
     {
       "id": "iTsB05Ut",
@@ -24376,7 +24464,7 @@ child / embed_batch_size
       "versionNonce": 214810541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Длина parent-фрагмента: его читает LLM.",
@@ -24388,7 +24476,7 @@ child / embed_batch_size
       "originalText": "Длина parent-фрагмента: его читает LLM.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9h"
+      "index": "b9i"
     },
     {
       "id": "xhPevV8Y",
@@ -24420,10 +24508,10 @@ child / embed_batch_size
           "id": "6U5U3EYe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9i"
+      "index": "b9j"
     },
     {
       "id": "6U5U3EYe",
@@ -24448,7 +24536,7 @@ child / embed_batch_size
       "versionNonce": 611575325,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2500 симв.",
@@ -24460,7 +24548,7 @@ child / embed_batch_size
       "originalText": "2500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9j"
+      "index": "b9k"
     },
     {
       "id": "FOI2ni8p",
@@ -24492,10 +24580,10 @@ child / embed_batch_size
           "id": "PwUPs7km"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9k"
+      "index": "b9l"
     },
     {
       "id": "PwUPs7km",
@@ -24520,7 +24608,7 @@ child / embed_batch_size
       "versionNonce": 862580752,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -24532,7 +24620,7 @@ child / embed_batch_size
       "originalText": "300 … 6000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9l"
+      "index": "b9m"
     },
     {
       "id": "RyaXO40V",
@@ -24564,10 +24652,10 @@ child / embed_batch_size
           "id": "t50zd2E2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9m"
+      "index": "b9n"
     },
     {
       "id": "t50zd2E2",
@@ -24592,7 +24680,7 @@ child / embed_batch_size
       "versionNonce": 1140711641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ chat_budget / 5 (минимум 300). В коде не меньше 200. От него: parent_overlap.",
@@ -24604,7 +24692,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ chat_budget / 5 (минимум 300). В коде не меньше 200. От него: parent_overlap.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9n"
+      "index": "b9o"
     },
     {
       "id": "PFOsYTZA",
@@ -24636,10 +24724,10 @@ child / embed_batch_size
           "id": "3peWeGGx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9o"
+      "index": "b9p"
     },
     {
       "id": "3peWeGGx",
@@ -24664,7 +24752,7 @@ child / embed_batch_size
       "versionNonce": 1817413225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: parent — «единица чтения»: поиск находит маленький child, а модели отдаётся весь parent вокруг него, чтобы был контекст. Почему зависит от chat_budget: parent целиком идёт в контекст; длиннее своей доли\nбюджета — smart_truncate_chars обрежет его вокруг найденного места, и окружающий текст пропадёт. Делится на 5, а не на top_k: нарезка делается один раз при загрузке, а top_k меняется в каждом сеансе — 5 это типичный\ntop_k. На окне 32k ограничение не срабатывает (64 744 / 5 = 12 949 > 2500), на 4k срабатывает (→ 763). Больше parent — меньше разрывов смысла, но больше шума и меньше разных мест в том же бюджете. Режется по тексту —\nсначала по границе абзаца, затем строки, предложения и слова; заголовок не отрывается от своего текста. Один parent может захватить конец одного раздела и начало другого.",
@@ -24676,7 +24764,7 @@ child / embed_batch_size
       "originalText": "Подробнее: parent — «единица чтения»: поиск находит маленький child, а модели отдаётся весь parent вокруг него, чтобы был контекст. Почему зависит от chat_budget: parent целиком идёт в контекст; длиннее своей доли\nбюджета — smart_truncate_chars обрежет его вокруг найденного места, и окружающий текст пропадёт. Делится на 5, а не на top_k: нарезка делается один раз при загрузке, а top_k меняется в каждом сеансе — 5 это типичный\ntop_k. На окне 32k ограничение не срабатывает (64 744 / 5 = 12 949 > 2500), на 4k срабатывает (→ 763). Больше parent — меньше разрывов смысла, но больше шума и меньше разных мест в том же бюджете. Режется по тексту —\nсначала по границе абзаца, затем строки, предложения и слова; заголовок не отрывается от своего текста. Один parent может захватить конец одного раздела и начало другого.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9p"
+      "index": "b9q"
     },
     {
       "id": "XQtPmcsk",
@@ -24708,10 +24796,10 @@ child / embed_batch_size
           "id": "jYt5vo4T"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9q"
+      "index": "b9r"
     },
     {
       "id": "jYt5vo4T",
@@ -24736,7 +24824,7 @@ child / embed_batch_size
       "versionNonce": 1562899068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] parent_overlap ♻",
@@ -24748,7 +24836,7 @@ child / embed_batch_size
       "originalText": "[А] parent_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9r"
+      "index": "b9s"
     },
     {
       "id": "ZZ8IRCPj",
@@ -24780,10 +24868,10 @@ child / embed_batch_size
           "id": "qgvuvZt6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9s"
+      "index": "b9t"
     },
     {
       "id": "qgvuvZt6",
@@ -24808,7 +24896,7 @@ child / embed_batch_size
       "versionNonce": 627008874,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Перекрытие соседних parent.",
@@ -24820,7 +24908,7 @@ child / embed_batch_size
       "originalText": "Перекрытие соседних parent.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9t"
+      "index": "b9u"
     },
     {
       "id": "xKiaEjeQ",
@@ -24852,10 +24940,10 @@ child / embed_batch_size
           "id": "88ZyP745"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9u"
+      "index": "b9v"
     },
     {
       "id": "88ZyP745",
@@ -24880,7 +24968,7 @@ child / embed_batch_size
       "versionNonce": 471041157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300 симв.",
@@ -24892,7 +24980,7 @@ child / embed_batch_size
       "originalText": "300 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9v"
+      "index": "b9w"
     },
     {
       "id": "COsj1Bno",
@@ -24924,10 +25012,10 @@ child / embed_batch_size
           "id": "raPHDvZO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9w"
+      "index": "b9x"
     },
     {
       "id": "raPHDvZO",
@@ -24952,7 +25040,7 @@ child / embed_batch_size
       "versionNonce": 1088769402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 1000",
@@ -24964,7 +25052,7 @@ child / embed_batch_size
       "originalText": "0 … 1000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9x"
+      "index": "b9y"
     },
     {
       "id": "u7DeRRlb",
@@ -24996,10 +25084,10 @@ child / embed_batch_size
           "id": "4VLkDRIe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "b9y"
+      "index": "b9z"
     },
     {
       "id": "4VLkDRIe",
@@ -25024,7 +25112,7 @@ child / embed_batch_size
       "versionNonce": 2072011106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ parent_size / 5; в коде меньше parent_size.",
@@ -25036,7 +25124,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ parent_size / 5; в коде меньше parent_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9z"
+      "index": "bA0"
     },
     {
       "id": "pucPUmhH",
@@ -25068,10 +25156,10 @@ child / embed_batch_size
           "id": "dBvDcyLG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bA0"
+      "index": "bA1"
     },
     {
       "id": "dBvDcyLG",
@@ -25096,7 +25184,7 @@ child / embed_batch_size
       "versionNonce": 232401949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] child_size ♻",
@@ -25108,7 +25196,7 @@ child / embed_batch_size
       "originalText": "◇ [А] child_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA1"
+      "index": "bA2"
     },
     {
       "id": "auz145CZ",
@@ -25140,10 +25228,10 @@ child / embed_batch_size
           "id": "LSJDt32C"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bA2"
+      "index": "bA3"
     },
     {
       "id": "LSJDt32C",
@@ -25168,7 +25256,7 @@ child / embed_batch_size
       "versionNonce": 1847832412,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Длина child-фрагмента — единицы векторного поиска.",
@@ -25180,7 +25268,7 @@ child / embed_batch_size
       "originalText": "Длина child-фрагмента — единицы векторного поиска.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA3"
+      "index": "bA4"
     },
     {
       "id": "VbZwa8EJ",
@@ -25212,10 +25300,10 @@ child / embed_batch_size
           "id": "9Bb4Manq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bA4"
+      "index": "bA5"
     },
     {
       "id": "9Bb4Manq",
@@ -25240,7 +25328,7 @@ child / embed_batch_size
       "versionNonce": 1065547229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "400 симв.",
@@ -25252,7 +25340,7 @@ child / embed_batch_size
       "originalText": "400 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA5"
+      "index": "bA6"
     },
     {
       "id": "7KGUX4NC",
@@ -25284,10 +25372,10 @@ child / embed_batch_size
           "id": "BgNVyth5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bA6"
+      "index": "bA7"
     },
     {
       "id": "BgNVyth5",
@@ -25312,7 +25400,7 @@ child / embed_batch_size
       "versionNonce": 2132508470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "100 … 2000",
@@ -25324,7 +25412,7 @@ child / embed_batch_size
       "originalText": "100 … 2000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA7"
+      "index": "bA8"
     },
     {
       "id": "RQVf1fls",
@@ -25356,10 +25444,10 @@ child / embed_batch_size
           "id": "NZa414TA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bA8"
+      "index": "bA9"
     },
     {
       "id": "NZa414TA",
@@ -25384,7 +25472,7 @@ child / embed_batch_size
       "versionNonce": 1021168636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход эмбеддингов − 250 − префикс документа (минимум 100); 250 — путь\nзаголовков (HEADING_RESERVE_CHARS); в коде от 50 до parent_size. От него:\nchild_overlap.",
@@ -25396,7 +25484,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ вход эмбеддингов − 250 − префикс документа (минимум 100); 250 — путь\nзаголовков (HEADING_RESERVE_CHARS); в коде от 50 до parent_size. От него:\nchild_overlap.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA9"
+      "index": "bAA"
     },
     {
       "id": "SRgaOet1",
@@ -25428,10 +25516,10 @@ child / embed_batch_size
           "id": "gN6GS3rF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAA"
+      "index": "bAB"
     },
     {
       "id": "gN6GS3rF",
@@ -25456,7 +25544,7 @@ child / embed_batch_size
       "versionNonce": 951998924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: child — «единица поиска»: по нему считается вектор. Короткий child точнее совпадает с вопросом, длинный — размывается. 400 симв. (≈ 2–4 предложения) — компромисс для регламентов.",
@@ -25468,7 +25556,7 @@ child / embed_batch_size
       "originalText": "Подробнее: child — «единица поиска»: по нему считается вектор. Короткий child точнее совпадает с вопросом, длинный — размывается. 400 симв. (≈ 2–4 предложения) — компромисс для регламентов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAB"
+      "index": "bAC"
     },
     {
       "id": "woXpLHUx",
@@ -25500,10 +25588,10 @@ child / embed_batch_size
           "id": "5lxOkXDH"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAC"
+      "index": "bAD"
     },
     {
       "id": "5lxOkXDH",
@@ -25528,7 +25616,7 @@ child / embed_batch_size
       "versionNonce": 1172250614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] child_overlap ♻",
@@ -25540,7 +25628,7 @@ child / embed_batch_size
       "originalText": "[А] child_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAD"
+      "index": "bAE"
     },
     {
       "id": "8dukK0zr",
@@ -25572,10 +25660,10 @@ child / embed_batch_size
           "id": "NN7DKujP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAE"
+      "index": "bAF"
     },
     {
       "id": "NN7DKujP",
@@ -25600,7 +25688,7 @@ child / embed_batch_size
       "versionNonce": 2086858777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Перекрытие соседних child.",
@@ -25612,7 +25700,7 @@ child / embed_batch_size
       "originalText": "Перекрытие соседних child.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAF"
+      "index": "bAG"
     },
     {
       "id": "IhVFyY2x",
@@ -25644,10 +25732,10 @@ child / embed_batch_size
           "id": "EjmhfXQ1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAG"
+      "index": "bAH"
     },
     {
       "id": "EjmhfXQ1",
@@ -25672,7 +25760,7 @@ child / embed_batch_size
       "versionNonce": 136431113,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "150 симв.",
@@ -25684,7 +25772,7 @@ child / embed_batch_size
       "originalText": "150 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAH"
+      "index": "bAI"
     },
     {
       "id": "r7KfdqC3",
@@ -25716,10 +25804,10 @@ child / embed_batch_size
           "id": "jBhx8Gbb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAI"
+      "index": "bAJ"
     },
     {
       "id": "jBhx8Gbb",
@@ -25744,7 +25832,7 @@ child / embed_batch_size
       "versionNonce": 1810711877,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 500",
@@ -25756,7 +25844,7 @@ child / embed_batch_size
       "originalText": "0 … 500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAJ"
+      "index": "bAK"
     },
     {
       "id": "x6qTvasL",
@@ -25788,10 +25876,10 @@ child / embed_batch_size
           "id": "Sr9o1bP5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAK"
+      "index": "bAL"
     },
     {
       "id": "Sr9o1bP5",
@@ -25816,7 +25904,7 @@ child / embed_batch_size
       "versionNonce": 1661393883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ child_size / 2; в коде меньше child_size.",
@@ -25828,7 +25916,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ child_size / 2; в коде меньше child_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAL"
+      "index": "bAM"
     },
     {
       "id": "RPAVQzci",
@@ -25860,10 +25948,10 @@ child / embed_batch_size
           "id": "RDn5p0oM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAM"
+      "index": "bAN"
     },
     {
       "id": "RDn5p0oM",
@@ -25888,7 +25976,7 @@ child / embed_batch_size
       "versionNonce": 1979534607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] embed_batch_size",
@@ -25900,7 +25988,7 @@ child / embed_batch_size
       "originalText": "[У] embed_batch_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAN"
+      "index": "bAO"
     },
     {
       "id": "0IKNUt8o",
@@ -25932,10 +26020,10 @@ child / embed_batch_size
           "id": "Rk1dzgkd"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAO"
+      "index": "bAP"
     },
     {
       "id": "Rk1dzgkd",
@@ -25960,7 +26048,7 @@ child / embed_batch_size
       "versionNonce": 1935024994,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Текстов в одном запросе эмбеддингов при индексации.",
@@ -25972,7 +26060,7 @@ child / embed_batch_size
       "originalText": "Текстов в одном запросе эмбеддингов при индексации.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAP"
+      "index": "bAQ"
     },
     {
       "id": "XJTZgp9x",
@@ -26004,10 +26092,10 @@ child / embed_batch_size
           "id": "WZBGAImS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAQ"
+      "index": "bAR"
     },
     {
       "id": "WZBGAImS",
@@ -26032,7 +26120,7 @@ child / embed_batch_size
       "versionNonce": 252322485,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "32",
@@ -26044,7 +26132,7 @@ child / embed_batch_size
       "originalText": "32",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAR"
+      "index": "bAS"
     },
     {
       "id": "4L9zySbU",
@@ -26076,10 +26164,10 @@ child / embed_batch_size
           "id": "aQ14QhtO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAS"
+      "index": "bAT"
     },
     {
       "id": "aQ14QhtO",
@@ -26104,7 +26192,7 @@ child / embed_batch_size
       "versionNonce": 1481868590,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -26116,7 +26204,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAT"
+      "index": "bAU"
     },
     {
       "id": "8zQwg8Qk",
@@ -26148,10 +26236,10 @@ child / embed_batch_size
           "id": "N6YDl6lU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAU"
+      "index": "bAV"
     },
     {
       "id": "N6YDl6lU",
@@ -26176,7 +26264,7 @@ child / embed_batch_size
       "versionNonce": 1377016232,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Не меньше 1; предел — сервер эмбеддингов. Сбой пачки — по одному.",
@@ -26188,7 +26276,7 @@ child / embed_batch_size
       "originalText": "Не меньше 1; предел — сервер эмбеддингов. Сбой пачки — по одному.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAV"
+      "index": "bAW"
     },
     {
       "id": "FwmCtsC3",
@@ -26220,10 +26308,10 @@ child / embed_batch_size
           "id": "h2quvqAU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAW"
+      "index": "bAX"
     },
     {
       "id": "h2quvqAU",
@@ -26248,7 +26336,7 @@ child / embed_batch_size
       "versionNonce": 1544551388,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ПОИСК",
@@ -26260,7 +26348,7 @@ child / embed_batch_size
       "originalText": "ПОИСК",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAX"
+      "index": "bAY"
     },
     {
       "id": "ZkKrwPQg",
@@ -26292,10 +26380,10 @@ child / embed_batch_size
           "id": "qhyS55kj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAY"
+      "index": "bAZ"
     },
     {
       "id": "qhyS55kj",
@@ -26320,7 +26408,7 @@ child / embed_batch_size
       "versionNonce": 331411183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◆ [Т] top_k",
@@ -26332,7 +26420,7 @@ child / embed_batch_size
       "originalText": "◆ [Т] top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAZ"
+      "index": "bAa"
     },
     {
       "id": "oXlCPYGk",
@@ -26364,10 +26452,10 @@ child / embed_batch_size
           "id": "vDq2wQkm"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAa"
+      "index": "bAb"
     },
     {
       "id": "vDq2wQkm",
@@ -26392,7 +26480,7 @@ child / embed_batch_size
       "versionNonce": 1999428029,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько найденных фрагментов (parent) MINT кладёт в контекст LLM при ответе в\nчате. Тот же top_k берут аудит документа (нормы из базы) и контроль исправлений.",
@@ -26404,7 +26492,7 @@ child / embed_batch_size
       "originalText": "Сколько найденных фрагментов (parent) MINT кладёт в контекст LLM при ответе в\nчате. Тот же top_k берут аудит документа (нормы из базы) и контроль исправлений.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAb"
+      "index": "bAc"
     },
     {
       "id": "CA7c4anZ",
@@ -26436,10 +26524,10 @@ child / embed_batch_size
           "id": "6GmcPHnk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAc"
+      "index": "bAd"
     },
     {
       "id": "6GmcPHnk",
@@ -26464,7 +26552,7 @@ child / embed_batch_size
       "versionNonce": 1274996269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n4, если в базе ≤ 300 child\n5, если больше",
@@ -26476,7 +26564,7 @@ child / embed_batch_size
       "originalText": "0 = авто:\n4, если в базе ≤ 300 child\n5, если больше",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAd"
+      "index": "bAe"
     },
     {
       "id": "KNdsRIZD",
@@ -26508,10 +26596,10 @@ child / embed_batch_size
           "id": "Sdqmb0to"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAe"
+      "index": "bAf"
     },
     {
       "id": "Sdqmb0to",
@@ -26536,7 +26624,7 @@ child / embed_batch_size
       "versionNonce": 1232470040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2 … 8",
@@ -26548,7 +26636,7 @@ child / embed_batch_size
       "originalText": "2 … 8",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAf"
+      "index": "bAg"
     },
     {
       "id": "2uMF9v5k",
@@ -26580,10 +26668,10 @@ child / embed_batch_size
           "id": "GO0OlIlE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAg"
+      "index": "bAh"
     },
     {
       "id": "GO0OlIlE",
@@ -26608,7 +26696,7 @@ child / embed_batch_size
       "versionNonce": 823897368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Не больше rerank_top_k (отбор идёт из этих кандидатов). Сверху в коде не ограничен:\nбольше 8 — через config.yaml. От него: smart_truncate_chars.",
@@ -26620,7 +26708,7 @@ child / embed_batch_size
       "originalText": "Не больше rerank_top_k (отбор идёт из этих кандидатов). Сверху в коде не ограничен:\nбольше 8 — через config.yaml. От него: smart_truncate_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAh"
+      "index": "bAi"
     },
     {
       "id": "keoj5ZJE",
@@ -26652,10 +26740,10 @@ child / embed_batch_size
           "id": "m3fDHb4L"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAi"
+      "index": "bAj"
     },
     {
       "id": "m3fDHb4L",
@@ -26680,7 +26768,7 @@ child / embed_batch_size
       "versionNonce": 542109081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: в коде top_k = 0, то есть «выбрать автоматически»: MINT считает child-фрагменты в базе (kb_default_top_k). ≤ 300 (≈ 10–15 регламентов) → 4: пятый фрагмент обычно повтор или шум; больше → 5: ответ чаще\nразбросан по нескольким местам. Ползунок «Глубина поиска (Top-K)» стоит на авто-значении и меняет его на сеанс; config.yaml (search: top_k: 6) отключает автоматику.\nСвязь с лимитами: фрагменты делят бюджет окна — каждый обрезается до smart_truncate_chars ≈ (окно − ответ − резерв) / top_k. Больше top_k — модель видит больше разных мест, но каждое короче. На маленьком окне top_k 8\nдаст обрывки (под ползунком: «Контекст чата: до ≈ N симв. (Top-K × фрагмент)»); на большом фрагменты остаются полными. В аудите действует ещё и audit_context_max_chars.\nКак подбирать: начать с авто. Часто «информация отсутствует», а ответ в базе есть → смотреть hit@3 и hit@K в report.md: правильный фрагмент на 5–8 месте → поднять top_k до 6–8. Нет его и в первой десятке → top_k не\nпоможет: проблема в поиске или нарезке.",
@@ -26692,7 +26780,7 @@ child / embed_batch_size
       "originalText": "Подробнее: в коде top_k = 0, то есть «выбрать автоматически»: MINT считает child-фрагменты в базе (kb_default_top_k). ≤ 300 (≈ 10–15 регламентов) → 4: пятый фрагмент обычно повтор или шум; больше → 5: ответ чаще\nразбросан по нескольким местам. Ползунок «Глубина поиска (Top-K)» стоит на авто-значении и меняет его на сеанс; config.yaml (search: top_k: 6) отключает автоматику.\nСвязь с лимитами: фрагменты делят бюджет окна — каждый обрезается до smart_truncate_chars ≈ (окно − ответ − резерв) / top_k. Больше top_k — модель видит больше разных мест, но каждое короче. На маленьком окне top_k 8\nдаст обрывки (под ползунком: «Контекст чата: до ≈ N симв. (Top-K × фрагмент)»); на большом фрагменты остаются полными. В аудите действует ещё и audit_context_max_chars.\nКак подбирать: начать с авто. Часто «информация отсутствует», а ответ в базе есть → смотреть hit@3 и hit@K в report.md: правильный фрагмент на 5–8 месте → поднять top_k до 6–8. Нет его и в первой десятке → top_k не\nпоможет: проблема в поиске или нарезке.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAj"
+      "index": "bAk"
     },
     {
       "id": "9m4l44BH",
@@ -26724,10 +26812,10 @@ child / embed_batch_size
           "id": "UrPJBo2I"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAk"
+      "index": "bAl"
     },
     {
       "id": "UrPJBo2I",
@@ -26752,7 +26840,7 @@ child / embed_batch_size
       "versionNonce": 1276112853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] initial_k",
@@ -26764,7 +26852,7 @@ child / embed_batch_size
       "originalText": "[Т] initial_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAl"
+      "index": "bAm"
     },
     {
       "id": "hG8MbSIC",
@@ -26796,10 +26884,10 @@ child / embed_batch_size
           "id": "MbhQsFw2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAm"
+      "index": "bAn"
     },
     {
       "id": "MbhQsFw2",
@@ -26824,7 +26912,7 @@ child / embed_batch_size
       "versionNonce": 2005436629,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько ближайших child берёт векторный поиск.",
@@ -26836,7 +26924,7 @@ child / embed_batch_size
       "originalText": "Сколько ближайших child берёт векторный поиск.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAn"
+      "index": "bAo"
     },
     {
       "id": "elcXp7Mz",
@@ -26868,10 +26956,10 @@ child / embed_batch_size
           "id": "XOg0Pir0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAo"
+      "index": "bAp"
     },
     {
       "id": "XOg0Pir0",
@@ -26896,7 +26984,7 @@ child / embed_batch_size
       "versionNonce": 1193430822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "50",
@@ -26908,7 +26996,7 @@ child / embed_batch_size
       "originalText": "50",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAp"
+      "index": "bAq"
     },
     {
       "id": "Kw7qLowX",
@@ -26940,10 +27028,10 @@ child / embed_batch_size
           "id": "n8Ct939d"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAq"
+      "index": "bAr"
     },
     {
       "id": "n8Ct939d",
@@ -26968,7 +27056,7 @@ child / embed_batch_size
       "versionNonce": 1016851116,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "10 … 200",
@@ -26980,7 +27068,7 @@ child / embed_batch_size
       "originalText": "10 … 200",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAr"
+      "index": "bAs"
     },
     {
       "id": "fB2fIekC",
@@ -27012,10 +27100,10 @@ child / embed_batch_size
           "id": "iMJ8IOlK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAs"
+      "index": "bAt"
     },
     {
       "id": "iMJ8IOlK",
@@ -27040,7 +27128,7 @@ child / embed_batch_size
       "versionNonce": 1649910430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Не больше числа векторов в базе; несколько child одного parent дают одного кандидата.",
@@ -27052,7 +27140,7 @@ child / embed_batch_size
       "originalText": "Не больше числа векторов в базе; несколько child одного parent дают одного кандидата.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAt"
+      "index": "bAu"
     },
     {
       "id": "0Grog5Ph",
@@ -27084,10 +27172,10 @@ child / embed_batch_size
           "id": "2iqO0LBA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAu"
+      "index": "bAv"
     },
     {
       "id": "2iqO0LBA",
@@ -27112,7 +27200,7 @@ child / embed_batch_size
       "versionNonce": 634411900,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] bm25_top_k",
@@ -27124,7 +27212,7 @@ child / embed_batch_size
       "originalText": "[Т] bm25_top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAv"
+      "index": "bAw"
     },
     {
       "id": "pnLb61iH",
@@ -27156,10 +27244,10 @@ child / embed_batch_size
           "id": "aUhH9T2l"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAw"
+      "index": "bAx"
     },
     {
       "id": "aUhH9T2l",
@@ -27184,7 +27272,7 @@ child / embed_batch_size
       "versionNonce": 380320554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько parent берёт поиск по словам.",
@@ -27196,7 +27284,7 @@ child / embed_batch_size
       "originalText": "Сколько parent берёт поиск по словам.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAx"
+      "index": "bAy"
     },
     {
       "id": "qxdWcmvb",
@@ -27228,10 +27316,10 @@ child / embed_batch_size
           "id": "Vm34PIIi"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bAy"
+      "index": "bAz"
     },
     {
       "id": "Vm34PIIi",
@@ -27256,7 +27344,7 @@ child / embed_batch_size
       "versionNonce": 1365825083,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "20",
@@ -27268,7 +27356,7 @@ child / embed_batch_size
       "originalText": "20",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAz"
+      "index": "bB0"
     },
     {
       "id": "ijxpou4l",
@@ -27300,10 +27388,10 @@ child / embed_batch_size
           "id": "mWYDR7ka"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bB0"
+      "index": "bB1"
     },
     {
       "id": "mWYDR7ka",
@@ -27328,7 +27416,7 @@ child / embed_batch_size
       "versionNonce": 2064859778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5 … 100",
@@ -27340,7 +27428,7 @@ child / embed_batch_size
       "originalText": "5 … 100",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB1"
+      "index": "bB2"
     },
     {
       "id": "Tw30SRBR",
@@ -27372,10 +27460,10 @@ child / embed_batch_size
           "id": "AyKkUekT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bB2"
+      "index": "bB3"
     },
     {
       "id": "AyKkUekT",
@@ -27400,7 +27488,7 @@ child / embed_batch_size
       "versionNonce": 1444307314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Берутся только фрагменты с баллом > 0.",
@@ -27412,7 +27500,7 @@ child / embed_batch_size
       "originalText": "Берутся только фрагменты с баллом > 0.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB3"
+      "index": "bB4"
     },
     {
       "id": "0PzlWQlV",
@@ -27444,10 +27532,10 @@ child / embed_batch_size
           "id": "MUJSe1fu"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bB4"
+      "index": "bB5"
     },
     {
       "id": "MUJSe1fu",
@@ -27472,7 +27560,7 @@ child / embed_batch_size
       "versionNonce": 641060697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [Т] rerank_top_k",
@@ -27484,7 +27572,7 @@ child / embed_batch_size
       "originalText": "◇ [Т] rerank_top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB5"
+      "index": "bB6"
     },
     {
       "id": "cieakzwA",
@@ -27516,10 +27604,10 @@ child / embed_batch_size
           "id": "6TPaLQwQ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bB6"
+      "index": "bB7"
     },
     {
       "id": "6TPaLQwQ",
@@ -27544,7 +27632,7 @@ child / embed_batch_size
       "versionNonce": 1827669685,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Кандидатов после слияния: идут на реранк и в отбор top_k.",
@@ -27556,7 +27644,7 @@ child / embed_batch_size
       "originalText": "Кандидатов после слияния: идут на реранк и в отбор top_k.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB7"
+      "index": "bB8"
     },
     {
       "id": "ENyIoc96",
@@ -27588,10 +27676,10 @@ child / embed_batch_size
           "id": "tWQlDM6p"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bB8"
+      "index": "bB9"
     },
     {
       "id": "tWQlDM6p",
@@ -27616,7 +27704,7 @@ child / embed_batch_size
       "versionNonce": 851156310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "16",
@@ -27628,7 +27716,7 @@ child / embed_batch_size
       "originalText": "16",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB9"
+      "index": "bBA"
     },
     {
       "id": "r2hTzK1x",
@@ -27660,10 +27748,10 @@ child / embed_batch_size
           "id": "Ddki79Id"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBA"
+      "index": "bBB"
     },
     {
       "id": "Ddki79Id",
@@ -27688,7 +27776,7 @@ child / embed_batch_size
       "versionNonce": 2071937153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4 … 40",
@@ -27700,7 +27788,7 @@ child / embed_batch_size
       "originalText": "4 … 40",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBB"
+      "index": "bBC"
     },
     {
       "id": "1Uyv4g9g",
@@ -27732,10 +27820,10 @@ child / embed_batch_size
           "id": "7avbvYGJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBC"
+      "index": "bBD"
     },
     {
       "id": "7avbvYGJ",
@@ -27760,7 +27848,7 @@ child / embed_batch_size
       "versionNonce": 474051466,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ограничивает top_k сверху. Больше — больше запросов к реранкеру.",
@@ -27772,7 +27860,7 @@ child / embed_batch_size
       "originalText": "Ограничивает top_k сверху. Больше — больше запросов к реранкеру.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBD"
+      "index": "bBE"
     },
     {
       "id": "utoc9Yka",
@@ -27804,10 +27892,10 @@ child / embed_batch_size
           "id": "S1xsiIVt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBE"
+      "index": "bBF"
     },
     {
       "id": "S1xsiIVt",
@@ -27832,7 +27920,7 @@ child / embed_batch_size
       "versionNonce": 1253936659,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] rrf_constant",
@@ -27844,7 +27932,7 @@ child / embed_batch_size
       "originalText": "[У] rrf_constant",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBF"
+      "index": "bBG"
     },
     {
       "id": "pRPKLTYI",
@@ -27876,10 +27964,10 @@ child / embed_batch_size
           "id": "ORSsqFXe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBG"
+      "index": "bBH"
     },
     {
       "id": "ORSsqFXe",
@@ -27904,7 +27992,7 @@ child / embed_batch_size
       "versionNonce": 484419719,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Константа сглаживания слияния RRF (формула — панель 7).",
@@ -27916,7 +28004,7 @@ child / embed_batch_size
       "originalText": "Константа сглаживания слияния RRF (формула — панель 7).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBH"
+      "index": "bBI"
     },
     {
       "id": "a8kDL58G",
@@ -27948,10 +28036,10 @@ child / embed_batch_size
           "id": "bwK2mK3U"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBI"
+      "index": "bBJ"
     },
     {
       "id": "bwK2mK3U",
@@ -27976,7 +28064,7 @@ child / embed_batch_size
       "versionNonce": 1674499110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "60",
@@ -27988,7 +28076,7 @@ child / embed_batch_size
       "originalText": "60",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBJ"
+      "index": "bBK"
     },
     {
       "id": "nmVDAcV6",
@@ -28020,10 +28108,10 @@ child / embed_batch_size
           "id": "RkkXukzB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBK"
+      "index": "bBL"
     },
     {
       "id": "RkkXukzB",
@@ -28048,7 +28136,7 @@ child / embed_batch_size
       "versionNonce": 800063630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "10 … 120",
@@ -28060,7 +28148,7 @@ child / embed_batch_size
       "originalText": "10 … 120",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBL"
+      "index": "bBM"
     },
     {
       "id": "PkqbD16B",
@@ -28092,10 +28180,10 @@ child / embed_batch_size
           "id": "nadhX2TG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBM"
+      "index": "bBN"
     },
     {
       "id": "nadhX2TG",
@@ -28120,7 +28208,7 @@ child / embed_batch_size
       "versionNonce": 1165863358,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Меньше — сильнее разница между первыми местами списков.",
@@ -28132,7 +28220,7 @@ child / embed_batch_size
       "originalText": "Меньше — сильнее разница между первыми местами списков.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBN"
+      "index": "bBO"
     },
     {
       "id": "0oBqSud5",
@@ -28164,10 +28252,10 @@ child / embed_batch_size
           "id": "oZpOmCV0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBO"
+      "index": "bBP"
     },
     {
       "id": "oZpOmCV0",
@@ -28192,7 +28280,7 @@ child / embed_batch_size
       "versionNonce": 2088345562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] weight_dense",
@@ -28204,7 +28292,7 @@ child / embed_batch_size
       "originalText": "[Т] weight_dense",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBP"
+      "index": "bBQ"
     },
     {
       "id": "nmJSaNDQ",
@@ -28236,10 +28324,10 @@ child / embed_batch_size
           "id": "a7xnLRhF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBQ"
+      "index": "bBR"
     },
     {
       "id": "a7xnLRhF",
@@ -28264,7 +28352,7 @@ child / embed_batch_size
       "versionNonce": 1351918146,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вес векторного поиска в слиянии.",
@@ -28276,7 +28364,7 @@ child / embed_batch_size
       "originalText": "Вес векторного поиска в слиянии.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBR"
+      "index": "bBS"
     },
     {
       "id": "GyedoJxA",
@@ -28308,10 +28396,10 @@ child / embed_batch_size
           "id": "noA5bPxt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBS"
+      "index": "bBT"
     },
     {
       "id": "noA5bPxt",
@@ -28336,7 +28424,7 @@ child / embed_batch_size
       "versionNonce": 454621305,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28348,7 +28436,7 @@ child / embed_batch_size
       "originalText": "1.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBT"
+      "index": "bBU"
     },
     {
       "id": "bb2HES2B",
@@ -28380,10 +28468,10 @@ child / embed_batch_size
           "id": "rdVn5UYf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBU"
+      "index": "bBV"
     },
     {
       "id": "rdVn5UYf",
@@ -28408,7 +28496,7 @@ child / embed_batch_size
       "versionNonce": 1120431559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28420,7 +28508,7 @@ child / embed_batch_size
       "originalText": "0 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBV"
+      "index": "bBW"
     },
     {
       "id": "mNOhkyIM",
@@ -28452,10 +28540,10 @@ child / embed_batch_size
           "id": "r5mgqQjn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBW"
+      "index": "bBX"
     },
     {
       "id": "r5mgqQjn",
@@ -28480,7 +28568,7 @@ child / embed_batch_size
       "versionNonce": 8506312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 — канал отключён.",
@@ -28492,7 +28580,7 @@ child / embed_batch_size
       "originalText": "0 — канал отключён.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBX"
+      "index": "bBY"
     },
     {
       "id": "GdWbTm3R",
@@ -28524,10 +28612,10 @@ child / embed_batch_size
           "id": "V1lp9Lrg"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBY"
+      "index": "bBZ"
     },
     {
       "id": "V1lp9Lrg",
@@ -28552,7 +28640,7 @@ child / embed_batch_size
       "versionNonce": 846842930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] weight_bm25",
@@ -28564,7 +28652,7 @@ child / embed_batch_size
       "originalText": "[Т] weight_bm25",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBZ"
+      "index": "bBa"
     },
     {
       "id": "OCBTQk2G",
@@ -28596,10 +28684,10 @@ child / embed_batch_size
           "id": "rR5T5YEO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBa"
+      "index": "bBb"
     },
     {
       "id": "rR5T5YEO",
@@ -28624,7 +28712,7 @@ child / embed_batch_size
       "versionNonce": 1724480507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вес поиска по словам в слиянии.",
@@ -28636,7 +28724,7 @@ child / embed_batch_size
       "originalText": "Вес поиска по словам в слиянии.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBb"
+      "index": "bBc"
     },
     {
       "id": "n7ejwOW2",
@@ -28668,10 +28756,10 @@ child / embed_batch_size
           "id": "gL8wkJTW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBc"
+      "index": "bBd"
     },
     {
       "id": "gL8wkJTW",
@@ -28696,7 +28784,7 @@ child / embed_batch_size
       "versionNonce": 1836973738,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28708,7 +28796,7 @@ child / embed_batch_size
       "originalText": "1.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBd"
+      "index": "bBe"
     },
     {
       "id": "fMQSm3X4",
@@ -28740,10 +28828,10 @@ child / embed_batch_size
           "id": "c7g6vR9n"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBe"
+      "index": "bBf"
     },
     {
       "id": "c7g6vR9n",
@@ -28768,7 +28856,7 @@ child / embed_batch_size
       "versionNonce": 394337601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28780,7 +28868,7 @@ child / embed_batch_size
       "originalText": "0 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBf"
+      "index": "bBg"
     },
     {
       "id": "jezzHZYm",
@@ -28812,10 +28900,10 @@ child / embed_batch_size
           "id": "VGVsdIby"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBg"
+      "index": "bBh"
     },
     {
       "id": "VGVsdIby",
@@ -28840,7 +28928,7 @@ child / embed_batch_size
       "versionNonce": 1926032956,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 — канал отключён.",
@@ -28852,7 +28940,7 @@ child / embed_batch_size
       "originalText": "0 — канал отключён.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBh"
+      "index": "bBi"
     },
     {
       "id": "5hgYDsEp",
@@ -28884,10 +28972,10 @@ child / embed_batch_size
           "id": "QYF6j2H2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBi"
+      "index": "bBj"
     },
     {
       "id": "QYF6j2H2",
@@ -28912,7 +29000,7 @@ child / embed_batch_size
       "versionNonce": 1966334157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] weight_rerank",
@@ -28924,7 +29012,7 @@ child / embed_batch_size
       "originalText": "[Т] weight_rerank",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBj"
+      "index": "bBk"
     },
     {
       "id": "I3Ih5bAE",
@@ -28956,10 +29044,10 @@ child / embed_batch_size
           "id": "h96CclaH"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBk"
+      "index": "bBl"
     },
     {
       "id": "h96CclaH",
@@ -28984,7 +29072,7 @@ child / embed_batch_size
       "versionNonce": 1311860275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вес голоса реранкера в слиянии.",
@@ -28996,7 +29084,7 @@ child / embed_batch_size
       "originalText": "Вес голоса реранкера в слиянии.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBl"
+      "index": "bBm"
     },
     {
       "id": "3c1d2zu2",
@@ -29028,10 +29116,10 @@ child / embed_batch_size
           "id": "cLZLw1ow"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBm"
+      "index": "bBn"
     },
     {
       "id": "cLZLw1ow",
@@ -29056,7 +29144,7 @@ child / embed_batch_size
       "versionNonce": 1030008845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.7",
@@ -29068,7 +29156,7 @@ child / embed_batch_size
       "originalText": "0.7",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBn"
+      "index": "bBo"
     },
     {
       "id": "uJqQsOYO",
@@ -29100,10 +29188,10 @@ child / embed_batch_size
           "id": "N9yWMNWz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBo"
+      "index": "bBp"
     },
     {
       "id": "N9yWMNWz",
@@ -29128,7 +29216,7 @@ child / embed_batch_size
       "versionNonce": 355004110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -29140,7 +29228,7 @@ child / embed_batch_size
       "originalText": "0 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBp"
+      "index": "bBq"
     },
     {
       "id": "vuSFjfoa",
@@ -29172,10 +29260,10 @@ child / embed_batch_size
           "id": "LV2EXof3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBq"
+      "index": "bBr"
     },
     {
       "id": "LV2EXof3",
@@ -29200,7 +29288,7 @@ child / embed_batch_size
       "versionNonce": 980790806,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Только с реранкером. 0 — порядок без реранкера, его баллы остаются для «уверенность\nнизкая».",
@@ -29212,7 +29300,7 @@ child / embed_batch_size
       "originalText": "Только с реранкером. 0 — порядок без реранкера, его баллы остаются для «уверенность\nнизкая».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBr"
+      "index": "bBs"
     },
     {
       "id": "qzZZe83j",
@@ -29244,10 +29332,10 @@ child / embed_batch_size
           "id": "cbF0Mdgf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBs"
+      "index": "bBt"
     },
     {
       "id": "cbF0Mdgf",
@@ -29272,7 +29360,7 @@ child / embed_batch_size
       "versionNonce": 1556644430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: реранкер не заменяет порядок, а голосует в слиянии наравне с векторным поиском и BM25. 0.7 — реранкер чуть слабее каждого из двух поисков; 1.5–3 — его мнение решающее.",
@@ -29284,7 +29372,7 @@ child / embed_batch_size
       "originalText": "Подробнее: реранкер не заменяет порядок, а голосует в слиянии наравне с векторным поиском и BM25. 0.7 — реранкер чуть слабее каждого из двух поисков; 1.5–3 — его мнение решающее.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBt"
+      "index": "bBu"
     },
     {
       "id": "dtOYhbwj",
@@ -29316,10 +29404,10 @@ child / embed_batch_size
           "id": "a1Q0M1ot"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBu"
+      "index": "bBv"
     },
     {
       "id": "a1Q0M1ot",
@@ -29344,7 +29432,7 @@ child / embed_batch_size
       "versionNonce": 214740451,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] smart_truncate_chars",
@@ -29356,7 +29444,7 @@ child / embed_batch_size
       "originalText": "[А] smart_truncate_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBv"
+      "index": "bBw"
     },
     {
       "id": "BW2QZxk9",
@@ -29388,10 +29476,10 @@ child / embed_batch_size
           "id": "pCGDd8tf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBw"
+      "index": "bBx"
     },
     {
       "id": "pCGDd8tf",
@@ -29416,7 +29504,7 @@ child / embed_batch_size
       "versionNonce": 1143341541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Максимальная длина одного фрагмента в контексте LLM.",
@@ -29428,7 +29516,7 @@ child / embed_batch_size
       "originalText": "Максимальная длина одного фрагмента в контексте LLM.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBx"
+      "index": "bBy"
     },
     {
       "id": "An9HVGjX",
@@ -29460,10 +29548,10 @@ child / embed_batch_size
           "id": "tgyGwy0D"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bBy"
+      "index": "bBz"
     },
     {
       "id": "tgyGwy0D",
@@ -29488,7 +29576,7 @@ child / embed_batch_size
       "versionNonce": 1717692357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3500 симв. — или меньше,\nесли не помещается",
@@ -29500,7 +29588,7 @@ child / embed_batch_size
       "originalText": "3500 симв. — или меньше,\nесли не помещается",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBz"
+      "index": "bC0"
     },
     {
       "id": "8rYHbL94",
@@ -29532,10 +29620,10 @@ child / embed_batch_size
           "id": "FEqfyq8J"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bC0"
+      "index": "bC1"
     },
     {
       "id": "FEqfyq8J",
@@ -29560,7 +29648,7 @@ child / embed_batch_size
       "versionNonce": 1404583304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "500 … 10000",
@@ -29572,7 +29660,7 @@ child / embed_batch_size
       "originalText": "500 … 10000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC1"
+      "index": "bC2"
     },
     {
       "id": "haedeeSv",
@@ -29604,10 +29692,10 @@ child / embed_batch_size
           "id": "KZ4FCEc5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bC2"
+      "index": "bC3"
     },
     {
       "id": "KZ4FCEc5",
@@ -29632,7 +29720,7 @@ child / embed_batch_size
       "versionNonce": 771846374,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ chat_budget / top_k (минимум 500). Длиннее — фрагмент обрезается вокруг\nнайденного места (focus_passage); ближайший заголовок выше сохраняется, у таблицы —\nзаголовок и шапка.",
@@ -29644,7 +29732,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ chat_budget / top_k (минимум 500). Длиннее — фрагмент обрезается вокруг\nнайденного места (focus_passage); ближайший заголовок выше сохраняется, у таблицы —\nзаголовок и шапка.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC3"
+      "index": "bC4"
     },
     {
       "id": "vGsXYl7A",
@@ -29676,10 +29764,10 @@ child / embed_batch_size
           "id": "aArGEXhe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bC4"
+      "index": "bC5"
     },
     {
       "id": "aArGEXhe",
@@ -29704,7 +29792,7 @@ child / embed_batch_size
       "versionNonce": 548993954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: при умолчаниях (parent 2500 < 3500) ничего не обрезается — лимит срабатывает только на маленьком окне или большом top_k. Обрезается вокруг найденного места: child из векторного поиска или окно, где больше\nвсего слов вопроса. Соседние фрагменты одного документа склеиваются в один блок (merge_adjacent) без повтора перекрытия; его лимит — smart_truncate_chars × число склеенных.",
@@ -29716,7 +29804,7 @@ child / embed_batch_size
       "originalText": "Подробнее: при умолчаниях (parent 2500 < 3500) ничего не обрезается — лимит срабатывает только на маленьком окне или большом top_k. Обрезается вокруг найденного места: child из векторного поиска или окно, где больше\nвсего слов вопроса. Соседние фрагменты одного документа склеиваются в один блок (merge_adjacent) без повтора перекрытия; его лимит — smart_truncate_chars × число склеенных.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC5"
+      "index": "bC6"
     },
     {
       "id": "r6y9lZfR",
@@ -29748,10 +29836,10 @@ child / embed_batch_size
           "id": "N09JjNDX"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bC6"
+      "index": "bC7"
     },
     {
       "id": "N09JjNDX",
@@ -29776,7 +29864,7 @@ child / embed_batch_size
       "versionNonce": 80705691,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] max_table_parts",
@@ -29788,7 +29876,7 @@ child / embed_batch_size
       "originalText": "[П] max_table_parts",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC7"
+      "index": "bC8"
     },
     {
       "id": "tWb0Cy3D",
@@ -29820,10 +29908,10 @@ child / embed_batch_size
           "id": "Qusp8itJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bC8"
+      "index": "bC9"
     },
     {
       "id": "Qusp8itJ",
@@ -29848,7 +29936,7 @@ child / embed_batch_size
       "versionNonce": 525768354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько частей одной таблицы может попасть в контекст.",
@@ -29860,7 +29948,7 @@ child / embed_batch_size
       "originalText": "Сколько частей одной таблицы может попасть в контекст.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC9"
+      "index": "bCA"
     },
     {
       "id": "9zkYfcWS",
@@ -29892,10 +29980,10 @@ child / embed_batch_size
           "id": "Wv8weQnk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCA"
+      "index": "bCB"
     },
     {
       "id": "Wv8weQnk",
@@ -29920,7 +30008,7 @@ child / embed_batch_size
       "versionNonce": 907414041,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2",
@@ -29932,7 +30020,7 @@ child / embed_batch_size
       "originalText": "2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCB"
+      "index": "bCC"
     },
     {
       "id": "CHU9F8Xi",
@@ -29964,10 +30052,10 @@ child / embed_batch_size
           "id": "irSnrMCa"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCC"
+      "index": "bCD"
     },
     {
       "id": "irSnrMCa",
@@ -29992,7 +30080,7 @@ child / embed_batch_size
       "versionNonce": 999512133,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -30004,7 +30092,7 @@ child / embed_batch_size
       "originalText": "0 … 6",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCD"
+      "index": "bCE"
     },
     {
       "id": "hX1mFUZ5",
@@ -30036,10 +30124,10 @@ child / embed_batch_size
           "id": "JxKvUeoS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCE"
+      "index": "bCF"
     },
     {
       "id": "JxKvUeoS",
@@ -30064,7 +30152,7 @@ child / embed_batch_size
       "versionNonce": 492453229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 — без ограничения. Лимит мягкий: свободные места добираются частями.",
@@ -30076,7 +30164,7 @@ child / embed_batch_size
       "originalText": "0 — без ограничения. Лимит мягкий: свободные места добираются частями.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCF"
+      "index": "bCG"
     },
     {
       "id": "c9aQbnjk",
@@ -30108,10 +30196,10 @@ child / embed_batch_size
           "id": "JSZaSneX"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCG"
+      "index": "bCH"
     },
     {
       "id": "JSZaSneX",
@@ -30136,7 +30224,7 @@ child / embed_batch_size
       "versionNonce": 2010318907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] use_multi_query",
@@ -30148,7 +30236,7 @@ child / embed_batch_size
       "originalText": "[Т] use_multi_query",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCH"
+      "index": "bCI"
     },
     {
       "id": "dHXz855v",
@@ -30180,10 +30268,10 @@ child / embed_batch_size
           "id": "cq3Le41V"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCI"
+      "index": "bCJ"
     },
     {
       "id": "cq3Le41V",
@@ -30208,7 +30296,7 @@ child / embed_batch_size
       "versionNonce": 194094055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вторая формулировка вопроса от LLM; кандидаты ищутся по обеим.",
@@ -30220,7 +30308,7 @@ child / embed_batch_size
       "originalText": "Вторая формулировка вопроса от LLM; кандидаты ищутся по обеим.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCJ"
+      "index": "bCK"
     },
     {
       "id": "UydjJq7H",
@@ -30252,10 +30340,10 @@ child / embed_batch_size
           "id": "ZahazBl9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCK"
+      "index": "bCL"
     },
     {
       "id": "ZahazBl9",
@@ -30280,7 +30368,7 @@ child / embed_batch_size
       "versionNonce": 1911966443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "выкл.",
@@ -30292,7 +30380,7 @@ child / embed_batch_size
       "originalText": "выкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCL"
+      "index": "bCM"
     },
     {
       "id": "Ir61ciEM",
@@ -30324,10 +30412,10 @@ child / embed_batch_size
           "id": "XzrTFHKP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCM"
+      "index": "bCN"
     },
     {
       "id": "XzrTFHKP",
@@ -30352,7 +30440,7 @@ child / embed_batch_size
       "versionNonce": 1456427275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -30364,7 +30452,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCN"
+      "index": "bCO"
     },
     {
       "id": "NgcwtHQB",
@@ -30396,10 +30484,10 @@ child / embed_batch_size
           "id": "7NbX6LOI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCO"
+      "index": "bCP"
     },
     {
       "id": "7NbX6LOI",
@@ -30424,7 +30512,7 @@ child / embed_batch_size
       "versionNonce": 354713556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вопросы длиннее 1200 симв. не перефразируются.",
@@ -30436,7 +30524,7 @@ child / embed_batch_size
       "originalText": "Вопросы длиннее 1200 симв. не перефразируются.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCP"
+      "index": "bCQ"
     },
     {
       "id": "nCveSBJq",
@@ -30468,10 +30556,10 @@ child / embed_batch_size
           "id": "jsFtANYn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCQ"
+      "index": "bCR"
     },
     {
       "id": "jsFtANYn",
@@ -30496,7 +30584,7 @@ child / embed_batch_size
       "versionNonce": 521842887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] multi_query_alt_weight",
@@ -30508,7 +30596,7 @@ child / embed_batch_size
       "originalText": "[У] multi_query_alt_weight",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCR"
+      "index": "bCS"
     },
     {
       "id": "mdxQznyB",
@@ -30540,10 +30628,10 @@ child / embed_batch_size
           "id": "I5NSU8kH"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCS"
+      "index": "bCT"
     },
     {
       "id": "I5NSU8kH",
@@ -30568,7 +30656,7 @@ child / embed_batch_size
       "versionNonce": 1685954646,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вес результатов по второй формулировке.",
@@ -30580,7 +30668,7 @@ child / embed_batch_size
       "originalText": "Вес результатов по второй формулировке.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCT"
+      "index": "bCU"
     },
     {
       "id": "oHsjnb74",
@@ -30612,10 +30700,10 @@ child / embed_batch_size
           "id": "ips6vUKY"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCU"
+      "index": "bCV"
     },
     {
       "id": "ips6vUKY",
@@ -30640,7 +30728,7 @@ child / embed_batch_size
       "versionNonce": 1663812954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.85",
@@ -30652,7 +30740,7 @@ child / embed_batch_size
       "originalText": "0.85",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCV"
+      "index": "bCW"
     },
     {
       "id": "obt2MDY6",
@@ -30684,10 +30772,10 @@ child / embed_batch_size
           "id": "IUb0rYMK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCW"
+      "index": "bCX"
     },
     {
       "id": "IUb0rYMK",
@@ -30712,7 +30800,7 @@ child / embed_batch_size
       "versionNonce": 874755181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -30724,7 +30812,7 @@ child / embed_batch_size
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCX"
+      "index": "bCY"
     },
     {
       "id": "KUUhIIrf",
@@ -30756,10 +30844,10 @@ child / embed_batch_size
           "id": "FJxrZ9A0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCY"
+      "index": "bCZ"
     },
     {
       "id": "FJxrZ9A0",
@@ -30784,7 +30872,7 @@ child / embed_batch_size
       "versionNonce": 2122502909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -30796,7 +30884,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCZ"
+      "index": "bCa"
     },
     {
       "id": "s4HqgMHK",
@@ -30828,10 +30916,10 @@ child / embed_batch_size
           "id": "6X47paLs"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCa"
+      "index": "bCb"
     },
     {
       "id": "6X47paLs",
@@ -30856,7 +30944,7 @@ child / embed_batch_size
       "versionNonce": 73039095,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] max_query_chars",
@@ -30868,7 +30956,7 @@ child / embed_batch_size
       "originalText": "[У] max_query_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCb"
+      "index": "bCc"
     },
     {
       "id": "EQxJxnoR",
@@ -30900,10 +30988,10 @@ child / embed_batch_size
           "id": "XXCdMupI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCc"
+      "index": "bCd"
     },
     {
       "id": "XXCdMupI",
@@ -30928,7 +31016,7 @@ child / embed_batch_size
       "versionNonce": 1745724202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Максимальная длина запроса к поиску; длиннее — обрезается.",
@@ -30940,7 +31028,7 @@ child / embed_batch_size
       "originalText": "Максимальная длина запроса к поиску; длиннее — обрезается.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCd"
+      "index": "bCe"
     },
     {
       "id": "3UmOxtTB",
@@ -30972,10 +31060,10 @@ child / embed_batch_size
           "id": "qHqTszNN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCe"
+      "index": "bCf"
     },
     {
       "id": "qHqTszNN",
@@ -31000,7 +31088,7 @@ child / embed_batch_size
       "versionNonce": 1569199042,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "24000 симв.",
@@ -31012,7 +31100,7 @@ child / embed_batch_size
       "originalText": "24000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCf"
+      "index": "bCg"
     },
     {
       "id": "2OJjJXpx",
@@ -31044,10 +31132,10 @@ child / embed_batch_size
           "id": "BboBPRt1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCg"
+      "index": "bCh"
     },
     {
       "id": "BboBPRt1",
@@ -31072,7 +31160,7 @@ child / embed_batch_size
       "versionNonce": 2074488271,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -31084,7 +31172,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCh"
+      "index": "bCi"
     },
     {
       "id": "yUKT8g5L",
@@ -31116,10 +31204,10 @@ child / embed_batch_size
           "id": "P5Lw2HGK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCi"
+      "index": "bCj"
     },
     {
       "id": "P5Lw2HGK",
@@ -31144,7 +31232,7 @@ child / embed_batch_size
       "versionNonce": 878427207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -31156,7 +31244,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCj"
+      "index": "bCk"
     },
     {
       "id": "ASvZEZ1J",
@@ -31188,10 +31276,10 @@ child / embed_batch_size
           "id": "MIJpzCrn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCk"
+      "index": "bCl"
     },
     {
       "id": "MIJpzCrn",
@@ -31216,7 +31304,7 @@ child / embed_batch_size
       "versionNonce": 1812677870,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] cascade_split_chars",
@@ -31228,7 +31316,7 @@ child / embed_batch_size
       "originalText": "[У] cascade_split_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCl"
+      "index": "bCm"
     },
     {
       "id": "j93CgPLu",
@@ -31260,10 +31348,10 @@ child / embed_batch_size
           "id": "QX7L9Ks6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCm"
+      "index": "bCn"
     },
     {
       "id": "QX7L9Ks6",
@@ -31288,7 +31376,7 @@ child / embed_batch_size
       "versionNonce": 813387628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Запрос длиннее делится пополам и ищется частями.",
@@ -31300,7 +31388,7 @@ child / embed_batch_size
       "originalText": "Запрос длиннее делится пополам и ищется частями.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCn"
+      "index": "bCo"
     },
     {
       "id": "5vxPEnDe",
@@ -31332,10 +31420,10 @@ child / embed_batch_size
           "id": "wIPblXXD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCo"
+      "index": "bCp"
     },
     {
       "id": "wIPblXXD",
@@ -31360,7 +31448,7 @@ child / embed_batch_size
       "versionNonce": 1164531974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "20000 симв.",
@@ -31372,7 +31460,7 @@ child / embed_batch_size
       "originalText": "20000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCp"
+      "index": "bCq"
     },
     {
       "id": "59W7s6m0",
@@ -31404,10 +31492,10 @@ child / embed_batch_size
           "id": "XSa5QLFb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCq"
+      "index": "bCr"
     },
     {
       "id": "XSa5QLFb",
@@ -31432,7 +31520,7 @@ child / embed_batch_size
       "versionNonce": 177253050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -31444,7 +31532,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCr"
+      "index": "bCs"
     },
     {
       "id": "U86kloRp",
@@ -31476,10 +31564,10 @@ child / embed_batch_size
           "id": "C5uPmO3E"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCs"
+      "index": "bCt"
     },
     {
       "id": "C5uPmO3E",
@@ -31504,7 +31592,7 @@ child / embed_batch_size
       "versionNonce": 52014419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Глубина деления — не больше 3.",
@@ -31516,7 +31604,7 @@ child / embed_batch_size
       "originalText": "Глубина деления — не больше 3.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCt"
+      "index": "bCu"
     },
     {
       "id": "Ttiu6JrE",
@@ -31548,10 +31636,10 @@ child / embed_batch_size
           "id": "g9Bu07MV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCu"
+      "index": "bCv"
     },
     {
       "id": "g9Bu07MV",
@@ -31576,7 +31664,7 @@ child / embed_batch_size
       "versionNonce": 1676185245,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "РЕРАНКЕР — используются, только если задан RERANK_API_URL",
@@ -31588,7 +31676,7 @@ child / embed_batch_size
       "originalText": "РЕРАНКЕР — используются, только если задан RERANK_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCv"
+      "index": "bCw"
     },
     {
       "id": "6eJ828WP",
@@ -31620,10 +31708,10 @@ child / embed_batch_size
           "id": "6U3h5qGW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCw"
+      "index": "bCx"
     },
     {
       "id": "6U3h5qGW",
@@ -31648,7 +31736,7 @@ child / embed_batch_size
       "versionNonce": 866677630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] rerank_max_docs",
@@ -31660,7 +31748,7 @@ child / embed_batch_size
       "originalText": "[Р] rerank_max_docs",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCx"
+      "index": "bCy"
     },
     {
       "id": "OwICU9h5",
@@ -31692,10 +31780,10 @@ child / embed_batch_size
           "id": "N7uFyEAr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bCy"
+      "index": "bCz"
     },
     {
       "id": "N7uFyEAr",
@@ -31720,7 +31808,7 @@ child / embed_batch_size
       "versionNonce": 904781665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Документов в одном запросе к реранкеру.",
@@ -31732,7 +31820,7 @@ child / embed_batch_size
       "originalText": "Документов в одном запросе к реранкеру.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCz"
+      "index": "bD0"
     },
     {
       "id": "RLUV5K3s",
@@ -31764,10 +31852,10 @@ child / embed_batch_size
           "id": "gIoU2zYu"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bD0"
+      "index": "bD1"
     },
     {
       "id": "gIoU2zYu",
@@ -31792,7 +31880,7 @@ child / embed_batch_size
       "versionNonce": 1461941051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "10",
@@ -31804,7 +31892,7 @@ child / embed_batch_size
       "originalText": "10",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD1"
+      "index": "bD2"
     },
     {
       "id": "hoIjVMhw",
@@ -31836,10 +31924,10 @@ child / embed_batch_size
           "id": "MozZGAOC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bD2"
+      "index": "bD3"
     },
     {
       "id": "MozZGAOC",
@@ -31864,7 +31952,7 @@ child / embed_batch_size
       "versionNonce": 1204815292,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3 … 30",
@@ -31876,7 +31964,7 @@ child / embed_batch_size
       "originalText": "3 … 30",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD3"
+      "index": "bD4"
     },
     {
       "id": "DWFyAuMV",
@@ -31908,10 +31996,10 @@ child / embed_batch_size
           "id": "iQvZy7DU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bD4"
+      "index": "bD5"
     },
     {
       "id": "iQvZy7DU",
@@ -31936,7 +32024,7 @@ child / embed_batch_size
       "versionNonce": 627218922,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ограничение шлюза; остальные кандидаты — следующими запросами.",
@@ -31948,7 +32036,7 @@ child / embed_batch_size
       "originalText": "Ограничение шлюза; остальные кандидаты — следующими запросами.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD5"
+      "index": "bD6"
     },
     {
       "id": "k00hjtFW",
@@ -31980,10 +32068,10 @@ child / embed_batch_size
           "id": "lTszA1S5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bD6"
+      "index": "bD7"
     },
     {
       "id": "lTszA1S5",
@@ -32008,7 +32096,7 @@ child / embed_batch_size
       "versionNonce": 1610829386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] rerank_char_budget",
@@ -32020,7 +32108,7 @@ child / embed_batch_size
       "originalText": "[Р] rerank_char_budget",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD7"
+      "index": "bD8"
     },
     {
       "id": "Gxu471ZX",
@@ -32052,10 +32140,10 @@ child / embed_batch_size
           "id": "mijEeau7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bD8"
+      "index": "bD9"
     },
     {
       "id": "mijEeau7",
@@ -32080,7 +32168,7 @@ child / embed_batch_size
       "versionNonce": 1341445620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Символов в одном запросе к реранкеру.",
@@ -32092,7 +32180,7 @@ child / embed_batch_size
       "originalText": "Символов в одном запросе к реранкеру.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD9"
+      "index": "bDA"
     },
     {
       "id": "IyRIbScM",
@@ -32124,10 +32212,10 @@ child / embed_batch_size
           "id": "iqbo4Gc9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDA"
+      "index": "bDB"
     },
     {
       "id": "iqbo4Gc9",
@@ -32152,7 +32240,7 @@ child / embed_batch_size
       "versionNonce": 775511850,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "9000 симв.",
@@ -32164,7 +32252,7 @@ child / embed_batch_size
       "originalText": "9000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDB"
+      "index": "bDC"
     },
     {
       "id": "7PySBL9m",
@@ -32196,10 +32284,10 @@ child / embed_batch_size
           "id": "Jacs9NJD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDC"
+      "index": "bDD"
     },
     {
       "id": "Jacs9NJD",
@@ -32224,7 +32312,7 @@ child / embed_batch_size
       "versionNonce": 932387223,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3000 … 60000",
@@ -32236,7 +32324,7 @@ child / embed_batch_size
       "originalText": "3000 … 60000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDD"
+      "index": "bDE"
     },
     {
       "id": "LhJBzBFb",
@@ -32268,10 +32356,10 @@ child / embed_batch_size
           "id": "a6AC5f2o"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDE"
+      "index": "bDF"
     },
     {
       "id": "a6AC5f2o",
@@ -32296,7 +32384,7 @@ child / embed_batch_size
       "versionNonce": 458854630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ограничение шлюза; один документ уходит всегда, даже если длиннее.",
@@ -32308,7 +32396,7 @@ child / embed_batch_size
       "originalText": "Ограничение шлюза; один документ уходит всегда, даже если длиннее.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDF"
+      "index": "bDG"
     },
     {
       "id": "HFB0rVos",
@@ -32340,10 +32428,10 @@ child / embed_batch_size
           "id": "Z71aWLEK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDG"
+      "index": "bDH"
     },
     {
       "id": "Z71aWLEK",
@@ -32368,7 +32456,7 @@ child / embed_batch_size
       "versionNonce": 155608427,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] rerank_query_max_chars",
@@ -32380,7 +32468,7 @@ child / embed_batch_size
       "originalText": "◇ [А] rerank_query_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDH"
+      "index": "bDI"
     },
     {
       "id": "VZTl5pdN",
@@ -32412,10 +32500,10 @@ child / embed_batch_size
           "id": "mqoC7i5e"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDI"
+      "index": "bDJ"
     },
     {
       "id": "mqoC7i5e",
@@ -32440,7 +32528,7 @@ child / embed_batch_size
       "versionNonce": 547547720,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Длина запроса (с расшифровками сокращений) для реранкера.",
@@ -32452,7 +32540,7 @@ child / embed_batch_size
       "originalText": "Длина запроса (с расшифровками сокращений) для реранкера.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDJ"
+      "index": "bDK"
     },
     {
       "id": "hzOfjfnU",
@@ -32484,10 +32572,10 @@ child / embed_batch_size
           "id": "k1aXF4VF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDK"
+      "index": "bDL"
     },
     {
       "id": "k1aXF4VF",
@@ -32512,7 +32600,7 @@ child / embed_batch_size
       "versionNonce": 1450256052,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1500 симв.",
@@ -32524,7 +32612,7 @@ child / embed_batch_size
       "originalText": "1500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDL"
+      "index": "bDM"
     },
     {
       "id": "sQxZhpsa",
@@ -32556,10 +32644,10 @@ child / embed_batch_size
           "id": "Vsmcxsr0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDM"
+      "index": "bDN"
     },
     {
       "id": "Vsmcxsr0",
@@ -32584,7 +32672,7 @@ child / embed_batch_size
       "versionNonce": 375766132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "200 … 4000",
@@ -32596,7 +32684,7 @@ child / embed_batch_size
       "originalText": "200 … 4000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDN"
+      "index": "bDO"
     },
     {
       "id": "Y7slf9Ma",
@@ -32628,10 +32716,10 @@ child / embed_batch_size
           "id": "4X4peVzG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDO"
+      "index": "bDP"
     },
     {
       "id": "4X4peVzG",
@@ -32656,7 +32744,7 @@ child / embed_batch_size
       "versionNonce": 730764475,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход реранкера / 3 (минимум 200). От него: rerank_doc_max_chars.",
@@ -32668,7 +32756,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ вход реранкера / 3 (минимум 200). От него: rerank_doc_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDP"
+      "index": "bDQ"
     },
     {
       "id": "PFpsVmvZ",
@@ -32700,10 +32788,10 @@ child / embed_batch_size
           "id": "4qoxGy7W"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDQ"
+      "index": "bDR"
     },
     {
       "id": "4qoxGy7W",
@@ -32728,7 +32816,7 @@ child / embed_batch_size
       "versionNonce": 513501684,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] rerank_doc_max_chars",
@@ -32740,7 +32828,7 @@ child / embed_batch_size
       "originalText": "[А] rerank_doc_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDR"
+      "index": "bDS"
     },
     {
       "id": "dPrh3Xzq",
@@ -32772,10 +32860,10 @@ child / embed_batch_size
           "id": "INdUbnCu"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDS"
+      "index": "bDT"
     },
     {
       "id": "INdUbnCu",
@@ -32800,7 +32888,7 @@ child / embed_batch_size
       "versionNonce": 512983989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Длина фрагмента документа для реранкера вместе с именем файла и разделом.",
@@ -32812,7 +32900,7 @@ child / embed_batch_size
       "originalText": "Длина фрагмента документа для реранкера вместе с именем файла и разделом.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDT"
+      "index": "bDU"
     },
     {
       "id": "b9Wz9UTS",
@@ -32844,10 +32932,10 @@ child / embed_batch_size
           "id": "Sy5ZC8tC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDU"
+      "index": "bDV"
     },
     {
       "id": "Sy5ZC8tC",
@@ -32872,7 +32960,7 @@ child / embed_batch_size
       "versionNonce": 1067808700,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "800 симв.",
@@ -32884,7 +32972,7 @@ child / embed_batch_size
       "originalText": "800 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDV"
+      "index": "bDW"
     },
     {
       "id": "0ECQSsSt",
@@ -32916,10 +33004,10 @@ child / embed_batch_size
           "id": "9jACZCFx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDW"
+      "index": "bDX"
     },
     {
       "id": "9jACZCFx",
@@ -32944,7 +33032,7 @@ child / embed_batch_size
       "versionNonce": 821085603,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "200 … 6000",
@@ -32956,7 +33044,7 @@ child / embed_batch_size
       "originalText": "200 … 6000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDX"
+      "index": "bDY"
     },
     {
       "id": "awOaMgXv",
@@ -32988,10 +33076,10 @@ child / embed_batch_size
           "id": "HxrSiSUs"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDY"
+      "index": "bDZ"
     },
     {
       "id": "HxrSiSUs",
@@ -33016,7 +33104,7 @@ child / embed_batch_size
       "versionNonce": 2038585930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход реранкера − длина запроса (минимум 200); сам фрагмент не короче 150 симв.",
@@ -33028,7 +33116,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ вход реранкера − длина запроса (минимум 200); сам фрагмент не короче 150 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDZ"
+      "index": "bDa"
     },
     {
       "id": "SRYVhqMJ",
@@ -33060,10 +33148,10 @@ child / embed_batch_size
           "id": "mNIHqE1g"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDa"
+      "index": "bDb"
     },
     {
       "id": "mNIHqE1g",
@@ -33088,7 +33176,7 @@ child / embed_batch_size
       "versionNonce": 1894318756,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] rerank_with_meta",
@@ -33100,7 +33188,7 @@ child / embed_batch_size
       "originalText": "[У] rerank_with_meta",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDb"
+      "index": "bDc"
     },
     {
       "id": "4rhlKByA",
@@ -33132,10 +33220,10 @@ child / embed_batch_size
           "id": "V3U1PIJj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDc"
+      "index": "bDd"
     },
     {
       "id": "V3U1PIJj",
@@ -33160,7 +33248,7 @@ child / embed_batch_size
       "versionNonce": 298691446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Добавлять имя файла, раздел и таблицу в начало текста для реранкера.",
@@ -33172,7 +33260,7 @@ child / embed_batch_size
       "originalText": "Добавлять имя файла, раздел и таблицу в начало текста для реранкера.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDd"
+      "index": "bDe"
     },
     {
       "id": "xGbpe1Rt",
@@ -33204,10 +33292,10 @@ child / embed_batch_size
           "id": "xsa8pbmz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDe"
+      "index": "bDf"
     },
     {
       "id": "xsa8pbmz",
@@ -33232,7 +33320,7 @@ child / embed_batch_size
       "versionNonce": 1515200814,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -33244,7 +33332,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDf"
+      "index": "bDg"
     },
     {
       "id": "2Aqj7Ccj",
@@ -33276,10 +33364,10 @@ child / embed_batch_size
           "id": "RJWLpgff"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDg"
+      "index": "bDh"
     },
     {
       "id": "RJWLpgff",
@@ -33304,7 +33392,7 @@ child / embed_batch_size
       "versionNonce": 1496251421,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -33316,7 +33404,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDh"
+      "index": "bDi"
     },
     {
       "id": "lSeRf3MM",
@@ -33348,10 +33436,10 @@ child / embed_batch_size
           "id": "SEcymgpK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDi"
+      "index": "bDj"
     },
     {
       "id": "SEcymgpK",
@@ -33376,7 +33464,7 @@ child / embed_batch_size
       "versionNonce": 422124871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -33388,7 +33476,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDj"
+      "index": "bDk"
     },
     {
       "id": "mBHQ2ejh",
@@ -33420,10 +33508,10 @@ child / embed_batch_size
           "id": "TJdmNAMe"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDk"
+      "index": "bDl"
     },
     {
       "id": "TJdmNAMe",
@@ -33448,7 +33536,7 @@ child / embed_batch_size
       "versionNonce": 191817896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] min_rerank_score",
@@ -33460,7 +33548,7 @@ child / embed_batch_size
       "originalText": "[У] min_rerank_score",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDl"
+      "index": "bDm"
     },
     {
       "id": "RLElSVXO",
@@ -33492,10 +33580,10 @@ child / embed_batch_size
           "id": "L7htKRrT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDm"
+      "index": "bDn"
     },
     {
       "id": "L7htKRrT",
@@ -33520,7 +33608,7 @@ child / embed_batch_size
       "versionNonce": 684930038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Минимальный балл, при котором голос реранкера учитывается.",
@@ -33532,7 +33620,7 @@ child / embed_batch_size
       "originalText": "Минимальный балл, при котором голос реранкера учитывается.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDn"
+      "index": "bDo"
     },
     {
       "id": "2fdxuS10",
@@ -33564,10 +33652,10 @@ child / embed_batch_size
           "id": "ofiWJOXX"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDo"
+      "index": "bDp"
     },
     {
       "id": "ofiWJOXX",
@@ -33592,7 +33680,7 @@ child / embed_batch_size
       "versionNonce": 3194214,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.15",
@@ -33604,7 +33692,7 @@ child / embed_batch_size
       "originalText": "0.15",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDp"
+      "index": "bDq"
     },
     {
       "id": "Ry5Rakav",
@@ -33636,10 +33724,10 @@ child / embed_batch_size
           "id": "1yanl4zy"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDq"
+      "index": "bDr"
     },
     {
       "id": "1yanl4zy",
@@ -33664,7 +33752,7 @@ child / embed_batch_size
       "versionNonce": 1233626925,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -33676,7 +33764,7 @@ child / embed_batch_size
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDr"
+      "index": "bDs"
     },
     {
       "id": "fzg2h6on",
@@ -33708,10 +33796,10 @@ child / embed_batch_size
           "id": "ngr5b7jc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDs"
+      "index": "bDt"
     },
     {
       "id": "ngr5b7jc",
@@ -33736,7 +33824,7 @@ child / embed_batch_size
       "versionNonce": 166250213,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Рассчитан на шкалу 0 … 1; у реранкера с другой шкалой — задать вручную.",
@@ -33748,7 +33836,7 @@ child / embed_batch_size
       "originalText": "Рассчитан на шкалу 0 … 1; у реранкера с другой шкалой — задать вручную.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDt"
+      "index": "bDu"
     },
     {
       "id": "SsVYlIxl",
@@ -33780,10 +33868,10 @@ child / embed_batch_size
           "id": "KEVNl4ei"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDu"
+      "index": "bDv"
     },
     {
       "id": "KEVNl4ei",
@@ -33808,7 +33896,7 @@ child / embed_batch_size
       "versionNonce": 152577046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "СИГНАЛ «УВЕРЕННОСТЬ НИЗКАЯ» — как срабатывает, см. панель 7",
@@ -33820,7 +33908,7 @@ child / embed_batch_size
       "originalText": "СИГНАЛ «УВЕРЕННОСТЬ НИЗКАЯ» — как срабатывает, см. панель 7",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDv"
+      "index": "bDw"
     },
     {
       "id": "2J2RK5ER",
@@ -33852,10 +33940,10 @@ child / embed_batch_size
           "id": "k27exYRU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDw"
+      "index": "bDx"
     },
     {
       "id": "k27exYRU",
@@ -33880,7 +33968,7 @@ child / embed_batch_size
       "versionNonce": 1222981514,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] low_conf_rerank",
@@ -33892,7 +33980,7 @@ child / embed_batch_size
       "originalText": "[Т] low_conf_rerank",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDx"
+      "index": "bDy"
     },
     {
       "id": "oK26qcve",
@@ -33924,10 +34012,10 @@ child / embed_batch_size
           "id": "7KbGX2hP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bDy"
+      "index": "bDz"
     },
     {
       "id": "7KbGX2hP",
@@ -33952,7 +34040,7 @@ child / embed_batch_size
       "versionNonce": 1552195540,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Порог лучшего балла реранкера.",
@@ -33964,7 +34052,7 @@ child / embed_batch_size
       "originalText": "Порог лучшего балла реранкера.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDz"
+      "index": "bE0"
     },
     {
       "id": "fEPoYUbf",
@@ -33996,10 +34084,10 @@ child / embed_batch_size
           "id": "kJZWPlbf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bE0"
+      "index": "bE1"
     },
     {
       "id": "kJZWPlbf",
@@ -34024,7 +34112,7 @@ child / embed_batch_size
       "versionNonce": 974641568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.30",
@@ -34036,7 +34124,7 @@ child / embed_batch_size
       "originalText": "0.30",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE1"
+      "index": "bE2"
     },
     {
       "id": "RehOOo03",
@@ -34068,10 +34156,10 @@ child / embed_batch_size
           "id": "fcG42yGo"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bE2"
+      "index": "bE3"
     },
     {
       "id": "fcG42yGo",
@@ -34096,7 +34184,7 @@ child / embed_batch_size
       "versionNonce": 1391928747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34108,7 +34196,7 @@ child / embed_batch_size
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE3"
+      "index": "bE4"
     },
     {
       "id": "A56E0eMX",
@@ -34140,10 +34228,10 @@ child / embed_batch_size
           "id": "Nm8RBnbX"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bE4"
+      "index": "bE5"
     },
     {
       "id": "Nm8RBnbX",
@@ -34168,7 +34256,7 @@ child / embed_batch_size
       "versionNonce": 370486613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "С реранкером сигнал зависит только от него.",
@@ -34180,7 +34268,7 @@ child / embed_batch_size
       "originalText": "С реранкером сигнал зависит только от него.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE5"
+      "index": "bE6"
     },
     {
       "id": "gHbQnF22",
@@ -34212,10 +34300,10 @@ child / embed_batch_size
           "id": "MWpApVnV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bE6"
+      "index": "bE7"
     },
     {
       "id": "MWpApVnV",
@@ -34240,7 +34328,7 @@ child / embed_batch_size
       "versionNonce": 1204987714,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] low_conf_lexical",
@@ -34252,7 +34340,7 @@ child / embed_batch_size
       "originalText": "[Т] low_conf_lexical",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE7"
+      "index": "bE8"
     },
     {
       "id": "sfDPd2BX",
@@ -34284,10 +34372,10 @@ child / embed_batch_size
           "id": "ACarWAad"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bE8"
+      "index": "bE9"
     },
     {
       "id": "ACarWAad",
@@ -34312,7 +34400,7 @@ child / embed_batch_size
       "versionNonce": 2045651288,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Только без реранкера: порог доли слов вопроса в контексте.",
@@ -34324,7 +34412,7 @@ child / embed_batch_size
       "originalText": "Только без реранкера: порог доли слов вопроса в контексте.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE9"
+      "index": "bEA"
     },
     {
       "id": "80qIeTkA",
@@ -34356,10 +34444,10 @@ child / embed_batch_size
           "id": "fc1JUIaG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEA"
+      "index": "bEB"
     },
     {
       "id": "fc1JUIaG",
@@ -34384,7 +34472,7 @@ child / embed_batch_size
       "versionNonce": 80691010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0.50",
@@ -34396,7 +34484,7 @@ child / embed_batch_size
       "originalText": "0.50",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEB"
+      "index": "bEC"
     },
     {
       "id": "2oXByhEp",
@@ -34428,10 +34516,10 @@ child / embed_batch_size
           "id": "p9oWISmG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEC"
+      "index": "bED"
     },
     {
       "id": "p9oWISmG",
@@ -34456,7 +34544,7 @@ child / embed_batch_size
       "versionNonce": 711609765,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34468,7 +34556,7 @@ child / embed_batch_size
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bED"
+      "index": "bEE"
     },
     {
       "id": "jSiJlJEj",
@@ -34500,10 +34588,10 @@ child / embed_batch_size
           "id": "1Qlfo2XL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEE"
+      "index": "bEF"
     },
     {
       "id": "1Qlfo2XL",
@@ -34528,7 +34616,7 @@ child / embed_batch_size
       "versionNonce": 760757472,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Слова сравниваются по основам; вопросительные слова не считаются.",
@@ -34540,7 +34628,7 @@ child / embed_batch_size
       "originalText": "Слова сравниваются по основам; вопросительные слова не считаются.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEF"
+      "index": "bEG"
     },
     {
       "id": "mgwArcxx",
@@ -34572,10 +34660,10 @@ child / embed_batch_size
           "id": "iT9QEihJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEG"
+      "index": "bEH"
     },
     {
       "id": "iT9QEihJ",
@@ -34600,7 +34688,7 @@ child / embed_batch_size
       "versionNonce": 685294118,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] low_conf_agree_top",
@@ -34612,7 +34700,7 @@ child / embed_batch_size
       "originalText": "[У] low_conf_agree_top",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEH"
+      "index": "bEI"
     },
     {
       "id": "JcaExdmP",
@@ -34644,10 +34732,10 @@ child / embed_batch_size
           "id": "kyC0WRMs"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEI"
+      "index": "bEJ"
     },
     {
       "id": "kyC0WRMs",
@@ -34672,7 +34760,7 @@ child / embed_batch_size
       "versionNonce": 579166038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Только без реранкера: глубина совпадения векторного поиска и BM25.",
@@ -34684,7 +34772,7 @@ child / embed_batch_size
       "originalText": "Только без реранкера: глубина совпадения векторного поиска и BM25.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEJ"
+      "index": "bEK"
     },
     {
       "id": "ssgKLskU",
@@ -34716,10 +34804,10 @@ child / embed_batch_size
           "id": "6YTV1x7X"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEK"
+      "index": "bEL"
     },
     {
       "id": "6YTV1x7X",
@@ -34744,7 +34832,7 @@ child / embed_batch_size
       "versionNonce": 1064378993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5",
@@ -34756,7 +34844,7 @@ child / embed_batch_size
       "originalText": "5",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEL"
+      "index": "bEM"
     },
     {
       "id": "sXIFXYNW",
@@ -34788,10 +34876,10 @@ child / embed_batch_size
           "id": "c0QGMwZi"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEM"
+      "index": "bEN"
     },
     {
       "id": "c0QGMwZi",
@@ -34816,7 +34904,7 @@ child / embed_batch_size
       "versionNonce": 1789911899,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 … 20",
@@ -34828,7 +34916,7 @@ child / embed_batch_size
       "originalText": "1 … 20",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEN"
+      "index": "bEO"
     },
     {
       "id": "ceq6uD2T",
@@ -34860,10 +34948,10 @@ child / embed_batch_size
           "id": "LVL8K8aB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEO"
+      "index": "bEP"
     },
     {
       "id": "LVL8K8aB",
@@ -34888,7 +34976,7 @@ child / embed_batch_size
       "versionNonce": 1034546173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -34900,7 +34988,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEP"
+      "index": "bEQ"
     },
     {
       "id": "9NVpreWz",
@@ -34932,10 +35020,10 @@ child / embed_batch_size
           "id": "aKdribJq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEQ"
+      "index": "bER"
     },
     {
       "id": "aKdribJq",
@@ -34960,7 +35048,7 @@ child / embed_batch_size
       "versionNonce": 238385884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] show_source_details",
@@ -34972,7 +35060,7 @@ child / embed_batch_size
       "originalText": "[У] show_source_details",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bER"
+      "index": "bES"
     },
     {
       "id": "9WI33Rzb",
@@ -35004,10 +35092,10 @@ child / embed_batch_size
           "id": "fqAeFdJa"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bES"
+      "index": "bET"
     },
     {
       "id": "fqAeFdJa",
@@ -35032,7 +35120,7 @@ child / embed_batch_size
       "versionNonce": 2030131176,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Показывать баллы и позиции рядом с источниками в чате.",
@@ -35044,7 +35132,7 @@ child / embed_batch_size
       "originalText": "Показывать баллы и позиции рядом с источниками в чате.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bET"
+      "index": "bEU"
     },
     {
       "id": "n5anRVVz",
@@ -35076,10 +35164,10 @@ child / embed_batch_size
           "id": "WPah7gt8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEU"
+      "index": "bEV"
     },
     {
       "id": "WPah7gt8",
@@ -35104,7 +35192,7 @@ child / embed_batch_size
       "versionNonce": 22784989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -35116,7 +35204,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEV"
+      "index": "bEW"
     },
     {
       "id": "b285nzxj",
@@ -35148,10 +35236,10 @@ child / embed_batch_size
           "id": "R6bYN10b"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEW"
+      "index": "bEX"
     },
     {
       "id": "R6bYN10b",
@@ -35176,7 +35264,7 @@ child / embed_batch_size
       "versionNonce": 415630397,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -35188,7 +35276,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEX"
+      "index": "bEY"
     },
     {
       "id": "BGWXHFQn",
@@ -35220,10 +35308,10 @@ child / embed_batch_size
           "id": "mOz0rVBd"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEY"
+      "index": "bEZ"
     },
     {
       "id": "mOz0rVBd",
@@ -35248,7 +35336,7 @@ child / embed_batch_size
       "versionNonce": 1690344630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -35260,7 +35348,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEZ"
+      "index": "bEa"
     },
     {
       "id": "vjFFYlhc",
@@ -35292,10 +35380,10 @@ child / embed_batch_size
           "id": "NSo3kyF9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEa"
+      "index": "bEb"
     },
     {
       "id": "NSo3kyF9",
@@ -35320,7 +35408,7 @@ child / embed_batch_size
       "versionNonce": 1705104604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЧАТ И ГЛОССАРИЙ",
@@ -35332,7 +35420,7 @@ child / embed_batch_size
       "originalText": "ЧАТ И ГЛОССАРИЙ",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEb"
+      "index": "bEc"
     },
     {
       "id": "obd3h7QW",
@@ -35364,10 +35452,10 @@ child / embed_batch_size
           "id": "ZpOylhSE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEc"
+      "index": "bEd"
     },
     {
       "id": "ZpOylhSE",
@@ -35392,7 +35480,7 @@ child / embed_batch_size
       "versionNonce": 1358943467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] chat_history_turns",
@@ -35404,7 +35492,7 @@ child / embed_batch_size
       "originalText": "[П] chat_history_turns",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEd"
+      "index": "bEe"
     },
     {
       "id": "mq8KBX5m",
@@ -35436,10 +35524,10 @@ child / embed_batch_size
           "id": "hRM3b1AN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEe"
+      "index": "bEf"
     },
     {
       "id": "hRM3b1AN",
@@ -35464,7 +35552,7 @@ child / embed_batch_size
       "versionNonce": 696858975,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько прошлых пар «вопрос — ответ» учитывать для уточняющих вопросов.",
@@ -35476,7 +35564,7 @@ child / embed_batch_size
       "originalText": "Сколько прошлых пар «вопрос — ответ» учитывать для уточняющих вопросов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEf"
+      "index": "bEg"
     },
     {
       "id": "9UGN9KDS",
@@ -35508,10 +35596,10 @@ child / embed_batch_size
           "id": "YzlhjTln"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEg"
+      "index": "bEh"
     },
     {
       "id": "YzlhjTln",
@@ -35536,7 +35624,7 @@ child / embed_batch_size
       "versionNonce": 1082927071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2",
@@ -35548,7 +35636,7 @@ child / embed_batch_size
       "originalText": "2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEh"
+      "index": "bEi"
     },
     {
       "id": "sHjS7Xtw",
@@ -35580,10 +35668,10 @@ child / embed_batch_size
           "id": "55rx0YRk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEi"
+      "index": "bEj"
     },
     {
       "id": "55rx0YRk",
@@ -35608,7 +35696,7 @@ child / embed_batch_size
       "versionNonce": 121100775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -35620,7 +35708,7 @@ child / embed_batch_size
       "originalText": "0 … 6",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEj"
+      "index": "bEk"
     },
     {
       "id": "oYcop2KE",
@@ -35652,10 +35740,10 @@ child / embed_batch_size
           "id": "arKlEaeh"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEk"
+      "index": "bEl"
     },
     {
       "id": "arKlEaeh",
@@ -35680,7 +35768,7 @@ child / embed_batch_size
       "versionNonce": 230615823,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 — без истории; ответ ассистента в истории обрезается до 1200 симв.",
@@ -35692,7 +35780,7 @@ child / embed_batch_size
       "originalText": "0 — без истории; ответ ассистента в истории обрезается до 1200 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEl"
+      "index": "bEm"
     },
     {
       "id": "cEg5wCdh",
@@ -35724,10 +35812,10 @@ child / embed_batch_size
           "id": "OspZwsrZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEm"
+      "index": "bEn"
     },
     {
       "id": "OspZwsrZ",
@@ -35752,7 +35840,7 @@ child / embed_batch_size
       "versionNonce": 290205931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] glossary_auto",
@@ -35764,7 +35852,7 @@ child / embed_batch_size
       "originalText": "[У] glossary_auto",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEn"
+      "index": "bEo"
     },
     {
       "id": "CGkevO0h",
@@ -35796,10 +35884,10 @@ child / embed_batch_size
           "id": "9MLAZphD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEo"
+      "index": "bEp"
     },
     {
       "id": "9MLAZphD",
@@ -35824,7 +35912,7 @@ child / embed_batch_size
       "versionNonce": 1652058783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Собирать сокращения из загруженных документов.",
@@ -35836,7 +35924,7 @@ child / embed_batch_size
       "originalText": "Собирать сокращения из загруженных документов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEp"
+      "index": "bEq"
     },
     {
       "id": "KkV7KJEt",
@@ -35868,10 +35956,10 @@ child / embed_batch_size
           "id": "9rmSqMSK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEq"
+      "index": "bEr"
     },
     {
       "id": "9rmSqMSK",
@@ -35896,7 +35984,7 @@ child / embed_batch_size
       "versionNonce": 1615930585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -35908,7 +35996,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEr"
+      "index": "bEs"
     },
     {
       "id": "cz8G1Z39",
@@ -35940,10 +36028,10 @@ child / embed_batch_size
           "id": "3PxH4tUg"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEs"
+      "index": "bEt"
     },
     {
       "id": "3PxH4tUg",
@@ -35968,7 +36056,7 @@ child / embed_batch_size
       "versionNonce": 388414857,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -35980,7 +36068,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEt"
+      "index": "bEu"
     },
     {
       "id": "ATI9bfwf",
@@ -36012,10 +36100,10 @@ child / embed_batch_size
           "id": "8cTqlhHk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEu"
+      "index": "bEv"
     },
     {
       "id": "8cTqlhHk",
@@ -36040,7 +36128,7 @@ child / embed_batch_size
       "versionNonce": 1934436383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -36052,7 +36140,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEv"
+      "index": "bEw"
     },
     {
       "id": "OleYZfQw",
@@ -36084,10 +36172,10 @@ child / embed_batch_size
           "id": "uUKzWGzl"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEw"
+      "index": "bEx"
     },
     {
       "id": "uUKzWGzl",
@@ -36112,7 +36200,7 @@ child / embed_batch_size
       "versionNonce": 961364065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] glossary_in_context",
@@ -36124,7 +36212,7 @@ child / embed_batch_size
       "originalText": "[П] glossary_in_context",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEx"
+      "index": "bEy"
     },
     {
       "id": "89AMWi2w",
@@ -36156,10 +36244,10 @@ child / embed_batch_size
           "id": "yupn1JC3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bEy"
+      "index": "bEz"
     },
     {
       "id": "yupn1JC3",
@@ -36184,7 +36272,7 @@ child / embed_batch_size
       "versionNonce": 117939210,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Передавать модели справочник найденных сокращений.",
@@ -36196,7 +36284,7 @@ child / embed_batch_size
       "originalText": "Передавать модели справочник найденных сокращений.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEz"
+      "index": "bF0"
     },
     {
       "id": "SwRlELnT",
@@ -36228,10 +36316,10 @@ child / embed_batch_size
           "id": "hfQOxHTX"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bF0"
+      "index": "bF1"
     },
     {
       "id": "hfQOxHTX",
@@ -36256,7 +36344,7 @@ child / embed_batch_size
       "versionNonce": 521029987,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -36268,7 +36356,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF1"
+      "index": "bF2"
     },
     {
       "id": "PMit2ICO",
@@ -36300,10 +36388,10 @@ child / embed_batch_size
           "id": "3nCp0vyA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bF2"
+      "index": "bF3"
     },
     {
       "id": "3nCp0vyA",
@@ -36328,7 +36416,7 @@ child / embed_batch_size
       "versionNonce": 715682022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -36340,7 +36428,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF3"
+      "index": "bF4"
     },
     {
       "id": "8CaX7TVK",
@@ -36372,10 +36460,10 @@ child / embed_batch_size
           "id": "RStxU2hC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bF4"
+      "index": "bF5"
     },
     {
       "id": "RStxU2hC",
@@ -36400,7 +36488,7 @@ child / embed_batch_size
       "versionNonce": 1152890893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Выключить, если автоглоссарий даёт ошибочные расшифровки.",
@@ -36412,7 +36500,7 @@ child / embed_batch_size
       "originalText": "Выключить, если автоглоссарий даёт ошибочные расшифровки.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF5"
+      "index": "bF6"
     },
     {
       "id": "cRhUDq6L",
@@ -36444,10 +36532,10 @@ child / embed_batch_size
           "id": "EBKDzld7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bF6"
+      "index": "bF7"
     },
     {
       "id": "EBKDzld7",
@@ -36472,7 +36560,7 @@ child / embed_batch_size
       "versionNonce": 1193726760,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] glossary_max_entries",
@@ -36484,7 +36572,7 @@ child / embed_batch_size
       "originalText": "[У] glossary_max_entries",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF7"
+      "index": "bF8"
     },
     {
       "id": "Hpq8oRF1",
@@ -36516,10 +36604,10 @@ child / embed_batch_size
           "id": "VP3WRsUB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bF8"
+      "index": "bF9"
     },
     {
       "id": "VP3WRsUB",
@@ -36544,7 +36632,7 @@ child / embed_batch_size
       "versionNonce": 921704075,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сокращений в справочнике для модели, не больше.",
@@ -36556,7 +36644,7 @@ child / embed_batch_size
       "originalText": "Сокращений в справочнике для модели, не больше.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF9"
+      "index": "bFA"
     },
     {
       "id": "jliLLe1l",
@@ -36588,10 +36676,10 @@ child / embed_batch_size
           "id": "mSIRcqSU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFA"
+      "index": "bFB"
     },
     {
       "id": "mSIRcqSU",
@@ -36616,7 +36704,7 @@ child / embed_batch_size
       "versionNonce": 2057702627,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "20",
@@ -36628,7 +36716,7 @@ child / embed_batch_size
       "originalText": "20",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFB"
+      "index": "bFC"
     },
     {
       "id": "CMn3YEBg",
@@ -36660,10 +36748,10 @@ child / embed_batch_size
           "id": "axzjxIxL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFC"
+      "index": "bFD"
     },
     {
       "id": "axzjxIxL",
@@ -36688,7 +36776,7 @@ child / embed_batch_size
       "versionNonce": 799336186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5 … 60",
@@ -36700,7 +36788,7 @@ child / embed_batch_size
       "originalText": "5 … 60",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFD"
+      "index": "bFE"
     },
     {
       "id": "wEwwk1pg",
@@ -36732,10 +36820,10 @@ child / embed_batch_size
           "id": "DZoUZatD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFE"
+      "index": "bFF"
     },
     {
       "id": "DZoUZatD",
@@ -36760,7 +36848,7 @@ child / embed_batch_size
       "versionNonce": 1034791827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сначала сокращения из вопроса, затем из найденных фрагментов.",
@@ -36772,7 +36860,7 @@ child / embed_batch_size
       "originalText": "Сначала сокращения из вопроса, затем из найденных фрагментов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFF"
+      "index": "bFG"
     },
     {
       "id": "Lx7zg6Vf",
@@ -36804,10 +36892,10 @@ child / embed_batch_size
           "id": "5r6OBGig"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFG"
+      "index": "bFH"
     },
     {
       "id": "5r6OBGig",
@@ -36832,7 +36920,7 @@ child / embed_batch_size
       "versionNonce": 328757559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА И КОНТРОЛЬ ИСПРАВЛЕНИЙ",
@@ -36844,7 +36932,7 @@ child / embed_batch_size
       "originalText": "АУДИТ ДОКУМЕНТА И КОНТРОЛЬ ИСПРАВЛЕНИЙ",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFH"
+      "index": "bFI"
     },
     {
       "id": "vsX3Dce3",
@@ -36876,10 +36964,10 @@ child / embed_batch_size
           "id": "puycRmjw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFI"
+      "index": "bFJ"
     },
     {
       "id": "puycRmjw",
@@ -36904,7 +36992,7 @@ child / embed_batch_size
       "versionNonce": 1897840640,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] audit_map_size",
@@ -36916,7 +37004,7 @@ child / embed_batch_size
       "originalText": "◇ [А] audit_map_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFJ"
+      "index": "bFK"
     },
     {
       "id": "fMUxf8gf",
@@ -36948,10 +37036,10 @@ child / embed_batch_size
           "id": "ExxOXSCA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFK"
+      "index": "bFL"
     },
     {
       "id": "ExxOXSCA",
@@ -36976,7 +37064,7 @@ child / embed_batch_size
       "versionNonce": 799903258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Размер раздела документа на одну проверку; тот же размер — у разделов на вкладке\nконтроля.",
@@ -36988,7 +37076,7 @@ child / embed_batch_size
       "originalText": "Размер раздела документа на одну проверку; тот же размер — у разделов на вкладке\nконтроля.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFL"
+      "index": "bFM"
     },
     {
       "id": "4N5XzGZD",
@@ -37020,10 +37108,10 @@ child / embed_batch_size
           "id": "fXsqkpL9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFM"
+      "index": "bFN"
     },
     {
       "id": "fXsqkpL9",
@@ -37048,7 +37136,7 @@ child / embed_batch_size
       "versionNonce": 464157402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4500 симв.",
@@ -37060,7 +37148,7 @@ child / embed_batch_size
       "originalText": "4500 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFN"
+      "index": "bFO"
     },
     {
       "id": "43eBYqAM",
@@ -37092,10 +37180,10 @@ child / embed_batch_size
           "id": "8R7STJuE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFO"
+      "index": "bFP"
     },
     {
       "id": "8R7STJuE",
@@ -37120,7 +37208,7 @@ child / embed_batch_size
       "versionNonce": 280071929,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1000 … 12000",
@@ -37132,7 +37220,7 @@ child / embed_batch_size
       "originalText": "1000 … 12000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFP"
+      "index": "bFQ"
     },
     {
       "id": "wkEL9mO2",
@@ -37164,10 +37252,10 @@ child / embed_batch_size
           "id": "bBGM7IeG"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFQ"
+      "index": "bFR"
     },
     {
       "id": "bBGM7IeG",
@@ -37192,7 +37280,7 @@ child / embed_batch_size
       "versionNonce": 2031956423,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ 0.3 × llm_budget (минимум 1000). Меньше — детальнее, но больше вызовов LLM. От\nнего: audit_context_max_chars.",
@@ -37204,7 +37292,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ 0.3 × llm_budget (минимум 1000). Меньше — детальнее, но больше вызовов LLM. От\nнего: audit_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFR"
+      "index": "bFS"
     },
     {
       "id": "b9iv3sb3",
@@ -37236,10 +37324,10 @@ child / embed_batch_size
           "id": "mwtxUCsB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFS"
+      "index": "bFT"
     },
     {
       "id": "mwtxUCsB",
@@ -37264,7 +37352,7 @@ child / embed_batch_size
       "versionNonce": 488934201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: Документ режется на части по разделам до этого размера (раздел до 1,5 размера — целым), каждая проверяется отдельным вызовом LLM. Чтобы модель не писала «не указано X», когда X есть в другом разделе, к части\nприлагается документ целиком (audit_full_document) или оглавление.",
@@ -37276,7 +37364,7 @@ child / embed_batch_size
       "originalText": "Подробнее: Документ режется на части по разделам до этого размера (раздел до 1,5 размера — целым), каждая проверяется отдельным вызовом LLM. Чтобы модель не писала «не указано X», когда X есть в другом разделе, к части\nприлагается документ целиком (audit_full_document) или оглавление.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFT"
+      "index": "bFU"
     },
     {
       "id": "5cp8TW7H",
@@ -37308,10 +37396,10 @@ child / embed_batch_size
           "id": "SxRrVdq0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFU"
+      "index": "bFV"
     },
     {
       "id": "SxRrVdq0",
@@ -37336,7 +37424,7 @@ child / embed_batch_size
       "versionNonce": 303228371,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] use_self_critique",
@@ -37348,7 +37436,7 @@ child / embed_batch_size
       "originalText": "[П] use_self_critique",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFV"
+      "index": "bFW"
     },
     {
       "id": "CEYFpsVT",
@@ -37380,10 +37468,10 @@ child / embed_batch_size
           "id": "LHuPpQ2M"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFW"
+      "index": "bFX"
     },
     {
       "id": "LHuPpQ2M",
@@ -37408,7 +37496,7 @@ child / embed_batch_size
       "versionNonce": 215411871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Второй проход «контролёр» по черновику замечаний.",
@@ -37420,7 +37508,7 @@ child / embed_batch_size
       "originalText": "Второй проход «контролёр» по черновику замечаний.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFX"
+      "index": "bFY"
     },
     {
       "id": "6JUzrqEb",
@@ -37452,10 +37540,10 @@ child / embed_batch_size
           "id": "bzybp2u4"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFY"
+      "index": "bFZ"
     },
     {
       "id": "bzybp2u4",
@@ -37480,7 +37568,7 @@ child / embed_batch_size
       "versionNonce": 1703500431,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -37492,7 +37580,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFZ"
+      "index": "bFa"
     },
     {
       "id": "DVOso7yh",
@@ -37524,10 +37612,10 @@ child / embed_batch_size
           "id": "dNd1EuUW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFa"
+      "index": "bFb"
     },
     {
       "id": "dNd1EuUW",
@@ -37552,7 +37640,7 @@ child / embed_batch_size
       "versionNonce": 1449583895,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -37564,7 +37652,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFb"
+      "index": "bFc"
     },
     {
       "id": "hHQfmxU6",
@@ -37596,10 +37684,10 @@ child / embed_batch_size
           "id": "v3oETJ1H"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFc"
+      "index": "bFd"
     },
     {
       "id": "v3oETJ1H",
@@ -37624,7 +37712,7 @@ child / embed_batch_size
       "versionNonce": 507549522,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Отсеивает надуманные замечания; без него быстрее.",
@@ -37636,7 +37724,7 @@ child / embed_batch_size
       "originalText": "Отсеивает надуманные замечания; без него быстрее.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFd"
+      "index": "bFe"
     },
     {
       "id": "NEDTX9DQ",
@@ -37668,10 +37756,10 @@ child / embed_batch_size
           "id": "oIxX952b"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFe"
+      "index": "bFf"
     },
     {
       "id": "oIxX952b",
@@ -37696,7 +37784,7 @@ child / embed_batch_size
       "versionNonce": 78982661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_full_document",
@@ -37708,7 +37796,7 @@ child / embed_batch_size
       "originalText": "[П] audit_full_document",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFf"
+      "index": "bFg"
     },
     {
       "id": "JhMliJyS",
@@ -37740,10 +37828,10 @@ child / embed_batch_size
           "id": "O3jzEUVm"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFg"
+      "index": "bFh"
     },
     {
       "id": "O3jzEUVm",
@@ -37768,7 +37856,7 @@ child / embed_batch_size
       "versionNonce": 1876429488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Документ целиком в каждой проверке раздела и самокритике.",
@@ -37780,7 +37868,7 @@ child / embed_batch_size
       "originalText": "Документ целиком в каждой проверке раздела и самокритике.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFh"
+      "index": "bFi"
     },
     {
       "id": "O1J2X7Ve",
@@ -37812,10 +37900,10 @@ child / embed_batch_size
           "id": "NBcqQzar"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFi"
+      "index": "bFj"
     },
     {
       "id": "NBcqQzar",
@@ -37840,7 +37928,7 @@ child / embed_batch_size
       "versionNonce": 2006537615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -37852,7 +37940,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFj"
+      "index": "bFk"
     },
     {
       "id": "sdxrVs11",
@@ -37884,10 +37972,10 @@ child / embed_batch_size
           "id": "hzOQceql"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFk"
+      "index": "bFl"
     },
     {
       "id": "hzOQceql",
@@ -37912,7 +38000,7 @@ child / embed_batch_size
       "versionNonce": 71901712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -37924,7 +38012,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFl"
+      "index": "bFm"
     },
     {
       "id": "RiQvgt7r",
@@ -37956,10 +38044,10 @@ child / embed_batch_size
           "id": "csQrLVhM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFm"
+      "index": "bFn"
     },
     {
       "id": "csQrLVhM",
@@ -37984,7 +38072,7 @@ child / embed_batch_size
       "versionNonce": 1416839545,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Только если документ помещается в окно модели; иначе — оглавление и сверка «не\nописано» с другими разделами.",
@@ -37996,7 +38084,7 @@ child / embed_batch_size
       "originalText": "Только если документ помещается в окно модели; иначе — оглавление и сверка «не\nописано» с другими разделами.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFn"
+      "index": "bFo"
     },
     {
       "id": "0WHQBH2N",
@@ -38028,10 +38116,10 @@ child / embed_batch_size
           "id": "Uvv4TY9D"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFo"
+      "index": "bFp"
     },
     {
       "id": "Uvv4TY9D",
@@ -38056,7 +38144,7 @@ child / embed_batch_size
       "versionNonce": 1666465480,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_merge_duplicates",
@@ -38068,7 +38156,7 @@ child / embed_batch_size
       "originalText": "[П] audit_merge_duplicates",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFp"
+      "index": "bFq"
     },
     {
       "id": "tq97K18M",
@@ -38100,10 +38188,10 @@ child / embed_batch_size
           "id": "XT5W09d1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFq"
+      "index": "bFr"
     },
     {
       "id": "XT5W09d1",
@@ -38128,7 +38216,7 @@ child / embed_batch_size
       "versionNonce": 87471442,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сведение повторов замечаний моделью в конце аудита.",
@@ -38140,7 +38228,7 @@ child / embed_batch_size
       "originalText": "Сведение повторов замечаний моделью в конце аудита.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFr"
+      "index": "bFs"
     },
     {
       "id": "WPGnPtUy",
@@ -38172,10 +38260,10 @@ child / embed_batch_size
           "id": "GNMYG98R"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFs"
+      "index": "bFt"
     },
     {
       "id": "GNMYG98R",
@@ -38200,7 +38288,7 @@ child / embed_batch_size
       "versionNonce": 648609525,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -38212,7 +38300,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFt"
+      "index": "bFu"
     },
     {
       "id": "olRDI05m",
@@ -38244,10 +38332,10 @@ child / embed_batch_size
           "id": "8NmfW8ww"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFu"
+      "index": "bFv"
     },
     {
       "id": "8NmfW8ww",
@@ -38272,7 +38360,7 @@ child / embed_batch_size
       "versionNonce": 567406071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -38284,7 +38372,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFv"
+      "index": "bFw"
     },
     {
       "id": "wfntSaKC",
@@ -38316,10 +38404,10 @@ child / embed_batch_size
           "id": "WiOttyoJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFw"
+      "index": "bFx"
     },
     {
       "id": "WiOttyoJ",
@@ -38344,7 +38432,7 @@ child / embed_batch_size
       "versionNonce": 502296104,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "+1 вызов LLM; выключено — повторы склеиваются только по совпадению слов.",
@@ -38356,7 +38444,7 @@ child / embed_batch_size
       "originalText": "+1 вызов LLM; выключено — повторы склеиваются только по совпадению слов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFx"
+      "index": "bFy"
     },
     {
       "id": "BbPISCqu",
@@ -38388,10 +38476,10 @@ child / embed_batch_size
           "id": "7vb6W4QR"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bFy"
+      "index": "bFz"
     },
     {
       "id": "7vb6W4QR",
@@ -38416,7 +38504,7 @@ child / embed_batch_size
       "versionNonce": 696585202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_passes",
@@ -38428,7 +38516,7 @@ child / embed_batch_size
       "originalText": "[П] audit_passes",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFz"
+      "index": "bG0"
     },
     {
       "id": "2zKH1tFt",
@@ -38460,10 +38548,10 @@ child / embed_batch_size
           "id": "q0Fvr6vc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bG0"
+      "index": "bG1"
     },
     {
       "id": "q0Fvr6vc",
@@ -38488,7 +38576,7 @@ child / embed_batch_size
       "versionNonce": 1540471178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Проходов проверки разделов и вопросов глубокой проверки о процессе и цифрах.",
@@ -38500,7 +38588,7 @@ child / embed_batch_size
       "originalText": "Проходов проверки разделов и вопросов глубокой проверки о процессе и цифрах.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG1"
+      "index": "bG2"
     },
     {
       "id": "B29RGN7o",
@@ -38532,10 +38620,10 @@ child / embed_batch_size
           "id": "GMaaH8pC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bG2"
+      "index": "bG3"
     },
     {
       "id": "GMaaH8pC",
@@ -38560,7 +38648,7 @@ child / embed_batch_size
       "versionNonce": 424717483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1",
@@ -38572,7 +38660,7 @@ child / embed_batch_size
       "originalText": "1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG3"
+      "index": "bG4"
     },
     {
       "id": "VvzCrOhP",
@@ -38604,10 +38692,10 @@ child / embed_batch_size
           "id": "YN8UOHtr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bG4"
+      "index": "bG5"
     },
     {
       "id": "YN8UOHtr",
@@ -38632,7 +38720,7 @@ child / embed_batch_size
       "versionNonce": 923127099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 … 3",
@@ -38644,7 +38732,7 @@ child / embed_batch_size
       "originalText": "1 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG5"
+      "index": "bG6"
     },
     {
       "id": "2gjhNbym",
@@ -38676,10 +38764,10 @@ child / embed_batch_size
           "id": "o3h1jtSz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bG6"
+      "index": "bG7"
     },
     {
       "id": "o3h1jtSz",
@@ -38704,7 +38792,7 @@ child / embed_batch_size
       "versionNonce": 683798192,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2–3 — с температурой ≥ 0,4; замечания проходов сводятся, найденное несколько раз —\n   выше.",
@@ -38716,7 +38804,7 @@ child / embed_batch_size
       "originalText": "2–3 — с температурой ≥ 0,4; замечания проходов сводятся, найденное несколько раз —\n   выше.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG7"
+      "index": "bG8"
     },
     {
       "id": "Y8o9Ofs7",
@@ -38748,10 +38836,10 @@ child / embed_batch_size
           "id": "IZWuJx8y"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bG8"
+      "index": "bG9"
     },
     {
       "id": "IZWuJx8y",
@@ -38776,7 +38864,7 @@ child / embed_batch_size
       "versionNonce": 1163966941,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_summary_max",
@@ -38788,7 +38876,7 @@ child / embed_batch_size
       "originalText": "[П] audit_summary_max",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG9"
+      "index": "bGA"
     },
     {
       "id": "k2K2Cu0s",
@@ -38820,10 +38908,10 @@ child / embed_batch_size
           "id": "bP9t1fBV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGA"
+      "index": "bGB"
     },
     {
       "id": "bP9t1fBV",
@@ -38848,7 +38936,7 @@ child / embed_batch_size
       "versionNonce": 1424975636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "«Главное» в начале заключения: самые важные замечания указателями на номера.",
@@ -38860,7 +38948,7 @@ child / embed_batch_size
       "originalText": "«Главное» в начале заключения: самые важные замечания указателями на номера.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGB"
+      "index": "bGC"
     },
     {
       "id": "jz5Hetk8",
@@ -38892,10 +38980,10 @@ child / embed_batch_size
           "id": "yzjcr1Oq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGC"
+      "index": "bGD"
     },
     {
       "id": "yzjcr1Oq",
@@ -38920,7 +39008,7 @@ child / embed_batch_size
       "versionNonce": 105177086,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "12",
@@ -38932,7 +39020,7 @@ child / embed_batch_size
       "originalText": "12",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGD"
+      "index": "bGE"
     },
     {
       "id": "BSPvVGXY",
@@ -38964,10 +39052,10 @@ child / embed_batch_size
           "id": "jKWBedUO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGE"
+      "index": "bGF"
     },
     {
       "id": "jKWBedUO",
@@ -38992,7 +39080,7 @@ child / embed_batch_size
       "versionNonce": 2078789198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 30",
@@ -39004,7 +39092,7 @@ child / embed_batch_size
       "originalText": "0 … 30",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGF"
+      "index": "bGG"
     },
     {
       "id": "Am0QStP3",
@@ -39036,10 +39124,10 @@ child / embed_batch_size
           "id": "NsT4YebW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGG"
+      "index": "bGH"
     },
     {
       "id": "NsT4YebW",
@@ -39064,7 +39152,7 @@ child / embed_batch_size
       "versionNonce": 731820361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "+1 вызов LLM (модель-редактор); 0 — без блока.",
@@ -39076,7 +39164,7 @@ child / embed_batch_size
       "originalText": "+1 вызов LLM (модель-редактор); 0 — без блока.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGH"
+      "index": "bGI"
     },
     {
       "id": "BuLFTkP2",
@@ -39108,10 +39196,10 @@ child / embed_batch_size
           "id": "6kb05fRc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGI"
+      "index": "bGJ"
     },
     {
       "id": "6kb05fRc",
@@ -39136,7 +39224,7 @@ child / embed_batch_size
       "versionNonce": 1326775936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_reasoning",
@@ -39148,7 +39236,7 @@ child / embed_batch_size
       "originalText": "[П] audit_reasoning",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGJ"
+      "index": "bGK"
     },
     {
       "id": "4LZc8Kkt",
@@ -39180,10 +39268,10 @@ child / embed_batch_size
           "id": "drHyzW3l"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGK"
+      "index": "bGL"
     },
     {
       "id": "drHyzW3l",
@@ -39208,7 +39296,7 @@ child / embed_batch_size
       "versionNonce": 528140515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Аудит с рассуждениями модели (поверх llm_no_reasoning).",
@@ -39220,7 +39308,7 @@ child / embed_batch_size
       "originalText": "Аудит с рассуждениями модели (поверх llm_no_reasoning).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGL"
+      "index": "bGM"
     },
     {
       "id": "DVz5yXk1",
@@ -39252,10 +39340,10 @@ child / embed_batch_size
           "id": "FFLhQxly"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGM"
+      "index": "bGN"
     },
     {
       "id": "FFLhQxly",
@@ -39280,7 +39368,7 @@ child / embed_batch_size
       "versionNonce": 319369939,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "выкл.",
@@ -39292,7 +39380,7 @@ child / embed_batch_size
       "originalText": "выкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGN"
+      "index": "bGO"
     },
     {
       "id": "zWEKIFoh",
@@ -39324,10 +39412,10 @@ child / embed_batch_size
           "id": "uHwqYG3Z"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGO"
+      "index": "bGP"
     },
     {
       "id": "uHwqYG3Z",
@@ -39352,7 +39440,7 @@ child / embed_batch_size
       "versionNonce": 1525803776,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -39364,7 +39452,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGP"
+      "index": "bGQ"
     },
     {
       "id": "eszUDJRQ",
@@ -39396,10 +39484,10 @@ child / embed_batch_size
           "id": "N86bJEJm"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGQ"
+      "index": "bGR"
     },
     {
       "id": "N86bJEJm",
@@ -39424,7 +39512,7 @@ child / embed_batch_size
       "versionNonce": 857880810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ответ +6000 токенов на рассуждения, таймаут ≥ 300 с; в чате рассуждения как\nнастроено.",
@@ -39436,7 +39524,7 @@ child / embed_batch_size
       "originalText": "Ответ +6000 токенов на рассуждения, таймаут ≥ 300 с; в чате рассуждения как\nнастроено.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGR"
+      "index": "bGS"
     },
     {
       "id": "6vLmx4x4",
@@ -39468,10 +39556,10 @@ child / embed_batch_size
           "id": "qfvEGSvn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGS"
+      "index": "bGT"
     },
     {
       "id": "qfvEGSvn",
@@ -39496,7 +39584,7 @@ child / embed_batch_size
       "versionNonce": 1465649990,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[У] audit_known_abbreviations",
@@ -39508,7 +39596,7 @@ child / embed_batch_size
       "originalText": "[У] audit_known_abbreviations",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGT"
+      "index": "bGU"
     },
     {
       "id": "WI9OYTr2",
@@ -39540,10 +39628,10 @@ child / embed_batch_size
           "id": "R9Yh5aWS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGU"
+      "index": "bGV"
     },
     {
       "id": "R9Yh5aWS",
@@ -39568,7 +39656,7 @@ child / embed_batch_size
       "versionNonce": 654366624,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Общеизвестные сокращения, которые проверка сокращений не отмечает.",
@@ -39580,7 +39668,7 @@ child / embed_batch_size
       "originalText": "Общеизвестные сокращения, которые проверка сокращений не отмечает.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGV"
+      "index": "bGW"
     },
     {
       "id": "Ch5JX8cy",
@@ -39612,10 +39700,10 @@ child / embed_batch_size
           "id": "8ShEW9l6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGW"
+      "index": "bGX"
     },
     {
       "id": "8ShEW9l6",
@@ -39640,7 +39728,7 @@ child / embed_batch_size
       "versionNonce": 224194665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -39652,7 +39740,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGX"
+      "index": "bGY"
     },
     {
       "id": "JOhhFxIn",
@@ -39684,10 +39772,10 @@ child / embed_batch_size
           "id": "PYm0tFiL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGY"
+      "index": "bGZ"
     },
     {
       "id": "PYm0tFiL",
@@ -39712,7 +39800,7 @@ child / embed_batch_size
       "versionNonce": 1019147097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -39724,7 +39812,7 @@ child / embed_batch_size
       "originalText": "только\nconfig.yaml",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGZ"
+      "index": "bGa"
     },
     {
       "id": "p9mA1r4X",
@@ -39756,10 +39844,10 @@ child / embed_batch_size
           "id": "JSqjkd7L"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGa"
+      "index": "bGb"
     },
     {
       "id": "JSqjkd7L",
@@ -39784,7 +39872,7 @@ child / embed_batch_size
       "versionNonce": 1622513533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Через запятую; ГОСТ, РФ, API и подобные уже учтены.",
@@ -39796,7 +39884,7 @@ child / embed_batch_size
       "originalText": "Через запятую; ГОСТ, РФ, API и подобные уже учтены.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGb"
+      "index": "bGc"
     },
     {
       "id": "2G6zvWJq",
@@ -39828,10 +39916,10 @@ child / embed_batch_size
           "id": "xvhpdVme"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGc"
+      "index": "bGd"
     },
     {
       "id": "xvhpdVme",
@@ -39856,7 +39944,7 @@ child / embed_batch_size
       "versionNonce": 1673976711,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_deep",
@@ -39868,7 +39956,7 @@ child / embed_batch_size
       "originalText": "[П] audit_deep",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGd"
+      "index": "bGe"
     },
     {
       "id": "kgTfNkfK",
@@ -39900,10 +39988,10 @@ child / embed_batch_size
           "id": "ru9kMveP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGe"
+      "index": "bGf"
     },
     {
       "id": "ru9kMveP",
@@ -39928,7 +40016,7 @@ child / embed_batch_size
       "versionNonce": 146673239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Глубокая проверка: узкие вопросы модели по процессу, противоречиям, цифрам,\nопечаткам.",
@@ -39940,7 +40028,7 @@ child / embed_batch_size
       "originalText": "Глубокая проверка: узкие вопросы модели по процессу, противоречиям, цифрам,\nопечаткам.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGf"
+      "index": "bGg"
     },
     {
       "id": "5jdrfRck",
@@ -39972,10 +40060,10 @@ child / embed_batch_size
           "id": "rKCBoQSK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGg"
+      "index": "bGh"
     },
     {
       "id": "rKCBoQSK",
@@ -40000,7 +40088,7 @@ child / embed_batch_size
       "versionNonce": 1940254612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -40012,7 +40100,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGh"
+      "index": "bGi"
     },
     {
       "id": "LTepwqoe",
@@ -40044,10 +40132,10 @@ child / embed_batch_size
           "id": "pt9Y0PFi"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGi"
+      "index": "bGj"
     },
     {
       "id": "pt9Y0PFi",
@@ -40072,7 +40160,7 @@ child / embed_batch_size
       "versionNonce": 1648595060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -40084,7 +40172,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGj"
+      "index": "bGk"
     },
     {
       "id": "2IwIVbol",
@@ -40116,10 +40204,10 @@ child / embed_batch_size
           "id": "Sr0wUi9u"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGk"
+      "index": "bGl"
     },
     {
       "id": "Sr0wUi9u",
@@ -40144,7 +40232,7 @@ child / embed_batch_size
       "versionNonce": 396108871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Десятки коротких вызовов LLM; модель среднего размера справляется с узким вопросом\nнадёжнее, чем с аудитом главы.",
@@ -40156,7 +40244,7 @@ child / embed_batch_size
       "originalText": "Десятки коротких вызовов LLM; модель среднего размера справляется с узким вопросом\nнадёжнее, чем с аудитом главы.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGl"
+      "index": "bGm"
     },
     {
       "id": "Y7LTZo3Y",
@@ -40188,10 +40276,10 @@ child / embed_batch_size
           "id": "lb8kzI9r"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGm"
+      "index": "bGn"
     },
     {
       "id": "lb8kzI9r",
@@ -40216,7 +40304,7 @@ child / embed_batch_size
       "versionNonce": 375390170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_deep_max_calls",
@@ -40228,7 +40316,7 @@ child / embed_batch_size
       "originalText": "[П] audit_deep_max_calls",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGn"
+      "index": "bGo"
     },
     {
       "id": "LuC5sQAT",
@@ -40260,10 +40348,10 @@ child / embed_batch_size
           "id": "aE6zRqY5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGo"
+      "index": "bGp"
     },
     {
       "id": "aE6zRqY5",
@@ -40288,7 +40376,7 @@ child / embed_batch_size
       "versionNonce": 1041959316,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Не больше стольких вопросов глубокой проверки.",
@@ -40300,7 +40388,7 @@ child / embed_batch_size
       "originalText": "Не больше стольких вопросов глубокой проверки.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGp"
+      "index": "bGq"
     },
     {
       "id": "YU6yY3JN",
@@ -40332,10 +40420,10 @@ child / embed_batch_size
           "id": "USjt9iID"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGq"
+      "index": "bGr"
     },
     {
       "id": "USjt9iID",
@@ -40360,7 +40448,7 @@ child / embed_batch_size
       "versionNonce": 1371556573,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "60",
@@ -40372,7 +40460,7 @@ child / embed_batch_size
       "originalText": "60",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGr"
+      "index": "bGs"
     },
     {
       "id": "XAFvkSSF",
@@ -40404,10 +40492,10 @@ child / embed_batch_size
           "id": "ExzzamR2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGs"
+      "index": "bGt"
     },
     {
       "id": "ExzzamR2",
@@ -40432,7 +40520,7 @@ child / embed_batch_size
       "versionNonce": 691387152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 300",
@@ -40444,7 +40532,7 @@ child / embed_batch_size
       "originalText": "0 … 300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGt"
+      "index": "bGu"
     },
     {
       "id": "uLAZ8iZM",
@@ -40476,10 +40564,10 @@ child / embed_batch_size
           "id": "xQ4LhHRb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGu"
+      "index": "bGv"
     },
     {
       "id": "xQ4LhHRb",
@@ -40504,7 +40592,7 @@ child / embed_batch_size
       "versionNonce": 1638094993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 — без лимита; первыми — процесс и цифры.",
@@ -40516,7 +40604,7 @@ child / embed_batch_size
       "originalText": "0 — без лимита; первыми — процесс и цифры.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGv"
+      "index": "bGw"
     },
     {
       "id": "XHoche0I",
@@ -40548,10 +40636,10 @@ child / embed_batch_size
           "id": "OdI1WnBy"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGw"
+      "index": "bGx"
     },
     {
       "id": "OdI1WnBy",
@@ -40576,7 +40664,7 @@ child / embed_batch_size
       "versionNonce": 1538985619,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_parallel",
@@ -40588,7 +40676,7 @@ child / embed_batch_size
       "originalText": "[П] audit_parallel",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGx"
+      "index": "bGy"
     },
     {
       "id": "KotcIpaN",
@@ -40620,10 +40708,10 @@ child / embed_batch_size
           "id": "8QiNKB8L"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bGy"
+      "index": "bGz"
     },
     {
       "id": "8QiNKB8L",
@@ -40648,7 +40736,7 @@ child / embed_batch_size
       "versionNonce": 367628576,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Запросов аудита одновременно: разделы, вопросы глубокой проверки, пункты.",
@@ -40660,7 +40748,7 @@ child / embed_batch_size
       "originalText": "Запросов аудита одновременно: разделы, вопросы глубокой проверки, пункты.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGz"
+      "index": "bH0"
     },
     {
       "id": "JQW7MIxo",
@@ -40692,10 +40780,10 @@ child / embed_batch_size
           "id": "W1JCnT3V"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bH0"
+      "index": "bH1"
     },
     {
       "id": "W1JCnT3V",
@@ -40720,7 +40808,7 @@ child / embed_batch_size
       "versionNonce": 2025769206,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3",
@@ -40732,7 +40820,7 @@ child / embed_batch_size
       "originalText": "3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH1"
+      "index": "bH2"
     },
     {
       "id": "Wfaowp01",
@@ -40764,10 +40852,10 @@ child / embed_batch_size
           "id": "J2tota14"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bH2"
+      "index": "bH3"
     },
     {
       "id": "J2tota14",
@@ -40792,7 +40880,7 @@ child / embed_batch_size
       "versionNonce": 1513837548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -40804,7 +40892,7 @@ child / embed_batch_size
       "originalText": "1 … 8",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH3"
+      "index": "bH4"
     },
     {
       "id": "atTxBNxy",
@@ -40836,10 +40924,10 @@ child / embed_batch_size
           "id": "b0g39P2E"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bH4"
+      "index": "bH5"
     },
     {
       "id": "b0g39P2E",
@@ -40864,7 +40952,7 @@ child / embed_batch_size
       "versionNonce": 2061583063,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Больше — быстрее; при ответах 429 и таймаутах — уменьшить.",
@@ -40876,7 +40964,7 @@ child / embed_batch_size
       "originalText": "Больше — быстрее; при ответах 429 и таймаутах — уменьшить.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH5"
+      "index": "bH6"
     },
     {
       "id": "DKP2hYwX",
@@ -40908,10 +40996,10 @@ child / embed_batch_size
           "id": "mVqN8MMK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bH6"
+      "index": "bH7"
     },
     {
       "id": "mVqN8MMK",
@@ -40936,7 +41024,7 @@ child / embed_batch_size
       "versionNonce": 1739737787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_pinned_max_chars",
@@ -40948,7 +41036,7 @@ child / embed_batch_size
       "originalText": "[П] audit_pinned_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH7"
+      "index": "bH8"
     },
     {
       "id": "cypOcyub",
@@ -40980,10 +41068,10 @@ child / embed_batch_size
           "id": "TMYZXv0w"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bH8"
+      "index": "bH9"
     },
     {
       "id": "TMYZXv0w",
@@ -41008,7 +41096,7 @@ child / embed_batch_size
       "versionNonce": 1640355855,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Правила экспертов и карточки систем на один запрос аудита (сверх норм).",
@@ -41020,7 +41108,7 @@ child / embed_batch_size
       "originalText": "Правила экспертов и карточки систем на один запрос аудита (сверх норм).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH9"
+      "index": "bHA"
     },
     {
       "id": "b4EnDMyb",
@@ -41052,10 +41140,10 @@ child / embed_batch_size
           "id": "XRvWx1Ir"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHA"
+      "index": "bHB"
     },
     {
       "id": "XRvWx1Ir",
@@ -41080,7 +41168,7 @@ child / embed_batch_size
       "versionNonce": 252620028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "20000 симв.",
@@ -41092,7 +41180,7 @@ child / embed_batch_size
       "originalText": "20000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHB"
+      "index": "bHC"
     },
     {
       "id": "J0xZBle6",
@@ -41124,10 +41212,10 @@ child / embed_batch_size
           "id": "etELLugb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHC"
+      "index": "bHD"
     },
     {
       "id": "etELLugb",
@@ -41152,7 +41240,7 @@ child / embed_batch_size
       "versionNonce": 44613008,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 60000",
@@ -41164,7 +41252,7 @@ child / embed_batch_size
       "originalText": "0 … 60000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHD"
+      "index": "bHE"
     },
     {
       "id": "Ec62uYOQ",
@@ -41196,10 +41284,10 @@ child / embed_batch_size
           "id": "pjWCOq5H"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHE"
+      "index": "bHF"
     },
     {
       "id": "pjWCOq5H",
@@ -41224,7 +41312,7 @@ child / embed_batch_size
       "versionNonce": 315685461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Помещаются — целиком, иначе — ближайшие к тексту фрагменты; 0 — не передавать.",
@@ -41236,7 +41324,7 @@ child / embed_batch_size
       "originalText": "Помещаются — целиком, иначе — ближайшие к тексту фрагменты; 0 — не передавать.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHF"
+      "index": "bHG"
     },
     {
       "id": "0xsQP8dh",
@@ -41268,10 +41356,10 @@ child / embed_batch_size
           "id": "mfmZKqb6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHG"
+      "index": "bHH"
     },
     {
       "id": "mfmZKqb6",
@@ -41296,7 +41384,7 @@ child / embed_batch_size
       "versionNonce": 1067042240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_systems",
@@ -41308,7 +41396,7 @@ child / embed_batch_size
       "originalText": "[П] audit_systems",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHH"
+      "index": "bHI"
     },
     {
       "id": "aPKSxm3Q",
@@ -41340,10 +41428,10 @@ child / embed_batch_size
           "id": "GvJL314v"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHI"
+      "index": "bHJ"
     },
     {
       "id": "GvJL314v",
@@ -41368,7 +41456,7 @@ child / embed_batch_size
       "versionNonce": 750979183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Что документ требует от каждой упомянутой системы — по её карточке.",
@@ -41380,7 +41468,7 @@ child / embed_batch_size
       "originalText": "Что документ требует от каждой упомянутой системы — по её карточке.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHJ"
+      "index": "bHK"
     },
     {
       "id": "6kd7oSrq",
@@ -41412,10 +41500,10 @@ child / embed_batch_size
           "id": "a1ydRCmy"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHK"
+      "index": "bHL"
     },
     {
       "id": "a1ydRCmy",
@@ -41440,7 +41528,7 @@ child / embed_batch_size
       "versionNonce": 558326594,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -41452,7 +41540,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHL"
+      "index": "bHM"
     },
     {
       "id": "zHfgriGd",
@@ -41484,10 +41572,10 @@ child / embed_batch_size
           "id": "u5PVHw7P"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHM"
+      "index": "bHN"
     },
     {
       "id": "u5PVHw7P",
@@ -41512,7 +41600,7 @@ child / embed_batch_size
       "versionNonce": 1411776787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -41524,7 +41612,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHN"
+      "index": "bHO"
     },
     {
       "id": "c6amAH1N",
@@ -41556,10 +41644,10 @@ child / embed_batch_size
           "id": "HCP8pSA6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHO"
+      "index": "bHP"
     },
     {
       "id": "HCP8pSA6",
@@ -41584,7 +41672,7 @@ child / embed_batch_size
       "versionNonce": 1753654173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "+1 вызов LLM на систему, упомянутую в документе не меньше двух раз (до 5 систем).",
@@ -41596,7 +41684,7 @@ child / embed_batch_size
       "originalText": "+1 вызов LLM на систему, упомянутую в документе не меньше двух раз (до 5 систем).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHP"
+      "index": "bHQ"
     },
     {
       "id": "0rV8zQLw",
@@ -41628,10 +41716,10 @@ child / embed_batch_size
           "id": "mrJSeoUM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHQ"
+      "index": "bHR"
     },
     {
       "id": "mrJSeoUM",
@@ -41656,7 +41744,7 @@ child / embed_batch_size
       "versionNonce": 961363775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_basis_docs",
@@ -41668,7 +41756,7 @@ child / embed_batch_size
       "originalText": "[П] audit_basis_docs",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHR"
+      "index": "bHS"
     },
     {
       "id": "BlzZnIxn",
@@ -41700,10 +41788,10 @@ child / embed_batch_size
           "id": "EAmhDJga"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHS"
+      "index": "bHT"
     },
     {
       "id": "EAmhDJga",
@@ -41728,7 +41816,7 @@ child / embed_batch_size
       "versionNonce": 416336481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Документы-основания: документы базы по ссылкам на титуле и в «Ссылочных\nдокументах» — в каждой проверке раздела.",
@@ -41740,7 +41828,7 @@ child / embed_batch_size
       "originalText": "Документы-основания: документы базы по ссылкам на титуле и в «Ссылочных\nдокументах» — в каждой проверке раздела.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHT"
+      "index": "bHU"
     },
     {
       "id": "ua3i8tnD",
@@ -41772,10 +41860,10 @@ child / embed_batch_size
           "id": "cCpOv9EU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHU"
+      "index": "bHV"
     },
     {
       "id": "cCpOv9EU",
@@ -41800,7 +41888,7 @@ child / embed_batch_size
       "versionNonce": 1163794768,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -41812,7 +41900,7 @@ child / embed_batch_size
       "originalText": "вкл.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHV"
+      "index": "bHW"
     },
     {
       "id": "OiEsOdCv",
@@ -41844,10 +41932,10 @@ child / embed_batch_size
           "id": "ogAIkhRR"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHW"
+      "index": "bHX"
     },
     {
       "id": "ogAIkhRR",
@@ -41872,7 +41960,7 @@ child / embed_batch_size
       "versionNonce": 605109372,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -41884,7 +41972,7 @@ child / embed_batch_size
       "originalText": "флажок",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHX"
+      "index": "bHY"
     },
     {
       "id": "trpVq7Zl",
@@ -41916,10 +42004,10 @@ child / embed_batch_size
           "id": "b7sq22Ni"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHY"
+      "index": "bHZ"
     },
     {
       "id": "b7sq22Ni",
@@ -41944,7 +42032,7 @@ child / embed_batch_size
       "versionNonce": 760685218,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Без вызовов LLM; что найдено — блок «📎 Документы-основания» на вкладке и лог; снять\nили добавить — там же.",
@@ -41956,7 +42044,7 @@ child / embed_batch_size
       "originalText": "Без вызовов LLM; что найдено — блок «📎 Документы-основания» на вкладке и лог; снять\nили добавить — там же.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHZ"
+      "index": "bHa"
     },
     {
       "id": "HAiZM2NO",
@@ -41988,10 +42076,10 @@ child / embed_batch_size
           "id": "jIogvcro"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHa"
+      "index": "bHb"
     },
     {
       "id": "jIogvcro",
@@ -42016,7 +42104,7 @@ child / embed_batch_size
       "versionNonce": 325770346,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] audit_basis_max_chars",
@@ -42028,7 +42116,7 @@ child / embed_batch_size
       "originalText": "[П] audit_basis_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHb"
+      "index": "bHc"
     },
     {
       "id": "yGH6BtDi",
@@ -42060,10 +42148,10 @@ child / embed_batch_size
           "id": "4HBQuTfw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHc"
+      "index": "bHd"
     },
     {
       "id": "4HBQuTfw",
@@ -42088,7 +42176,7 @@ child / embed_batch_size
       "versionNonce": 836442519,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Фрагменты документов-оснований на один запрос аудита (сверх норм поиска).",
@@ -42100,7 +42188,7 @@ child / embed_batch_size
       "originalText": "Фрагменты документов-оснований на один запрос аудита (сверх норм поиска).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHd"
+      "index": "bHe"
     },
     {
       "id": "ZfDw8pJT",
@@ -42132,10 +42220,10 @@ child / embed_batch_size
           "id": "QwJjBK4k"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHe"
+      "index": "bHf"
     },
     {
       "id": "QwJjBK4k",
@@ -42160,7 +42248,7 @@ child / embed_batch_size
       "versionNonce": 1485312612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "8000",
@@ -42172,7 +42260,7 @@ child / embed_batch_size
       "originalText": "8000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHf"
+      "index": "bHg"
     },
     {
       "id": "s0rpVkop",
@@ -42204,10 +42292,10 @@ child / embed_batch_size
           "id": "QqyY0Plt"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHg"
+      "index": "bHh"
     },
     {
       "id": "QqyY0Plt",
@@ -42232,7 +42320,7 @@ child / embed_batch_size
       "versionNonce": 169573945,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "0 … 40000",
@@ -42244,7 +42332,7 @@ child / embed_batch_size
       "originalText": "0 … 40000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHh"
+      "index": "bHi"
     },
     {
       "id": "fZ6NjN4X",
@@ -42276,10 +42364,10 @@ child / embed_batch_size
           "id": "WwMI9DeE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHi"
+      "index": "bHj"
     },
     {
       "id": "WwMI9DeE",
@@ -42304,7 +42392,7 @@ child / embed_batch_size
       "versionNonce": 1742221889,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ближайшие к разделу фрагменты; 0 — не передавать.",
@@ -42316,7 +42404,7 @@ child / embed_batch_size
       "originalText": "Ближайшие к разделу фрагменты; 0 — не передавать.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHj"
+      "index": "bHk"
     },
     {
       "id": "KK6I4V7o",
@@ -42348,10 +42436,10 @@ child / embed_batch_size
           "id": "SCAqkh9h"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHk"
+      "index": "bHl"
     },
     {
       "id": "SCAqkh9h",
@@ -42376,7 +42464,7 @@ child / embed_batch_size
       "versionNonce": 1368400772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] audit_query_chars",
@@ -42388,7 +42476,7 @@ child / embed_batch_size
       "originalText": "[А] audit_query_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHl"
+      "index": "bHm"
     },
     {
       "id": "Txtm3YEr",
@@ -42420,10 +42508,10 @@ child / embed_batch_size
           "id": "NnGZHfY7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHm"
+      "index": "bHn"
     },
     {
       "id": "NnGZHfY7",
@@ -42448,7 +42536,7 @@ child / embed_batch_size
       "versionNonce": 1277480848,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько символов начала раздела уходит в поиск норм.",
@@ -42460,7 +42548,7 @@ child / embed_batch_size
       "originalText": "Сколько символов начала раздела уходит в поиск норм.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHn"
+      "index": "bHo"
     },
     {
       "id": "N1VTNvpq",
@@ -42492,10 +42580,10 @@ child / embed_batch_size
           "id": "xp4dg1h5"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHo"
+      "index": "bHp"
     },
     {
       "id": "xp4dg1h5",
@@ -42520,7 +42608,7 @@ child / embed_batch_size
       "versionNonce": 300888124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2000 симв.",
@@ -42532,7 +42620,7 @@ child / embed_batch_size
       "originalText": "2000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHp"
+      "index": "bHq"
     },
     {
       "id": "tJZOnIcg",
@@ -42564,10 +42652,10 @@ child / embed_batch_size
           "id": "JDk1QkvO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHq"
+      "index": "bHr"
     },
     {
       "id": "JDk1QkvO",
@@ -42592,7 +42680,7 @@ child / embed_batch_size
       "versionNonce": 1840864094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -42604,7 +42692,7 @@ child / embed_batch_size
       "originalText": "300 … 6000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHr"
+      "index": "bHs"
     },
     {
       "id": "si8qRGhU",
@@ -42636,10 +42724,10 @@ child / embed_batch_size
           "id": "8GrhfB92"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHs"
+      "index": "bHt"
     },
     {
       "id": "8GrhfB92",
@@ -42664,7 +42752,7 @@ child / embed_batch_size
       "versionNonce": 469941871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход эмбеддингов − префикс запроса (минимум 300).",
@@ -42676,7 +42764,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ вход эмбеддингов − префикс запроса (минимум 300).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHt"
+      "index": "bHu"
     },
     {
       "id": "TiguRACO",
@@ -42708,10 +42796,10 @@ child / embed_batch_size
           "id": "JWqdf0ot"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHu"
+      "index": "bHv"
     },
     {
       "id": "JWqdf0ot",
@@ -42736,7 +42824,7 @@ child / embed_batch_size
       "versionNonce": 1580207623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "◇ [А] audit_context_max_chars",
@@ -42748,7 +42836,7 @@ child / embed_batch_size
       "originalText": "◇ [А] audit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHv"
+      "index": "bHw"
     },
     {
       "id": "lwQf5lAb",
@@ -42780,10 +42868,10 @@ child / embed_batch_size
           "id": "SReMEifI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHw"
+      "index": "bHx"
     },
     {
       "id": "SReMEifI",
@@ -42808,7 +42896,7 @@ child / embed_batch_size
       "versionNonce": 1348476919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько текста норм из базы (parent целиком, суммарно) попадает в проверку одного\nраздела документа.",
@@ -42820,7 +42908,7 @@ child / embed_batch_size
       "originalText": "Сколько текста норм из базы (parent целиком, суммарно) попадает в проверку одного\nраздела документа.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHx"
+      "index": "bHy"
     },
     {
       "id": "2g6zLHNV",
@@ -42852,10 +42940,10 @@ child / embed_batch_size
           "id": "YSYBy8uu"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bHy"
+      "index": "bHz"
     },
     {
       "id": "YSYBy8uu",
@@ -42880,7 +42968,7 @@ child / embed_batch_size
       "versionNonce": 602107349,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "9000 симв.",
@@ -42892,7 +42980,7 @@ child / embed_batch_size
       "originalText": "9000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHz"
+      "index": "bI0"
     },
     {
       "id": "8tYR8PDI",
@@ -42924,10 +43012,10 @@ child / embed_batch_size
           "id": "mXMevDpb"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bI0"
+      "index": "bI1"
     },
     {
       "id": "mXMevDpb",
@@ -42952,7 +43040,7 @@ child / embed_batch_size
       "versionNonce": 59527035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1000 … 40000",
@@ -42964,7 +43052,7 @@ child / embed_batch_size
       "originalText": "1000 … 40000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI1"
+      "index": "bI2"
     },
     {
       "id": "1j4vYNE4",
@@ -42996,10 +43084,10 @@ child / embed_batch_size
           "id": "aR5t6Fnn"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bI2"
+      "index": "bI3"
     },
     {
       "id": "aR5t6Fnn",
@@ -43024,7 +43112,7 @@ child / embed_batch_size
       "versionNonce": 1041012736,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ llm_budget − audit_map_size (минимум 1000). Parent берутся целиком в порядке\nрелевантности, пока сумма помещается, — остальные отбрасываются (первый — всегда); не\nбольше top_k. От него: review_context_max_chars.",
@@ -43036,7 +43124,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ llm_budget − audit_map_size (минимум 1000). Parent берутся целиком в порядке\nрелевантности, пока сумма помещается, — остальные отбрасываются (первый — всегда); не\nбольше top_k. От него: review_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI3"
+      "index": "bI4"
     },
     {
       "id": "9Jm5T6L8",
@@ -43068,10 +43156,10 @@ child / embed_batch_size
           "id": "SVr4i5r2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bI4"
+      "index": "bI5"
     },
     {
       "id": "SVr4i5r2",
@@ -43096,7 +43184,7 @@ child / embed_batch_size
       "versionNonce": 370245411,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Подробнее: пять parent по ≈ 2500 симв. с заголовками — это ≈ 13 000 > 9000: в аудит попадают 3 самых релевантных, 4-й и 5-й отбрасываются и не попадают в «Использованные источники». Набор останавливается на первом\nнепоместившемся, даже если следующий короче. Поэтому поднимать top_k ради аудита бессмысленно, пока не поднят этот лимит: для 5 целых parent нужно ≈ 13 000–13 500. Тот же лимит — у норм на вкладке контроля исправлений.",
@@ -43108,7 +43196,7 @@ child / embed_batch_size
       "originalText": "Подробнее: пять parent по ≈ 2500 симв. с заголовками — это ≈ 13 000 > 9000: в аудит попадают 3 самых релевантных, 4-й и 5-й отбрасываются и не попадают в «Использованные источники». Набор останавливается на первом\nнепоместившемся, даже если следующий короче. Поэтому поднимать top_k ради аудита бессмысленно, пока не поднят этот лимит: для 5 целых parent нужно ≈ 13 000–13 500. Тот же лимит — у норм на вкладке контроля исправлений.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI5"
+      "index": "bI6"
     },
     {
       "id": "1GlrIfD6",
@@ -43140,10 +43228,10 @@ child / embed_batch_size
           "id": "GlY0wrjw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bI6"
+      "index": "bI7"
     },
     {
       "id": "GlY0wrjw",
@@ -43168,7 +43256,7 @@ child / embed_batch_size
       "versionNonce": 827778871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] review_top_sections",
@@ -43180,7 +43268,7 @@ child / embed_batch_size
       "originalText": "[П] review_top_sections",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI7"
+      "index": "bI8"
     },
     {
       "id": "4dhWj0fu",
@@ -43212,10 +43300,10 @@ child / embed_batch_size
           "id": "IHLsaklC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bI8"
+      "index": "bI9"
     },
     {
       "id": "IHLsaklC",
@@ -43240,7 +43328,7 @@ child / embed_batch_size
       "versionNonce": 400341366,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько разделов новой редакции получает модель на одно замечание.",
@@ -43252,7 +43340,7 @@ child / embed_batch_size
       "originalText": "Сколько разделов новой редакции получает модель на одно замечание.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI9"
+      "index": "bIA"
     },
     {
       "id": "yRqDiCAw",
@@ -43284,10 +43372,10 @@ child / embed_batch_size
           "id": "JXmJzNQS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIA"
+      "index": "bIB"
     },
     {
       "id": "JXmJzNQS",
@@ -43312,7 +43400,7 @@ child / embed_batch_size
       "versionNonce": 134739126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3",
@@ -43324,7 +43412,7 @@ child / embed_batch_size
       "originalText": "3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIB"
+      "index": "bIC"
     },
     {
       "id": "ynNQ8OUJ",
@@ -43356,10 +43444,10 @@ child / embed_batch_size
           "id": "msMvYdHU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIC"
+      "index": "bID"
     },
     {
       "id": "msMvYdHU",
@@ -43384,7 +43472,7 @@ child / embed_batch_size
       "versionNonce": 1123713241,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -43396,7 +43484,7 @@ child / embed_batch_size
       "originalText": "1 … 8",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bID"
+      "index": "bIE"
     },
     {
       "id": "LC53pKGY",
@@ -43428,10 +43516,10 @@ child / embed_batch_size
           "id": "FhhcChDM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIE"
+      "index": "bIF"
     },
     {
       "id": "FhhcChDM",
@@ -43456,7 +43544,7 @@ child / embed_batch_size
       "versionNonce": 132355727,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ограничены review_context_max_chars.",
@@ -43468,7 +43556,7 @@ child / embed_batch_size
       "originalText": "Ограничены review_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIF"
+      "index": "bIG"
     },
     {
       "id": "IUZArVyR",
@@ -43500,10 +43588,10 @@ child / embed_batch_size
           "id": "Qj2uDhw6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIG"
+      "index": "bIH"
     },
     {
       "id": "Qj2uDhw6",
@@ -43528,7 +43616,7 @@ child / embed_batch_size
       "versionNonce": 2110166949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] review_context_max_chars",
@@ -43540,7 +43628,7 @@ child / embed_batch_size
       "originalText": "[А] review_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIH"
+      "index": "bII"
     },
     {
       "id": "LVbllfJ5",
@@ -43572,10 +43660,10 @@ child / embed_batch_size
           "id": "Pqjokhc9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bII"
+      "index": "bIJ"
     },
     {
       "id": "Pqjokhc9",
@@ -43600,7 +43688,7 @@ child / embed_batch_size
       "versionNonce": 2044644468,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Объём этих разделов на одно замечание.",
@@ -43612,7 +43700,7 @@ child / embed_batch_size
       "originalText": "Объём этих разделов на одно замечание.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIJ"
+      "index": "bIK"
     },
     {
       "id": "PsHhHgHI",
@@ -43644,10 +43732,10 @@ child / embed_batch_size
           "id": "gXjxFvBf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIK"
+      "index": "bIL"
     },
     {
       "id": "gXjxFvBf",
@@ -43672,7 +43760,7 @@ child / embed_batch_size
       "versionNonce": 2097371417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "12000 симв.",
@@ -43684,7 +43772,7 @@ child / embed_batch_size
       "originalText": "12000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIL"
+      "index": "bIM"
     },
     {
       "id": "IN5l2hU3",
@@ -43716,10 +43804,10 @@ child / embed_batch_size
           "id": "svnHjSE3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIM"
+      "index": "bIN"
     },
     {
       "id": "svnHjSE3",
@@ -43744,7 +43832,7 @@ child / embed_batch_size
       "versionNonce": 1277731879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1000 … 50000",
@@ -43756,7 +43844,7 @@ child / embed_batch_size
       "originalText": "1000 … 50000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIN"
+      "index": "bIO"
     },
     {
       "id": "R2P6cKlI",
@@ -43788,10 +43876,10 @@ child / embed_batch_size
           "id": "mXIQ6Rj1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIO"
+      "index": "bIP"
     },
     {
       "id": "mXIQ6Rj1",
@@ -43816,7 +43904,7 @@ child / embed_batch_size
       "versionNonce": 654381728,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ llm_budget − audit_context_max_chars − 1000 (минимум 1000); первый раздел\nпередаётся всегда.",
@@ -43828,7 +43916,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ llm_budget − audit_context_max_chars − 1000 (минимум 1000); первый раздел\nпередаётся всегда.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIP"
+      "index": "bIQ"
     },
     {
       "id": "vTAMJEMB",
@@ -43860,10 +43948,10 @@ child / embed_batch_size
           "id": "xLcUBYDV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIQ"
+      "index": "bIR"
     },
     {
       "id": "xLcUBYDV",
@@ -43888,7 +43976,7 @@ child / embed_batch_size
       "versionNonce": 342830070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[А] section_embed_chars",
@@ -43900,7 +43988,7 @@ child / embed_batch_size
       "originalText": "[А] section_embed_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIR"
+      "index": "bIS"
     },
     {
       "id": "Rh6f0R3S",
@@ -43932,10 +44020,10 @@ child / embed_batch_size
           "id": "R6F1O5eL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIS"
+      "index": "bIT"
     },
     {
       "id": "R6F1O5eL",
@@ -43960,7 +44048,7 @@ child / embed_batch_size
       "versionNonce": 1424728446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сколько символов раздела уходит в эмбеддинг при подборе разделов.",
@@ -43972,7 +44060,7 @@ child / embed_batch_size
       "originalText": "Сколько символов раздела уходит в эмбеддинг при подборе разделов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIT"
+      "index": "bIU"
     },
     {
       "id": "yzUmTUGl",
@@ -44004,10 +44092,10 @@ child / embed_batch_size
           "id": "MyoPiyip"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIU"
+      "index": "bIV"
     },
     {
       "id": "MyoPiyip",
@@ -44032,7 +44120,7 @@ child / embed_batch_size
       "versionNonce": 1471377781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4000 симв.",
@@ -44044,7 +44132,7 @@ child / embed_batch_size
       "originalText": "4000 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIV"
+      "index": "bIW"
     },
     {
       "id": "bKKOPTBY",
@@ -44076,10 +44164,10 @@ child / embed_batch_size
           "id": "9JrjHEnS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIW"
+      "index": "bIX"
     },
     {
       "id": "9JrjHEnS",
@@ -44104,7 +44192,7 @@ child / embed_batch_size
       "versionNonce": 1561846094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "300 … 8000",
@@ -44116,7 +44204,7 @@ child / embed_batch_size
       "originalText": "300 … 8000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIX"
+      "index": "bIY"
     },
     {
       "id": "EOeG9IlM",
@@ -44148,10 +44236,10 @@ child / embed_batch_size
           "id": "CnsqA2aw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIY"
+      "index": "bIZ"
     },
     {
       "id": "CnsqA2aw",
@@ -44176,7 +44264,7 @@ child / embed_batch_size
       "versionNonce": 903472236,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход эмбеддингов − префикс документа (минимум 300).",
@@ -44188,7 +44276,7 @@ child / embed_batch_size
       "originalText": "Авто ≤ вход эмбеддингов − префикс документа (минимум 300).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIZ"
+      "index": "bIa"
     },
     {
       "id": "JXgddpE8",
@@ -44220,10 +44308,10 @@ child / embed_batch_size
           "id": "eGjl2REF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIa"
+      "index": "bIb"
     },
     {
       "id": "eGjl2REF",
@@ -44248,7 +44336,7 @@ child / embed_batch_size
       "versionNonce": 799508704,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Прочие константы кода (меняются только в коде mint/): сокращение — от 2 до 12 символов, не меньше 2 заглавных; переписанный уточняющий вопрос — до 300 токенов. Остальные константы указаны там, где действуют: запас и резервы окна — в строках\nпараметров выше и в блоке «Токены и символы», алгоритм поиска (BM25, расширение запроса, дедупликация) — в панели 7.",
@@ -44260,7 +44348,7 @@ child / embed_batch_size
       "originalText": "Прочие константы кода (меняются только в коде mint/): сокращение — от 2 до 12 символов, не меньше 2 заглавных; переписанный уточняющий вопрос — до 300 токенов. Остальные константы указаны там, где действуют: запас и резервы окна — в строках\nпараметров выше и в блоке «Токены и символы», алгоритм поиска (BM25, расширение запроса, дедупликация) — в панели 7.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIb"
+      "index": "bIc"
     },
     {
       "id": "UoPGMLI0",
@@ -44285,7 +44373,7 @@ child / embed_batch_size
       "versionNonce": 616547026,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4. Особенности компании → на что влияют и как настраивать",
@@ -44297,7 +44385,7 @@ child / embed_batch_size
       "originalText": "4. Особенности компании → на что влияют и как настраивать",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIc"
+      "index": "bId"
     },
     {
       "id": "cmeT2RHo",
@@ -44322,7 +44410,7 @@ child / embed_batch_size
       "versionNonce": 1962821609,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Что из исходных условий меняет настройки MINT. Пункты с [Т] сравниваются проверкой качества до и после изменения.",
@@ -44334,7 +44422,7 @@ child / embed_batch_size
       "originalText": "Что из исходных условий меняет настройки MINT. Пункты с [Т] сравниваются проверкой качества до и после изменения.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bId"
+      "index": "bIe"
     },
     {
       "id": "GDNCYEyJ",
@@ -44366,10 +44454,10 @@ child / embed_batch_size
           "id": "dVf9kB9k"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIe"
+      "index": "bIf"
     },
     {
       "id": "dVf9kB9k",
@@ -44394,7 +44482,7 @@ child / embed_batch_size
       "versionNonce": 2088773317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Особенность компании",
@@ -44406,7 +44494,7 @@ child / embed_batch_size
       "originalText": "Особенность компании",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIf"
+      "index": "bIg"
     },
     {
       "id": "B3F3wfD4",
@@ -44438,10 +44526,10 @@ child / embed_batch_size
           "id": "XzQLc990"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIg"
+      "index": "bIh"
     },
     {
       "id": "XzQLc990",
@@ -44466,7 +44554,7 @@ child / embed_batch_size
       "versionNonce": 371430628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "На что влияет в MINT",
@@ -44478,7 +44566,7 @@ child / embed_batch_size
       "originalText": "На что влияет в MINT",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIh"
+      "index": "bIi"
     },
     {
       "id": "qsKJBXtE",
@@ -44510,10 +44598,10 @@ child / embed_batch_size
           "id": "szri6thD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIi"
+      "index": "bIj"
     },
     {
       "id": "szri6thD",
@@ -44538,7 +44626,7 @@ child / embed_batch_size
       "versionNonce": 1551022416,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Как настраивать",
@@ -44550,7 +44638,7 @@ child / embed_batch_size
       "originalText": "Как настраивать",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIj"
+      "index": "bIk"
     },
     {
       "id": "KMcgVNp1",
@@ -44582,10 +44670,10 @@ child / embed_batch_size
           "id": "m4QFihY8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIk"
+      "index": "bIl"
     },
     {
       "id": "m4QFihY8",
@@ -44610,7 +44698,7 @@ child / embed_batch_size
       "versionNonce": 1559944672,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Размер базы: сколько документов и\nфрагментов",
@@ -44622,7 +44710,7 @@ child / embed_batch_size
       "originalText": "Размер базы: сколько документов и\nфрагментов",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIl"
+      "index": "bIm"
     },
     {
       "id": "01JIgohP",
@@ -44654,10 +44742,10 @@ child / embed_batch_size
           "id": "QetrEesZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIm"
+      "index": "bIn"
     },
     {
       "id": "QetrEesZ",
@@ -44682,7 +44770,7 @@ child / embed_batch_size
       "versionNonce": 1353698785,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "НЕ влияет на размеры фрагментов, пороги реранкера, промпты. ВЛИЯЕТ на: авто-top_k (панель\n3); глубину кандидатов initial_k / bm25_top_k / rerank_top_k (похожих документов больше —\nправильный дальше в списке); пороги «уверенность низкая»; память и время (панель 9).",
@@ -44694,7 +44782,7 @@ child / embed_batch_size
       "originalText": "НЕ влияет на размеры фрагментов, пороги реранкера, промпты. ВЛИЯЕТ на: авто-top_k (панель\n3); глубину кандидатов initial_k / bm25_top_k / rerank_top_k (похожих документов больше —\nправильный дальше в списке); пороги «уверенность низкая»; память и время (панель 9).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIn"
+      "index": "bIo"
     },
     {
       "id": "YyQ50uMz",
@@ -44726,10 +44814,10 @@ child / embed_batch_size
           "id": "ZvpPM0sN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIo"
+      "index": "bIp"
     },
     {
       "id": "ZvpPM0sN",
@@ -44754,7 +44842,7 @@ child / embed_batch_size
       "versionNonce": 264935164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] если правильный фрагмент всё чаще «> 10» — initial_k 80–100, bm25_top_k 30, rerank_top_k 24;\nперекалибровать low_conf_rerank / low_conf_lexical. [Р] top_k задать явно, если авто-выбор не\nустраивает.",
@@ -44766,7 +44854,7 @@ child / embed_batch_size
       "originalText": "[Т] если правильный фрагмент всё чаще «> 10» — initial_k 80–100, bm25_top_k 30, rerank_top_k 24;\nперекалибровать low_conf_rerank / low_conf_lexical. [Р] top_k задать явно, если авто-выбор не\nустраивает.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIp"
+      "index": "bIq"
     },
     {
       "id": "qVlRH9NV",
@@ -44798,10 +44886,10 @@ child / embed_batch_size
           "id": "rK3SCZeN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIq"
+      "index": "bIr"
     },
     {
       "id": "rK3SCZeN",
@@ -44826,7 +44914,7 @@ child / embed_batch_size
       "versionNonce": 615367536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Структура документов: стили заголовков Word",
@@ -44838,7 +44926,7 @@ child / embed_batch_size
       "originalText": "Структура документов: стили заголовков Word",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIr"
+      "index": "bIs"
     },
     {
       "id": "d1pgcOAA",
@@ -44870,10 +44958,10 @@ child / embed_batch_size
           "id": "BEPHz0sR"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIs"
+      "index": "bIt"
     },
     {
       "id": "BEPHz0sR",
@@ -44898,7 +44986,7 @@ child / embed_batch_size
       "versionNonce": 1078770124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Без стилей «Заголовок 1–3» Docling не находит разделы (collect_structure): в ссылках только\nимя файла, раздел в контексте и в оценке не виден.",
@@ -44910,7 +44998,7 @@ child / embed_batch_size
       "originalText": "Без стилей «Заголовок 1–3» Docling не находит разделы (collect_structure): в ссылках только\nимя файла, раздел в контексте и в оценке не виден.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIt"
+      "index": "bIu"
     },
     {
       "id": "z04mkqIH",
@@ -44942,10 +45030,10 @@ child / embed_batch_size
           "id": "4hQ7EOs1"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIu"
+      "index": "bIv"
     },
     {
       "id": "4hQ7EOs1",
@@ -44970,7 +45058,7 @@ child / embed_batch_size
       "versionNonce": 534052678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Проставить стили в исходниках и переиндексировать ♻. Нумерованные заголовки обычным стилем MINT\nпока не распознаёт.",
@@ -44982,7 +45070,7 @@ child / embed_batch_size
       "originalText": "Проставить стили в исходниках и переиндексировать ♻. Нумерованные заголовки обычным стилем MINT\nпока не распознаёт.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIv"
+      "index": "bIw"
     },
     {
       "id": "XRqMz8fM",
@@ -45014,10 +45102,10 @@ child / embed_batch_size
           "id": "uYakcDKS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIw"
+      "index": "bIx"
     },
     {
       "id": "uYakcDKS",
@@ -45042,7 +45130,7 @@ child / embed_batch_size
       "versionNonce": 627211998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Длина разделов: короткие пункты регламентов\nили длинные описания",
@@ -45054,7 +45142,7 @@ child / embed_batch_size
       "originalText": "Длина разделов: короткие пункты регламентов\nили длинные описания",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIx"
+      "index": "bIy"
     },
     {
       "id": "qKnwxfwq",
@@ -45086,10 +45174,10 @@ child / embed_batch_size
           "id": "4epp27sJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bIy"
+      "index": "bIz"
     },
     {
       "id": "4epp27sJ",
@@ -45114,7 +45202,7 @@ child / embed_batch_size
       "versionNonce": 14662260,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "parent охватывает несколько коротких пунктов — точные вопросы «тонут» в соседнем тексте;\nдлинным связным описаниям, наоборот, не хватает контекста.",
@@ -45126,7 +45214,7 @@ child / embed_batch_size
       "originalText": "parent охватывает несколько коротких пунктов — точные вопросы «тонут» в соседнем тексте;\nдлинным связным описаниям, наоборот, не хватает контекста.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIz"
+      "index": "bJ0"
     },
     {
       "id": "2hHjchtt",
@@ -45158,10 +45246,10 @@ child / embed_batch_size
           "id": "cjtPzMIw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJ0"
+      "index": "bJ1"
     },
     {
       "id": "cjtPzMIw",
@@ -45186,7 +45274,7 @@ child / embed_batch_size
       "versionNonce": 1968254771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] на копии базы ♻: короткие пункты и точные вопросы — parent_size 1500–2000; длинные описания —\n3000–3500 (если окно LLM позволяет: MINT не даст выйти за потолок). Сравнить --compare.",
@@ -45198,7 +45286,7 @@ child / embed_batch_size
       "originalText": "[Т] на копии базы ♻: короткие пункты и точные вопросы — parent_size 1500–2000; длинные описания —\n3000–3500 (если окно LLM позволяет: MINT не даст выйти за потолок). Сравнить --compare.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ1"
+      "index": "bJ2"
     },
     {
       "id": "M8nTY8IN",
@@ -45230,10 +45318,10 @@ child / embed_batch_size
           "id": "ZPqaoaaq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJ2"
+      "index": "bJ3"
     },
     {
       "id": "ZPqaoaaq",
@@ -45258,7 +45346,7 @@ child / embed_batch_size
       "versionNonce": 654915491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Много таблиц: матрицы требований, SLA,\nперечни",
@@ -45270,7 +45358,7 @@ child / embed_batch_size
       "originalText": "Много таблиц: матрицы требований, SLA,\nперечни",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ3"
+      "index": "bJ4"
     },
     {
       "id": "wiWtblZm",
@@ -45302,10 +45390,10 @@ child / embed_batch_size
           "id": "mtXAzR0l"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJ4"
+      "index": "bJ5"
     },
     {
       "id": "mtXAzR0l",
@@ -45330,7 +45418,7 @@ child / embed_batch_size
       "versionNonce": 1089077115,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Большая таблица делится на части с повтором шапки; часть из них может не попасть в контекст\n(max_table_parts).",
@@ -45342,7 +45430,7 @@ child / embed_batch_size
       "originalText": "Большая таблица делится на части с повтором шапки; часть из них может не попасть в контекст\n(max_table_parts).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ5"
+      "index": "bJ6"
     },
     {
       "id": "wm8f8tST",
@@ -45374,10 +45462,10 @@ child / embed_batch_size
           "id": "CiVk46lr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJ6"
+      "index": "bJ7"
     },
     {
       "id": "CiVk46lr",
@@ -45402,7 +45490,7 @@ child / embed_batch_size
       "versionNonce": 1602556528,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] max_table_parts 3–4, если вопросы часто про таблицы; [Т] добавить такие вопросы в набор eval и\nсмотреть hit@K.",
@@ -45414,7 +45502,7 @@ child / embed_batch_size
       "originalText": "[П] max_table_parts 3–4, если вопросы часто про таблицы; [Т] добавить такие вопросы в набор eval и\nсмотреть hit@K.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ7"
+      "index": "bJ8"
     },
     {
       "id": "wYhKkYjr",
@@ -45446,10 +45534,10 @@ child / embed_batch_size
           "id": "JJXTLsbm"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJ8"
+      "index": "bJ9"
     },
     {
       "id": "JJXTLsbm",
@@ -45474,7 +45562,7 @@ child / embed_batch_size
       "versionNonce": 783425099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Много сокращений и внутренних названий\nсистем",
@@ -45486,7 +45574,7 @@ child / embed_batch_size
       "originalText": "Много сокращений и внутренних названий\nсистем",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ9"
+      "index": "bJA"
     },
     {
       "id": "zgqgqbOi",
@@ -45518,10 +45606,10 @@ child / embed_batch_size
           "id": "0bcpbK9F"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJA"
+      "index": "bJB"
     },
     {
       "id": "0bcpbK9F",
@@ -45546,7 +45634,7 @@ child / embed_batch_size
       "versionNonce": 95246893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Эмбеддинги не знают внутренних названий — их находят BM25 и глоссарий.",
@@ -45558,7 +45646,7 @@ child / embed_batch_size
       "originalText": "Эмбеддинги не знают внутренних названий — их находят BM25 и глоссарий.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJB"
+      "index": "bJC"
     },
     {
       "id": "Gv4zsSVa",
@@ -45590,10 +45678,10 @@ child / embed_batch_size
           "id": "nFpFRJZL"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJC"
+      "index": "bJD"
     },
     {
       "id": "nFpFRJZL",
@@ -45618,7 +45706,7 @@ child / embed_batch_size
       "versionNonce": 972256512,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] glossary.json для сокращений, которых нет в документах (шаг 4, панель 5); [Т] если «только\nBM25» заметно лучше «только dense» — weight_bm25 1.3–1.5.",
@@ -45630,7 +45718,7 @@ child / embed_batch_size
       "originalText": "[Р] glossary.json для сокращений, которых нет в документах (шаг 4, панель 5); [Т] если «только\nBM25» заметно лучше «только dense» — weight_bm25 1.3–1.5.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJD"
+      "index": "bJE"
     },
     {
       "id": "D3CXX7pP",
@@ -45662,10 +45750,10 @@ child / embed_batch_size
           "id": "aPcPZ3ZV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJE"
+      "index": "bJF"
     },
     {
       "id": "aPcPZ3ZV",
@@ -45690,7 +45778,7 @@ child / embed_batch_size
       "versionNonce": 1625194138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Несколько редакций одного документа в базе",
@@ -45702,7 +45790,7 @@ child / embed_batch_size
       "originalText": "Несколько редакций одного документа в базе",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJF"
+      "index": "bJG"
     },
     {
       "id": "ncA2jM3D",
@@ -45734,10 +45822,10 @@ child / embed_batch_size
           "id": "rke4V9Z2"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJG"
+      "index": "bJH"
     },
     {
       "id": "rke4V9Z2",
@@ -45762,7 +45850,7 @@ child / embed_batch_size
       "versionNonce": 1520934252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Дубли занимают места в top_k; дедупликация убирает только совпадающие фрагменты; модель\nможет сослаться на устаревшую редакцию.",
@@ -45774,7 +45862,7 @@ child / embed_batch_size
       "originalText": "Дубли занимают места в top_k; дедупликация убирает только совпадающие фрагменты; модель\nможет сослаться на устаревшую редакцию.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJH"
+      "index": "bJI"
     },
     {
       "id": "PO8eWkeZ",
@@ -45806,10 +45894,10 @@ child / embed_batch_size
           "id": "2Huprek4"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJI"
+      "index": "bJJ"
     },
     {
       "id": "2Huprek4",
@@ -45834,7 +45922,7 @@ child / embed_batch_size
       "versionNonce": 1540048065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] держать в базе только действующие редакции (старые удалять); в именах файлов — номер редакции;\nиначе [Т] top_k выше.",
@@ -45846,7 +45934,7 @@ child / embed_batch_size
       "originalText": "[Р] держать в базе только действующие редакции (старые удалять); в именах файлов — номер редакции;\nиначе [Т] top_k выше.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJJ"
+      "index": "bJK"
     },
     {
       "id": "e8rbFd5r",
@@ -45878,10 +45966,10 @@ child / embed_batch_size
           "id": "mr2hhwza"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJK"
+      "index": "bJL"
     },
     {
       "id": "mr2hhwza",
@@ -45906,7 +45994,7 @@ child / embed_batch_size
       "versionNonce": 510192253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Как спрашивают пользователи: термины,\nдлинные ситуации, диалог",
@@ -45918,7 +46006,7 @@ child / embed_batch_size
       "originalText": "Как спрашивают пользователи: термины,\nдлинные ситуации, диалог",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJL"
+      "index": "bJM"
     },
     {
       "id": "JRu3QXS8",
@@ -45950,10 +46038,10 @@ child / embed_batch_size
           "id": "6yCpVX8X"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJM"
+      "index": "bJN"
     },
     {
       "id": "6yCpVX8X",
@@ -45978,7 +46066,7 @@ child / embed_batch_size
       "versionNonce": 1606133978,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Короткие термины и коды лучше ищет BM25; длинные «своими словами» — вектор; уточнения «а\nдля второго контура?» требуют истории.",
@@ -45990,7 +46078,7 @@ child / embed_batch_size
       "originalText": "Короткие термины и коды лучше ищет BM25; длинные «своими словами» — вектор; уточнения «а\nдля второго контура?» требуют истории.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJN"
+      "index": "bJO"
     },
     {
       "id": "JCR6aFVl",
@@ -46022,10 +46110,10 @@ child / embed_batch_size
           "id": "xaqkwxoU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJO"
+      "index": "bJP"
     },
     {
       "id": "xaqkwxoU",
@@ -46050,7 +46138,7 @@ child / embed_batch_size
       "versionNonce": 530676326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Т] веса weight_dense / weight_bm25, use_multi_query для расплывчатых вопросов; [П]\nchat_history_turns 0 / 2 / 3. Набор вопросов для eval — из реальных обращений.",
@@ -46062,7 +46150,7 @@ child / embed_batch_size
       "originalText": "[Т] веса weight_dense / weight_bm25, use_multi_query для расплывчатых вопросов; [П]\nchat_history_turns 0 / 2 / 3. Набор вопросов для eval — из реальных обращений.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJP"
+      "index": "bJQ"
     },
     {
       "id": "eFPsMaRe",
@@ -46094,10 +46182,10 @@ child / embed_batch_size
           "id": "NvU91P3P"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJQ"
+      "index": "bJR"
     },
     {
       "id": "NvU91P3P",
@@ -46122,7 +46210,7 @@ child / embed_batch_size
       "versionNonce": 487607499,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Язык документов: русский, английский,\nсмешанные",
@@ -46134,7 +46222,7 @@ child / embed_batch_size
       "originalText": "Язык документов: русский, английский,\nсмешанные",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJR"
+      "index": "bJS"
     },
     {
       "id": "ThHfAtN8",
@@ -46166,10 +46254,10 @@ child / embed_batch_size
           "id": "wHJUEh9T"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJS"
+      "index": "bJT"
     },
     {
       "id": "wHJUEh9T",
@@ -46194,7 +46282,7 @@ child / embed_batch_size
       "versionNonce": 280621587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "BM25 приводит слова к основам русским (Snowball) или английским (Porter2) стеммером — по\nкаждому слову; коды ищутся точно; смысловой поиск зависит от модели эмбеддингов.",
@@ -46206,7 +46294,7 @@ child / embed_batch_size
       "originalText": "BM25 приводит слова к основам русским (Snowball) или английским (Porter2) стеммером — по\nкаждому слову; коды ищутся точно; смысловой поиск зависит от модели эмбеддингов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJT"
+      "index": "bJU"
     },
     {
       "id": "WUJJpNWx",
@@ -46238,10 +46326,10 @@ child / embed_batch_size
           "id": "YGNPJZLK"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJU"
+      "index": "bJV"
     },
     {
       "id": "YGNPJZLK",
@@ -46266,7 +46354,7 @@ child / embed_batch_size
       "versionNonce": 1446958055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] многоязычная модель эмбеддингов (Qwen3-Embedding, bge-m3, multilingual-e5) ♻ — смена модели\nтребует переиндексации; MINT_LANG — язык интерфейса, промптов и отчётов; «Определить у сервера» —\nпосле загрузки документов на другом языке.",
@@ -46278,7 +46366,7 @@ child / embed_batch_size
       "originalText": "[Р] многоязычная модель эмбеддингов (Qwen3-Embedding, bge-m3, multilingual-e5) ♻ — смена модели\nтребует переиндексации; MINT_LANG — язык интерфейса, промптов и отчётов; «Определить у сервера» —\nпосле загрузки документов на другом языке.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJV"
+      "index": "bJW"
     },
     {
       "id": "BcIxvRQg",
@@ -46310,10 +46398,10 @@ child / embed_batch_size
           "id": "A3VbvHOr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJW"
+      "index": "bJX"
     },
     {
       "id": "A3VbvHOr",
@@ -46338,7 +46426,7 @@ child / embed_batch_size
       "versionNonce": 790586243,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Требования к ответам: строгость, длина,\nссылки",
@@ -46350,7 +46438,7 @@ child / embed_batch_size
       "originalText": "Требования к ответам: строгость, длина,\nссылки",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJX"
+      "index": "bJY"
     },
     {
       "id": "e7cSSdAi",
@@ -46382,10 +46470,10 @@ child / embed_batch_size
           "id": "olOEEW57"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJY"
+      "index": "bJZ"
     },
     {
       "id": "olOEEW57",
@@ -46410,7 +46498,7 @@ child / embed_batch_size
       "versionNonce": 678611114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Строгость — temperature; длина — max_tokens (место под ответ отнимается у контекста, панель\n2).",
@@ -46422,7 +46510,7 @@ child / embed_batch_size
       "originalText": "Строгость — temperature; длина — max_tokens (место под ответ отнимается у контекста, панель\n2).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJZ"
+      "index": "bJa"
     },
     {
       "id": "7Al2MxHd",
@@ -46454,10 +46542,10 @@ child / embed_batch_size
           "id": "nif5GKNP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJa"
+      "index": "bJb"
     },
     {
       "id": "nif5GKNP",
@@ -46482,7 +46570,7 @@ child / embed_batch_size
       "versionNonce": 1773312818,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] temperature 0–0.2; max_tokens — по длине типичного ответа; ссылки [файл, раздел] — в\nCHAT_SYSTEM_PROMPT / CHAT_SYSTEM_PROMPT_EN; ссылки мимо контекста check_citations() помечает ⚠.",
@@ -46494,7 +46582,7 @@ child / embed_batch_size
       "originalText": "[П] temperature 0–0.2; max_tokens — по длине типичного ответа; ссылки [файл, раздел] — в\nCHAT_SYSTEM_PROMPT / CHAT_SYSTEM_PROMPT_EN; ссылки мимо контекста check_citations() помечает ⚠.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJb"
+      "index": "bJc"
     },
     {
       "id": "uUZ0xPG5",
@@ -46526,10 +46614,10 @@ child / embed_batch_size
           "id": "f6ZSVG0d"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJc"
+      "index": "bJd"
     },
     {
       "id": "f6ZSVG0d",
@@ -46554,7 +46642,7 @@ child / embed_batch_size
       "versionNonce": 2053407093,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Модели компании: окно LLM, входы\nэмбеддингов и реранкера, рассуждения",
@@ -46566,7 +46654,7 @@ child / embed_batch_size
       "originalText": "Модели компании: окно LLM, входы\nэмбеддингов и реранкера, рассуждения",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJd"
+      "index": "bJe"
     },
     {
       "id": "JGLrkyYj",
@@ -46598,10 +46686,10 @@ child / embed_batch_size
           "id": "nKirlDDF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJe"
+      "index": "bJf"
     },
     {
       "id": "nKirlDDF",
@@ -46626,7 +46714,7 @@ child / embed_batch_size
       "versionNonce": 2046886815,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Определяют все [А]-параметры через потолки (панели 1–2); модели с рассуждениями тратят\nmax_tokens и на <think> (strip_reasoning убирает рассуждения из ответа).",
@@ -46638,7 +46726,7 @@ child / embed_batch_size
       "originalText": "Определяют все [А]-параметры через потолки (панели 1–2); модели с рассуждениями тратят\nmax_tokens и на <think> (strip_reasoning убирает рассуждения из ответа).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJf"
+      "index": "bJg"
     },
     {
       "id": "KIltxipp",
@@ -46670,10 +46758,10 @@ child / embed_batch_size
           "id": "6quyBIpz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJg"
+      "index": "bJh"
     },
     {
       "id": "6quyBIpz",
@@ -46698,7 +46786,7 @@ child / embed_batch_size
       "versionNonce": 493637255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[П] модели с рассуждениями: max_tokens 3000–4000 (иначе ответ обрывается — «Ответ модели\nобрезан»), llm_timeout 150–180; новая модель эмбеддингов ♻ — переиндексация (kb_document_status\nпокажет).",
@@ -46710,7 +46798,7 @@ child / embed_batch_size
       "originalText": "[П] модели с рассуждениями: max_tokens 3000–4000 (иначе ответ обрывается — «Ответ модели\nобрезан»), llm_timeout 150–180; новая модель эмбеддингов ♻ — переиндексация (kb_document_status\nпокажет).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJh"
+      "index": "bJi"
     },
     {
       "id": "VLrGZN0Z",
@@ -46742,10 +46830,10 @@ child / embed_batch_size
           "id": "Whg2uJVz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJi"
+      "index": "bJj"
     },
     {
       "id": "Whg2uJVz",
@@ -46770,7 +46858,7 @@ child / embed_batch_size
       "versionNonce": 735517270,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Корпоративный шлюз: лимиты запросов,\nтаймауты, TLS",
@@ -46782,7 +46870,7 @@ child / embed_batch_size
       "originalText": "Корпоративный шлюз: лимиты запросов,\nтаймауты, TLS",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJj"
+      "index": "bJk"
     },
     {
       "id": "LqarqdN9",
@@ -46814,10 +46902,10 @@ child / embed_batch_size
           "id": "MT9HwudP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJk"
+      "index": "bJl"
     },
     {
       "id": "MT9HwudP",
@@ -46842,7 +46930,7 @@ child / embed_batch_size
       "versionNonce": 110204035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "HTTP 400 от реранкера при больших пачках, 429 / 504 при нагрузке, собственный сертификат.",
@@ -46854,7 +46942,7 @@ child / embed_batch_size
       "originalText": "HTTP 400 от реранкера при больших пачках, 429 / 504 при нагрузке, собственный сертификат.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJl"
+      "index": "bJm"
     },
     {
       "id": "WXzo3vNK",
@@ -46886,10 +46974,10 @@ child / embed_batch_size
           "id": "wHB1bvqa"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJm"
+      "index": "bJn"
     },
     {
       "id": "wHB1bvqa",
@@ -46914,7 +47002,7 @@ child / embed_batch_size
       "versionNonce": 1084664135,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] rerank_max_docs, rerank_char_budget; llm_timeout, llm_retries; CA_BUNDLE_PATH.",
@@ -46926,7 +47014,7 @@ child / embed_batch_size
       "originalText": "[Р] rerank_max_docs, rerank_char_budget; llm_timeout, llm_retries; CA_BUNDLE_PATH.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJn"
+      "index": "bJo"
     },
     {
       "id": "ytq3ChfZ",
@@ -46958,10 +47046,10 @@ child / embed_batch_size
           "id": "8U1HALtx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJo"
+      "index": "bJp"
     },
     {
       "id": "8U1HALtx",
@@ -46986,7 +47074,7 @@ child / embed_batch_size
       "versionNonce": 309098810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Справка о системах: что умеют, планы,\nограничения",
@@ -46998,7 +47086,7 @@ child / embed_batch_size
       "originalText": "Справка о системах: что умеют, планы,\nограничения",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJp"
+      "index": "bJq"
     },
     {
       "id": "aAVNhEZj",
@@ -47030,10 +47118,10 @@ child / embed_batch_size
           "id": "6oJOpN2T"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJq"
+      "index": "bJr"
     },
     {
       "id": "6oJOpN2T",
@@ -47058,7 +47146,7 @@ child / embed_batch_size
       "versionNonce": 395073400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Без карточек систем аудит не знает их возможностей и не может проверить, что документ\nтребует от системы (answer_system) и не противоречит ли её ограничениям.",
@@ -47070,7 +47158,7 @@ child / embed_batch_size
       "originalText": "Без карточек систем аудит не знает их возможностей и не может проверить, что документ\nтребует от системы (answer_system) и не противоречит ли её ограничениям.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJr"
+      "index": "bJs"
     },
     {
       "id": "q6YoC3sH",
@@ -47102,10 +47190,10 @@ child / embed_batch_size
           "id": "x8oE9iDW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJs"
+      "index": "bJt"
     },
     {
       "id": "x8oE9iDW",
@@ -47130,7 +47218,7 @@ child / embed_batch_size
       "versionNonce": 773450909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] черновик карточки по базе — кнопка «Собрать черновик карточки системы по базе»\n(draft_system_card): эксперт проверяет, дописывает пробелы и загружает в базу с отметкой «Карточки\nсистем»; [П] audit_pinned_max_chars, если карточек много.",
@@ -47142,7 +47230,7 @@ child / embed_batch_size
       "originalText": "[Р] черновик карточки по базе — кнопка «Собрать черновик карточки системы по базе»\n(draft_system_card): эксперт проверяет, дописывает пробелы и загружает в базу с отметкой «Карточки\nсистем»; [П] audit_pinned_max_chars, если карточек много.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJt"
+      "index": "bJu"
     },
     {
       "id": "iG40EFwv",
@@ -47174,10 +47262,10 @@ child / embed_batch_size
           "id": "xK80JN1q"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJu"
+      "index": "bJv"
     },
     {
       "id": "xK80JN1q",
@@ -47202,7 +47290,7 @@ child / embed_batch_size
       "versionNonce": 1392233615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Регламент проверки документов: критерии,\nчек-листы, объём документа",
@@ -47214,7 +47302,7 @@ child / embed_batch_size
       "originalText": "Регламент проверки документов: критерии,\nчек-листы, объём документа",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJv"
+      "index": "bJw"
     },
     {
       "id": "oI1ei2sJ",
@@ -47246,10 +47334,10 @@ child / embed_batch_size
           "id": "czYavJG7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJw"
+      "index": "bJx"
     },
     {
       "id": "czYavJG7",
@@ -47274,7 +47362,7 @@ child / embed_batch_size
       "versionNonce": 1695888370,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Критерии и чек-листы задают, что ищет аудит; размер раздела — детальность и число вызовов\nLLM.",
@@ -47286,7 +47374,7 @@ child / embed_batch_size
       "originalText": "Критерии и чек-листы задают, что ищет аудит; размер раздела — детальность и число вызовов\nLLM.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJx"
+      "index": "bJy"
     },
     {
       "id": "PC4b6Dzz",
@@ -47318,10 +47406,10 @@ child / embed_batch_size
           "id": "7aF5lt8T"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bJy"
+      "index": "bJz"
     },
     {
       "id": "7aF5lt8T",
@@ -47346,7 +47434,7 @@ child / embed_batch_size
       "versionNonce": 46699943,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] общие критерии — поле на вкладке «Аудит документа» (по умолчанию DEFAULT_AUDIT_FOCUS),\nчек-листы по типам документов — checklists.yaml (файл вне папки программы — путь в\nMINT_CHECKLISTS); пункты, важные для конкретного документа, — в поле «Особое внимание»; [П]\naudit_map_size и use_self_critique — на живой проверке (шаг 9, панель 5).",
@@ -47358,7 +47446,7 @@ child / embed_batch_size
       "originalText": "[Р] общие критерии — поле на вкладке «Аудит документа» (по умолчанию DEFAULT_AUDIT_FOCUS),\nчек-листы по типам документов — checklists.yaml (файл вне папки программы — путь в\nMINT_CHECKLISTS); пункты, важные для конкретного документа, — в поле «Особое внимание»; [П]\naudit_map_size и use_self_critique — на живой проверке (шаг 9, панель 5).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJz"
+      "index": "bK0"
     },
     {
       "id": "hiSN4lDP",
@@ -47390,10 +47478,10 @@ child / embed_batch_size
           "id": "E2wkCdTi"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bK0"
+      "index": "bK1"
     },
     {
       "id": "E2wkCdTi",
@@ -47418,7 +47506,7 @@ child / embed_batch_size
       "versionNonce": 617919983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Нагрузка: число одновременных пользователей",
@@ -47430,7 +47518,7 @@ child / embed_batch_size
       "originalText": "Нагрузка: число одновременных пользователей",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK1"
+      "index": "bK2"
     },
     {
       "id": "4BBEO8Jj",
@@ -47462,10 +47550,10 @@ child / embed_batch_size
           "id": "wPF47zXy"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bK2"
+      "index": "bK3"
     },
     {
       "id": "wPF47zXy",
@@ -47490,7 +47578,7 @@ child / embed_batch_size
       "versionNonce": 1019183681,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Все сеансы делят шлюз LLM; разбор документов и запись в базу идут по очереди (панель 6).",
@@ -47502,7 +47590,7 @@ child / embed_batch_size
       "originalText": "Все сеансы делят шлюз LLM; разбор документов и запись в базу идут по очереди (панель 6).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK3"
+      "index": "bK4"
     },
     {
       "id": "LQHKuOzF",
@@ -47534,10 +47622,10 @@ child / embed_batch_size
           "id": "sUCfOE72"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bK4"
+      "index": "bK5"
     },
     {
       "id": "sUCfOE72",
@@ -47562,7 +47650,7 @@ child / embed_batch_size
       "versionNonce": 2071282458,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "[Р] лимиты шлюза и llm_retries; загрузку больших пакетов документов — вне часов пик.",
@@ -47574,7 +47662,7 @@ child / embed_batch_size
       "originalText": "[Р] лимиты шлюза и llm_retries; загрузку больших пакетов документов — вне часов пик.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK5"
+      "index": "bK6"
     },
     {
       "id": "ezDV1Yh1",
@@ -47599,7 +47687,7 @@ child / embed_batch_size
       "versionNonce": 1910823580,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5. Порядок настройки у себя",
@@ -47611,7 +47699,7 @@ child / embed_batch_size
       "originalText": "5. Порядок настройки у себя",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK6"
+      "index": "bK7"
     },
     {
       "id": "iF4X3ZIF",
@@ -47636,7 +47724,7 @@ child / embed_batch_size
       "versionNonce": 1773778854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Шаги 6–8 повторяются: база выросла в 2 раза, новый тип документов, другая модель эмбеддингов или реранкера, изменены parent_size / child_size.",
@@ -47648,7 +47736,7 @@ child / embed_batch_size
       "originalText": "Шаги 6–8 повторяются: база выросла в 2 раза, новый тип документов, другая модель эмбеддингов или реранкера, изменены parent_size / child_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK7"
+      "index": "bK8"
     },
     {
       "id": "3Fz4NUiq",
@@ -47684,10 +47772,10 @@ child / embed_batch_size
           "id": "OHqPyssy"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bK8"
+      "index": "bK9"
     },
     {
       "id": "Oc0PA2YD",
@@ -47712,7 +47800,7 @@ child / embed_batch_size
       "versionNonce": 388444572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1. Подключения\n.env: адреса, ключи,\nмодели, KB_DIR,\nсертификат.\ncheck_install.py без\nошибок; в панели нет\nкрасных ошибок,\nреранкер «доступен» или\n«не подключён».",
@@ -47724,7 +47812,7 @@ child / embed_batch_size
       "originalText": "1. Подключения\n.env: адреса, ключи,\nмодели, KB_DIR,\nсертификат.\ncheck_install.py без\nошибок; в панели нет\nкрасных ошибок,\nреранкер «доступен» или\n«не подключён».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK9"
+      "index": "bKA"
     },
     {
       "id": "1VtRjZSP",
@@ -47764,10 +47852,10 @@ child / embed_batch_size
           "id": "K4oBG4pf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKA"
+      "index": "bKB"
     },
     {
       "id": "bGTjLtdZ",
@@ -47792,7 +47880,7 @@ child / embed_batch_size
       "versionNonce": 1483643020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2. Лимиты моделей\n«Модели и лимиты» →\n«Определить у сервера».\nЧего сервер не сообщает\n— в config.yaml\n(models). Проверить\n«MINT рассчитал» и\nпредупреждения.",
@@ -47804,7 +47892,7 @@ child / embed_batch_size
       "originalText": "2. Лимиты моделей\n«Модели и лимиты» →\n«Определить у сервера».\nЧего сервер не сообщает\n— в config.yaml\n(models). Проверить\n«MINT рассчитал» и\nпредупреждения.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKB"
+      "index": "bKC"
     },
     {
       "id": "m6KboKBV",
@@ -47844,10 +47932,10 @@ child / embed_batch_size
           "id": "BdlWkpK7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKC"
+      "index": "bKD"
     },
     {
       "id": "r0pBXSye",
@@ -47872,7 +47960,7 @@ child / embed_batch_size
       "versionNonce": 2081139234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "3. Документы\nЗагрузить. Сообщения\nзагрузки: «Распознано\nзаголовков: N» (0 — нет\nстилей, панель 4),\n«Пропущено … чанков» —\nсбой эмбеддингов.",
@@ -47884,7 +47972,7 @@ child / embed_batch_size
       "originalText": "3. Документы\nЗагрузить. Сообщения\nзагрузки: «Распознано\nзаголовков: N» (0 — нет\nстилей, панель 4),\n«Пропущено … чанков» —\nсбой эмбеддингов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKD"
+      "index": "bKE"
     },
     {
       "id": "vw3puuYQ",
@@ -47924,10 +48012,10 @@ child / embed_batch_size
           "id": "eYBYdufU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKE"
+      "index": "bKF"
     },
     {
       "id": "w8nvk6B4",
@@ -47952,7 +48040,7 @@ child / embed_batch_size
       "versionNonce": 1730295219,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "4. Сокращения\nСписок «Сокращения» в\nпанели: неточные\nрасшифровки и\nнедостающие сокращения\n— в glossary.json.",
@@ -47964,7 +48052,7 @@ child / embed_batch_size
       "originalText": "4. Сокращения\nСписок «Сокращения» в\nпанели: неточные\nрасшифровки и\nнедостающие сокращения\n— в glossary.json.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKF"
+      "index": "bKG"
     },
     {
       "id": "zPmDThiX",
@@ -48004,10 +48092,10 @@ child / embed_batch_size
           "id": "Qrgoxrr6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKG"
+      "index": "bKH"
     },
     {
       "id": "HcoLbGI3",
@@ -48032,7 +48120,7 @@ child / embed_batch_size
       "versionNonce": 238394071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "5. Набор вопросов\nКнопка «Проверка\nкачества» на боковой\nпанели: MINT составит\nчерновик — переписать\nсвоими словами,\nдобавить реальные\nвопросы и 5–10 без\nответа в базе. Всего\n40–60.",
@@ -48044,7 +48132,7 @@ child / embed_batch_size
       "originalText": "5. Набор вопросов\nКнопка «Проверка\nкачества» на боковой\nпанели: MINT составит\nчерновик — переписать\nсвоими словами,\nдобавить реальные\nвопросы и 5–10 без\nответа в базе. Всего\n40–60.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKH"
+      "index": "bKI"
     },
     {
       "id": "miEfrsC4",
@@ -48084,10 +48172,10 @@ child / embed_batch_size
           "id": "HnAaJNzj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKI"
+      "index": "bKJ"
     },
     {
       "id": "PNHYQrVL",
@@ -48112,7 +48200,7 @@ child / embed_batch_size
       "versionNonce": 1481069539,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "6. Точка отсчёта\n«Запустить проверку» →\nитоги на странице;\nreport.md, details.csv,\nsummary.json — в\nLOG_DIR/eval (в консоли\n— eval_search.py\nquestions.csv).",
@@ -48124,7 +48212,7 @@ child / embed_batch_size
       "originalText": "6. Точка отсчёта\n«Запустить проверку» →\nитоги на странице;\nreport.md, details.csv,\nsummary.json — в\nLOG_DIR/eval (в консоли\n— eval_search.py\nquestions.csv).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKJ"
+      "index": "bKK"
     },
     {
       "id": "dc6vYnxk",
@@ -48164,10 +48252,10 @@ child / embed_batch_size
           "id": "hcvo70Qf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKK"
+      "index": "bKL"
     },
     {
       "id": "nqDstAGo",
@@ -48192,7 +48280,7 @@ child / embed_batch_size
       "versionNonce": 677932053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "7. Настройка по отчёту\n«Что поменять» →\n«Применить в этой\nсессии»; закрепить в\nconfig.yaml:\nweight_rerank, веса\ndense / BM25, пороги\nlow_conf, top_k,\nmulti-query.",
@@ -48204,7 +48292,7 @@ child / embed_batch_size
       "originalText": "7. Настройка по отчёту\n«Что поменять» →\n«Применить в этой\nсессии»; закрепить в\nconfig.yaml:\nweight_rerank, веса\ndense / BM25, пороги\nlow_conf, top_k,\nmulti-query.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKL"
+      "index": "bKM"
     },
     {
       "id": "FyHElPJA",
@@ -48244,10 +48332,10 @@ child / embed_batch_size
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKM"
+      "index": "bKN"
     },
     {
       "id": "aHAfif3S",
@@ -48272,7 +48360,7 @@ child / embed_batch_size
       "versionNonce": 1748425513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "8. Проверка\nСледующая проверка\nсравнивается с прошлой\n(▲▼; в консоли —\n--compare): MRR и hit@K\nвыросли, ложные тревоги\nне выросли; разница не\nслучайна (p < 0.05).",
@@ -48284,7 +48372,7 @@ child / embed_batch_size
       "originalText": "8. Проверка\nСледующая проверка\nсравнивается с прошлой\n(▲▼; в консоли —\n--compare): MRR и hit@K\nвыросли, ложные тревоги\nне выросли; разница не\nслучайна (p < 0.05).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKN"
+      "index": "bKO"
     },
     {
       "id": "8yQo6NZE",
@@ -48320,10 +48408,10 @@ child / embed_batch_size
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKO"
+      "index": "bKP"
     },
     {
       "id": "BEIGoygo",
@@ -48348,7 +48436,7 @@ child / embed_batch_size
       "versionNonce": 1073950771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "9. Живая проверка\n15–20 ответов в чате;\n   аудит 3–5 документов\n   с известными\n   замечаниями;\n   контроль — пары\n   редакций. Подстроить\n   [П]-параметры.",
@@ -48360,7 +48448,7 @@ child / embed_batch_size
       "originalText": "9. Живая проверка\n15–20 ответов в чате;\n   аудит 3–5 документов\n   с известными\n   замечаниями;\n   контроль — пары\n   редакций. Подстроить\n   [П]-параметры.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKP"
+      "index": "bKQ"
     },
     {
       "id": "OHqPyssy",
@@ -48387,7 +48475,7 @@ child / embed_batch_size
       "versionNonce": 1415909849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48424,7 +48512,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKQ"
+      "index": "bKR"
     },
     {
       "id": "K4oBG4pf",
@@ -48451,7 +48539,7 @@ child / embed_batch_size
       "versionNonce": 1884439373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48488,7 +48576,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKR"
+      "index": "bKS"
     },
     {
       "id": "BdlWkpK7",
@@ -48515,7 +48603,7 @@ child / embed_batch_size
       "versionNonce": 280981308,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48552,7 +48640,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKS"
+      "index": "bKT"
     },
     {
       "id": "eYBYdufU",
@@ -48579,7 +48667,7 @@ child / embed_batch_size
       "versionNonce": 599665469,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48616,7 +48704,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKT"
+      "index": "bKU"
     },
     {
       "id": "Qrgoxrr6",
@@ -48643,7 +48731,7 @@ child / embed_batch_size
       "versionNonce": 1718604913,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48680,7 +48768,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKU"
+      "index": "bKV"
     },
     {
       "id": "HnAaJNzj",
@@ -48707,7 +48795,7 @@ child / embed_batch_size
       "versionNonce": 517582091,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48744,7 +48832,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKV"
+      "index": "bKW"
     },
     {
       "id": "hcvo70Qf",
@@ -48771,7 +48859,7 @@ child / embed_batch_size
       "versionNonce": 67617651,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48808,7 +48896,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKW"
+      "index": "bKX"
     },
     {
       "id": "VcFofqcU",
@@ -48835,7 +48923,7 @@ child / embed_batch_size
       "versionNonce": 912674016,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -48872,7 +48960,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKX"
+      "index": "bKY"
     },
     {
       "id": "SLUCuYWZ",
@@ -48904,10 +48992,10 @@ child / embed_batch_size
           "id": "kTEV6qmE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKY"
+      "index": "bKZ"
     },
     {
       "id": "kTEV6qmE",
@@ -48932,7 +49020,7 @@ child / embed_batch_size
       "versionNonce": 1004023954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Как работает проверка качества — mint/evaluation.py: кнопка «Проверка качества» на боковой панели и eval_search.py в консоли (тот же код поиска, что в чате; база и сервисы — настоящие; LLM — только для черновика вопросов, ответов чата и\nmulti-query)\ngenerate_questions(): по фрагменту — вопрос на языке фрагмента и дословная цитата → таблица вопросов: правка, свои вопросы; rows_to_questions() и markup_problems() — разметка, которая никогда не засчитается → request_cache() (каждый запрос к\nсервисам — один раз на все варианты) → build_configs(): только dense, только BM25, гибрид, гибрид + реранкер 0.35 / 0.7 / 1 / 1.5 / 3 → run_question(): search_parent_child() на глубину 10 + diagnostics при top_k → is_relevant(): файл +\nраздел (в пути или заголовком внутри фрагмента) + фраза → metrics(): hit@1, hit@3, hit@K, MRR, ложные тревоги → paired() + sign_test_p(): на скольких вопросах конфигурации расходятся и случайна ли разница (критерий знаков) → calibrate():\nпорог по тому же правилу, что в поиске (is_low_confidence) → check_answers() по желанию (1–3 раза): ответ чата (answer_question), ссылка на нужный документ, ссылки мимо найденного, ложное и честное «информации нет» (chat_no_info), ошибка\nпоиска или модели; compare_answers() — с прошлой проверкой ответов по вопросам и версии промптов → recommendations(): что поменять → save_run(): report.md, details.csv без пустых ячеек, summary.json, questions.csv — в LOG_DIR/eval.",
@@ -48944,7 +49032,7 @@ child / embed_batch_size
       "originalText": "Как работает проверка качества — mint/evaluation.py: кнопка «Проверка качества» на боковой панели и eval_search.py в консоли (тот же код поиска, что в чате; база и сервисы — настоящие; LLM — только для черновика вопросов, ответов чата и\nmulti-query)\ngenerate_questions(): по фрагменту — вопрос на языке фрагмента и дословная цитата → таблица вопросов: правка, свои вопросы; rows_to_questions() и markup_problems() — разметка, которая никогда не засчитается → request_cache() (каждый запрос к\nсервисам — один раз на все варианты) → build_configs(): только dense, только BM25, гибрид, гибрид + реранкер 0.35 / 0.7 / 1 / 1.5 / 3 → run_question(): search_parent_child() на глубину 10 + diagnostics при top_k → is_relevant(): файл +\nраздел (в пути или заголовком внутри фрагмента) + фраза → metrics(): hit@1, hit@3, hit@K, MRR, ложные тревоги → paired() + sign_test_p(): на скольких вопросах конфигурации расходятся и случайна ли разница (критерий знаков) → calibrate():\nпорог по тому же правилу, что в поиске (is_low_confidence) → check_answers() по желанию (1–3 раза): ответ чата (answer_question), ссылка на нужный документ, ссылки мимо найденного, ложное и честное «информации нет» (chat_no_info), ошибка\nпоиска или модели; compare_answers() — с прошлой проверкой ответов по вопросам и версии промптов → recommendations(): что поменять → save_run(): report.md, details.csv без пустых ячеек, summary.json, questions.csv — в LOG_DIR/eval.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKZ"
+      "index": "bKa"
     },
     {
       "id": "6FIMdrSj",
@@ -48969,7 +49057,7 @@ child / embed_batch_size
       "versionNonce": 762279921,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "6. Устройство: добавление документов в базу",
@@ -48981,7 +49069,7 @@ child / embed_batch_size
       "originalText": "6. Устройство: добавление документов в базу",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKa"
+      "index": "bKb"
     },
     {
       "id": "5aByTBcA",
@@ -49006,7 +49094,7 @@ child / embed_batch_size
       "versionNonce": 1393306350,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Боковая панель «Добавить документы в базу» → process_and_add_to_kb() для каждого файла. Эмбеддинги считаются без блокировки базы, слияние и запись — под kb_write_lock().",
@@ -49018,7 +49106,7 @@ child / embed_batch_size
       "originalText": "Боковая панель «Добавить документы в базу» → process_and_add_to_kb() для каждого файла. Эмбеддинги считаются без блокировки базы, слияние и запись — под kb_write_lock().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKb"
+      "index": "bKc"
     },
     {
       "id": "YxhudoHY",
@@ -49054,10 +49142,10 @@ child / embed_batch_size
           "id": "YFFEv8aP"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKc"
+      "index": "bKd"
     },
     {
       "id": "L2ZwWtTS",
@@ -49082,7 +49170,7 @@ child / embed_batch_size
       "versionNonce": 490539631,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "parse_document()\nпо расширению: .docx — docling_convert()\n(один DocumentConverter на процесс, по\nочереди); .pdf — parse_pdf() без моделей;\n.md, .txt — parse_markdown(),\nparse_plain_text().",
@@ -49094,7 +49182,7 @@ child / embed_batch_size
       "originalText": "parse_document()\nпо расширению: .docx — docling_convert()\n(один DocumentConverter на процесс, по\nочереди); .pdf — parse_pdf() без моделей;\n.md, .txt — parse_markdown(),\nparse_plain_text().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKd"
+      "index": "bKe"
     },
     {
       "id": "dDi6bTIy",
@@ -49134,10 +49222,10 @@ child / embed_batch_size
           "id": "YGSyNfpa"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKe"
+      "index": "bKf"
     },
     {
       "id": "IbRDgUjI",
@@ -49162,7 +49250,7 @@ child / embed_batch_size
       "versionNonce": 850818247,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "collect_structure()\nобход iterate_items(): section_header /\ntitle → стек заголовков,\nheading_path_str(); table → markdown и\nподпись; колонтитулы и рисунки\nпропускаются. Сбой →\ncollect_structure_flat() без заголовков.",
@@ -49174,7 +49262,7 @@ child / embed_batch_size
       "originalText": "collect_structure()\nобход iterate_items(): section_header /\ntitle → стек заголовков,\nheading_path_str(); table → markdown и\nподпись; колонтитулы и рисунки\nпропускаются. Сбой →\ncollect_structure_flat() без заголовков.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKf"
+      "index": "bKg"
     },
     {
       "id": "0jMIrFge",
@@ -49214,10 +49302,10 @@ child / embed_batch_size
           "id": "85LG5t8G"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKg"
+      "index": "bKh"
     },
     {
       "id": "5b2i1r7w",
@@ -49242,7 +49330,7 @@ child / embed_batch_size
       "versionNonce": 528676536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "build_parent_chunks()\nтекст одним потоком с «## заголовками» →\nsplit_with_overlap_pos(parent_size ♻,\nparent_overlap ♻; разрез по абзацу,\nстроке, предложению, слову; заголовок — со\nсвоим текстом) → в каждом parent child\n(child_size ♻, child_overlap ♻); путь\nзаголовков child — по его позиции\n(bisect). Таблицы: clean_table_markdown()\n→ split_table_markdown() по строкам с\nповтором шапки.",
@@ -49254,7 +49342,7 @@ child / embed_batch_size
       "originalText": "build_parent_chunks()\nтекст одним потоком с «## заголовками» →\nsplit_with_overlap_pos(parent_size ♻,\nparent_overlap ♻; разрез по абзацу,\nстроке, предложению, слову; заголовок — со\nсвоим текстом) → в каждом parent child\n(child_size ♻, child_overlap ♻); путь\nзаголовков child — по его позиции\n(bisect). Таблицы: clean_table_markdown()\n→ split_table_markdown() по строкам с\nповтором шапки.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKh"
+      "index": "bKi"
     },
     {
       "id": "ClvjE0sB",
@@ -49294,10 +49382,10 @@ child / embed_batch_size
           "id": "xCWMjzd9"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKi"
+      "index": "bKj"
     },
     {
       "id": "2P65GnAg",
@@ -49322,7 +49410,7 @@ child / embed_batch_size
       "versionNonce": 799495283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "index_parsed_document()\nвход эмбеддинга = embed_doc_prefix ♻ +\nпуть заголовков + child →\nget_query_embeddings_batch() (пачками по\nembed_batch_size; _embed_input() обрезает\nдо embed_input_max_chars) →\nl2_normalize().",
@@ -49334,7 +49422,7 @@ child / embed_batch_size
       "originalText": "index_parsed_document()\nвход эмбеддинга = embed_doc_prefix ♻ +\nпуть заголовков + child →\nget_query_embeddings_batch() (пачками по\nembed_batch_size; _embed_input() обрезает\nдо embed_input_max_chars) →\nl2_normalize().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKj"
+      "index": "bKk"
     },
     {
       "id": "5EM1OVdu",
@@ -49374,10 +49462,10 @@ child / embed_batch_size
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKk"
+      "index": "bKl"
     },
     {
       "id": "l0pmjmne",
@@ -49402,7 +49490,7 @@ child / embed_batch_size
       "versionNonce": 1059699661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Запись под kb_write_lock()\nперечитать базу, убрать прежнюю версию\nфайла, проверить размерность векторов →\nIndexFlatL2 → _commit_kb(): временная\nпапка + os.replace → save_bm25_index() →\nrebuild_auto_glossary()\n(extract_abbreviations →\nbuild_auto_glossary).",
@@ -49414,7 +49502,7 @@ child / embed_batch_size
       "originalText": "Запись под kb_write_lock()\nперечитать базу, убрать прежнюю версию\nфайла, проверить размерность векторов →\nIndexFlatL2 → _commit_kb(): временная\nпапка + os.replace → save_bm25_index() →\nrebuild_auto_glossary()\n(extract_abbreviations →\nbuild_auto_glossary).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKl"
+      "index": "bKm"
     },
     {
       "id": "YFFEv8aP",
@@ -49441,7 +49529,7 @@ child / embed_batch_size
       "versionNonce": 1810995622,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -49478,7 +49566,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKm"
+      "index": "bKn"
     },
     {
       "id": "YGSyNfpa",
@@ -49505,7 +49593,7 @@ child / embed_batch_size
       "versionNonce": 1844155297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -49542,7 +49630,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKn"
+      "index": "bKo"
     },
     {
       "id": "85LG5t8G",
@@ -49569,7 +49657,7 @@ child / embed_batch_size
       "versionNonce": 700700824,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -49606,7 +49694,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKo"
+      "index": "bKp"
     },
     {
       "id": "xCWMjzd9",
@@ -49633,7 +49721,7 @@ child / embed_batch_size
       "versionNonce": 1502999695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -49670,7 +49758,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKp"
+      "index": "bKq"
     },
     {
       "id": "a7YZeaJ0",
@@ -49702,10 +49790,10 @@ child / embed_batch_size
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKq"
+      "index": "bKr"
     },
     {
       "id": "sLvY5c2i",
@@ -49737,10 +49825,10 @@ child / embed_batch_size
           "id": "TtHTZQoz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKr"
+      "index": "bKs"
     },
     {
       "id": "TtHTZQoz",
@@ -49765,7 +49853,7 @@ child / embed_batch_size
       "versionNonce": 445824178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child_index.faiss\nвекторы child, нормированы\n(поиск по косинусу)",
@@ -49777,7 +49865,7 @@ child / embed_batch_size
       "originalText": "child_index.faiss\nвекторы child, нормированы\n(поиск по косинусу)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKs"
+      "index": "bKt"
     },
     {
       "id": "zlzCJ7l5",
@@ -49809,10 +49897,10 @@ child / embed_batch_size
           "id": "GpCYCPYT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKt"
+      "index": "bKu"
     },
     {
       "id": "GpCYCPYT",
@@ -49837,7 +49925,7 @@ child / embed_batch_size
       "versionNonce": 1185537876,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child_metadata.pkl\nparent_id, source, page, text\nchild",
@@ -49849,7 +49937,7 @@ child / embed_batch_size
       "originalText": "child_metadata.pkl\nparent_id, source, page, text\nchild",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKu"
+      "index": "bKv"
     },
     {
       "id": "yJAUVHy3",
@@ -49881,10 +49969,10 @@ child / embed_batch_size
           "id": "enmiaBPB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKv"
+      "index": "bKw"
     },
     {
       "id": "enmiaBPB",
@@ -49909,7 +49997,7 @@ child / embed_batch_size
       "versionNonce": 1964228610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "parent_store.json\nтекст parent, heading_path,\ntype, section, page",
@@ -49921,7 +50009,7 @@ child / embed_batch_size
       "originalText": "parent_store.json\nтекст parent, heading_path,\ntype, section, page",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKw"
+      "index": "bKx"
     },
     {
       "id": "osy87dgH",
@@ -49953,10 +50041,10 @@ child / embed_batch_size
           "id": "HiSCTsUS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKx"
+      "index": "bKy"
     },
     {
       "id": "HiSCTsUS",
@@ -49981,7 +50069,7 @@ child / embed_batch_size
       "versionNonce": 2709796,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl\nосновы слов, позиции; подпись\nформата (иначе пересборка)",
@@ -49993,7 +50081,7 @@ child / embed_batch_size
       "originalText": "bm25_index.pkl\nосновы слов, позиции; подпись\nформата (иначе пересборка)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKy"
+      "index": "bKz"
     },
     {
       "id": "6cBQtzH0",
@@ -50025,10 +50113,10 @@ child / embed_batch_size
           "id": "KsyqIjrE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bKz"
+      "index": "bL0"
     },
     {
       "id": "KsyqIjrE",
@@ -50053,7 +50141,7 @@ child / embed_batch_size
       "versionNonce": 55632841,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json\nсокращения из документов",
@@ -50065,7 +50153,7 @@ child / embed_batch_size
       "originalText": "auto_glossary.json\nсокращения из документов",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL0"
+      "index": "bL1"
     },
     {
       "id": "Su1RmndN",
@@ -50097,10 +50185,10 @@ child / embed_batch_size
           "id": "S5yCJ6Rf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bL1"
+      "index": "bL2"
     },
     {
       "id": "S5yCJ6Rf",
@@ -50125,7 +50213,7 @@ child / embed_batch_size
       "versionNonce": 641056343,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "manifest.json\nembed_model, embed_dim, префикс,\nparent / child для каждого\nдокумента",
@@ -50137,7 +50225,7 @@ child / embed_batch_size
       "originalText": "manifest.json\nembed_model, embed_dim, префикс,\nparent / child для каждого\nдокумента",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL2"
+      "index": "bL3"
     },
     {
       "id": "gztqbSUw",
@@ -50169,10 +50257,10 @@ child / embed_batch_size
           "id": "pI8keL7f"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bL3"
+      "index": "bL4"
     },
     {
       "id": "pI8keL7f",
@@ -50197,7 +50285,7 @@ child / embed_batch_size
       "versionNonce": 429688919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "sources/\nоригиналы документов для\nпереиндексации",
@@ -50209,7 +50297,7 @@ child / embed_batch_size
       "originalText": "sources/\nоригиналы документов для\nпереиндексации",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL4"
+      "index": "bL5"
     },
     {
       "id": "ga6FpAv7",
@@ -50234,7 +50322,7 @@ child / embed_batch_size
       "versionNonce": 736231461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Хранилище — папка KB_DIR",
@@ -50246,7 +50334,7 @@ child / embed_batch_size
       "originalText": "Хранилище — папка KB_DIR",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL5"
+      "index": "bL6"
     },
     {
       "id": "bLsTZZL7",
@@ -50278,7 +50366,7 @@ child / embed_batch_size
           "id": "KDfcYhTI"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -50315,7 +50403,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bL6"
+      "index": "bL7"
     },
     {
       "id": "KDfcYhTI",
@@ -50340,7 +50428,7 @@ child / embed_batch_size
       "versionNonce": 990097690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "запись",
@@ -50352,7 +50440,7 @@ child / embed_batch_size
       "originalText": "запись",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL7"
+      "index": "bL8"
     },
     {
       "id": "GYfuyK3R",
@@ -50384,10 +50472,10 @@ child / embed_batch_size
           "id": "jksG97Di"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bL8"
+      "index": "bL9"
     },
     {
       "id": "jksG97Di",
@@ -50412,7 +50500,7 @@ child / embed_batch_size
       "versionNonce": 1090333905,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Обслуживание и чтение базы\n• kb_document_status(): сравнивает manifest с текущими настройками — «другая модель эмбеддингов» (векторный поиск по документу не работает) или «другая нарезка / загружен до v18».\n• reindex_documents(): по sources/; если сменилась размерность векторов — _clear_kb_index() и сборка заново. delete_document_from_kb() — удаление с оригиналом.\n• load_kb_snapshot(): кэш по времени изменения файлов, короткая блокировка на чтение; normalized_index() нормирует старую базу в памяти. load_bm25_for(): пересборка при смене формата или набора фрагментов. load_glossary(): glossary.json\n   важнее автоглоссария, старый формат v17 понимается.",
@@ -50424,7 +50512,7 @@ child / embed_batch_size
       "originalText": "Обслуживание и чтение базы\n• kb_document_status(): сравнивает manifest с текущими настройками — «другая модель эмбеддингов» (векторный поиск по документу не работает) или «другая нарезка / загружен до v18».\n• reindex_documents(): по sources/; если сменилась размерность векторов — _clear_kb_index() и сборка заново. delete_document_from_kb() — удаление с оригиналом.\n• load_kb_snapshot(): кэш по времени изменения файлов, короткая блокировка на чтение; normalized_index() нормирует старую базу в памяти. load_bm25_for(): пересборка при смене формата или набора фрагментов. load_glossary(): glossary.json\n   важнее автоглоссария, старый формат v17 понимается.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL9"
+      "index": "bLA"
     },
     {
       "id": "EP92o8Ec",
@@ -50449,7 +50537,7 @@ child / embed_batch_size
       "versionNonce": 1574166414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "7. Устройство: поиск search_parent_child() и ответ в чате",
@@ -50461,7 +50549,7 @@ child / embed_batch_size
       "originalText": "7. Устройство: поиск search_parent_child() и ответ в чате",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLA"
+      "index": "bLB"
     },
     {
       "id": "NW5wQgEh",
@@ -50486,7 +50574,7 @@ child / embed_batch_size
       "versionNonce": 1825086887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Шаги общие для чата, аудита (build_norms_context) и контроля исправлений; ответ LLM — только в чате. Параметры названы по имени — значения и категории в справочнике (панель 3).",
@@ -50498,7 +50586,7 @@ child / embed_batch_size
       "originalText": "Шаги общие для чата, аудита (build_norms_context) и контроля исправлений; ответ LLM — только в чате. Параметры названы по имени — значения и категории в справочнике (панель 3).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLB"
+      "index": "bLC"
     },
     {
       "id": "hsH01HGz",
@@ -50534,10 +50622,10 @@ child / embed_batch_size
           "id": "LFZ5YJTJ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLC"
+      "index": "bLD"
     },
     {
       "id": "1F6nqOSG",
@@ -50562,7 +50650,7 @@ child / embed_batch_size
       "versionNonce": 1139278013,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вопрос пользователя",
@@ -50574,7 +50662,7 @@ child / embed_batch_size
       "originalText": "Вопрос пользователя",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLD"
+      "index": "bLE"
     },
     {
       "id": "5tnk18Yn",
@@ -50614,10 +50702,10 @@ child / embed_batch_size
           "id": "0Wz9qm3a"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLE"
+      "index": "bLF"
     },
     {
       "id": "DIrmVCDQ",
@@ -50642,7 +50730,7 @@ child / embed_batch_size
       "versionNonce": 745856269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "chat_history() + condense_question()\nтолько в чате: последние\nchat_history_turns пар «вопрос — ответ»;\nуточнение → самостоятельный вопрос\n(CONDENSE_SYSTEM).",
@@ -50654,7 +50742,7 @@ child / embed_batch_size
       "originalText": "chat_history() + condense_question()\nтолько в чате: последние\nchat_history_turns пар «вопрос — ответ»;\nуточнение → самостоятельный вопрос\n(CONDENSE_SYSTEM).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLF"
+      "index": "bLG"
     },
     {
       "id": "UMWXKBEE",
@@ -50698,10 +50786,10 @@ child / embed_batch_size
           "id": "EIeLaNmx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLG"
+      "index": "bLH"
     },
     {
       "id": "cSWCJdEK",
@@ -50726,7 +50814,7 @@ child / embed_batch_size
       "versionNonce": 1920183696,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "analyze_query()\nвопросы «что такое X», «состав X», «what is\nX», «components of X» (до 300 симв.): предмет\nX → буст точной фразы; слова расширения ×0.3,\nслова предмета +0.5 — только в BM25.\nexpand_query_multi() — если use_multi_query.",
@@ -50738,7 +50826,7 @@ child / embed_batch_size
       "originalText": "analyze_query()\nвопросы «что такое X», «состав X», «what is\nX», «components of X» (до 300 симв.): предмет\nX → буст точной фразы; слова расширения ×0.3,\nслова предмета +0.5 — только в BM25.\nexpand_query_multi() — если use_multi_query.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLH"
+      "index": "bLI"
     },
     {
       "id": "iz5Ol3xC",
@@ -50778,10 +50866,10 @@ child / embed_batch_size
           "id": "dkubhVHg"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLI"
+      "index": "bLJ"
     },
     {
       "id": "6xJ1lLj8",
@@ -50806,7 +50894,7 @@ child / embed_batch_size
       "versionNonce": 1432856654,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вектор: _query_vector()\nembed_query_prefix + вопрос → эмбеддинг → l2_normalize() →\nFAISS search: initial_k child → их parent; best_child — текст\nдля реранкера. Нет эмбеддинга или другая размерность — канал\nвыключается, работает BM25.",
@@ -50818,7 +50906,7 @@ child / embed_batch_size
       "originalText": "Вектор: _query_vector()\nembed_query_prefix + вопрос → эмбеддинг → l2_normalize() →\nFAISS search: initial_k child → их parent; best_child — текст\nдля реранкера. Нет эмбеддинга или другая размерность — канал\nвыключается, работает BM25.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLJ"
+      "index": "bLK"
     },
     {
       "id": "eyrbc4oM",
@@ -50858,10 +50946,10 @@ child / embed_batch_size
           "id": "5t357I7T"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLK"
+      "index": "bLL"
     },
     {
       "id": "YKpuouxM",
@@ -50886,7 +50974,7 @@ child / embed_batch_size
       "versionNonce": 1506396127,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Слова: LightweightBM25.get_scores()\nосновы слов (russian_stem — кириллица от 5 букв, english_stem\n— латиница от 4 букв), без стоп- и вопросительных слов (RU и\nEN); + Glossary.bm25_terms() ×0.5; k1 1.5, b 0.75, IDF ≥ 0.25;\nточная фраза +10 (до 8 слов); соседние слова вопроса рядом (≤\n3, до 12 значимых слов) +2 → bm25_top_k.",
@@ -50898,7 +50986,7 @@ child / embed_batch_size
       "originalText": "Слова: LightweightBM25.get_scores()\nосновы слов (russian_stem — кириллица от 5 букв, english_stem\n— латиница от 4 букв), без стоп- и вопросительных слов (RU и\nEN); + Glossary.bm25_terms() ×0.5; k1 1.5, b 0.75, IDF ≥ 0.25;\nточная фраза +10 (до 8 слов); соседние слова вопроса рядом (≤\n3, до 12 значимых слов) +2 → bm25_top_k.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLL"
+      "index": "bLM"
     },
     {
       "id": "kLA5D0tl",
@@ -50942,10 +51030,10 @@ child / embed_batch_size
           "id": "SQkMkF4W"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLM"
+      "index": "bLN"
     },
     {
       "id": "jKflgiLZ",
@@ -50970,7 +51058,7 @@ child / embed_batch_size
       "versionNonce": 283789755,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Слияние RRF\nвклад списка = вес / (rrf_constant +\nместо): weight_dense, weight_bm25 →\nrerank_top_k кандидатов.",
@@ -50982,7 +51070,7 @@ child / embed_batch_size
       "originalText": "Слияние RRF\nвклад списка = вес / (rrf_constant +\nместо): weight_dense, weight_bm25 →\nrerank_top_k кандидатов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLN"
+      "index": "bLO"
     },
     {
       "id": "LFZ5YJTJ",
@@ -51009,7 +51097,7 @@ child / embed_batch_size
       "versionNonce": 1541396449,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51046,7 +51134,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLO"
+      "index": "bLP"
     },
     {
       "id": "0Wz9qm3a",
@@ -51073,7 +51161,7 @@ child / embed_batch_size
       "versionNonce": 62209716,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51110,7 +51198,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLP"
+      "index": "bLQ"
     },
     {
       "id": "mDM236wF",
@@ -51137,7 +51225,7 @@ child / embed_batch_size
       "versionNonce": 788600749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51174,7 +51262,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLQ"
+      "index": "bLR"
     },
     {
       "id": "EIeLaNmx",
@@ -51201,7 +51289,7 @@ child / embed_batch_size
       "versionNonce": 478970563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51238,7 +51326,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLR"
+      "index": "bLS"
     },
     {
       "id": "dkubhVHg",
@@ -51265,7 +51353,7 @@ child / embed_batch_size
       "versionNonce": 1416376628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51302,7 +51390,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLS"
+      "index": "bLT"
     },
     {
       "id": "5t357I7T",
@@ -51329,7 +51417,7 @@ child / embed_batch_size
       "versionNonce": 397319003,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51366,7 +51454,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLT"
+      "index": "bLU"
     },
     {
       "id": "56370MqR",
@@ -51406,10 +51494,10 @@ child / embed_batch_size
           "id": "D8WukJ2o"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLU"
+      "index": "bLV"
     },
     {
       "id": "oees9Qae",
@@ -51434,7 +51522,7 @@ child / embed_batch_size
       "versionNonce": 424299482,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Реранкер (если задан RERANK_API_URL)\nGlossary.enrich_query(); rerank_document(): имя файла и раздел + child с\nокружением (passage_around) или окно с наибольшей плотностью слов\n(best_window), до rerank_doc_max_chars → rerank_scores(): все кандидаты\nпачками (rerank_max_docs, rerank_char_budget); сбой части пачек — баллы\nне учитываются. Голос: балл ≥ min_rerank_score → + weight_rerank /\n(rrf_constant + место).",
@@ -51446,7 +51534,7 @@ child / embed_batch_size
       "originalText": "Реранкер (если задан RERANK_API_URL)\nGlossary.enrich_query(); rerank_document(): имя файла и раздел + child с\nокружением (passage_around) или окно с наибольшей плотностью слов\n(best_window), до rerank_doc_max_chars → rerank_scores(): все кандидаты\nпачками (rerank_max_docs, rerank_char_budget); сбой части пачек — баллы\nне учитываются. Голос: балл ≥ min_rerank_score → + weight_rerank /\n(rrf_constant + место).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLV"
+      "index": "bLW"
     },
     {
       "id": "jvlADHdA",
@@ -51490,10 +51578,10 @@ child / embed_batch_size
           "id": "cFQB4gvA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLW"
+      "index": "bLX"
     },
     {
       "id": "nkKOCxQD",
@@ -51518,7 +51606,7 @@ child / embed_batch_size
       "versionNonce": 229726974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Отбор top_k\nбез повторов (файл + первые 80\nсимв.); не больше max_table_parts\nчастей одной таблицы.",
@@ -51530,7 +51618,7 @@ child / embed_batch_size
       "originalText": "Отбор top_k\nбез повторов (файл + первые 80\nсимв.); не больше max_table_parts\nчастей одной таблицы.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLX"
+      "index": "bLY"
     },
     {
       "id": "SSZa7Lx2",
@@ -51570,10 +51658,10 @@ child / embed_batch_size
           "id": "xqa2LSkF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLY"
+      "index": "bLZ"
     },
     {
       "id": "WIag236v",
@@ -51598,7 +51686,7 @@ child / embed_batch_size
       "versionNonce": 1518067034,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Контекст\nmerge_adjacent(): соседние фрагменты одного документа — один\nблок в порядке текста; _source_header(): файл | раздел в\nначале фрагмента | далее во фрагменте (inner_headings, до 8) |\nтаблица | стр.; focus_passage(): длиннее smart_truncate_chars\n— вокруг найденного места. В списке источников — раздел, где\nнайдено место (section_at).",
@@ -51610,7 +51698,7 @@ child / embed_batch_size
       "originalText": "Контекст\nmerge_adjacent(): соседние фрагменты одного документа — один\nблок в порядке текста; _source_header(): файл | раздел в\nначале фрагмента | далее во фрагменте (inner_headings, до 8) |\nтаблица | стр.; focus_passage(): длиннее smart_truncate_chars\n— вокруг найденного места. В списке источников — раздел, где\nнайдено место (section_at).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLZ"
+      "index": "bLa"
     },
     {
       "id": "yvOTjYIP",
@@ -51650,10 +51738,10 @@ child / embed_batch_size
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLa"
+      "index": "bLb"
     },
     {
       "id": "3o4rMlYv",
@@ -51678,7 +51766,7 @@ child / embed_batch_size
       "versionNonce": 263487114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сигнал «уверенность низкая»\nis_low_confidence(): с реранкером — его лучший балл <\nlow_conf_rerank; без реранкера — доля слов вопроса в контексте\n< low_conf_lexical и dense с BM25 не совпали в\nтоп-low_conf_agree_top → LOW_CONFIDENCE_NOTE в начале\nконтекста.",
@@ -51690,7 +51778,7 @@ child / embed_batch_size
       "originalText": "Сигнал «уверенность низкая»\nis_low_confidence(): с реранкером — его лучший балл <\nlow_conf_rerank; без реранкера — доля слов вопроса в контексте\n< low_conf_lexical и dense с BM25 не совпали в\nтоп-low_conf_agree_top → LOW_CONFIDENCE_NOTE в начале\nконтекста.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLb"
+      "index": "bLc"
     },
     {
       "id": "NfedzdlN",
@@ -51730,10 +51818,10 @@ child / embed_batch_size
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLc"
+      "index": "bLd"
     },
     {
       "id": "jGKRyon6",
@@ -51758,7 +51846,7 @@ child / embed_batch_size
       "versionNonce": 1704890157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ответ (чат)\nGlossary.reference_block() до\nglossary_max_entries; chat_user_content();\nask_llm(chat_system_prompt() — RU / EN, история):\ntemperature, max_tokens; strip_reasoning()\nубирает <think>; finish_reason = length → пометка\n«ответ обрезан»; check_citations(): ссылки [файл,\nраздел] сверяются с контекстом, неверные — ⚠ и\nпредупреждение под ответом.",
@@ -51770,7 +51858,7 @@ child / embed_batch_size
       "originalText": "Ответ (чат)\nGlossary.reference_block() до\nglossary_max_entries; chat_user_content();\nask_llm(chat_system_prompt() — RU / EN, история):\ntemperature, max_tokens; strip_reasoning()\nубирает <think>; finish_reason = length → пометка\n«ответ обрезан»; check_citations(): ссылки [файл,\nраздел] сверяются с контекстом, неверные — ⚠ и\nпредупреждение под ответом.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLd"
+      "index": "bLe"
     },
     {
       "id": "SQkMkF4W",
@@ -51797,7 +51885,7 @@ child / embed_batch_size
       "versionNonce": 278693230,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51842,7 +51930,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLe"
+      "index": "bLf"
     },
     {
       "id": "D8WukJ2o",
@@ -51869,7 +51957,7 @@ child / embed_batch_size
       "versionNonce": 1580135453,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51906,7 +51994,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLf"
+      "index": "bLg"
     },
     {
       "id": "33rGwpeW",
@@ -51933,7 +52021,7 @@ child / embed_batch_size
       "versionNonce": 619172898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -51970,7 +52058,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLg"
+      "index": "bLh"
     },
     {
       "id": "cFQB4gvA",
@@ -51997,7 +52085,7 @@ child / embed_batch_size
       "versionNonce": 532260690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -52034,7 +52122,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLh"
+      "index": "bLi"
     },
     {
       "id": "xqa2LSkF",
@@ -52061,7 +52149,7 @@ child / embed_batch_size
       "versionNonce": 319777839,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -52098,7 +52186,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLi"
+      "index": "bLj"
     },
     {
       "id": "CsHZMLD0",
@@ -52125,7 +52213,7 @@ child / embed_batch_size
       "versionNonce": 1021795599,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -52162,7 +52250,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLj"
+      "index": "bLk"
     },
     {
       "id": "LuMSaWFW",
@@ -52187,7 +52275,7 @@ child / embed_batch_size
       "versionNonce": 295458663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Реранкер с пунктирной рамкой — необязательный: без него порядок задают шаги «Вектор», «Слова» и «Слияние RRF». Нормализация слов (normalize_token: russian_stem / english_stem) общая для индекса BM25, запроса и глоссария.",
@@ -52199,7 +52287,7 @@ child / embed_batch_size
       "originalText": "Реранкер с пунктирной рамкой — необязательный: без него порядок задают шаги «Вектор», «Слова» и «Слияние RRF». Нормализация слов (normalize_token: russian_stem / english_stem) общая для индекса BM25, запроса и глоссария.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLk"
+      "index": "bLl"
     },
     {
       "id": "owat3Zfr",
@@ -52224,7 +52312,7 @@ child / embed_batch_size
       "versionNonce": 559478248,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "8. Устройство: аудит документа, контроль исправлений и черновик карточки системы",
@@ -52236,7 +52324,7 @@ child / embed_batch_size
       "originalText": "8. Устройство: аудит документа, контроль исправлений и черновик карточки системы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLl"
+      "index": "bLm"
     },
     {
       "id": "10wdOIU8",
@@ -52261,7 +52349,7 @@ child / embed_batch_size
       "versionNonce": 1151731663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вкладки «Аудит документа» и «Контроль исправлений», кнопка черновика карточки на боковой панели. Сколько вызовов сервисов уходит на раздел, замечание и карточку — панель 9.",
@@ -52273,7 +52361,7 @@ child / embed_batch_size
       "originalText": "Вкладки «Аудит документа» и «Контроль исправлений», кнопка черновика карточки на боковой панели. Сколько вызовов сервисов уходит на раздел, замечание и карточку — панель 9.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLm"
+      "index": "bLn"
     },
     {
       "id": "DwLZNqdn",
@@ -52298,7 +52386,7 @@ child / embed_batch_size
       "versionNonce": 1558299979,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА — вкладка «Аудит документа», настройки — блок «⚙️ Настройки аудита» на ней",
@@ -52310,7 +52398,7 @@ child / embed_batch_size
       "originalText": "АУДИТ ДОКУМЕНТА — вкладка «Аудит документа», настройки — блок «⚙️ Настройки аудита» на ней",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLn"
+      "index": "bLo"
     },
     {
       "id": "rETAkngy",
@@ -52346,10 +52434,10 @@ child / embed_batch_size
           "id": "gP899Gls"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLo"
+      "index": "bLp"
     },
     {
       "id": "6Bd81CsR",
@@ -52374,7 +52462,7 @@ child / embed_batch_size
       "versionNonce": 1830369373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "run_audit()\naudit_cfg():\naudit_reasoning — без\nвыключателя рассуждений,\nmax_tokens + 6000, таймаут\n≥ 300 с; reasoning_on() —\nвключатель в запросе.\nrecord_answers(): каждый\nзапрос и ответ модели\nслово в слово.",
@@ -52386,7 +52474,7 @@ child / embed_batch_size
       "originalText": "run_audit()\naudit_cfg():\naudit_reasoning — без\nвыключателя рассуждений,\nmax_tokens + 6000, таймаут\n≥ 300 с; reasoning_on() —\nвключатель в запросе.\nrecord_answers(): каждый\nзапрос и ответ модели\nслово в слово.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLp"
+      "index": "bLq"
     },
     {
       "id": "MuD4E896",
@@ -52426,10 +52514,10 @@ child / embed_batch_size
           "id": "OVU8BgUp"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLq"
+      "index": "bLr"
     },
     {
       "id": "MUbaY5AX",
@@ -52454,7 +52542,7 @@ child / embed_batch_size
       "versionNonce": 1575129948,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "document_to_markdown()\n.docx — Docling →\nexport_to_markdown() →\nclean_docling_markdown()\n(повторы объединённых\nячеек) →\ncompact_markdown_tables()\n(без выравнивания); .pdf —\nparse_pdf() →\nblocks_to_markdown().",
@@ -52466,7 +52554,7 @@ child / embed_batch_size
       "originalText": "document_to_markdown()\n.docx — Docling →\nexport_to_markdown() →\nclean_docling_markdown()\n(повторы объединённых\nячеек) →\ncompact_markdown_tables()\n(без выравнивания); .pdf —\nparse_pdf() →\nblocks_to_markdown().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLr"
+      "index": "bLs"
     },
     {
       "id": "GxQA2193",
@@ -52506,10 +52594,10 @@ child / embed_batch_size
           "id": "yySnDpUF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLs"
+      "index": "bLt"
     },
     {
       "id": "pNRZRPtP",
@@ -52534,7 +52622,7 @@ child / embed_batch_size
       "versionNonce": 1190851160,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "split_document_parts()\nпо разделам: заголовок с\nтекстом и таблицами;\nмелкие — вместе до\naudit_map_size, раздел до\n1,5 лимита — целым;\nбольшая таблица — по\nстрокам с шапкой.\ndocument_mode(): документ\nцеликом, если помещается в\nокно, иначе\ndocument_outline(). «Весь\nдокумент одним запросом» —\nwhole_document_part().",
@@ -52546,7 +52634,7 @@ child / embed_batch_size
       "originalText": "split_document_parts()\nпо разделам: заголовок с\nтекстом и таблицами;\nмелкие — вместе до\naudit_map_size, раздел до\n1,5 лимита — целым;\nбольшая таблица — по\nстрокам с шапкой.\ndocument_mode(): документ\nцеликом, если помещается в\nокно, иначе\ndocument_outline(). «Весь\nдокумент одним запросом» —\nwhole_document_part().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLt"
+      "index": "bLu"
     },
     {
       "id": "D9AspuI3",
@@ -52586,10 +52674,10 @@ child / embed_batch_size
           "id": "zrMh2SeF"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLu"
+      "index": "bLv"
     },
     {
       "id": "lsO4Dvds",
@@ -52614,7 +52702,7 @@ child / embed_batch_size
       "versionNonce": 1906022995,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Нормы\n«особое внимание» →\nspecial_focus_norms():\nодин поиск на аудит, до 2\nparent (низкая уверенность\n— нет). Для раздела\nbuild_norms_context():\nsmart_truncate(раздел,\naudit_query_chars) →\nsearch_parent_child() →\nсначала нормы по особому\nвниманию, затем раздела;\nцелые parent до\naudit_context_max_chars;\nнет — NO_NORMS_NOTE.\nselect_pinned(): правила\nэкспертов и карточки — до\naudit_pinned_max_chars.\nbasis_references() →\nfind_basis_documents():\nдокументы-основания по\nшифру и названию — их\nближайшие к разделу\nфрагменты до\naudit_basis_max_chars.",
@@ -52626,7 +52714,7 @@ child / embed_batch_size
       "originalText": "Нормы\n«особое внимание» →\nspecial_focus_norms():\nодин поиск на аудит, до 2\nparent (низкая уверенность\n— нет). Для раздела\nbuild_norms_context():\nsmart_truncate(раздел,\naudit_query_chars) →\nsearch_parent_child() →\nсначала нормы по особому\nвниманию, затем раздела;\nцелые parent до\naudit_context_max_chars;\nнет — NO_NORMS_NOTE.\nselect_pinned(): правила\nэкспертов и карточки — до\naudit_pinned_max_chars.\nbasis_references() →\nfind_basis_documents():\nдокументы-основания по\nшифру и названию — их\nближайшие к разделу\nфрагменты до\naudit_basis_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLv"
+      "index": "bLw"
     },
     {
       "id": "qs8pL0Af",
@@ -52666,10 +52754,10 @@ child / embed_batch_size
           "id": "kafNxSVO"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLw"
+      "index": "bLx"
     },
     {
       "id": "IZVWtEfn",
@@ -52694,7 +52782,7 @@ child / embed_batch_size
       "versionNonce": 2141418060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "MAP\naudit_section(): документ\nцеликом или оглавление +\nlocation_line() + часть →\nask_llm() →\nparse_findings()\n(подпункты — к своему\nзамечанию) →\nfinding_from_line(); с\nоглавлением —\nverify_absence(). Разделы\n— параллельно\n(audit_parallel).",
@@ -52706,7 +52794,7 @@ child / embed_batch_size
       "originalText": "MAP\naudit_section(): документ\nцеликом или оглавление +\nlocation_line() + часть →\nask_llm() →\nparse_findings()\n(подпункты — к своему\nзамечанию) →\nfinding_from_line(); с\nоглавлением —\nverify_absence(). Разделы\n— параллельно\n(audit_parallel).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLx"
+      "index": "bLy"
     },
     {
       "id": "McoQshqI",
@@ -52746,10 +52834,10 @@ child / embed_batch_size
           "id": "j12eG9nh"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bLy"
+      "index": "bLz"
     },
     {
       "id": "ZLYA0LRc",
@@ -52774,7 +52862,7 @@ child / embed_batch_size
       "versionNonce": 1909089081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Самокритика\nuse_self_critique:\ncritique_findings() —\nCRITIQUE_SYSTEM, документ\nцеликом + «особое\nвнимание» (такие замечания\nудаляются только при\nопровержении) → JSON\n{verdict, severity,\ncategory, quote}; цитата\nсверяется quote_in_text().",
@@ -52786,7 +52874,7 @@ child / embed_batch_size
       "originalText": "Самокритика\nuse_self_critique:\ncritique_findings() —\nCRITIQUE_SYSTEM, документ\nцеликом + «особое\nвнимание» (такие замечания\nудаляются только при\nопровержении) → JSON\n{verdict, severity,\ncategory, quote}; цитата\nсверяется quote_in_text().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLz"
+      "index": "bM0"
     },
     {
       "id": "6F6nwrZO",
@@ -52826,10 +52914,10 @@ child / embed_batch_size
           "id": "GJ96ZiuZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bM0"
+      "index": "bM1"
     },
     {
       "id": "V5bZuhwy",
@@ -52854,7 +52942,7 @@ child / embed_batch_size
       "versionNonce": 458806166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Глубокая проверка\n_run_deep():\nfind_processes() — шаги из\nтаблицы операций, списка\nшагов или подразделов «Шаг\nN» → build_deep_tasks() →\nlimit_tasks(): не больше\naudit_deep_max_calls →\nrun_tasks(): пары шагов,\nтребования, границы,\nутверждения частей →\nconflict_tasks():\nпротиворечия; цифры —\nquantity_calculations();\nопечатки.",
@@ -52866,7 +52954,7 @@ child / embed_batch_size
       "originalText": "Глубокая проверка\n_run_deep():\nfind_processes() — шаги из\nтаблицы операций, списка\nшагов или подразделов «Шаг\nN» → build_deep_tasks() →\nlimit_tasks(): не больше\naudit_deep_max_calls →\nrun_tasks(): пары шагов,\nтребования, границы,\nутверждения частей →\nconflict_tasks():\nпротиворечия; цифры —\nquantity_calculations();\nопечатки.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bM1"
+      "index": "bM2"
     },
     {
       "id": "vNGIpVJL",
@@ -52906,10 +52994,10 @@ child / embed_batch_size
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bM2"
+      "index": "bM3"
     },
     {
       "id": "ypdrVwJY",
@@ -52934,7 +53022,7 @@ child / embed_batch_size
       "versionNonce": 1967309312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Проходы 2–3\n_run_passes()\n(audit_passes): разделы и\nвопросы PASS_DEEP_KINDS\nещё раз с температурой ≥\nPASS_TEMPERATURE (0,4); в\norigins — «#p2», «#p3»:\nнайденное несколькими\nпроходами считается\nподтверждённым.",
@@ -52946,7 +53034,7 @@ child / embed_batch_size
       "originalText": "Проходы 2–3\n_run_passes()\n(audit_passes): разделы и\nвопросы PASS_DEEP_KINDS\nещё раз с температурой ≥\nPASS_TEMPERATURE (0,4); в\norigins — «#p2», «#p3»:\nнайденное несколькими\nпроходами считается\nподтверждённым.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bM3"
+      "index": "bM4"
     },
     {
       "id": "gP899Gls",
@@ -52973,7 +53061,7 @@ child / embed_batch_size
       "versionNonce": 1302374772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53010,7 +53098,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM4"
+      "index": "bM5"
     },
     {
       "id": "OVU8BgUp",
@@ -53037,7 +53125,7 @@ child / embed_batch_size
       "versionNonce": 989291074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53074,7 +53162,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM5"
+      "index": "bM6"
     },
     {
       "id": "yySnDpUF",
@@ -53101,7 +53189,7 @@ child / embed_batch_size
       "versionNonce": 2123838774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53138,7 +53226,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM6"
+      "index": "bM7"
     },
     {
       "id": "zrMh2SeF",
@@ -53165,7 +53253,7 @@ child / embed_batch_size
       "versionNonce": 1271288365,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53202,7 +53290,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM7"
+      "index": "bM8"
     },
     {
       "id": "kafNxSVO",
@@ -53229,7 +53317,7 @@ child / embed_batch_size
       "versionNonce": 1487354759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53266,7 +53354,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM8"
+      "index": "bM9"
     },
     {
       "id": "j12eG9nh",
@@ -53293,7 +53381,7 @@ child / embed_batch_size
       "versionNonce": 900965996,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53330,7 +53418,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM9"
+      "index": "bMA"
     },
     {
       "id": "GJ96ZiuZ",
@@ -53357,7 +53445,7 @@ child / embed_batch_size
       "versionNonce": 442574064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -53394,7 +53482,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMA"
+      "index": "bMB"
     },
     {
       "id": "La52gouI",
@@ -53434,10 +53522,10 @@ child / embed_batch_size
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMB"
+      "index": "bMC"
     },
     {
       "id": "bOj4RnYI",
@@ -53462,7 +53550,7 @@ child / embed_batch_size
       "versionNonce": 1738418226,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Пункты\nfound_so_far_block():\nзамечания других проверок\n(до 12 000 симв.) →\nanswer_focus_point():\n«особое внимание» и\nчек-лист — ответ по\nдокументу, новые\nзамечания, «из документа\nне ясно»; answer_system():\nчто документ требует от\nсистемы с карточкой\n(audit_systems).",
@@ -53474,7 +53562,7 @@ child / embed_batch_size
       "originalText": "Пункты\nfound_so_far_block():\nзамечания других проверок\n(до 12 000 симв.) →\nanswer_focus_point():\n«особое внимание» и\nчек-лист — ответ по\nдокументу, новые\nзамечания, «из документа\nне ясно»; answer_system():\nчто документ требует от\nсистемы с карточкой\n(audit_systems).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMC"
+      "index": "bMD"
     },
     {
       "id": "vujimxkk",
@@ -53514,10 +53602,10 @@ child / embed_batch_size
           "id": "tX38AYgs"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMD"
+      "index": "bME"
     },
     {
       "id": "iPOOvSoV",
@@ -53542,7 +53630,7 @@ child / embed_batch_size
       "versionNonce": 1466250251,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Повтор и проверки без\nмодели\n_recheck(): разделы, где\nмодель не ответила, — ещё\nраз с retry_timeout().\ncheck_abbreviations(),\ncheck_formatting() — ещё\nдо проверки разделов;\nunverified_refs() и\ncheck_citations(): ссылки\nи цифры замечаний — в\nдокументе и нормах.",
@@ -53554,7 +53642,7 @@ child / embed_batch_size
       "originalText": "Повтор и проверки без\nмодели\n_recheck(): разделы, где\nмодель не ответила, — ещё\nраз с retry_timeout().\ncheck_abbreviations(),\ncheck_formatting() — ещё\nдо проверки разделов;\nunverified_refs() и\ncheck_citations(): ссылки\nи цифры замечаний — в\nдокументе и нормах.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bME"
+      "index": "bMF"
     },
     {
       "id": "wdlboIle",
@@ -53594,10 +53682,10 @@ child / embed_batch_size
           "id": "wnbtzw0P"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMF"
+      "index": "bMG"
     },
     {
       "id": "x7w6MR2n",
@@ -53622,7 +53710,7 @@ child / embed_batch_size
       "versionNonce": 1611850607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "REDUCE: повторы\nmodel_findings() →\ncollect_unique_findings()\n(основы ≥ 80 %, в кусках\nодного раздела —\nsection_runs() — ≥ 40 %;\nsteps_conflict() — разные\nшаги не склеиваются) →\nclean_typos() (без модели)\n→\nmerge_duplicate_findings()\n(audit_merge_duplicates,\n+1 вызов): замечания\nодного ответа и о разных\nшагах не сливаются.",
@@ -53634,7 +53722,7 @@ child / embed_batch_size
       "originalText": "REDUCE: повторы\nmodel_findings() →\ncollect_unique_findings()\n(основы ≥ 80 %, в кусках\nодного раздела —\nsection_runs() — ≥ 40 %;\nsteps_conflict() — разные\nшаги не склеиваются) →\nclean_typos() (без модели)\n→\nmerge_duplicate_findings()\n(audit_merge_duplicates,\n+1 вызов): замечания\nодного ответа и о разных\nшагах не сливаются.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMG"
+      "index": "bMH"
     },
     {
       "id": "zJiZX7Zn",
@@ -53674,10 +53762,10 @@ child / embed_batch_size
           "id": "Ejv9n8MW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMH"
+      "index": "bMI"
     },
     {
       "id": "V1NKzCq9",
@@ -53702,7 +53790,7 @@ child / embed_batch_size
       "versionNonce": 333788272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Разделы\nsplit_minor_findings():\nглавное, мелкие, опечатки\n→ group_by_section(): по\nразделам документа, в его\nпорядке; corroboration() —\nсколько проверок нашли\nзамечание.",
@@ -53714,7 +53802,7 @@ child / embed_batch_size
       "originalText": "Разделы\nsplit_minor_findings():\nглавное, мелкие, опечатки\n→ group_by_section(): по\nразделам документа, в его\nпорядке; corroboration() —\nсколько проверок нашли\nзамечание.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMI"
+      "index": "bMJ"
     },
     {
       "id": "iSBNSO9S",
@@ -53754,10 +53842,10 @@ child / embed_batch_size
           "id": "16VaL3EV"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMJ"
+      "index": "bMK"
     },
     {
       "id": "h0SN0t42",
@@ -53782,7 +53870,7 @@ child / embed_batch_size
       "versionNonce": 1210471730,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "«Главное»\nsummary_candidates() →\nselect_summary()\n(audit_summary_max, +1\nвызов): модель-редактор\nвыбирает важное и пишет\nсуть строкой со ссылкой на\nномер; не ответила —\n_summary_fallback(): по\nподтверждению и\nкритичности.",
@@ -53794,7 +53882,7 @@ child / embed_batch_size
       "originalText": "«Главное»\nsummary_candidates() →\nselect_summary()\n(audit_summary_max, +1\nвызов): модель-редактор\nвыбирает важное и пишет\nсуть строкой со ссылкой на\nномер; не ответила —\n_summary_fallback(): по\nподтверждению и\nкритичности.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMK"
+      "index": "bML"
     },
     {
       "id": "MLM3kINZ",
@@ -53834,10 +53922,10 @@ child / embed_batch_size
           "id": "emnEvmko"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bML"
+      "index": "bMM"
     },
     {
       "id": "wJZd85gr",
@@ -53862,7 +53950,7 @@ child / embed_batch_size
       "versionNonce": 2128766942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Заключение и лог\nbuild_final_report():\n«Главное», замечания по\nразделам, ответы на\nпункты, системы;\naudit_log_markdown(): лог\nс настройками прогона;\nraw_answers_markdown():\nсырые ответы модели .md.",
@@ -53874,7 +53962,7 @@ child / embed_batch_size
       "originalText": "Заключение и лог\nbuild_final_report():\n«Главное», замечания по\nразделам, ответы на\nпункты, системы;\naudit_log_markdown(): лог\nс настройками прогона;\nraw_answers_markdown():\nсырые ответы модели .md.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMM"
+      "index": "bMN"
     },
     {
       "id": "hx8woo9N",
@@ -53914,10 +54002,10 @@ child / embed_batch_size
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMN"
+      "index": "bMO"
     },
     {
       "id": "iKBY6K5p",
@@ -53942,7 +54030,7 @@ child / embed_batch_size
       "versionNonce": 1345748601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Документ с замечаниями\nannotate_docx_with_findings():\n_locate_by_quote() →\n_isolate_range() →\nadd_comment(); без цитаты\n— _locate_by_words() (≥ 2\nслов и ≥ 30 %,\nоднозначно); иначе —\nсписок в начале документа.",
@@ -53954,7 +54042,7 @@ child / embed_batch_size
       "originalText": "Документ с замечаниями\nannotate_docx_with_findings():\n_locate_by_quote() →\n_isolate_range() →\nadd_comment(); без цитаты\n— _locate_by_words() (≥ 2\nслов и ≥ 30 %,\nоднозначно); иначе —\nсписок в начале документа.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMO"
+      "index": "bMP"
     },
     {
       "id": "afp2iGWn",
@@ -53990,10 +54078,10 @@ child / embed_batch_size
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMP"
+      "index": "bMQ"
     },
     {
       "id": "KSnAoUBM",
@@ -54018,7 +54106,7 @@ child / embed_batch_size
       "versionNonce": 919886983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Сверка с эталоном\ncompare_with_reference():\nмодель сверяет каждый\nпункт эталона с\nзамечаниями аудита — то же\nместо и суть: найдено,\nчастично, пропущено;\nпачками, пропущенное\nпереспрашивается →\nreference_markdown().",
@@ -54030,7 +54118,7 @@ child / embed_batch_size
       "originalText": "Сверка с эталоном\ncompare_with_reference():\nмодель сверяет каждый\nпункт эталона с\nзамечаниями аудита — то же\nместо и суть: найдено,\nчастично, пропущено;\nпачками, пропущенное\nпереспрашивается →\nreference_markdown().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMQ"
+      "index": "bMR"
     },
     {
       "id": "X8Wu67Sw",
@@ -54057,7 +54145,7 @@ child / embed_batch_size
       "versionNonce": 1976364314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54094,7 +54182,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMR"
+      "index": "bMS"
     },
     {
       "id": "tX38AYgs",
@@ -54121,7 +54209,7 @@ child / embed_batch_size
       "versionNonce": 2103868351,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54158,7 +54246,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMS"
+      "index": "bMT"
     },
     {
       "id": "wnbtzw0P",
@@ -54185,7 +54273,7 @@ child / embed_batch_size
       "versionNonce": 1437884666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54222,7 +54310,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMT"
+      "index": "bMU"
     },
     {
       "id": "Ejv9n8MW",
@@ -54249,7 +54337,7 @@ child / embed_batch_size
       "versionNonce": 1495516759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54286,7 +54374,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMU"
+      "index": "bMV"
     },
     {
       "id": "16VaL3EV",
@@ -54313,7 +54401,7 @@ child / embed_batch_size
       "versionNonce": 573772488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54350,7 +54438,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMV"
+      "index": "bMW"
     },
     {
       "id": "emnEvmko",
@@ -54377,7 +54465,7 @@ child / embed_batch_size
       "versionNonce": 2132548085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54414,7 +54502,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMW"
+      "index": "bMX"
     },
     {
       "id": "TZYNSf5h",
@@ -54441,7 +54529,7 @@ child / embed_batch_size
       "versionNonce": 1205195099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54478,7 +54566,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMX"
+      "index": "bMY"
     },
     {
       "id": "yKseTRwq",
@@ -54505,7 +54593,7 @@ child / embed_batch_size
       "versionNonce": 2099732778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -54550,7 +54638,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMY"
+      "index": "bMZ"
     },
     {
       "id": "N9Om56lu",
@@ -54575,7 +54663,7 @@ child / embed_batch_size
       "versionNonce": 91742678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ — вкладка «Контроль исправлений»",
@@ -54587,7 +54675,7 @@ child / embed_batch_size
       "originalText": "КОНТРОЛЬ ИСПРАВЛЕНИЙ — вкладка «Контроль исправлений»",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMZ"
+      "index": "bMa"
     },
     {
       "id": "nTSSlEjj",
@@ -54623,10 +54711,10 @@ child / embed_batch_size
           "id": "Zar9Y3LN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMa"
+      "index": "bMb"
     },
     {
       "id": "uGzxhM1L",
@@ -54651,7 +54739,7 @@ child / embed_batch_size
       "versionNonce": 804496879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "document_to_markdown() →\nsplit_into_sections()\nновая редакция документа, разделы до\naudit_map_size.",
@@ -54663,7 +54751,7 @@ child / embed_batch_size
       "originalText": "document_to_markdown() →\nsplit_into_sections()\nновая редакция документа, разделы до\naudit_map_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMb"
+      "index": "bMc"
     },
     {
       "id": "WZV3D3Fx",
@@ -54703,10 +54791,10 @@ child / embed_batch_size
           "id": "2Yvbu1dU"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMc"
+      "index": "bMd"
     },
     {
       "id": "jvCTLAIf",
@@ -54731,7 +54819,7 @@ child / embed_batch_size
       "versionNonce": 419436533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "build_section_index()\nэмбеддинги разделов (до\nsection_embed_chars) +\nLightweightBM25 по разделам; один раз\nна документ.",
@@ -54743,7 +54831,7 @@ child / embed_batch_size
       "originalText": "build_section_index()\nэмбеддинги разделов (до\nsection_embed_chars) +\nLightweightBM25 по разделам; один раз\nна документ.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMd"
+      "index": "bMe"
     },
     {
       "id": "vb9LjxEi",
@@ -54783,10 +54871,10 @@ child / embed_batch_size
           "id": "p2ERzJbS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMe"
+      "index": "bMf"
     },
     {
       "id": "dCGPTpDu",
@@ -54811,7 +54899,7 @@ child / embed_batch_size
       "versionNonce": 762571332,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "verify_remark(): подбор\nнормы — build_norms_context()\n(галочка «база знаний»);\npick_sections_for_remark(): косинус +\nBM25 + реранкер (best_window), RRF →\nreview_top_sections разделов до\nreview_context_max_chars.",
@@ -54823,7 +54911,7 @@ child / embed_batch_size
       "originalText": "verify_remark(): подбор\nнормы — build_norms_context()\n(галочка «база знаний»);\npick_sections_for_remark(): косинус +\nBM25 + реранкер (best_window), RRF →\nreview_top_sections разделов до\nreview_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMf"
+      "index": "bMg"
     },
     {
       "id": "I7P2VCzP",
@@ -54863,10 +54951,10 @@ child / embed_batch_size
           "id": "4iAX8TvS"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMg"
+      "index": "bMh"
     },
     {
       "id": "aOGk1F4k",
@@ -54891,7 +54979,7 @@ child / embed_batch_size
       "versionNonce": 1433573942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "review_prompt() → ask_llm()\nJSON {status, quote, comment}.",
@@ -54903,7 +54991,7 @@ child / embed_batch_size
       "originalText": "review_prompt() → ask_llm()\nJSON {status, quote, comment}.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMh"
+      "index": "bMi"
     },
     {
       "id": "xI48zG4D",
@@ -54943,10 +55031,10 @@ child / embed_batch_size
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMi"
+      "index": "bMj"
     },
     {
       "id": "kbeI2RDs",
@@ -54971,7 +55059,7 @@ child / embed_batch_size
       "versionNonce": 285805235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "parse_verification()\n«исправлено» и «частично»\nзасчитываются, только если\nquote_in_text() нашла цитату в\nразделах; иначе «не удалось\nпроверить».",
@@ -54983,7 +55071,7 @@ child / embed_batch_size
       "originalText": "parse_verification()\n«исправлено» и «частично»\nзасчитываются, только если\nquote_in_text() нашла цитату в\nразделах; иначе «не удалось\nпроверить».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMj"
+      "index": "bMk"
     },
     {
       "id": "G2Fvpjah",
@@ -55019,10 +55107,10 @@ child / embed_batch_size
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMk"
+      "index": "bMl"
     },
     {
       "id": "Td2zMVKT",
@@ -55047,7 +55135,7 @@ child / embed_batch_size
       "versionNonce": 49769556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "build_matrix_markdown() /\ngenerate_word_matrix()\nматрица контроля .md и .docx.",
@@ -55059,7 +55147,7 @@ child / embed_batch_size
       "originalText": "build_matrix_markdown() /\ngenerate_word_matrix()\nматрица контроля .md и .docx.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMl"
+      "index": "bMm"
     },
     {
       "id": "Zar9Y3LN",
@@ -55086,7 +55174,7 @@ child / embed_batch_size
       "versionNonce": 1192375867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -55123,7 +55211,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMm"
+      "index": "bMn"
     },
     {
       "id": "2Yvbu1dU",
@@ -55150,7 +55238,7 @@ child / embed_batch_size
       "versionNonce": 1912741177,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -55187,7 +55275,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMn"
+      "index": "bMo"
     },
     {
       "id": "p2ERzJbS",
@@ -55214,7 +55302,7 @@ child / embed_batch_size
       "versionNonce": 1753808393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -55251,7 +55339,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMo"
+      "index": "bMp"
     },
     {
       "id": "4iAX8TvS",
@@ -55278,7 +55366,7 @@ child / embed_batch_size
       "versionNonce": 1209698496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -55315,7 +55403,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMp"
+      "index": "bMq"
     },
     {
       "id": "79AfqqOw",
@@ -55342,7 +55430,7 @@ child / embed_batch_size
       "versionNonce": 649390567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -55379,7 +55467,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMq"
+      "index": "bMr"
     },
     {
       "id": "BAMVzGWG",
@@ -55404,7 +55492,7 @@ child / embed_batch_size
       "versionNonce": 769097572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Ошибки сервисов не превращаются в «чисто»: is_llm_error() — раздел попадает в «не удалось проверить», заключение помечается «проверено не полностью». Заключение и лог разделов хранятся в сеансе и не пропадают после скачивания.",
@@ -55416,7 +55504,7 @@ child / embed_batch_size
       "originalText": "Ошибки сервисов не превращаются в «чисто»: is_llm_error() — раздел попадает в «не удалось проверить», заключение помечается «проверено не полностью». Заключение и лог разделов хранятся в сеансе и не пропадают после скачивания.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMr"
+      "index": "bMs"
     },
     {
       "id": "QyCi5azJ",
@@ -55441,7 +55529,7 @@ child / embed_batch_size
       "versionNonce": 139838873,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ЧЕРНОВИК КАРТОЧКИ СИСТЕМЫ — кнопка «Собрать черновик карточки системы по базе» в блоке «Для аудита» боковой панели (mint/cards.py)",
@@ -55453,7 +55541,7 @@ child / embed_batch_size
       "originalText": "ЧЕРНОВИК КАРТОЧКИ СИСТЕМЫ — кнопка «Собрать черновик карточки системы по базе» в блоке «Для аудита» боковой панели (mint/cards.py)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMs"
+      "index": "bMt"
     },
     {
       "id": "VeNnbFEy",
@@ -55489,10 +55577,10 @@ child / embed_batch_size
           "id": "i74dH3Hk"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMt"
+      "index": "bMu"
     },
     {
       "id": "TYT6RVjB",
@@ -55517,7 +55605,7 @@ child / embed_batch_size
       "versionNonce": 539470164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "draft_system_card()\nразделы карточки CARD_SECTIONS (10:\nназвания, назначение, сервисы,\nлимиты, защита и хранение данных,\nпланы, ограничения, подключение,\nтребования) — параллельно, не больше\nCARD_PARALLEL и audit_parallel.",
@@ -55529,7 +55617,7 @@ child / embed_batch_size
       "originalText": "draft_system_card()\nразделы карточки CARD_SECTIONS (10:\nназвания, назначение, сервисы,\nлимиты, защита и хранение данных,\nпланы, ограничения, подключение,\nтребования) — параллельно, не больше\nCARD_PARALLEL и audit_parallel.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMu"
+      "index": "bMv"
     },
     {
       "id": "3HVpjO9S",
@@ -55569,10 +55657,10 @@ child / embed_batch_size
           "id": "jJ9GWsBf"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMv"
+      "index": "bMw"
     },
     {
       "id": "8E7T5UEN",
@@ -55597,7 +55685,7 @@ child / embed_batch_size
       "versionNonce": 912697281,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ask_section()\nсвой запрос к поиску на раздел →\nsearch_parent_child(): CARD_TOP_K\nфрагментов, без multi-query; ничего\nне найдено — раздел пустой, без\nвызова LLM.",
@@ -55609,7 +55697,7 @@ child / embed_batch_size
       "originalText": "ask_section()\nсвой запрос к поиску на раздел →\nsearch_parent_child(): CARD_TOP_K\nфрагментов, без multi-query; ничего\nне найдено — раздел пустой, без\nвызова LLM.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMw"
+      "index": "bMx"
     },
     {
       "id": "G6egOv7I",
@@ -55649,10 +55737,10 @@ child / embed_batch_size
           "id": "vy0q1Yfx"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMx"
+      "index": "bMy"
     },
     {
       "id": "MbVY2aBm",
@@ -55677,7 +55765,7 @@ child / embed_batch_size
       "versionNonce": 667925749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ask_llm()\ncard_section_system: только по\nфрагментам, у каждого факта —\n[Источник: файл, раздел]; сведений\nнет — «НЕТ В БАЗЕ».",
@@ -55689,7 +55777,7 @@ child / embed_batch_size
       "originalText": "ask_llm()\ncard_section_system: только по\nфрагментам, у каждого факта —\n[Источник: файл, раздел]; сведений\nнет — «НЕТ В БАЗЕ».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMy"
+      "index": "bMz"
     },
     {
       "id": "jegCd0eR",
@@ -55729,10 +55817,10 @@ child / embed_batch_size
           "id": "gnjGhy5q"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bMz"
+      "index": "bN0"
     },
     {
       "id": "qdSMG5VE",
@@ -55757,7 +55845,7 @@ child / embed_batch_size
       "versionNonce": 897888917,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "check_citations()\nфакт без ссылки или со ссылкой мимо\nнайденных фрагментов — пометка «⚠️\nпроверьте».",
@@ -55769,7 +55857,7 @@ child / embed_batch_size
       "originalText": "check_citations()\nфакт без ссылки или со ссылкой мимо\nнайденных фрагментов — пометка «⚠️\nпроверьте».",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bN0"
+      "index": "bN1"
     },
     {
       "id": "5oQAEtVY",
@@ -55809,10 +55897,10 @@ child / embed_batch_size
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bN1"
+      "index": "bN2"
     },
     {
       "id": "GbOQu2Mb",
@@ -55837,7 +55925,7 @@ child / embed_batch_size
       "versionNonce": 854319438,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "card_markdown()\nкарточка по шаблону: «Названия:» (по\nним аудит узнаёт систему в\nдокументе), пометка «черновик»,\nразделы CARD_LAYOUT, пробелы «нет в\nбазе», источники — source_name() без\nбаллов поиска → скачать .md.",
@@ -55849,7 +55937,7 @@ child / embed_batch_size
       "originalText": "card_markdown()\nкарточка по шаблону: «Названия:» (по\nним аудит узнаёт систему в\nдокументе), пометка «черновик»,\nразделы CARD_LAYOUT, пробелы «нет в\nбазе», источники — source_name() без\nбаллов поиска → скачать .md.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bN2"
+      "index": "bN3"
     },
     {
       "id": "1mlyVsKn",
@@ -55885,10 +55973,10 @@ child / embed_batch_size
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bN3"
+      "index": "bN4"
     },
     {
       "id": "PgclhLM7",
@@ -55913,7 +56001,7 @@ child / embed_batch_size
       "versionNonce": 505414483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Эксперт\nпроверяет факты по источникам,\nдописывает пробелы (ограничения,\nпланы со сроками), убирает пометку →\nзагружает карточку в базу → отмечает\nв «Карточки систем»: аудит берёт её в\nкаждую проверку.",
@@ -55925,7 +56013,7 @@ child / embed_batch_size
       "originalText": "Эксперт\nпроверяет факты по источникам,\nдописывает пробелы (ограничения,\nпланы со сроками), убирает пометку →\nзагружает карточку в базу → отмечает\nв «Карточки систем»: аудит берёт её в\nкаждую проверку.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bN4"
+      "index": "bN5"
     },
     {
       "id": "i74dH3Hk",
@@ -55952,7 +56040,7 @@ child / embed_batch_size
       "versionNonce": 1045373394,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -55989,7 +56077,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN5"
+      "index": "bN6"
     },
     {
       "id": "jJ9GWsBf",
@@ -56016,7 +56104,7 @@ child / embed_batch_size
       "versionNonce": 787637507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -56053,7 +56141,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN6"
+      "index": "bN7"
     },
     {
       "id": "vy0q1Yfx",
@@ -56080,7 +56168,7 @@ child / embed_batch_size
       "versionNonce": 675627666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -56117,7 +56205,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN7"
+      "index": "bN8"
     },
     {
       "id": "gnjGhy5q",
@@ -56144,7 +56232,7 @@ child / embed_batch_size
       "versionNonce": 1128558142,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -56181,7 +56269,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN8"
+      "index": "bN9"
     },
     {
       "id": "zp8qPU8V",
@@ -56208,7 +56296,7 @@ child / embed_batch_size
       "versionNonce": 1337792537,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "points": [
@@ -56245,7 +56333,7 @@ child / embed_batch_size
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN9"
+      "index": "bNA"
     },
     {
       "id": "BTEGRtD5",
@@ -56270,7 +56358,7 @@ child / embed_batch_size
       "versionNonce": 1511860888,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "9. Обращения к сервисам и нагрузка",
@@ -56282,7 +56370,7 @@ child / embed_batch_size
       "originalText": "9. Обращения к сервисам и нагрузка",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNA"
+      "index": "bNB"
     },
     {
       "id": "o59P4WPj",
@@ -56307,7 +56395,7 @@ child / embed_batch_size
       "versionNonce": 1742391837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Для оценки мощностей шлюза под своё число пользователей и объём документов. Все сервисы — OpenAI-совместимый HTTP API.",
@@ -56319,7 +56407,7 @@ child / embed_batch_size
       "originalText": "Для оценки мощностей шлюза под своё число пользователей и объём документов. Все сервисы — OpenAI-совместимый HTTP API.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNB"
+      "index": "bNC"
     },
     {
       "id": "Qaaxk4uy",
@@ -56351,10 +56439,10 @@ child / embed_batch_size
           "id": "zrn6omfM"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNC"
+      "index": "bND"
     },
     {
       "id": "zrn6omfM",
@@ -56379,7 +56467,7 @@ child / embed_batch_size
       "versionNonce": 1445141011,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "LLM — POST {LLM_API_URL}/chat/completions\n• ask_llm(): ответ в чате, condense_question(); в аудите — MAP,\n   critique_findings(), глубокая проверка, пункты,\n   merge_duplicate_findings(), select_summary(), compare_with_reference();\n   verify_remark() в контроле; draft_system_card() — вызов на раздел\n   карточки; --generate в eval\n• expand_query_multi() — если use_multi_query\n• _llm_prompt_tokens() — измерение «символов на токен» (max_tokens = 1)\n• GET {LLM_API_URL}/models — detect_server_info(): список моделей и окна\n   (панель 1)\nПовторы — llm_retries (панель 3); HTTP 429 — общая пауза всех потоков\n(_note_rate_limit(), Retry-After), _wait_rate_limit() перед каждым запросом.",
@@ -56391,7 +56479,7 @@ child / embed_batch_size
       "originalText": "LLM — POST {LLM_API_URL}/chat/completions\n• ask_llm(): ответ в чате, condense_question(); в аудите — MAP,\n   critique_findings(), глубокая проверка, пункты,\n   merge_duplicate_findings(), select_summary(), compare_with_reference();\n   verify_remark() в контроле; draft_system_card() — вызов на раздел\n   карточки; --generate в eval\n• expand_query_multi() — если use_multi_query\n• _llm_prompt_tokens() — измерение «символов на токен» (max_tokens = 1)\n• GET {LLM_API_URL}/models — detect_server_info(): список моделей и окна\n   (панель 1)\nПовторы — llm_retries (панель 3); HTTP 429 — общая пауза всех потоков\n(_note_rate_limit(), Retry-After), _wait_rate_limit() перед каждым запросом.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bND"
+      "index": "bNE"
     },
     {
       "id": "N5V20F1a",
@@ -56423,10 +56511,10 @@ child / embed_batch_size
           "id": "ITaNoM1N"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNE"
+      "index": "bNF"
     },
     {
       "id": "ITaNoM1N",
@@ -56451,7 +56539,7 @@ child / embed_batch_size
       "versionNonce": 886368424,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Эмбеддинги — POST {EMBED_API_URL}\n• get_query_embedding(): вопрос, раздел документа в аудите, замечание в\n   контроле\n• get_query_embeddings_batch(): индексация (пачками по embed_batch_size) и\n   build_section_index()\n• в поиске до 3 попыток с паузой 2 с\n• GET …/models рядом с EMBED_API_URL — вход модели (панель 1)",
@@ -56463,7 +56551,7 @@ child / embed_batch_size
       "originalText": "Эмбеддинги — POST {EMBED_API_URL}\n• get_query_embedding(): вопрос, раздел документа в аудите, замечание в\n   контроле\n• get_query_embeddings_batch(): индексация (пачками по embed_batch_size) и\n   build_section_index()\n• в поиске до 3 попыток с паузой 2 с\n• GET …/models рядом с EMBED_API_URL — вход модели (панель 1)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNF"
+      "index": "bNG"
     },
     {
       "id": "92CBj9Ed",
@@ -56495,10 +56583,10 @@ child / embed_batch_size
           "id": "pBGwmcpp"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNG"
+      "index": "bNH"
     },
     {
       "id": "pBGwmcpp",
@@ -56523,7 +56611,7 @@ child / embed_batch_size
       "versionNonce": 1849075733,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Реранкер — POST {RERANK_API_URL} (необязательно)\n• _rerank_request() через rerank_scores(): поиск и pick_sections_for_remark()\n• пачками (rerank_max_docs, rerank_char_budget)\n• повторов нет: ошибка → поиск без реранкера (в логе — HTTP-код и размер\n   пачки)\n• probe_reranker() — проверка связи в панели (кэш 5 мин)\nОтвет: {results: [{index, relevance_score}]} или [{index, score}].",
@@ -56535,7 +56623,7 @@ child / embed_batch_size
       "originalText": "Реранкер — POST {RERANK_API_URL} (необязательно)\n• _rerank_request() через rerank_scores(): поиск и pick_sections_for_remark()\n• пачками (rerank_max_docs, rerank_char_budget)\n• повторов нет: ошибка → поиск без реранкера (в логе — HTTP-код и размер\n   пачки)\n• probe_reranker() — проверка связи в панели (кэш 5 мин)\nОтвет: {results: [{index, relevance_score}]} или [{index, score}].",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNH"
+      "index": "bNI"
     },
     {
       "id": "ONSVr95E",
@@ -56567,10 +56655,10 @@ child / embed_batch_size
           "id": "lUPSXlwW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNI"
+      "index": "bNJ"
     },
     {
       "id": "lUPSXlwW",
@@ -56595,7 +56683,7 @@ child / embed_batch_size
       "versionNonce": 263174842,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Операция",
@@ -56607,7 +56695,7 @@ child / embed_batch_size
       "originalText": "Операция",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNJ"
+      "index": "bNK"
     },
     {
       "id": "URYNuNaj",
@@ -56639,10 +56727,10 @@ child / embed_batch_size
           "id": "bLWf2x3k"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNK"
+      "index": "bNL"
     },
     {
       "id": "bLWf2x3k",
@@ -56667,7 +56755,7 @@ child / embed_batch_size
       "versionNonce": 867626584,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "LLM",
@@ -56679,7 +56767,7 @@ child / embed_batch_size
       "originalText": "LLM",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNL"
+      "index": "bNM"
     },
     {
       "id": "x7nmx2Rg",
@@ -56711,10 +56799,10 @@ child / embed_batch_size
           "id": "0u9rPgsT"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNM"
+      "index": "bNN"
     },
     {
       "id": "0u9rPgsT",
@@ -56739,7 +56827,7 @@ child / embed_batch_size
       "versionNonce": 607210338,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Эмбеддинги",
@@ -56751,7 +56839,7 @@ child / embed_batch_size
       "originalText": "Эмбеддинги",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNN"
+      "index": "bNO"
     },
     {
       "id": "yeS4ZIqj",
@@ -56783,10 +56871,10 @@ child / embed_batch_size
           "id": "VD7ZOtdC"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNO"
+      "index": "bNP"
     },
     {
       "id": "VD7ZOtdC",
@@ -56811,7 +56899,7 @@ child / embed_batch_size
       "versionNonce": 1335103564,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Реранкер",
@@ -56823,7 +56911,7 @@ child / embed_batch_size
       "originalText": "Реранкер",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNP"
+      "index": "bNQ"
     },
     {
       "id": "SMIgiwrm",
@@ -56855,10 +56943,10 @@ child / embed_batch_size
           "id": "G5yPNdK8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNQ"
+      "index": "bNR"
     },
     {
       "id": "G5yPNdK8",
@@ -56883,7 +56971,7 @@ child / embed_batch_size
       "versionNonce": 506630157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Что растёт с бизнес-объёмом",
@@ -56895,7 +56983,7 @@ child / embed_batch_size
       "originalText": "Что растёт с бизнес-объёмом",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNR"
+      "index": "bNS"
     },
     {
       "id": "5WHiA0c0",
@@ -56927,10 +57015,10 @@ child / embed_batch_size
           "id": "IloYhSbH"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNS"
+      "index": "bNT"
     },
     {
       "id": "IloYhSbH",
@@ -56955,7 +57043,7 @@ child / embed_batch_size
       "versionNonce": 894803547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Вопрос в чате",
@@ -56967,7 +57055,7 @@ child / embed_batch_size
       "originalText": "Вопрос в чате",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNT"
+      "index": "bNU"
     },
     {
       "id": "NFfUALBD",
@@ -56999,10 +57087,10 @@ child / embed_batch_size
           "id": "2TaCVR3j"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNU"
+      "index": "bNV"
     },
     {
       "id": "2TaCVR3j",
@@ -57027,7 +57115,7 @@ child / embed_batch_size
       "versionNonce": 311891354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 (+1 уточнение при истории, +1\n   multi-query)",
@@ -57039,7 +57127,7 @@ child / embed_batch_size
       "originalText": "1 (+1 уточнение при истории, +1\n   multi-query)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNV"
+      "index": "bNW"
     },
     {
       "id": "EzxYBSjL",
@@ -57071,10 +57159,10 @@ child / embed_batch_size
           "id": "bX18GIPp"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNW"
+      "index": "bNX"
     },
     {
       "id": "bX18GIPp",
@@ -57099,7 +57187,7 @@ child / embed_batch_size
       "versionNonce": 2123077737,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 (+1 multi-query)",
@@ -57111,7 +57199,7 @@ child / embed_batch_size
       "originalText": "1 (+1 multi-query)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNX"
+      "index": "bNY"
     },
     {
       "id": "qGM4siz9",
@@ -57143,10 +57231,10 @@ child / embed_batch_size
           "id": "tyR4QZRj"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNY"
+      "index": "bNZ"
     },
     {
       "id": "tyR4QZRj",
@@ -57171,7 +57259,7 @@ child / embed_batch_size
       "versionNonce": 305959585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 2 запроса (16 кандидатов\nпачками)",
@@ -57183,7 +57271,7 @@ child / embed_batch_size
       "originalText": "≈ 2 запроса (16 кандидатов\nпачками)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNZ"
+      "index": "bNa"
     },
     {
       "id": "s5nu901v",
@@ -57215,10 +57303,10 @@ child / embed_batch_size
           "id": "HWSkPDLW"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNa"
+      "index": "bNb"
     },
     {
       "id": "HWSkPDLW",
@@ -57243,7 +57331,7 @@ child / embed_batch_size
       "versionNonce": 1387135285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "число пользователей × вопросов в день",
@@ -57255,7 +57343,7 @@ child / embed_batch_size
       "originalText": "число пользователей × вопросов в день",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNb"
+      "index": "bNc"
     },
     {
       "id": "0UwvHJM8",
@@ -57287,10 +57375,10 @@ child / embed_batch_size
           "id": "oJdTV4GZ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNc"
+      "index": "bNd"
     },
     {
       "id": "oJdTV4GZ",
@@ -57315,7 +57403,7 @@ child / embed_batch_size
       "versionNonce": 320229884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Аудит документа, на раздел",
@@ -57327,7 +57415,7 @@ child / embed_batch_size
       "originalText": "Аудит документа, на раздел",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNd"
+      "index": "bNe"
     },
     {
       "id": "6OTQHL9w",
@@ -57359,10 +57447,10 @@ child / embed_batch_size
           "id": "UolJPPIB"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNe"
+      "index": "bNf"
     },
     {
       "id": "UolJPPIB",
@@ -57387,7 +57475,7 @@ child / embed_batch_size
       "versionNonce": 1050657136,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "2 (MAP + самокритика) или 1; на аудит: +1\n   на пункт «особого внимания» и\n   чек-листа, +1 на систему с карточкой,\n   +1 сведение повторов, +1 «Главное», с\n   оглавлением — сверка «не описано» (до\n   15); глубокая проверка — до\n   audit_deep_max_calls; проходы 2–3\n   (audit_passes) повторяют разделы и\n   вопросы о процессе и цифрах",
@@ -57399,7 +57487,7 @@ child / embed_batch_size
       "originalText": "2 (MAP + самокритика) или 1; на аудит: +1\n   на пункт «особого внимания» и\n   чек-листа, +1 на систему с карточкой,\n   +1 сведение повторов, +1 «Главное», с\n   оглавлением — сверка «не описано» (до\n   15); глубокая проверка — до\n   audit_deep_max_calls; проходы 2–3\n   (audit_passes) повторяют разделы и\n   вопросы о процессе и цифрах",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNf"
+      "index": "bNg"
     },
     {
       "id": "m3IFdm9f",
@@ -57431,10 +57519,10 @@ child / embed_batch_size
           "id": "TNY2gnV7"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNg"
+      "index": "bNh"
     },
     {
       "id": "TNY2gnV7",
@@ -57459,7 +57547,7 @@ child / embed_batch_size
       "versionNonce": 14525363,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 (+1 на аудит и +1 на пункт\n   при «особом внимании»)",
@@ -57471,7 +57559,7 @@ child / embed_batch_size
       "originalText": "1 (+1 на аудит и +1 на пункт\n   при «особом внимании»)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNh"
+      "index": "bNi"
     },
     {
       "id": "pGWanLVu",
@@ -57503,10 +57591,10 @@ child / embed_batch_size
           "id": "YzIGSqVE"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNi"
+      "index": "bNj"
     },
     {
       "id": "YzIGSqVE",
@@ -57531,7 +57619,7 @@ child / embed_batch_size
       "versionNonce": 1228853070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 2",
@@ -57543,7 +57631,7 @@ child / embed_batch_size
       "originalText": "≈ 2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNj"
+      "index": "bNk"
     },
     {
       "id": "wHOTaeZY",
@@ -57575,10 +57663,10 @@ child / embed_batch_size
           "id": "DyMYLFzN"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNk"
+      "index": "bNl"
     },
     {
       "id": "DyMYLFzN",
@@ -57603,7 +57691,7 @@ child / embed_batch_size
       "versionNonce": 1565992457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "частей ≈ объём документа / audit_map_size: ФТ на 20 тыс. симв. ≈ 6 частей ≈ 12 вызовов LLM\n+ ≈ 35 коротких вопросов глубокой проверки (шагов процесса, требований и частей); документ\nцеликом добавляет свой объём во вход каждой проверки раздела",
@@ -57615,7 +57703,7 @@ child / embed_batch_size
       "originalText": "частей ≈ объём документа / audit_map_size: ФТ на 20 тыс. симв. ≈ 6 частей ≈ 12 вызовов LLM\n+ ≈ 35 коротких вопросов глубокой проверки (шагов процесса, требований и частей); документ\nцеликом добавляет свой объём во вход каждой проверки раздела",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNl"
+      "index": "bNm"
     },
     {
       "id": "ul2MTGut",
@@ -57647,10 +57735,10 @@ child / embed_batch_size
           "id": "D9tJ3Tow"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNm"
+      "index": "bNn"
     },
     {
       "id": "D9tJ3Tow",
@@ -57675,7 +57763,7 @@ child / embed_batch_size
       "versionNonce": 2121712154,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Контроль исправлений, на замечание",
@@ -57687,7 +57775,7 @@ child / embed_batch_size
       "originalText": "Контроль исправлений, на замечание",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNn"
+      "index": "bNo"
     },
     {
       "id": "G5Em71Sp",
@@ -57719,10 +57807,10 @@ child / embed_batch_size
           "id": "4Aq3UXiQ"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNo"
+      "index": "bNp"
     },
     {
       "id": "4Aq3UXiQ",
@@ -57747,7 +57835,7 @@ child / embed_batch_size
       "versionNonce": 1023123295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1",
@@ -57759,7 +57847,7 @@ child / embed_batch_size
       "originalText": "1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNp"
+      "index": "bNq"
     },
     {
       "id": "vlGye5H3",
@@ -57791,10 +57879,10 @@ child / embed_batch_size
           "id": "G4Em2JVD"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNq"
+      "index": "bNr"
     },
     {
       "id": "G4Em2JVD",
@@ -57819,7 +57907,7 @@ child / embed_batch_size
       "versionNonce": 95312819,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 (+1 с нормами)",
@@ -57831,7 +57919,7 @@ child / embed_batch_size
       "originalText": "1 (+1 с нормами)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNr"
+      "index": "bNs"
     },
     {
       "id": "hCj7lj7o",
@@ -57863,10 +57951,10 @@ child / embed_batch_size
           "id": "FCY02wkH"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNs"
+      "index": "bNt"
     },
     {
       "id": "FCY02wkH",
@@ -57891,7 +57979,7 @@ child / embed_batch_size
       "versionNonce": 1205086542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 1–2 (+2 с нормами)",
@@ -57903,7 +57991,7 @@ child / embed_batch_size
       "originalText": "≈ 1–2 (+2 с нормами)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNt"
+      "index": "bNu"
     },
     {
       "id": "yUU2sF2U",
@@ -57935,10 +58023,10 @@ child / embed_batch_size
           "id": "BhI01aLi"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNu"
+      "index": "bNv"
     },
     {
       "id": "BhI01aLi",
@@ -57963,7 +58051,7 @@ child / embed_batch_size
       "versionNonce": 1757123440,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "число замечаний; плюс эмбеддинги всех разделов новой редакции один раз",
@@ -57975,7 +58063,7 @@ child / embed_batch_size
       "originalText": "число замечаний; плюс эмбеддинги всех разделов новой редакции один раз",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNv"
+      "index": "bNw"
     },
     {
       "id": "9uDy9ElD",
@@ -58007,10 +58095,10 @@ child / embed_batch_size
           "id": "d47Qi4c8"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNw"
+      "index": "bNx"
     },
     {
       "id": "d47Qi4c8",
@@ -58035,7 +58123,7 @@ child / embed_batch_size
       "versionNonce": 516467266,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Черновик карточки системы",
@@ -58047,7 +58135,7 @@ child / embed_batch_size
       "originalText": "Черновик карточки системы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNx"
+      "index": "bNy"
     },
     {
       "id": "5Bo1eILu",
@@ -58079,10 +58167,10 @@ child / embed_batch_size
           "id": "OVpBqpyA"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bNy"
+      "index": "bNz"
     },
     {
       "id": "OVpBqpyA",
@@ -58107,7 +58195,7 @@ child / embed_batch_size
       "versionNonce": 548421217,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "до 10 (раздел, по которому в базе ничего\nне нашлось, — без вызова)",
@@ -58119,7 +58207,7 @@ child / embed_batch_size
       "originalText": "до 10 (раздел, по которому в базе ничего\nне нашлось, — без вызова)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNz"
+      "index": "bO0"
     },
     {
       "id": "AK7riwIq",
@@ -58151,10 +58239,10 @@ child / embed_batch_size
           "id": "ap4rJbup"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bO0"
+      "index": "bO1"
     },
     {
       "id": "ap4rJbup",
@@ -58179,7 +58267,7 @@ child / embed_batch_size
       "versionNonce": 184907741,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "до 10 (поиск на раздел)",
@@ -58191,7 +58279,7 @@ child / embed_batch_size
       "originalText": "до 10 (поиск на раздел)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO1"
+      "index": "bO2"
     },
     {
       "id": "0RNIR7ci",
@@ -58223,10 +58311,10 @@ child / embed_batch_size
           "id": "BoKptbKz"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bO2"
+      "index": "bO3"
     },
     {
       "id": "BoKptbKz",
@@ -58251,7 +58339,7 @@ child / embed_batch_size
       "versionNonce": 419990020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 2 на раздел",
@@ -58263,7 +58351,7 @@ child / embed_batch_size
       "originalText": "≈ 2 на раздел",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO3"
+      "index": "bO4"
     },
     {
       "id": "1mokJrEw",
@@ -58295,10 +58383,10 @@ child / embed_batch_size
           "id": "Mnh4KAXc"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bO4"
+      "index": "bO5"
     },
     {
       "id": "Mnh4KAXc",
@@ -58323,7 +58411,7 @@ child / embed_batch_size
       "versionNonce": 698831687,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "число систем; разделы — параллельно, не больше 3",
@@ -58335,7 +58423,7 @@ child / embed_batch_size
       "originalText": "число систем; разделы — параллельно, не больше 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO5"
+      "index": "bO6"
     },
     {
       "id": "XoIWhG3o",
@@ -58367,10 +58455,10 @@ child / embed_batch_size
           "id": "T23DUfNr"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bO6"
+      "index": "bO7"
     },
     {
       "id": "T23DUfNr",
@@ -58395,7 +58483,7 @@ child / embed_batch_size
       "versionNonce": 1944348611,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Загрузка документа",
@@ -58407,7 +58495,7 @@ child / embed_batch_size
       "originalText": "Загрузка документа",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO7"
+      "index": "bO8"
     },
     {
       "id": "RuxVmdzR",
@@ -58439,10 +58527,10 @@ child / embed_batch_size
           "id": "PwGoZtx6"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bO8"
+      "index": "bO9"
     },
     {
       "id": "PwGoZtx6",
@@ -58467,7 +58555,7 @@ child / embed_batch_size
       "versionNonce": 1534635193,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58479,7 +58567,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO9"
+      "index": "bOA"
     },
     {
       "id": "BrfX5oiy",
@@ -58511,10 +58599,10 @@ child / embed_batch_size
           "id": "ajBgJD8y"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOA"
+      "index": "bOB"
     },
     {
       "id": "ajBgJD8y",
@@ -58539,7 +58627,7 @@ child / embed_batch_size
       "versionNonce": 1750748887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "child / embed_batch_size\nзапросов",
@@ -58551,7 +58639,7 @@ child / embed_batch_size
       "originalText": "child / embed_batch_size\nзапросов",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOB"
+      "index": "bOC"
     },
     {
       "id": "fkocSPMc",
@@ -58583,10 +58671,10 @@ child / embed_batch_size
           "id": "DGFEz4o3"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOC"
+      "index": "bOD"
     },
     {
       "id": "DGFEz4o3",
@@ -58611,7 +58699,7 @@ child / embed_batch_size
       "versionNonce": 1638919536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58623,7 +58711,7 @@ child / embed_batch_size
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOD"
+      "index": "bOE"
     },
     {
       "id": "E5OP4Zgo",
@@ -58655,10 +58743,10 @@ child / embed_batch_size
           "id": "2X8dGEvm"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOE"
+      "index": "bOF"
     },
     {
       "id": "2X8dGEvm",
@@ -58683,7 +58771,7 @@ child / embed_batch_size
       "versionNonce": 794423897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 1 child на 250 симв. (400 − перекрытие 150): 250 тыс. симв. ≈ 1000 child ≈ 32 запроса",
@@ -58695,7 +58783,7 @@ child / embed_batch_size
       "originalText": "≈ 1 child на 250 симв. (400 − перекрытие 150): 250 тыс. симв. ≈ 1000 child ≈ 32 запроса",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOF"
+      "index": "bOG"
     },
     {
       "id": "xjw3Mynd",
@@ -58727,10 +58815,10 @@ child / embed_batch_size
           "id": "qvHktf6X"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOG"
+      "index": "bOH"
     },
     {
       "id": "qvHktf6X",
@@ -58755,7 +58843,7 @@ child / embed_batch_size
       "versionNonce": 32723047,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Проверка качества (и eval_search.py)",
@@ -58767,7 +58855,7 @@ child / embed_batch_size
       "originalText": "Проверка качества (и eval_search.py)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOH"
+      "index": "bOI"
     },
     {
       "id": "vRslnl2x",
@@ -58799,10 +58887,10 @@ child / embed_batch_size
           "id": "hrw0lZir"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOI"
+      "index": "bOJ"
     },
     {
       "id": "hrw0lZir",
@@ -58827,7 +58915,7 @@ child / embed_batch_size
       "versionNonce": 2002138294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 на вопрос при составлении вопросов; +1 с\n   ответами чата или multi-query",
@@ -58839,7 +58927,7 @@ child / embed_batch_size
       "originalText": "1 на вопрос при составлении вопросов; +1 с\n   ответами чата или multi-query",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOJ"
+      "index": "bOK"
     },
     {
       "id": "0GJRhlHR",
@@ -58871,10 +58959,10 @@ child / embed_batch_size
           "id": "O4xjcVYw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOK"
+      "index": "bOL"
     },
     {
       "id": "O4xjcVYw",
@@ -58899,7 +58987,7 @@ child / embed_batch_size
       "versionNonce": 715066907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "1 на вопрос",
@@ -58911,7 +58999,7 @@ child / embed_batch_size
       "originalText": "1 на вопрос",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOL"
+      "index": "bOM"
     },
     {
       "id": "lRhtutdd",
@@ -58943,10 +59031,10 @@ child / embed_batch_size
           "id": "QvJQiejl"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOM"
+      "index": "bON"
     },
     {
       "id": "QvJQiejl",
@@ -58971,7 +59059,7 @@ child / embed_batch_size
       "versionNonce": 644553354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "≈ 2 на вопрос",
@@ -58983,7 +59071,7 @@ child / embed_batch_size
       "originalText": "≈ 2 на вопрос",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bON"
+      "index": "bOO"
     },
     {
       "id": "inakCaFQ",
@@ -59015,10 +59103,10 @@ child / embed_batch_size
           "id": "jFJb5Ccw"
         }
       ],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
-      "index": "bOO"
+      "index": "bOP"
     },
     {
       "id": "jFJb5Ccw",
@@ -59043,7 +59131,7 @@ child / embed_batch_size
       "versionNonce": 1674963114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "ответы кэшируются на все варианты настроек",
@@ -59055,7 +59143,7 @@ child / embed_batch_size
       "originalText": "ответы кэшируются на все варианты настроек",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOP"
+      "index": "bOQ"
     },
     {
       "id": "fdHqXOIZ",
@@ -59080,7 +59168,7 @@ child / embed_batch_size
       "versionNonce": 1727908868,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790776894,
+      "updated": 1795462135046,
       "link": null,
       "locked": false,
       "text": "Память и диск (один процесс Streamlit на всех пользователей): FAISS IndexFlatL2 в памяти — child × размерность × 4 байта (Qwen3-Embedding-4B, 2560: ≈ 10 КБ на child, 10 000 child ≈ 100 МБ); BM25 — позиции слов всех parent; кэш _process_cache()\nдержит базу одним экземпляром. Диск KB_DIR: индексы + оригиналы sources/. LOG_DIR: mint_system.log (до 60 МБ с ротацией) и feedback.jsonl — растёт с числом отзывов.",
@@ -59092,7 +59180,1307 @@ child / embed_batch_size
       "originalText": "Память и диск (один процесс Streamlit на всех пользователей): FAISS IndexFlatL2 в памяти — child × размерность × 4 байта (Qwen3-Embedding-4B, 2560: ≈ 10 КБ на child, 10 000 child ≈ 100 МБ); BM25 — позиции слов всех parent; кэш _process_cache()\nдержит базу одним экземпляром. Диск KB_DIR: индексы + оригиналы sources/. LOG_DIR: mint_system.log (до 60 МБ с ротацией) и feedback.jsonl — растёт с числом отзывов.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOQ"
+      "index": "bOR"
+    },
+    {
+      "id": "vxxEtbWZ",
+      "type": "text",
+      "x": 2200,
+      "y": 16971.0,
+      "width": 100.8,
+      "height": 17.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1095261605,
+      "version": 1,
+      "versionNonce": 460084027,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Mint v21.4.1",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Mint v21.4.1",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOS"
+    },
+    {
+      "id": "e9a1ZHqG",
+      "type": "text",
+      "x": 30,
+      "y": 16971.0,
+      "width": 990.0,
+      "height": 37.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1538676438,
+      "version": 1,
+      "versionNonce": 1145825540,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "10. Формирование Word: основания, применимость и правки",
+      "fontSize": 30,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "10. Формирование Word: основания, применимость и правки",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOT"
+    },
+    {
+      "id": "6BckAk3e",
+      "type": "text",
+      "x": 30,
+      "y": 17015.0,
+      "width": 1111.8,
+      "height": 21.25,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 618131305,
+      "version": 1,
+      "versionNonce": 875329573,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Отдельный поток от аудита: шаблон и выбранные основания → контекст и применимость → Word → проверяемые связи.",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Отдельный поток от аудита: шаблон и выбранные основания → контекст и применимость → Word → проверяемые связи.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOU"
+    },
+    {
+      "id": "o8Ny7MOp",
+      "type": "rectangle",
+      "x": 30,
+      "y": 17054.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1004139431,
+      "version": 1,
+      "versionNonce": 935607231,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "nxUpPSu8"
+        },
+        {
+          "type": "arrow",
+          "id": "iliqImhw"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOV"
+    },
+    {
+      "id": "nxUpPSu8",
+      "type": "text",
+      "x": 42,
+      "y": 17066.25,
+      "width": 403.2,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 555008891,
+      "version": 1,
+      "versionNonce": 1237715787,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Задание из Word\ntab_template_draft.py: шаблон или пример и\nвыбранные исходные документы. Данные\nостаются в локальной базе знаний.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "o8Ny7MOp",
+      "originalText": "Задание из Word\ntab_template_draft.py: шаблон или пример и\nвыбранные исходные документы. Данные\nостаются в локальной базе знаний.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOW"
+    },
+    {
+      "id": "WV3vpYIc",
+      "type": "rectangle",
+      "x": 502.8,
+      "y": 17054.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2044199681,
+      "version": 1,
+      "versionNonce": 1180064102,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "9ZAyUH9g"
+        },
+        {
+          "type": "arrow",
+          "id": "iliqImhw"
+        },
+        {
+          "type": "arrow",
+          "id": "NzINpFEo"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOX"
+    },
+    {
+      "id": "9ZAyUH9g",
+      "type": "text",
+      "x": 514.8,
+      "y": 17066.25,
+      "width": 374.4,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 279863885,
+      "version": 1,
+      "versionNonce": 671709622,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Контекст\ndocument_context.py: infer_context()\nпредлагает target, objective, scope,\nparticipants по заголовкам шаблона.\nconfirm_context() требует подтверждения\nчеловеком.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "WV3vpYIc",
+      "originalText": "Контекст\ndocument_context.py: infer_context()\nпредлагает target, objective, scope,\nparticipants по заголовкам шаблона.\nconfirm_context() требует подтверждения\nчеловеком.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOY"
+    },
+    {
+      "id": "FCHqJNrQ",
+      "type": "rectangle",
+      "x": 975.6,
+      "y": 17054.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1526636591,
+      "version": 1,
+      "versionNonce": 703847967,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "LCDRemXz"
+        },
+        {
+          "type": "arrow",
+          "id": "NzINpFEo"
+        },
+        {
+          "type": "arrow",
+          "id": "gihbWK2h"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOZ"
+    },
+    {
+      "id": "LCDRemXz",
+      "type": "text",
+      "x": 987.6,
+      "y": 17066.25,
+      "width": 412.8,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 512682960,
+      "version": 1,
+      "versionNonce": 232900639,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Извлечение\ntemplate_draft.py: create_draft() обходит\nшаблон, извлекает точные цитаты оснований;\nкэш и параллельный разбор не меняют порядок\nтребований.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "FCHqJNrQ",
+      "originalText": "Извлечение\ntemplate_draft.py: create_draft() обходит\nшаблон, извлекает точные цитаты оснований;\nкэш и параллельный разбор не меняют порядок\nтребований.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOa"
+    },
+    {
+      "id": "iIOuRs4D",
+      "type": "rectangle",
+      "x": 1448.4,
+      "y": 17054.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1699685336,
+      "version": 1,
+      "versionNonce": 518524424,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "Mj6j61Xp"
+        },
+        {
+          "type": "arrow",
+          "id": "gihbWK2h"
+        },
+        {
+          "type": "arrow",
+          "id": "FZ7RYD2I"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOb"
+    },
+    {
+      "id": "Mj6j61Xp",
+      "type": "text",
+      "x": 1460.4,
+      "y": 17066.25,
+      "width": 422.4,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 66370517,
+      "version": 1,
+      "versionNonce": 2088710681,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Применимость\nrequirement_scope.py: classify() отделяет\ntarget/shared от\ninteraction/other/uncertain; без исполнителя\nнельзя уверенно назначить обязанность.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "iIOuRs4D",
+      "originalText": "Применимость\nrequirement_scope.py: classify() отделяет\ntarget/shared от\ninteraction/other/uncertain; без исполнителя\nнельзя уверенно назначить обязанность.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOc"
+    },
+    {
+      "id": "pnK9P1fD",
+      "type": "rectangle",
+      "x": 1921.2,
+      "y": 17054.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1207443029,
+      "version": 1,
+      "versionNonce": 929180283,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "3aiQ1Rgi"
+        },
+        {
+          "type": "arrow",
+          "id": "FZ7RYD2I"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOd"
+    },
+    {
+      "id": "3aiQ1Rgi",
+      "type": "text",
+      "x": 1933.2,
+      "y": 17066.25,
+      "width": 422.4,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1620418816,
+      "version": 1,
+      "versionNonce": 1425371644,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Сборка Word\ntemplate_draft.py: разделы, абзацы и таблицы\nзаполняются доказуемым содержанием;\nформатирование и защищённые поля\nсохраняются.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "pnK9P1fD",
+      "originalText": "Сборка Word\ntemplate_draft.py: разделы, абзацы и таблицы\nзаполняются доказуемым содержанием;\nформатирование и защищённые поля\nсохраняются.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOe"
+    },
+    {
+      "id": "iliqImhw",
+      "type": "arrow",
+      "x": 484.8,
+      "y": 17130.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 104091559,
+      "version": 1,
+      "versionNonce": 1638003102,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "o8Ny7MOp",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "WV3vpYIc",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOf"
+    },
+    {
+      "id": "NzINpFEo",
+      "type": "arrow",
+      "x": 957.6,
+      "y": 17130.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 807529813,
+      "version": 1,
+      "versionNonce": 1208816828,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "WV3vpYIc",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "FCHqJNrQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOg"
+    },
+    {
+      "id": "gihbWK2h",
+      "type": "arrow",
+      "x": 1430.4,
+      "y": 17130.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1346938791,
+      "version": 1,
+      "versionNonce": 459787257,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "FCHqJNrQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "iIOuRs4D",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOh"
+    },
+    {
+      "id": "FZ7RYD2I",
+      "type": "arrow",
+      "x": 1903.2,
+      "y": 17130.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1684329690,
+      "version": 1,
+      "versionNonce": 1722869346,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "iIOuRs4D",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1.0,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "pnK9P1fD",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOi"
+    },
+    {
+      "id": "IznEQWcC",
+      "type": "rectangle",
+      "x": 30,
+      "y": 17240.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 777671658,
+      "version": 1,
+      "versionNonce": 1081132578,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "2a2ZxCSR"
+        },
+        {
+          "type": "arrow",
+          "id": "QAbGQTYv"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOj"
+    },
+    {
+      "id": "2a2ZxCSR",
+      "type": "text",
+      "x": 42,
+      "y": 17252.25,
+      "width": 537.6,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1553072240,
+      "version": 1,
+      "versionNonce": 110758404,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Двусторонние связи\ndraft_traceability.py: build_traceability() сопоставляет\nизвлечённые требования с разделами и цитатами. От Word к\nоснованию и от основания к Word.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "IznEQWcC",
+      "originalText": "Двусторонние связи\ndraft_traceability.py: build_traceability() сопоставляет\nизвлечённые требования с разделами и цитатами. От Word к\nоснованию и от основания к Word.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOk"
+    },
+    {
+      "id": "cCYKea1V",
+      "type": "rectangle",
+      "x": 621.0,
+      "y": 17240.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 824780676,
+      "version": 1,
+      "versionNonce": 1739750,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "h9s09UKW"
+        },
+        {
+          "type": "arrow",
+          "id": "QAbGQTYv"
+        },
+        {
+          "type": "arrow",
+          "id": "vaMlW5Vb"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOl"
+    },
+    {
+      "id": "h9s09UKW",
+      "type": "text",
+      "x": 633.0,
+      "y": 17252.25,
+      "width": 528.0,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1466310692,
+      "version": 1,
+      "versionNonce": 507668719,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "От основания в чат\ndraft_traceability_ui.py передаёт точный ID требования;\ndocument_edit.py сохраняет применимость: внешние\nобязанности не становятся обязательствами цели.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "cCYKea1V",
+      "originalText": "От основания в чат\ndraft_traceability_ui.py передаёт точный ID требования;\ndocument_edit.py сохраняет применимость: внешние\nобязанности не становятся обязательствами цели.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOm"
+    },
+    {
+      "id": "9DOCy4wL",
+      "type": "rectangle",
+      "x": 1212.0,
+      "y": 17240.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 887863823,
+      "version": 1,
+      "versionNonce": 2050692273,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "Pdk8g2am"
+        },
+        {
+          "type": "arrow",
+          "id": "vaMlW5Vb"
+        },
+        {
+          "type": "arrow",
+          "id": "HoI8Omwn"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOn"
+    },
+    {
+      "id": "Pdk8g2am",
+      "type": "text",
+      "x": 1224.0,
+      "y": 17252.25,
+      "width": 518.4,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1994177841,
+      "version": 1,
+      "versionNonce": 600225567,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Правка с решением человека\ndocument_edit_chat.py: propose_edit() → сравнение →\nподтверждение, отклонение или undo_accepted_version().\nВесь документ заново не генерируется.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "9DOCy4wL",
+      "originalText": "Правка с решением человека\ndocument_edit_chat.py: propose_edit() → сравнение →\nподтверждение, отклонение или undo_accepted_version().\nВесь документ заново не генерируется.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOo"
+    },
+    {
+      "id": "INLf7B4r",
+      "type": "rectangle",
+      "x": 1803.0,
+      "y": 17240.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 140541513,
+      "version": 1,
+      "versionNonce": 212296401,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "gOcFE9WQ"
+        },
+        {
+          "type": "arrow",
+          "id": "HoI8Omwn"
+        }
+      ],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "index": "bOp"
+    },
+    {
+      "id": "gOcFE9WQ",
+      "type": "text",
+      "x": 1815.0,
+      "y": 17252.25,
+      "width": 480.0,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1070156888,
+      "version": 1,
+      "versionNonce": 2004613835,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Изменённые связи\nmark_stale_after_edits() помечает прежние связи\nустаревшими. История изменённых разделов полная;\nпоследние 10 DOCX-снимков нужны только для отмены.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "INLf7B4r",
+      "originalText": "Изменённые связи\nmark_stale_after_edits() помечает прежние связи\nустаревшими. История изменённых разделов полная;\nпоследние 10 DOCX-снимков нужны только для отмены.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOq"
+    },
+    {
+      "id": "QAbGQTYv",
+      "type": "arrow",
+      "x": 603.0,
+      "y": 17296.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 460381108,
+      "version": 1,
+      "versionNonce": 1974913608,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "IznEQWcC",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "cCYKea1V",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOr"
+    },
+    {
+      "id": "vaMlW5Vb",
+      "type": "arrow",
+      "x": 1194.0,
+      "y": 17296.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 274619326,
+      "version": 1,
+      "versionNonce": 1006881587,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "cCYKea1V",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "9DOCy4wL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOs"
+    },
+    {
+      "id": "HoI8Omwn",
+      "type": "arrow",
+      "x": 1785.0,
+      "y": 17296.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 401479824,
+      "version": 1,
+      "versionNonce": 699083238,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "9DOCy4wL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "INLf7B4r",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOt"
+    },
+    {
+      "id": "JCtzuwPd",
+      "type": "text",
+      "x": 30,
+      "y": 17376.25,
+      "width": 2160.0,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 716216987,
+      "version": 1,
+      "versionNonce": 296372588,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462135046,
+      "link": null,
+      "locked": false,
+      "text": "Ограничение: связи не доказывают, что извлечены ВСЕ требования широкого основания. Экспертная оценка после генерации остаётся необходимой; зелёные CI-тесты на синтетических документах не означают качество на реальном шаблоне.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Ограничение: связи не доказывают, что извлечены ВСЕ требования широкого основания. Экспертная оценка после генерации остаётся необходимой; зелёные CI-тесты на синтетических документах не означают качество на реальном шаблоне.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOu"
     }
   ],
   "appState": {
