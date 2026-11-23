@@ -385,22 +385,62 @@ def _write_run(run, text):
         run._r.insert(1 if run._r.rPr is not None else 0, element)
 
 
+def _insert_after(paragraph, run, value):
+    """Split placeholder runs so generated text cannot inherit their colors.
+
+    Keep the surrounding original runs (including their bold/italic and text)
+    intact. Only the newly inserted run is reset to ordinary document color.
+    """
+    from docx.text.run import Run
+
+    element = deepcopy(run._r)
+    inserted = Run(element, paragraph)
+    inserted.text = value
+    inserted.font.color.rgb = None
+    inserted.font.highlight_color = None
+    run._r.addnext(element)
+    return inserted
+
+
 def _replace(paragraph, start, end, text):
-    """Edit text runs without rebuilding the paragraph or changing neighboring formatting."""
+    """Replace a plain span while preserving unaffected Word runs and their styles."""
+    runs = list(paragraph.runs)
+    if not runs:
+        run = paragraph.add_run(text)
+        run.font.color.rgb = None
+        return
     pos = 0
-    for run in paragraph.runs:
+    inserted = False
+    for run in runs:
         old = run.text
         stop = pos + len(old)
-        if start == end and pos <= start <= stop:
-            _write_run(run, old[:start - pos] + text + old[start - pos:])
-            return
+        if start == end and not inserted and pos <= start <= stop:
+            offset = start - pos
+            _write_run(run, old[:offset])
+            new = _insert_after(paragraph, run, text)
+            if old[offset:]:
+                _insert_after(paragraph, new, old[offset:]).font.color.rgb = run.font.color.rgb
+            inserted = True
+            break
         if start < stop and end > pos:
-            prefix = old[:max(0, start - pos)]
-            suffix = old[max(0, end - pos):]
-            _write_run(run, prefix + (text if pos <= start < stop else "") + suffix)
+            if not inserted:
+                prefix = old[:max(0, start - pos)]
+                suffix = old[min(len(old), max(0, end - pos)):]
+                _write_run(run, prefix)
+                new = _insert_after(paragraph, run, text)
+                if suffix:
+                    tail = _insert_after(paragraph, new, suffix)
+                    tail.font.color.rgb = run.font.color.rgb
+                    tail.font.highlight_color = run.font.highlight_color
+                inserted = True
+            else:
+                # The following original run may still contain the end of the
+                # targeted placeholder; retain only its unaffected suffix.
+                _write_run(run, old[min(len(old), max(0, end - pos)):])
         pos = stop
-    if start == end:
-        paragraph.add_run(text)
+    if not inserted and start == end:
+        run = paragraph.add_run(text)
+        run.font.color.rgb = None
 
 
 def _note(doc, paragraph, title, detail="", conflict=False):
