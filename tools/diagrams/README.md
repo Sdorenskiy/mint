@@ -24,6 +24,10 @@ python render.py ../../docs/ru/MINT_architecture.excalidraw ../../docs/ru/MINT_a
 python render.py ../../docs/ru/MINT_engineering.excalidraw ../../docs/ru/MINT_engineering_preview.png 0.35
 ```
 
+## Required before publishing a release
+
+Both diagrams must reflect the actual code and UI for the release. For **every release**, update `DIAGRAM_RELEASE` in both generators to match `release/manifest.json`, review both diagrams, update English translations, rebuild the four editable scenes and four previews with the commands above, and commit all outputs together. Preview PNGs embed the release tag and a fingerprint of the exact Excalidraw scene (ignoring volatile timestamps). The CI test and release workflow call `tools/diagrams/check_release.py` to block stale or mismatched diagrams. Do not use real source documents, company topology or private data when describing the workflows.
+
 The labels are written in Russian in the scripts. With `--lang en` every label is replaced by its translation in
 the functions that wrap and place text, so box sizes are computed from the English text. A label without a
 translation stops the build with a list of what is missing; `DIAGRAM_COLLECT=labels.json` writes all Russian
