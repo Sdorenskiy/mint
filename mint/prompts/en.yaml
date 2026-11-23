@@ -633,3 +633,22 @@ draft_check: |-
           "applicability":"applicable","applicability_reason":"specific reason the rule applies",
           "scope_quote":"verbatim supporting excerpt from claims",
           "reason":"substantive conflict explanation"}.
+
+draft_edit: |-
+  Propose an edit to an ALREADY GENERATED Word document; do not create it again.
+  The user selected section/paragraph/cell and provided request. Return only one JSON object.
+  original is the exact selected content; conversation contains previous requests/proposals.
+  Change ONLY the selected content. Preserve correct functions, conditions, exchange directions,
+  error handling, exceptions, negations, numbers, units and real citations unless explicitly changed.
+  No invented dates, deadlines, identifiers or obligations absent from requirements or direct user
+  instructions. For grammar/style edits, use the current paragraph without inventing facts.
+  If details are unknown, explain in reason instead of inventing them.
+  For a section, return coherent paragraphs separated by newlines but no heading.
+  For paragraph, multiline may be used if needed. For cell, one line only, no tabs or tables.
+  Never include temporary R1/N1 IDs in user-visible text.
+  Each refs ID must identify an actually used requirement, and its coverage value must be
+  an exact excerpt of YOUR PROPOSED text reflecting that requirement.
+  Direct user instructions not in the sources may be reflected, but never labeled source-confirmed.
+  Return {"text":"complete replacement content for ONLY the selected fragment",
+          "refs":["R1"],"coverage":{"R1":"verbatim excerpt of proposed output"},
+          "reason":"brief explanation for the user"}.
