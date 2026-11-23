@@ -18,10 +18,11 @@ PNG_HEADER = b"\x89PNG\r\n\x1a\n"
 
 
 def generator_tag(filename):
-    code = ast.parse((DIAGRAMS / filename).read_text(encoding="utf-8"))
+    path = Path(filename) if Path(filename).is_absolute() else DIAGRAMS / filename
+    code = ast.parse(path.read_text(encoding="utf-8"))
     for node in code.body:
         if isinstance(node, ast.Assign) and any(
-                isinstance(n, ast.Name) and n.id == "DIAGRAM_RELEASE" for n in node.targets):
+                isinstance(n, ast.Name) and n.id in {"DIAGRAM_RELEASE", "MINT_VERSION"} for n in node.targets):
             return ast.literal_eval(node.value)
     raise ValueError(f"Missing DIAGRAM_RELEASE in {filename}")
 
@@ -39,6 +40,8 @@ def validate():
     data = json.loads(MANIFEST.read_text(encoding="utf-8"))
     tag = data["tag"]
     errors = []
+    if generator_tag(ROOT / "mint" / "version.py") != tag.removeprefix("v"):
+        errors.append("mint/version.py: application version differs from release tag")
     for filename in GENERATORS:
         current = generator_tag(filename)
         if current != tag:
