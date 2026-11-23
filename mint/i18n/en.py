@@ -3144,4 +3144,5 @@ EN = {
     "Где найден текст в Word": "Where this text appears in Word",
     "Ссылка модели без подтверждённого текстового фрагмента: {sections}": "Model citation without a confirmed output excerpt: {sections}",
     "Разделы, для которых требование рассматривалось: {sections}": "Sections for which the requirement was considered: {sections}",
+    "Требование": "Requirement",
 }
