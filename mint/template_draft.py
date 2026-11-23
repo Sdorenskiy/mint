@@ -498,8 +498,12 @@ def _safe_target(slot, target):
         return False
     return bool(body and slot.text.count(target) == 1 and (
         (body.startswith("[") and body.endswith("]") and _INSTRUCTION.search(body)) or
-        re.match(r"(?iu)^(?:укаж\w*|заполн\w*|встав\w*|опиш\w*|"
+        re.match(r"(?iu)^(?:указ\w*|укаж\w*|заполн\w*|встав\w*|опис\w*|опиш\w*|"
                  r"уточн\w*|перечисл\w*|привед\w*|enter|insert|fill|specify|describe)\b", body) or
+        (target == slot.text.strip() and re.match(
+            r"(?iu)^(?:в\s+(?:данном|этом|настоящем)\s+(?:разделе|подразделе|пункте)|здесь)\b", body)
+         and re.search(r"(?iu)\b(?:необходимо|следует|нужно|указать|описать|привести|"
+                       r"перечислить|раскрыть|включить|указываются)\b", body)) or
         re.fullmatch(r"[_…⋯.]{2,}", body)))
 
 
@@ -558,7 +562,9 @@ def _find_fields(cfg, slots, issues, emit):
             rows = _records(analysis, "fields")
         except DraftError:
             issues.append(tr("Не удалось разобрать часть шаблона: блок {n}.", n=i))
-            continue
+            # Still fill only deterministic, explicitly recognizable bracketed
+            # instructions. Do not abandon the entire document on layout error.
+            analysis, rows = {"fixed": []}, []
         allowed = dict(batch)
         occupied = {}
         for row in rows:
@@ -733,7 +739,8 @@ def _dictionary_table(headers, caption):
     names = [h.strip().casefold() for h in headers]
     return (len(names) >= 2 and
             any(k in names[0] for k in ("сокращ", "аббревиат", "термин", "abbreviation", "acronym", "term")) and
-            any(k in names[1] for k in ("расшифр", "определен", "значен", "definition", "meaning", "expansion")))
+            any(k in names[1] for k in ("расшифр", "определен", "значен", "полное наименован",
+                                       "наименован", "full name", "definition", "meaning", "expansion")))
 
 
 def _table_sample(cell):
