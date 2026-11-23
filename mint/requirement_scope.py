@@ -51,6 +51,9 @@ def classify(cfg, requirements, context, issues, emit):
             if not reason and category != "uncertain":
                 # A confident classification must have a human-reviewable reason.
                 continue
+            if category in {"target", "shared", "interaction"} and not actor:
+                # Without an identified obligated party, no confident assignment.
+                continue
             normalized[rid]["applicability"] = {
                 "category": category, "actor": actor,
                 "reason": reason or "Недостаточно сведений для определения применимости"}

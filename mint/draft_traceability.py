@@ -77,18 +77,23 @@ def by_basis_document(rows, source_names=()):
 
 
 
+def _section_key(section):
+    """Use the same section identity for trimmed Word headings and draft metadata."""
+    return " ".join(str(section or "").split())
+
+
 def mark_stale_after_edits(rows, changed_sections):
     """Previously anchored evidence cannot certify the user-edited Word version."""
-    touched = set(changed_sections)
+    touched = {_section_key(section) for section in changed_sections}
     updated = []
     for item in rows:
         row = {**item}
         mapped = set(row["candidate_sections"])
         mapped.update(evidence["section"] for evidence in row["anchored"] + row["cited_without_anchor"])
-        stale = sorted(mapped & touched)
+        stale = sorted(section for section in mapped if _section_key(section) in touched)
         row["stale_sections"] = stale
         if stale and row["coverage"] == "output_anchor" and all(
-                match["section"] in touched for match in row["anchored"]):
+                _section_key(match["section"]) in touched for match in row["anchored"]):
             row["coverage"] = "stale_after_edit"
         updated.append(row)
     return updated

@@ -3,7 +3,8 @@ import hashlib
 
 import streamlit as st
 
-from ..document_edit import apply_edit, get_target, list_targets, proposal_diff, propose_edit
+from ..document_edit import (apply_edit, get_target, list_targets, proposal_diff, propose_edit,
+                             record_accepted_version, undo_accepted_version)
 from ..i18n import tr
 from ..template_draft import DraftError
 
@@ -31,8 +32,8 @@ def render_draft_edit_chat(cfg, input_key, result):
         st.caption(tr("Принято правок: {count}. История хранится только в текущем сеансе.",
                       count=len(state["changes"])))
         if state["versions"] and st.button(tr("Отменить последнюю правку"), key="word_edit_undo"):
-            state["docx"] = state["versions"].pop()
-            state["changes"].pop()
+            undo_accepted_version(state)
+            st.session_state.pop("word_edit_focus_requirement", None)
             state["threads"].clear()
             state["pending"] = None
             st.rerun()
@@ -63,10 +64,15 @@ def render_draft_edit_chat(cfg, input_key, result):
                                    max_chars=3000, height=100, key="word_edit_request")
             sent = st.form_submit_button(tr("Предложить изменение"))
         if sent and request.strip():
+            focus = st.session_state.get("word_edit_focus_requirement")
+            focus_id = (focus["requirement_id"] if isinstance(focus, dict)
+                        and focus.get("identity") == state["identity"]
+                        and focus.get("target_id") == selected_id else None)
             try:
                 proposed = propose_edit(cfg, state["docx"], selected_id, request,
                                         result["requirements"], thread,
-                                        context=result.get("document_context"))
+                                        context=result.get("document_context"),
+                                        focus_requirement_id=focus_id)
             except DraftError as exc:
                 st.warning(str(exc))
             else:
@@ -99,12 +105,9 @@ def render_draft_edit_chat(cfg, input_key, result):
                         except DraftError as exc:
                             st.error(str(exc))
                         else:
-                            state["versions"].append(state["docx"])
-                            state["changes"].append((selected["section"], selected_id))
-                            if len(state["versions"]) > _HISTORY_LIMIT:
-                                state["versions"].pop(0)
-                                state["changes"].pop(0)
-                            state["docx"] = new_bytes
+                            record_accepted_version(state, new_bytes, selected["section"],
+                                                    selected_id, max_undo=_HISTORY_LIMIT)
+                            st.session_state.pop("word_edit_focus_requirement", None)
                             state["pending"] = None
                             # Body-relative indices can change after adding paragraphs.
                             # Reset conversations rather than attaching them to another block.
@@ -112,6 +115,7 @@ def render_draft_edit_chat(cfg, input_key, result):
                             st.rerun()
                 with right:
                     if st.button(tr("Отклонить правку"), key="word_edit_reject"):
+                        st.session_state.pop("word_edit_focus_requirement", None)
                         state["pending"] = None
                         st.rerun()
         elif pending:

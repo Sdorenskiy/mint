@@ -124,6 +124,8 @@ def render_draft_traceability(result, source_names=(), input_key=None):
             request = chat_request_for_requirement(row)
             st.session_state["word_edit_target"] = destination
             st.session_state["word_edit_request"] = request[:3000]
+            st.session_state["word_edit_focus_requirement"] = {
+                "identity": identity, "target_id": destination, "requirement_id": row["id"]}
             st.session_state["word_edit_focus"] = True
             if state is not None and state.get("identity") == identity:
                 state["pending"] = None
