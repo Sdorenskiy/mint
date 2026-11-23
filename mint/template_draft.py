@@ -443,6 +443,40 @@ def _replace(paragraph, start, end, text):
         run.font.color.rgb = None
 
 
+def _fill_block(slot, start, end, content):
+    """Write multiline section prose as Word paragraphs, not one giant run."""
+    paragraph = slot.paragraph
+    if (slot.table or start != 0 or end != len(slot.text) or "\n" not in content):
+        _replace(paragraph, start, end, content)
+        return
+    from docx.oxml import OxmlElement
+    from docx.text.paragraph import Paragraph
+
+    parts = [part.strip() for part in content.splitlines() if part.strip()]
+    if not parts:
+        _replace(paragraph, start, end, "")
+        return
+    _replace(paragraph, start, end, parts[0])
+    anchor = paragraph._p
+    for part in parts[1:]:
+        element = OxmlElement("w:p")
+        if paragraph._p.pPr is not None:
+            element.append(deepcopy(paragraph._p.pPr))
+        anchor.addnext(element)
+        new_paragraph = Paragraph(element, paragraph._parent)
+        run = new_paragraph.add_run(part)
+        run.font.color.rgb = None
+        anchor = element
+
+
+def _remove_continuations(slot):
+    """Merged bracket instructions leave no empty placeholder paragraphs."""
+    for paragraph in slot.following:
+        xml = paragraph._p
+        if xml.getparent() is not None and _simple(paragraph):
+            xml.getparent().remove(xml)
+
+
 def _note(doc, paragraph, title, detail="", conflict=False):
     """Review notes must never alter visible Word text, especially narrow cells."""
     if not hasattr(doc, "add_comment"):
@@ -849,22 +883,23 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             edits, key=lambda x: (x[0], -x[1])):
         slot = slots[key]
         p = slot.paragraph
-        if slot.following and safe and status in {"checked", "conflict", "uncertain", "unchecked"}:
-            end = len(p.text)
-            for other in slot.following:
-                _replace(other, 0, len(other.text), "")
+        if safe and slot.following:
+            _remove_continuations(slot)
         if status in {"checked", "conflict", "uncertain", "unchecked"}:
-            _replace(p, start, end, content)
+            _fill_block(slot, start, end, content)
             _mark_wiki(doc, p, status, detail)
         elif status == "basis_conflict":
             if safe:
                 _replace(p, start, end, "")
             _note(doc, p, tr("Противоречие в основаниях"), detail, conflict=True)
-        elif status == "missing":
-            # Keep the original instruction: deleting it would erase what the editor must supply.
-            _note(doc, p, tr("Требуется уточнение"), detail)
-        elif status == "manual":
-            _note(doc, p, tr("Требуется ручная вставка"), detail or purpose)
+        elif status in {"missing", "manual"}:
+            # Leave the reviewed *field* empty, not a template instruction
+            # that might be mistaken for document content. The section,
+            # reason and source references remain in results for the editor.
+            if safe:
+                _replace(p, start, end, "")
+            issues.append((tr("Требуется уточнение") if status == "missing" else
+                           tr("Требуется ручная вставка")) + ": " + purpose)
         results.append({"field": purpose, "status": status, "text": content, "detail": detail, "refs": refs,
                         "unconfirmed_coverage": sorted(set(refs) - grounded) if status in
                         {"checked", "conflict", "uncertain", "unchecked"} else []})
@@ -894,13 +929,21 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
                 p = cell.paragraphs[0]
                 _replace(p, 0, len(p.text), str(written) if i not in content_columns else value)
                 if i in content_columns and not value:
-                    _note(doc, p, tr("Уточнить"), headers[i])
+                    issues.append(tr("Уточнить") + ": " + key + " › " + headers[i])
             anchor = max((target.cells[i] for i in content_columns if values[i]), key=lambda c: c.width or 0)
             _mark_wiki(doc, anchor.paragraphs[0], status, detail)
             used.update(grounded)
         if not written:
-            anchor = max((prototype.cells[i] for i in content_columns), key=lambda c: c.width or 0)
-            _note(doc, anchor.paragraphs[0], tr("Требуется ручная вставка"))
+            issues.append(tr("Требуется ручная вставка") + ": " + key)
+
+    # Clear unfilled instructional rows without changing actual populated
+    # rows. Their missing information remains visible in the review report.
+    for key, table in tables.items():
+        if key not in plans and all(_table_sample(c) for c in table.rows[-1].cells):
+            for cell in table.rows[-1].cells:
+                p = cell.paragraphs[0]
+                _replace(p, 0, len(p.text), "")
+            issues.append(tr("Требуется ручная вставка") + ": " + key)
 
     for i, slot in enumerate(fixed.values(), 1):
         emit("fixed", i)
