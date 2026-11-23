@@ -694,13 +694,26 @@ def _number_column(header):
     return _normalized(header).lower().rstrip(".") in {"№", "№ п/п", "#", "no", "nº"}
 
 
+def _dictionary_table(headers, caption):
+    """Formatting hint based on column semantics, never on a section number."""
+    names = [h.strip().casefold() for h in headers]
+    return (len(names) >= 2 and
+            any(k in names[0] for k in ("сокращ", "аббревиат", "термин", "abbreviation", "acronym", "term")) and
+            any(k in names[1] for k in ("расшифр", "определен", "значен", "definition", "meaning", "expansion")))
+
+
+def _table_sample(cell):
+    text = cell.text.strip()
+    return _safe_target(Slot(cell.paragraphs[0], cell.text, "", writable=True), text) or bool(
+        _EXAMPLE.match(text))
+
+
 def _row_plans(cfg, tables, requirements, issues, emit):
     plans = {}
     for i, (key, table) in enumerate(tables.items(), 1):
         headers = [c.text for c in table.rows[0].cells]
         sample = table.rows[-1]
-        if any(not _safe_target(Slot(c.paragraphs[0], c.text, "", writable=True), c.text.strip())
-               for c in sample.cells):
+        if any(not _table_sample(c) for c in sample.cells):
             continue
         emit("table", i)
         nearby = table._tbl.getprevious()
@@ -715,16 +728,30 @@ def _row_plans(cfg, tables, requirements, issues, emit):
             issues.append(tr("Не удалось подготовить строки таблицы: {table}.", table=key))
             continue
         valid = []
+        glossary = _dictionary_table(headers, caption)
+        seen_entries = set()
         for row in rows[:ROW_LIMIT]:
             cells = row.get("cells")
             refs = _refs(row, allowed)
             if (isinstance(cells, list) and len(cells) == len(headers) and
                     all(isinstance(x, str) for x in cells) and refs):
                 values = ["" if _number_column(h) else x.strip() for h, x in zip(headers, cells)]
+                # Dictionary entries must each occupy their own row. A giant
+                # newline-separated cell or an empty definition is not usable.
+                if glossary and (not values[0] or not values[1] or
+                                 any("\n" in v or "\r" in v for v in values) or
+                                 len(values[0]) > 100):
+                    issues.append(tr("Одна из предложенных строк таблицы «{table}» требует проверки.", table=key))
+                    continue
+                entry = values[0].casefold() if glossary else None
+                if entry is not None and entry in seen_entries:
+                    continue
                 if any(values) and _numbers_supported(" ".join(values), refs, allowed):
                     coverage = covered_refs(" | ".join(values), refs, row.get("coverage"))
                     if not any(values == other for other, _, _ in valid):
                         valid.append((values, refs, coverage))
+                        if entry is not None:
+                            seen_entries.add(entry)
                     continue
             issues.append(tr("Одна из предложенных строк таблицы «{table}» требует проверки.", table=key))
         if len(rows) > ROW_LIMIT:
