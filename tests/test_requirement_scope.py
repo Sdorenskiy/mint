@@ -104,7 +104,29 @@ def test_target_draft_never_uses_other_platform_requirements():
     assert len(result["used"]) == 1
 
 
+def test_missing_actor_cannot_be_confirmed():
+    requirements = {f"R{idx}": {"id": f"R{idx}", "source": "basis.md",
+                                "section": "1", "quote": "Обязанность " + str(idx)}
+                    for idx in range(1, 5)}
+    answers = [
+        {"id": "R1", "category": "target", "actor": "", "reason": "Целевая обязанность"},
+        {"id": "R2", "category": "shared", "actor": "  ", "reason": "Общее требование"},
+        {"id": "R3", "category": "interaction", "actor": "", "reason": "Внешняя сторона"},
+        {"id": "R4", "category": "target", "actor": "Платформа А", "reason": "А выполняет"},
+    ]
+    issues = []
+    with patch.object(scope, "_json", return_value={"items": answers}):
+        classified = scope.classify(SimpleNamespace(), requirements, CONTEXT,
+                                    issues, lambda *_: None)
+    assert {key for key, item in classified.items()
+            if scope.category_of(item) == "uncertain"} == {"R1", "R2", "R3"}
+    assert scope.category_of(classified["R4"]) == "target"
+    assert set(scope.partition(classified, CONTEXT)[0]) == {"R4"}
+    assert any("3 требований" in issue for issue in issues)
+
+
 if __name__ == "__main__":
     test_scope_classification_and_fail_closed()
     test_target_draft_never_uses_other_platform_requirements()
+    test_missing_actor_cannot_be_confirmed()
     print("ИТОГ: сохранены роли внешних участников и не допущен перенос чужих обязанностей")
