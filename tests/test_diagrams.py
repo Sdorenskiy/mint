@@ -93,4 +93,10 @@ for col, (llm, emb, rr, cpt) in enumerate(consts.get("SCENARIO_LIMITS", [])):
 check(consts.get("SCENARIO_ROWS") and not wrong, f"{len(consts.get('SCENARIO_ROWS', []))} параметров × 4 модели",
       "; ".join(wrong[:6]))
 
+print("4. Перед выпуском схемы и PNG должны совпадать с версией и исходниками")
+r = subprocess.run([sys.executable, str(TOOLS / "check_release.py")],
+                   capture_output=True, text=True, encoding="utf-8", errors="replace")
+check(r.returncode == 0, "проверка схем для релиза: RU/EN, Excalidraw, PNG, версия",
+      (r.stdout + r.stderr)[-2000:])
+
 check.finish()

@@ -12,7 +12,7 @@ tags: [excalidraw]
 ## Text Elements
 MINT — архитектура решения ^MEgp2krG
 
-Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский ^KMGeyBAP
+Локальная RAG-система: чат, аудит, контроль исправлений и формирование Word с прослеживаемостью. Python + Streamlit, пакет mint/; русский и английский ^KMGeyBAP
 
 Документы для базы (.docx, .pdf,
 .md, .txt): регламенты,
@@ -365,6 +365,67 @@ HTTP ^zufR1oa1
 
 Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5. ^alP4MKd2
 
+Формирование Word — отдельный поток от аудита и контроля замечаний ^xS85cGzF
+
+Основания не являются автоматически применимыми: сначала определяем целевую систему, затем учитываем субъект каждого требования. ^CMVVPV5h
+
+Mint v21.4.1 ^qTobGY3e
+
+1. Шаблон Word и основания
+
+Пользователь выбирает DOCX и исходные
+документы из локальной базы знаний.
+Оригиналы не отправляются в GitHub. ^phvLg0F1
+
+2. Определение контекста
+
+Модель предлагает целевую систему,
+цель, границы и участников по
+шаблону; основания могут относиться к
+разным системам. ^zkwy92jY
+
+3. Подтверждение человеком
+
+Перед сборкой пользователь проверяет
+контекст. Он задаёт направление
+поиска, но не доказывает факты. ^leq8ut5p
+
+4. Извлечение требований
+
+Цитаты сверяются с исходным текстом;
+сбои и неопределённость остаются
+видимыми для эксперта. ^loAcQiAx
+
+5. Применимость по исполнителю
+
+Целевая / общая / внешнее
+взаимодействие / другая система /
+неясно. Чужие обязанности не
+приписываются цели. ^LwKD4Klc
+
+6. Формирование Word
+
+План по разделам, заполнение полей и
+таблиц, проверка источников и
+сохранение защищённого оформления. ^bjxl3eOv
+
+7. Два направления связей
+
+Раздел Word → требования; основание →
+разделы Word. Найденный фрагмент
+текста не доказывает смысловую
+полноту. ^JbjFZK0o
+
+8. Чат правок с подтверждением
+
+Точный ID требования → предложение и
+diff → принять, отклонить или
+отменить. Изменённые связи требуют
+новой проверки. ^InVh793w
+
+Прослеживаемость охватывает извлечённые требования, а не гарантирует полноту всех оснований. Экспертная оценка первоначального Word —
+отдельно; принятые пользователем правки не переписывают первоначальный результат генерации. ^pDc5xBAk
+
 %%
 ## Drawing
 ```json
@@ -373,6 +434,36 @@ HTTP ^zufR1oa1
   "version": 2,
   "source": "https://excalidraw.com",
   "elements": [
+    {
+      "id": "BbYr0DNr",
+      "type": "rectangle",
+      "x": -50,
+      "y": 3918.5,
+      "width": 1710,
+      "height": 653.5,
+      "angle": 0,
+      "strokeColor": "#95779c",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 643486892,
+      "version": 1,
+      "versionNonce": 2045375074,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "a0"
+    },
     {
       "id": "JbOT9pPk",
       "type": "rectangle",
@@ -398,10 +489,10 @@ HTTP ^zufR1oa1
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "a0"
+      "index": "a1"
     },
     {
       "id": "000XjC8l",
@@ -428,10 +519,10 @@ HTTP ^zufR1oa1
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "a1"
+      "index": "a2"
     },
     {
       "id": "5Q9oYRkV",
@@ -458,10 +549,10 @@ HTTP ^zufR1oa1
       "versionNonce": 573793694,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "a2"
+      "index": "a3"
     },
     {
       "id": "ybyQpWeD",
@@ -493,10 +584,10 @@ HTTP ^zufR1oa1
           "id": "efio1e5v"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "a3"
+      "index": "a4"
     },
     {
       "id": "MEgp2krG",
@@ -521,7 +612,7 @@ HTTP ^zufR1oa1
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "MINT — архитектура решения",
@@ -533,14 +624,14 @@ HTTP ^zufR1oa1
       "originalText": "MINT — архитектура решения",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a4"
+      "index": "a5"
     },
     {
       "id": "KMGeyBAP",
       "type": "text",
       "x": 0,
       "y": 54,
-      "width": 1663.2,
+      "width": 1620.0,
       "height": 22.5,
       "angle": 0,
       "strokeColor": "#868e96",
@@ -558,19 +649,19 @@ HTTP ^zufR1oa1
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "text": "Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский",
+      "text": "Локальная RAG-система: чат, аудит, контроль исправлений и формирование Word с прослеживаемостью. Python + Streamlit, пакет mint/; русский и английский",
       "fontSize": 18,
       "fontFamily": 5,
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский",
+      "originalText": "Локальная RAG-система: чат, аудит, контроль исправлений и формирование Word с прослеживаемостью. Python + Streamlit, пакет mint/; русский и английский",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a5"
+      "index": "a6"
     },
     {
       "id": "0oaWIKSc",
@@ -606,10 +697,10 @@ HTTP ^zufR1oa1
           "id": "cacUobET"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "a6"
+      "index": "a7"
     },
     {
       "id": "CMIJ6m5h",
@@ -634,7 +725,7 @@ HTTP ^zufR1oa1
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Документы для базы (.docx, .pdf,\n.md, .txt): регламенты,\nстандарты",
@@ -646,7 +737,7 @@ HTTP ^zufR1oa1
       "originalText": "Документы для базы (.docx, .pdf,\n.md, .txt): регламенты,\nстандарты",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a7"
+      "index": "a8"
     },
     {
       "id": "HKutuPIh",
@@ -682,10 +773,10 @@ HTTP ^zufR1oa1
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "a8"
+      "index": "a9"
     },
     {
       "id": "O8slPZY2",
@@ -710,7 +801,7 @@ HTTP ^zufR1oa1
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вопрос пользователя",
@@ -722,7 +813,7 @@ HTTP ^zufR1oa1
       "originalText": "Вопрос пользователя",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a9"
+      "index": "aA"
     },
     {
       "id": "BqcDo4pZ",
@@ -758,10 +849,10 @@ HTTP ^zufR1oa1
           "id": "yjVfkkvt"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aA"
+      "index": "aB"
     },
     {
       "id": "uJcbtyhc",
@@ -786,7 +877,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Документ на согласование (.docx,\n.pdf, .md, .txt), критерии и\n«особое внимание»",
@@ -798,7 +889,7 @@ HTTP ^zufR1oa1
       "originalText": "Документ на согласование (.docx,\n.pdf, .md, .txt), критерии и\n«особое внимание»",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aB"
+      "index": "aC"
     },
     {
       "id": "DhYvPR6K",
@@ -834,10 +925,10 @@ HTTP ^zufR1oa1
           "id": "lCjxa3JM"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aC"
+      "index": "aD"
     },
     {
       "id": "VYktHA1f",
@@ -862,7 +953,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Выданные замечания и новая\nредакция документа (.docx, .pdf,\n.md, .txt)",
@@ -874,7 +965,7 @@ HTTP ^zufR1oa1
       "originalText": "Выданные замечания и новая\nредакция документа (.docx, .pdf,\n.md, .txt)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aD"
+      "index": "aE"
     },
     {
       "id": "ZDbBQfJM",
@@ -899,7 +990,7 @@ HTTP ^zufR1oa1
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Интерфейс — Streamlit",
@@ -911,7 +1002,7 @@ HTTP ^zufR1oa1
       "originalText": "Интерфейс — Streamlit",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aE"
+      "index": "aF"
     },
     {
       "id": "qIHhG3z1",
@@ -951,10 +1042,10 @@ HTTP ^zufR1oa1
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aF"
+      "index": "aG"
     },
     {
       "id": "9EeuGh20",
@@ -979,7 +1070,7 @@ HTTP ^zufR1oa1
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Боковая панель: документы базы,\nнастройки, модели и лимиты,\nсокращения, правила экспертов и\nкарточки систем (черновик карточки\n— по базе), проверка качества,\nпромпты, язык RU / EN, отзывы",
@@ -991,7 +1082,7 @@ HTTP ^zufR1oa1
       "originalText": "Боковая панель: документы базы,\nнастройки, модели и лимиты,\nсокращения, правила экспертов и\nкарточки систем (черновик карточки\n— по базе), проверка качества,\nпромпты, язык RU / EN, отзывы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aG"
+      "index": "aH"
     },
     {
       "id": "siuavdXh",
@@ -1031,10 +1122,10 @@ HTTP ^zufR1oa1
           "id": "fz2Zr53c"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aH"
+      "index": "aI"
     },
     {
       "id": "rX2XoBEz",
@@ -1059,7 +1150,7 @@ HTTP ^zufR1oa1
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вкладка «Чат»",
@@ -1071,7 +1162,7 @@ HTTP ^zufR1oa1
       "originalText": "Вкладка «Чат»",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aI"
+      "index": "aJ"
     },
     {
       "id": "nZj9aaF1",
@@ -1111,10 +1202,10 @@ HTTP ^zufR1oa1
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aJ"
+      "index": "aK"
     },
     {
       "id": "x1vUqZsn",
@@ -1139,7 +1230,7 @@ HTTP ^zufR1oa1
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вкладка «Аудит документа»:\nдокумент, критерии, «особое\nвнимание», ⚙️ настройки аудита в\nодном блоке, «Мои аудиты»",
@@ -1151,7 +1242,7 @@ HTTP ^zufR1oa1
       "originalText": "Вкладка «Аудит документа»:\nдокумент, критерии, «особое\nвнимание», ⚙️ настройки аудита в\nодном блоке, «Мои аудиты»",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aK"
+      "index": "aL"
     },
     {
       "id": "W6098L0A",
@@ -1191,10 +1282,10 @@ HTTP ^zufR1oa1
           "id": "MO75qxS5"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aL"
+      "index": "aM"
     },
     {
       "id": "nukixQmd",
@@ -1219,7 +1310,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вкладка «Контроль исправлений»",
@@ -1231,7 +1322,7 @@ HTTP ^zufR1oa1
       "originalText": "Вкладка «Контроль исправлений»",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aM"
+      "index": "aN"
     },
     {
       "id": "cacUobET",
@@ -1258,7 +1349,7 @@ HTTP ^zufR1oa1
       "versionNonce": 962771986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1295,7 +1386,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aN"
+      "index": "aO"
     },
     {
       "id": "WM7zl9XZ",
@@ -1322,7 +1413,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1359,7 +1450,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aO"
+      "index": "aP"
     },
     {
       "id": "yjVfkkvt",
@@ -1386,7 +1477,7 @@ HTTP ^zufR1oa1
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1423,7 +1514,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aP"
+      "index": "aQ"
     },
     {
       "id": "lCjxa3JM",
@@ -1450,7 +1541,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1487,7 +1578,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aQ"
+      "index": "aR"
     },
     {
       "id": "T7mEkfFQ",
@@ -1531,10 +1622,10 @@ HTTP ^zufR1oa1
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aR"
+      "index": "aS"
     },
     {
       "id": "mZpXKQNv",
@@ -1559,7 +1650,7 @@ HTTP ^zufR1oa1
       "versionNonce": 397301692,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "ДОБАВЛЕНИЕ ДОКУМЕНТОВ В БАЗУ\n\n1. Разбор: .docx — Docling; .pdf —\n   без моделей (заголовки из\n   закладок, оглавления, по\n   шрифту); .md, .txt → текст,\n   заголовки, таблицы\n2. Нарезка по границам абзацев и\n   предложений: parent 2500 симв.\n   для LLM, child 400 симв. для\n   поиска; таблицы — по строкам\n3. Эмбеддинги child (вместе с\n   путём заголовков)\n4. Запись в хранилище: векторы,\n   фрагменты, индекс слов\n5. Автосбор сокращений из\n   документов; в манифест — модель\n   и параметры нарезки\n6. Черновик карточки системы (по\n   кнопке на боковой панели): по\n   каждому разделу карточки —\n   поиск по базе и ответ LLM\n   только по найденному, у каждого\n   факта — источник, чего нет —\n   «нет в базе»; эксперт\n   проверяет, дописывает и\n   загружает карточку в базу",
@@ -1571,7 +1662,7 @@ HTTP ^zufR1oa1
       "originalText": "ДОБАВЛЕНИЕ ДОКУМЕНТОВ В БАЗУ\n\n1. Разбор: .docx — Docling; .pdf —\n   без моделей (заголовки из\n   закладок, оглавления, по\n   шрифту); .md, .txt → текст,\n   заголовки, таблицы\n2. Нарезка по границам абзацев и\n   предложений: parent 2500 симв.\n   для LLM, child 400 симв. для\n   поиска; таблицы — по строкам\n3. Эмбеддинги child (вместе с\n   путём заголовков)\n4. Запись в хранилище: векторы,\n   фрагменты, индекс слов\n5. Автосбор сокращений из\n   документов; в манифест — модель\n   и параметры нарезки\n6. Черновик карточки системы (по\n   кнопке на боковой панели): по\n   каждому разделу карточки —\n   поиск по базе и ответ LLM\n   только по найденному, у каждого\n   факта — источник, чего нет —\n   «нет в базе»; эксперт\n   проверяет, дописывает и\n   загружает карточку в базу",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aS"
+      "index": "aT"
     },
     {
       "id": "TN1jFYgS",
@@ -1611,10 +1702,10 @@ HTTP ^zufR1oa1
           "id": "ixFn3XEj"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aT"
+      "index": "aU"
     },
     {
       "id": "m25FKYcq",
@@ -1639,7 +1730,7 @@ HTTP ^zufR1oa1
       "versionNonce": 723834894,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "ЧАТ ПО БАЗЕ ЗНАНИЙ\n\n1. Уточняющий вопрос\n   переписывается в\n   самостоятельный по истории\n   диалога\n2. Поиск по базе → 4–5 лучших\n   фрагментов\n3. Контекст: фрагменты с файлом и\n   разделами (соседние — одним\n   блоком, длинные — вокруг\n   найденного места) + справочник\n   сокращений\n4. LLM отвечает только по\n   контексту\n5. Ответ со ссылками [файл,\n   раздел] и списком источников;\n   ссылки сверяются с найденными\n   фрагментами, неверные помечены\n   ⚠; отзыв: оценка и комментарий",
@@ -1651,7 +1742,7 @@ HTTP ^zufR1oa1
       "originalText": "ЧАТ ПО БАЗЕ ЗНАНИЙ\n\n1. Уточняющий вопрос\n   переписывается в\n   самостоятельный по истории\n   диалога\n2. Поиск по базе → 4–5 лучших\n   фрагментов\n3. Контекст: фрагменты с файлом и\n   разделами (соседние — одним\n   блоком, длинные — вокруг\n   найденного места) + справочник\n   сокращений\n4. LLM отвечает только по\n   контексту\n5. Ответ со ссылками [файл,\n   раздел] и списком источников;\n   ссылки сверяются с найденными\n   фрагментами, неверные помечены\n   ⚠; отзыв: оценка и комментарий",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aU"
+      "index": "aV"
     },
     {
       "id": "GtxUZ3NF",
@@ -1691,10 +1782,10 @@ HTTP ^zufR1oa1
           "id": "XCyBVpqO"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aV"
+      "index": "aW"
     },
     {
       "id": "d7Q1WHl9",
@@ -1719,7 +1810,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1240655623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА (MAP → REDUCE)\n\n1. Разбор документа → .md → части\n   по разделам до 4500 симв.\n   (раздел с таблицей — целиком);\n   для сравнения — весь документ\n   одним запросом\n2. MAP: каждая часть — с нормами\n   из базы,\n   документами-основаниями (по\n   ссылкам документа на них),\n   правилами экспертов, карточками\n   упомянутых систем и документом\n   целиком для справки (не\n   помещается в окно — с\n   оглавлением) → LLM пишет\n   замечания; описанный процесс —\n   по шагам; по желанию — с\n   рассуждениями модели\n3. Самокритика (можно выключить):\n   оставить или удалить,\n   критичность, дословная цитата;\n   замечание о пункте другой части\n   отсеивается\n4. Глубокая проверка: узкие\n   вопросы — каждая пара шагов\n   процесса, каждое требование,\n   границы; противоречия между\n   разделами; цифры (считает\n   программа); опечатки\n5. Проходы 2–3 (по желанию):\n   разделы и вопросы о процессе и\n   цифрах — ещё раз с температурой\n   ≥ 0,4; найденное несколькими\n   проходами — выше\n6. «Особое внимание» и чек-лист по\n   типу документа — ответ на\n   каждый пункт по всему документу\n   вместе с замечаниями, уже\n   найденными другими проверками;\n   что документ требует от каждой\n   упомянутой системы\n7. Без модели: сокращения,\n   оформление; ссылки и цифры из\n   замечаний сверяются с\n   документом и нормами\n8. REDUCE: повторы — по словам (в\n   кусках одной длинной таблицы —\n   мягче) и моделью (замечания о\n   разных шагах процесса не\n   сливаются); замечания — по\n   разделам документа, в его\n   порядке; «Главное» —\n   модель-редактор выбирает самые\n   важные\n9. Заключение .md, документ с\n   примечаниями Word, лог проверки\n   и сырые ответы модели .md;\n   сверка с эталоном; отзыв:\n   оценка и комментарий\n10. Аудит сохраняется\n   (LOG_DIR/audits) и открывается\n   позже; эксперт размечает\n   замечания («беру» / «мелочь» /\n   «неверно» с причиной) и\n   дописывает свои → «Мои\n   замечания» Word / .md и файл\n   разбора для улучшения MINT",
@@ -1731,7 +1822,7 @@ HTTP ^zufR1oa1
       "originalText": "АУДИТ ДОКУМЕНТА (MAP → REDUCE)\n\n1. Разбор документа → .md → части\n   по разделам до 4500 симв.\n   (раздел с таблицей — целиком);\n   для сравнения — весь документ\n   одним запросом\n2. MAP: каждая часть — с нормами\n   из базы,\n   документами-основаниями (по\n   ссылкам документа на них),\n   правилами экспертов, карточками\n   упомянутых систем и документом\n   целиком для справки (не\n   помещается в окно — с\n   оглавлением) → LLM пишет\n   замечания; описанный процесс —\n   по шагам; по желанию — с\n   рассуждениями модели\n3. Самокритика (можно выключить):\n   оставить или удалить,\n   критичность, дословная цитата;\n   замечание о пункте другой части\n   отсеивается\n4. Глубокая проверка: узкие\n   вопросы — каждая пара шагов\n   процесса, каждое требование,\n   границы; противоречия между\n   разделами; цифры (считает\n   программа); опечатки\n5. Проходы 2–3 (по желанию):\n   разделы и вопросы о процессе и\n   цифрах — ещё раз с температурой\n   ≥ 0,4; найденное несколькими\n   проходами — выше\n6. «Особое внимание» и чек-лист по\n   типу документа — ответ на\n   каждый пункт по всему документу\n   вместе с замечаниями, уже\n   найденными другими проверками;\n   что документ требует от каждой\n   упомянутой системы\n7. Без модели: сокращения,\n   оформление; ссылки и цифры из\n   замечаний сверяются с\n   документом и нормами\n8. REDUCE: повторы — по словам (в\n   кусках одной длинной таблицы —\n   мягче) и моделью (замечания о\n   разных шагах процесса не\n   сливаются); замечания — по\n   разделам документа, в его\n   порядке; «Главное» —\n   модель-редактор выбирает самые\n   важные\n9. Заключение .md, документ с\n   примечаниями Word, лог проверки\n   и сырые ответы модели .md;\n   сверка с эталоном; отзыв:\n   оценка и комментарий\n10. Аудит сохраняется\n   (LOG_DIR/audits) и открывается\n   позже; эксперт размечает\n   замечания («беру» / «мелочь» /\n   «неверно» с причиной) и\n   дописывает свои → «Мои\n   замечания» Word / .md и файл\n   разбора для улучшения MINT",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aW"
+      "index": "aX"
     },
     {
       "id": "NxT10CQ0",
@@ -1771,10 +1862,10 @@ HTTP ^zufR1oa1
           "id": "hD5ZeGLD"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "aX"
+      "index": "aY"
     },
     {
       "id": "cOzZf5k5",
@@ -1799,7 +1890,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1773752865,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ\n\n1. Новая редакция документа →\n   разделы\n2. Для каждого замечания —\n   подходящие разделы (вектор +\n   слова + реранкер) и, по\n   желанию, нормы из базы\n3. LLM: статус «исправлено /\n   частично / нет» и дословная\n   цитата\n4. Цитата сверяется с текстом\n   редакции\n5. Матрица контроля .md / .docx;\n   отзыв: оценка и комментарий",
@@ -1811,7 +1902,7 @@ HTTP ^zufR1oa1
       "originalText": "КОНТРОЛЬ ИСПРАВЛЕНИЙ\n\n1. Новая редакция документа →\n   разделы\n2. Для каждого замечания —\n   подходящие разделы (вектор +\n   слова + реранкер) и, по\n   желанию, нормы из базы\n3. LLM: статус «исправлено /\n   частично / нет» и дословная\n   цитата\n4. Цитата сверяется с текстом\n   редакции\n5. Матрица контроля .md / .docx;\n   отзыв: оценка и комментарий",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aY"
+      "index": "aZ"
     },
     {
       "id": "dwllkuSp",
@@ -1838,7 +1929,7 @@ HTTP ^zufR1oa1
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1875,7 +1966,7 @@ HTTP ^zufR1oa1
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aZ"
+      "index": "aa"
     },
     {
       "id": "fz2Zr53c",
@@ -1902,7 +1993,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1747155805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1939,7 +2030,7 @@ HTTP ^zufR1oa1
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aa"
+      "index": "ab"
     },
     {
       "id": "0azVOzgo",
@@ -1966,7 +2057,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2003,7 +2094,7 @@ HTTP ^zufR1oa1
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ab"
+      "index": "ac"
     },
     {
       "id": "MO75qxS5",
@@ -2030,7 +2121,7 @@ HTTP ^zufR1oa1
       "versionNonce": 331251064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2067,7 +2158,7 @@ HTTP ^zufR1oa1
       "startArrowhead": "arrow",
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ac"
+      "index": "ad"
     },
     {
       "id": "fSKUH9E4",
@@ -2119,10 +2210,10 @@ HTTP ^zufR1oa1
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "ad"
+      "index": "ae"
     },
     {
       "id": "za0DMpYx",
@@ -2147,7 +2238,7 @@ HTTP ^zufR1oa1
       "versionNonce": 234782881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Поисковый движок (общий для чата, аудита и контроля исправлений)\nвектор (FAISS, смысл) + слова (BM25: основы русских и английских слов, расшифровки сокращений) → слияние\nрангов (RRF) → реранкер (необязательно) → лучшие фрагменты + сигнал «уверенность низкая». Подробно — на\nсхеме ниже.",
@@ -2159,7 +2250,7 @@ HTTP ^zufR1oa1
       "originalText": "Поисковый движок (общий для чата, аудита и контроля исправлений)\nвектор (FAISS, смысл) + слова (BM25: основы русских и английских слов, расшифровки сокращений) → слияние\nрангов (RRF) → реранкер (необязательно) → лучшие фрагменты + сигнал «уверенность низкая». Подробно — на\nсхеме ниже.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ae"
+      "index": "af"
     },
     {
       "id": "ixFn3XEj",
@@ -2186,7 +2277,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1562140317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2223,7 +2314,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "af"
+      "index": "ag"
     },
     {
       "id": "XCyBVpqO",
@@ -2250,7 +2341,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2287,7 +2378,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ag"
+      "index": "ah"
     },
     {
       "id": "hD5ZeGLD",
@@ -2314,7 +2405,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1713103680,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2351,7 +2442,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ah"
+      "index": "ai"
     },
     {
       "id": "HmY8FuFN",
@@ -2383,7 +2474,7 @@ HTTP ^zufR1oa1
           "id": "tmov1cS1"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2424,7 +2515,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ai"
+      "index": "aj"
     },
     {
       "id": "tmov1cS1",
@@ -2449,7 +2540,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1139303386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "черновик карточки",
@@ -2461,7 +2552,7 @@ HTTP ^zufR1oa1
       "originalText": "черновик карточки",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aj"
+      "index": "ak"
     },
     {
       "id": "HQQ0tDBz",
@@ -2486,7 +2577,7 @@ HTTP ^zufR1oa1
       "versionNonce": 493025635,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Ядро MINT — Python",
@@ -2498,7 +2589,7 @@ HTTP ^zufR1oa1
       "originalText": "Ядро MINT — Python",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ak"
+      "index": "al"
     },
     {
       "id": "oUvIAzvS",
@@ -2534,10 +2625,10 @@ HTTP ^zufR1oa1
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "al"
+      "index": "am"
     },
     {
       "id": "o4snPTpc",
@@ -2562,7 +2653,7 @@ HTTP ^zufR1oa1
       "versionNonce": 942050464,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Хранилище базы знаний — папка KB_DIR на машине",
@@ -2574,7 +2665,7 @@ HTTP ^zufR1oa1
       "originalText": "Хранилище базы знаний — папка KB_DIR на машине",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "am"
+      "index": "an"
     },
     {
       "id": "frPxmTX3",
@@ -2606,10 +2697,10 @@ HTTP ^zufR1oa1
           "id": "KKTFtVje"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "an"
+      "index": "ao"
     },
     {
       "id": "KKTFtVje",
@@ -2634,7 +2725,7 @@ HTTP ^zufR1oa1
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "FAISS — векторы child (по ним ищет\n«вектор»)",
@@ -2646,7 +2737,7 @@ HTTP ^zufR1oa1
       "originalText": "FAISS — векторы child (по ним ищет\n«вектор»)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ao"
+      "index": "ap"
     },
     {
       "id": "hMCVRlIk",
@@ -2678,10 +2769,10 @@ HTTP ^zufR1oa1
           "id": "bzt8ESso"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "ap"
+      "index": "aq"
     },
     {
       "id": "bzt8ESso",
@@ -2706,7 +2797,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "parent_store.json — фрагменты parent\n(их читает LLM)",
@@ -2718,7 +2809,7 @@ HTTP ^zufR1oa1
       "originalText": "parent_store.json — фрагменты parent\n(их читает LLM)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aq"
+      "index": "ar"
     },
     {
       "id": "zJXSKFhC",
@@ -2750,10 +2841,10 @@ HTTP ^zufR1oa1
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "ar"
+      "index": "as"
     },
     {
       "id": "KyOaS2OB",
@@ -2778,7 +2869,7 @@ HTTP ^zufR1oa1
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl — индекс слов по\nосновам",
@@ -2790,7 +2881,7 @@ HTTP ^zufR1oa1
       "originalText": "bm25_index.pkl — индекс слов по\nосновам",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "as"
+      "index": "at"
     },
     {
       "id": "GUq1zeZx",
@@ -2822,10 +2913,10 @@ HTTP ^zufR1oa1
           "id": "p0abAhKA"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "at"
+      "index": "au"
     },
     {
       "id": "p0abAhKA",
@@ -2850,7 +2941,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2048044620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json — сокращения из\nдокументов",
@@ -2862,7 +2953,7 @@ HTTP ^zufR1oa1
       "originalText": "auto_glossary.json — сокращения из\nдокументов",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "au"
+      "index": "av"
     },
     {
       "id": "3QZgUSQg",
@@ -2894,10 +2985,10 @@ HTTP ^zufR1oa1
           "id": "jXvBssE7"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "av"
+      "index": "aw"
     },
     {
       "id": "jXvBssE7",
@@ -2922,7 +3013,7 @@ HTTP ^zufR1oa1
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "manifest.json — модель эмбеддингов и\nнарезка каждого документа;\naudit_roles.json — правила экспертов\nи карточки систем для аудита",
@@ -2934,7 +3025,7 @@ HTTP ^zufR1oa1
       "originalText": "manifest.json — модель эмбеддингов и\nнарезка каждого документа;\naudit_roles.json — правила экспертов\nи карточки систем для аудита",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aw"
+      "index": "ax"
     },
     {
       "id": "HKhEQe0Z",
@@ -2966,10 +3057,10 @@ HTTP ^zufR1oa1
           "id": "p07PEz84"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "ax"
+      "index": "ay"
     },
     {
       "id": "p07PEz84",
@@ -2994,7 +3085,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "sources/ — оригиналы документов для\nпереиндексации",
@@ -3006,7 +3097,7 @@ HTTP ^zufR1oa1
       "originalText": "sources/ — оригиналы документов для\nпереиндексации",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ay"
+      "index": "az"
     },
     {
       "id": "NeN18c5t",
@@ -3038,10 +3129,10 @@ HTTP ^zufR1oa1
           "id": "efio1e5v"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "az"
+      "index": "b10"
     },
     {
       "id": "baST1uPq",
@@ -3066,7 +3157,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Внешние сервисы",
@@ -3078,7 +3169,7 @@ HTTP ^zufR1oa1
       "originalText": "Внешние сервисы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b10"
+      "index": "b11"
     },
     {
       "id": "1T4SNQGj",
@@ -3103,7 +3194,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "любой OpenAI-совместимый API",
@@ -3115,7 +3206,7 @@ HTTP ^zufR1oa1
       "originalText": "любой OpenAI-совместимый API",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b11"
+      "index": "b12"
     },
     {
       "id": "A8h7VLvV",
@@ -3147,10 +3238,10 @@ HTTP ^zufR1oa1
           "id": "nBcm18E7"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b12"
+      "index": "b13"
     },
     {
       "id": "nBcm18E7",
@@ -3175,7 +3266,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1076978060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "LLM — ответы, замечания,\nсамокритика, «Главное», черновики\nкарточек",
@@ -3187,7 +3278,7 @@ HTTP ^zufR1oa1
       "originalText": "LLM — ответы, замечания,\nсамокритика, «Главное», черновики\nкарточек",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b13"
+      "index": "b14"
     },
     {
       "id": "lMqa6dyn",
@@ -3219,10 +3310,10 @@ HTTP ^zufR1oa1
           "id": "zDX0XsOI"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b14"
+      "index": "b15"
     },
     {
       "id": "zDX0XsOI",
@@ -3247,7 +3338,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1231588435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Модель эмбеддингов — векторы",
@@ -3259,7 +3350,7 @@ HTTP ^zufR1oa1
       "originalText": "Модель эмбеддингов — векторы",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b15"
+      "index": "b16"
     },
     {
       "id": "0IIzxMCH",
@@ -3291,10 +3382,10 @@ HTTP ^zufR1oa1
           "id": "L0k8cF7P"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b16"
+      "index": "b17"
     },
     {
       "id": "L0k8cF7P",
@@ -3319,7 +3410,7 @@ HTTP ^zufR1oa1
       "versionNonce": 224550167,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Реранкер — оценка релевантности\n(необязательно)",
@@ -3331,7 +3422,7 @@ HTTP ^zufR1oa1
       "originalText": "Реранкер — оценка релевантности\n(необязательно)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b17"
+      "index": "b18"
     },
     {
       "id": "wIPjVgMP",
@@ -3363,7 +3454,7 @@ HTTP ^zufR1oa1
           "id": "zAZSSevu"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -3400,7 +3491,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b18"
+      "index": "b19"
     },
     {
       "id": "zAZSSevu",
@@ -3425,7 +3516,7 @@ HTTP ^zufR1oa1
       "versionNonce": 130875986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "запись",
@@ -3437,7 +3528,7 @@ HTTP ^zufR1oa1
       "originalText": "запись",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b19"
+      "index": "b1A"
     },
     {
       "id": "wZnhXokE",
@@ -3469,7 +3560,7 @@ HTTP ^zufR1oa1
           "id": "vwSuw7eL"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -3506,7 +3597,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1A"
+      "index": "b1B"
     },
     {
       "id": "vwSuw7eL",
@@ -3531,7 +3622,7 @@ HTTP ^zufR1oa1
       "versionNonce": 634279936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "чтение",
@@ -3543,7 +3634,7 @@ HTTP ^zufR1oa1
       "originalText": "чтение",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1B"
+      "index": "b1C"
     },
     {
       "id": "efio1e5v",
@@ -3575,7 +3666,7 @@ HTTP ^zufR1oa1
           "id": "zufR1oa1"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -3612,7 +3703,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1C"
+      "index": "b1D"
     },
     {
       "id": "zufR1oa1",
@@ -3637,7 +3728,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2138346186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "HTTP",
@@ -3649,7 +3740,7 @@ HTTP ^zufR1oa1
       "originalText": "HTTP",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1D"
+      "index": "b1E"
     },
     {
       "id": "MN45msGt",
@@ -3681,10 +3772,10 @@ HTTP ^zufR1oa1
           "id": "m4ESFAMB"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1E"
+      "index": "b1F"
     },
     {
       "id": "m4ESFAMB",
@@ -3709,7 +3800,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1356830984,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Настройки\n• .env — адреса API, ключи, модели, папки, язык\n   (MINT_LANG)\n• config.yaml — параметры поиска и аудита\n   (необязательно)\n• glossary.json — свои расшифровки сокращений\n   (необязательно)\n• checklists.yaml — свои чек-листы аудита по типам\n   документов (образец — checklists.example.yaml;\n   файл вне папки программы — путь в\n   MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — тексты промптов\n   по умолчанию; свои правки — prompts.yaml\n   (страница «Промпты»); версия набора пишется в\n   отзывы, лог аудита и проверку качества\n• боковая панель — изменения на время сеанса\n• LOG_DIR — журнал работы, отзывы пользователей\n   (feedback.jsonl), проверки качества (eval/),\n   сохранённые аудиты с разбором экспертов\n   (audits/)",
@@ -3721,7 +3812,7 @@ HTTP ^zufR1oa1
       "originalText": "Настройки\n• .env — адреса API, ключи, модели, папки, язык\n   (MINT_LANG)\n• config.yaml — параметры поиска и аудита\n   (необязательно)\n• glossary.json — свои расшифровки сокращений\n   (необязательно)\n• checklists.yaml — свои чек-листы аудита по типам\n   документов (образец — checklists.example.yaml;\n   файл вне папки программы — путь в\n   MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — тексты промптов\n   по умолчанию; свои правки — prompts.yaml\n   (страница «Промпты»); версия набора пишется в\n   отзывы, лог аудита и проверку качества\n• боковая панель — изменения на время сеанса\n• LOG_DIR — журнал работы, отзывы пользователей\n   (feedback.jsonl), проверки качества (eval/),\n   сохранённые аудиты с разбором экспертов\n   (audits/)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1F"
+      "index": "b1G"
     },
     {
       "id": "d9PJHN50",
@@ -3753,10 +3844,10 @@ HTTP ^zufR1oa1
           "id": "VI6vaxks"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1G"
+      "index": "b1H"
     },
     {
       "id": "VI6vaxks",
@@ -3781,7 +3872,7 @@ HTTP ^zufR1oa1
       "versionNonce": 494807491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Размеры по умолчанию (MINT подстраивает их под\nлимиты моделей)\n• parent 2500 симв. ≈ 1–1,5 страницы — уходит в\n   контекст LLM\n• child 400 симв. ≈ 2–3 предложения — единица\n   векторного поиска\n• раздел документа в аудите 4500 симв. ≈ 3–4\n   страницы\n• фрагмент для реранкера 800 симв.",
@@ -3793,7 +3884,7 @@ HTTP ^zufR1oa1
       "originalText": "Размеры по умолчанию (MINT подстраивает их под\nлимиты моделей)\n• parent 2500 симв. ≈ 1–1,5 страницы — уходит в\n   контекст LLM\n• child 400 симв. ≈ 2–3 предложения — единица\n   векторного поиска\n• раздел документа в аудите 4500 симв. ≈ 3–4\n   страницы\n• фрагмент для реранкера 800 симв.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1H"
+      "index": "b1I"
     },
     {
       "id": "JhZOGm7N",
@@ -3825,10 +3916,10 @@ HTTP ^zufR1oa1
           "id": "lTJ2LlMC"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1I"
+      "index": "b1J"
     },
     {
       "id": "lTJ2LlMC",
@@ -3853,7 +3944,7 @@ HTTP ^zufR1oa1
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Проверка и оценка качества\n• check_install.py — самопроверка установки:\n   пакеты, разбор .docx и .pdf, подключения к\n   моделям, страница\n• «Проверка качества» на боковой панели (в консоли\n   — eval_search.py) — вопросы по базе через поиск\n   в нескольких вариантах (вектор, слова, гибрид,\n   гибрид + реранкер): hit@k, MRR, случайна ли\n   разница, порог «уверенность низкая»,\n   рекомендации; по желанию — ответы чата: ошибка\n   поиска или модели, сравнение по версии промптов\n• разборы замечаний экспертами (файлы разбора) —\n   tools/review_stats.py: доля верных замечаний по\n   видам проверок, причины ошибок, что MINT\n   пропустил\n• tests/ — автотесты без сети и моделей, GitHub\n   Actions",
@@ -3865,7 +3956,7 @@ HTTP ^zufR1oa1
       "originalText": "Проверка и оценка качества\n• check_install.py — самопроверка установки:\n   пакеты, разбор .docx и .pdf, подключения к\n   моделям, страница\n• «Проверка качества» на боковой панели (в консоли\n   — eval_search.py) — вопросы по базе через поиск\n   в нескольких вариантах (вектор, слова, гибрид,\n   гибрид + реранкер): hit@k, MRR, случайна ли\n   разница, порог «уверенность низкая»,\n   рекомендации; по желанию — ответы чата: ошибка\n   поиска или модели, сравнение по версии промптов\n• разборы замечаний экспертами (файлы разбора) —\n   tools/review_stats.py: доля верных замечаний по\n   видам проверок, причины ошибок, что MINT\n   пропустил\n• tests/ — автотесты без сети и моделей, GitHub\n   Actions",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1J"
+      "index": "b1K"
     },
     {
       "id": "QNKeGZEh",
@@ -3890,7 +3981,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Поиск по базе — как находится нужный фрагмент",
@@ -3902,7 +3993,7 @@ HTTP ^zufR1oa1
       "originalText": "Поиск по базе — как находится нужный фрагмент",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1K"
+      "index": "b1L"
     },
     {
       "id": "rB1WYiMd",
@@ -3927,7 +4018,7 @@ HTTP ^zufR1oa1
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Шаги 1–5 общие для чата, аудита и контроля исправлений; шаги 6–7 — ответ в чате.",
@@ -3939,7 +4030,7 @@ HTTP ^zufR1oa1
       "originalText": "Шаги 1–5 общие для чата, аудита и контроля исправлений; шаги 6–7 — ответ в чате.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1L"
+      "index": "b1M"
     },
     {
       "id": "VAiZBjYp",
@@ -3979,10 +4070,10 @@ HTTP ^zufR1oa1
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1M"
+      "index": "b1N"
     },
     {
       "id": "zq5QqHWI",
@@ -4007,7 +4098,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "1. Вопрос\n\nв чате уточнение\nпереписывается по\nистории диалога",
@@ -4019,7 +4110,7 @@ HTTP ^zufR1oa1
       "originalText": "1. Вопрос\n\nв чате уточнение\nпереписывается по\nистории диалога",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1N"
+      "index": "b1O"
     },
     {
       "id": "8SXdDbVH",
@@ -4059,10 +4150,10 @@ HTTP ^zufR1oa1
           "id": "ink1rcEm"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1O"
+      "index": "b1P"
     },
     {
       "id": "OhrcaOXe",
@@ -4087,7 +4178,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "2а. Вектор (смысл)\n\nэмбеддинг вопроса\n(с инструкцией,\nесли её требует\nмодель) → FAISS →\n50 ближайших child\n→ их parent",
@@ -4099,7 +4190,7 @@ HTTP ^zufR1oa1
       "originalText": "2а. Вектор (смысл)\n\nэмбеддинг вопроса\n(с инструкцией,\nесли её требует\nмодель) → FAISS →\n50 ближайших child\n→ их parent",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1P"
+      "index": "b1Q"
     },
     {
       "id": "bRHim8qr",
@@ -4139,10 +4230,10 @@ HTTP ^zufR1oa1
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1Q"
+      "index": "b1R"
     },
     {
       "id": "NqXrwvw9",
@@ -4167,7 +4258,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "2б. Слова (BM25)\n\nосновы слов\n(русских и\nанглийских) +\nрасшифровки\nсокращений → 20\nлучших parent",
@@ -4179,7 +4270,7 @@ HTTP ^zufR1oa1
       "originalText": "2б. Слова (BM25)\n\nосновы слов\n(русских и\nанглийских) +\nрасшифровки\nсокращений → 20\nлучших parent",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1R"
+      "index": "b1S"
     },
     {
       "id": "qkdFilPg",
@@ -4223,10 +4314,10 @@ HTTP ^zufR1oa1
           "id": "QiDuXTvv"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1S"
+      "index": "b1T"
     },
     {
       "id": "bULLNvq3",
@@ -4251,7 +4342,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "3. Слияние рангов\n   (RRF)\n\n16 кандидатов;\n   найденные\n   обоими каналами\n   — выше",
@@ -4263,7 +4354,7 @@ HTTP ^zufR1oa1
       "originalText": "3. Слияние рангов\n   (RRF)\n\n16 кандидатов;\n   найденные\n   обоими каналами\n   — выше",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1T"
+      "index": "b1U"
     },
     {
       "id": "RoPDjkGG",
@@ -4303,10 +4394,10 @@ HTTP ^zufR1oa1
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1U"
+      "index": "b1V"
     },
     {
       "id": "hMgyc1Ik",
@@ -4331,7 +4422,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "4. Реранкер\n\nнеобязательно:\nоценивает все 16\nпо самому\nрелевантному\nфрагменту (≤ 800\nсимв.); его голос\nдобавляется к\nслиянию",
@@ -4343,7 +4434,7 @@ HTTP ^zufR1oa1
       "originalText": "4. Реранкер\n\nнеобязательно:\nоценивает все 16\nпо самому\nрелевантному\nфрагменту (≤ 800\nсимв.); его голос\nдобавляется к\nслиянию",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1V"
+      "index": "b1W"
     },
     {
       "id": "xWDkXwe4",
@@ -4383,10 +4474,10 @@ HTTP ^zufR1oa1
           "id": "6mtwEXMY"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1W"
+      "index": "b1X"
     },
     {
       "id": "mavdOV9b",
@@ -4411,7 +4502,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "5. Отбор 4–5\n   фрагментов\n\nбез повторов, не\nбольше 2 частей\nодной таблицы;\nсигнал\n«уверенность\nнизкая» — по баллу\nреранкера, без\nнего — по словам\nвопроса",
@@ -4423,7 +4514,7 @@ HTTP ^zufR1oa1
       "originalText": "5. Отбор 4–5\n   фрагментов\n\nбез повторов, не\nбольше 2 частей\nодной таблицы;\nсигнал\n«уверенность\nнизкая» — по баллу\nреранкера, без\nнего — по словам\nвопроса",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1X"
+      "index": "b1Y"
     },
     {
       "id": "MNEr0YvH",
@@ -4463,10 +4554,10 @@ HTTP ^zufR1oa1
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1Y"
+      "index": "b1Z"
     },
     {
       "id": "noOzI47H",
@@ -4491,7 +4582,7 @@ HTTP ^zufR1oa1
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "6. Контекст для\n   LLM\n\nфрагменты parent с\nфайлом и\nразделами:\nсоседние — одним\nблоком, длинные —\nвокруг найденного\nместа; +\nсправочник\nсокращений",
@@ -4503,7 +4594,7 @@ HTTP ^zufR1oa1
       "originalText": "6. Контекст для\n   LLM\n\nфрагменты parent с\nфайлом и\nразделами:\nсоседние — одним\nблоком, длинные —\nвокруг найденного\nместа; +\nсправочник\nсокращений",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1Z"
+      "index": "b1a"
     },
     {
       "id": "nWYhUPjG",
@@ -4539,10 +4630,10 @@ HTTP ^zufR1oa1
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
-      "index": "b1a"
+      "index": "b1b"
     },
     {
       "id": "uX8z8N1E",
@@ -4567,7 +4658,7 @@ HTTP ^zufR1oa1
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "7. Ответ\n\nтолько по\nконтексту, со\nссылками [файл,\nраздел]; ссылки\nсверяются с\nконтекстом; нет\nответа в базе —\nтак и говорит",
@@ -4579,7 +4670,7 @@ HTTP ^zufR1oa1
       "originalText": "7. Ответ\n\nтолько по\nконтексту, со\nссылками [файл,\nраздел]; ссылки\nсверяются с\nконтекстом; нет\nответа в базе —\nтак и говорит",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1b"
+      "index": "b1c"
     },
     {
       "id": "qWuQ5Tyt",
@@ -4606,7 +4697,7 @@ HTTP ^zufR1oa1
       "versionNonce": 160393074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4643,7 +4734,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1c"
+      "index": "b1d"
     },
     {
       "id": "wFtpo5SN",
@@ -4670,7 +4761,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4707,7 +4798,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1d"
+      "index": "b1e"
     },
     {
       "id": "ink1rcEm",
@@ -4734,7 +4825,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1602413674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4771,7 +4862,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1e"
+      "index": "b1f"
     },
     {
       "id": "7xQsVvsf",
@@ -4798,7 +4889,7 @@ HTTP ^zufR1oa1
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4835,7 +4926,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1f"
+      "index": "b1g"
     },
     {
       "id": "QiDuXTvv",
@@ -4862,7 +4953,7 @@ HTTP ^zufR1oa1
       "versionNonce": 1163602303,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4899,7 +4990,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1g"
+      "index": "b1h"
     },
     {
       "id": "4dLMpfoB",
@@ -4926,7 +5017,7 @@ HTTP ^zufR1oa1
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4963,7 +5054,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1h"
+      "index": "b1i"
     },
     {
       "id": "6mtwEXMY",
@@ -4990,7 +5081,7 @@ HTTP ^zufR1oa1
       "versionNonce": 574790563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -5027,7 +5118,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1i"
+      "index": "b1j"
     },
     {
       "id": "Stk5L1Iq",
@@ -5054,7 +5145,7 @@ HTTP ^zufR1oa1
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -5091,7 +5182,7 @@ HTTP ^zufR1oa1
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b1j"
+      "index": "b1k"
     },
     {
       "id": "alP4MKd2",
@@ -5116,7 +5207,7 @@ HTTP ^zufR1oa1
       "versionNonce": 783411893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792795435848,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5.",
@@ -5128,7 +5219,1243 @@ HTTP ^zufR1oa1
       "originalText": "Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1k"
+      "index": "b1l"
+    },
+    {
+      "id": "xS85cGzF",
+      "type": "text",
+      "x": 0,
+      "y": 3948.5,
+      "width": 1188.0,
+      "height": 37.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 729443278,
+      "version": 1,
+      "versionNonce": 1127199645,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "Формирование Word — отдельный поток от аудита и контроля замечаний",
+      "fontSize": 30,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Формирование Word — отдельный поток от аудита и контроля замечаний",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1m"
+    },
+    {
+      "id": "CMVVPV5h",
+      "type": "text",
+      "x": 0,
+      "y": 3996.5,
+      "width": 1382.4,
+      "height": 22.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 53402587,
+      "version": 1,
+      "versionNonce": 1841050973,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "Основания не являются автоматически применимыми: сначала определяем целевую систему, затем учитываем субъект каждого требования.",
+      "fontSize": 18,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Основания не являются автоматически применимыми: сначала определяем целевую систему, затем учитываем субъект каждого требования.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1n"
+    },
+    {
+      "id": "qTobGY3e",
+      "type": "text",
+      "x": 0,
+      "y": 4032.5,
+      "width": 100.8,
+      "height": 17.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 22310855,
+      "version": 1,
+      "versionNonce": 1963743434,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "Mint v21.4.1",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Mint v21.4.1",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1o"
+    },
+    {
+      "id": "DK8kB7DT",
+      "type": "rectangle",
+      "x": 0,
+      "y": 4062.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 623848252,
+      "version": 1,
+      "versionNonce": 529228002,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "phvLg0F1"
+        },
+        {
+          "type": "arrow",
+          "id": "oi99SUzt"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b1p"
+    },
+    {
+      "id": "phvLg0F1",
+      "type": "text",
+      "x": 12,
+      "y": 4074.5,
+      "width": 355.2,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 282155046,
+      "version": 1,
+      "versionNonce": 2048913134,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "1. Шаблон Word и основания\n\nПользователь выбирает DOCX и исходные\nдокументы из локальной базы знаний.\nОригиналы не отправляются в GitHub.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "DK8kB7DT",
+      "originalText": "1. Шаблон Word и основания\n\nПользователь выбирает DOCX и исходные\nдокументы из локальной базы знаний.\nОригиналы не отправляются в GitHub.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1q"
+    },
+    {
+      "id": "WjKtxsaI",
+      "type": "rectangle",
+      "x": 410,
+      "y": 4062.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 895863929,
+      "version": 1,
+      "versionNonce": 2008305028,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "zkwy92jY"
+        },
+        {
+          "type": "arrow",
+          "id": "oi99SUzt"
+        },
+        {
+          "type": "arrow",
+          "id": "z3x9ZzAb"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b1r"
+    },
+    {
+      "id": "zkwy92jY",
+      "type": "text",
+      "x": 422,
+      "y": 4074.5,
+      "width": 355.2,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 547590450,
+      "version": 1,
+      "versionNonce": 677440757,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "2. Определение контекста\n\nМодель предлагает целевую систему,\nцель, границы и участников по\nшаблону; основания могут относиться к\nразным системам.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "WjKtxsaI",
+      "originalText": "2. Определение контекста\n\nМодель предлагает целевую систему,\nцель, границы и участников по\nшаблону; основания могут относиться к\nразным системам.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1s"
+    },
+    {
+      "id": "zQH8lyYT",
+      "type": "rectangle",
+      "x": 820,
+      "y": 4062.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 208246326,
+      "version": 1,
+      "versionNonce": 159965943,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "leq8ut5p"
+        },
+        {
+          "type": "arrow",
+          "id": "z3x9ZzAb"
+        },
+        {
+          "type": "arrow",
+          "id": "pI5SbfaH"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b1t"
+    },
+    {
+      "id": "leq8ut5p",
+      "type": "text",
+      "x": 832,
+      "y": 4074.5,
+      "width": 345.6,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1543061831,
+      "version": 1,
+      "versionNonce": 1842945878,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "3. Подтверждение человеком\n\nПеред сборкой пользователь проверяет\nконтекст. Он задаёт направление\nпоиска, но не доказывает факты.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "zQH8lyYT",
+      "originalText": "3. Подтверждение человеком\n\nПеред сборкой пользователь проверяет\nконтекст. Он задаёт направление\nпоиска, но не доказывает факты.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1u"
+    },
+    {
+      "id": "bSvmNXvi",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 4062.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#ebfbee",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 437366288,
+      "version": 1,
+      "versionNonce": 1227045389,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "loAcQiAx"
+        },
+        {
+          "type": "arrow",
+          "id": "pI5SbfaH"
+        },
+        {
+          "type": "arrow",
+          "id": "dCsLXsLf"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b1v"
+    },
+    {
+      "id": "loAcQiAx",
+      "type": "text",
+      "x": 1242,
+      "y": 4074.5,
+      "width": 345.6,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1004901289,
+      "version": 1,
+      "versionNonce": 1935139015,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "4. Извлечение требований\n\nЦитаты сверяются с исходным текстом;\nсбои и неопределённость остаются\nвидимыми для эксперта.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "bSvmNXvi",
+      "originalText": "4. Извлечение требований\n\nЦитаты сверяются с исходным текстом;\nсбои и неопределённость остаются\nвидимыми для эксперта.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1w"
+    },
+    {
+      "id": "yEH4qwrM",
+      "type": "rectangle",
+      "x": 0,
+      "y": 4306.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 123991336,
+      "version": 1,
+      "versionNonce": 1212830340,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "LwKD4Klc"
+        },
+        {
+          "type": "arrow",
+          "id": "lvogpKBa"
+        },
+        {
+          "type": "arrow",
+          "id": "dCsLXsLf"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b1x"
+    },
+    {
+      "id": "LwKD4Klc",
+      "type": "text",
+      "x": 12,
+      "y": 4318.5,
+      "width": 316.8,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1102470740,
+      "version": 1,
+      "versionNonce": 851939754,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "5. Применимость по исполнителю\n\nЦелевая / общая / внешнее\nвзаимодействие / другая система /\nнеясно. Чужие обязанности не\nприписываются цели.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "yEH4qwrM",
+      "originalText": "5. Применимость по исполнителю\n\nЦелевая / общая / внешнее\nвзаимодействие / другая система /\nнеясно. Чужие обязанности не\nприписываются цели.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b1y"
+    },
+    {
+      "id": "ioigz0CL",
+      "type": "rectangle",
+      "x": 410,
+      "y": 4306.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "#e3fafc",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1532727676,
+      "version": 1,
+      "versionNonce": 595102377,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "bjxl3eOv"
+        },
+        {
+          "type": "arrow",
+          "id": "lvogpKBa"
+        },
+        {
+          "type": "arrow",
+          "id": "D5eOHAZA"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b1z"
+    },
+    {
+      "id": "bjxl3eOv",
+      "type": "text",
+      "x": 422,
+      "y": 4318.5,
+      "width": 345.6,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#0c8599",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1254692628,
+      "version": 1,
+      "versionNonce": 1489119380,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "6. Формирование Word\n\nПлан по разделам, заполнение полей и\nтаблиц, проверка источников и\nсохранение защищённого оформления.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "ioigz0CL",
+      "originalText": "6. Формирование Word\n\nПлан по разделам, заполнение полей и\nтаблиц, проверка источников и\nсохранение защищённого оформления.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b20"
+    },
+    {
+      "id": "XPO1mpIS",
+      "type": "rectangle",
+      "x": 820,
+      "y": 4306.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "#fff4e6",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1384016763,
+      "version": 1,
+      "versionNonce": 1334356844,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "JbjFZK0o"
+        },
+        {
+          "type": "arrow",
+          "id": "D5eOHAZA"
+        },
+        {
+          "type": "arrow",
+          "id": "FHj0cwfr"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b21"
+    },
+    {
+      "id": "JbjFZK0o",
+      "type": "text",
+      "x": 832,
+      "y": 4318.5,
+      "width": 355.2,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#f08c00",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 914315966,
+      "version": 1,
+      "versionNonce": 1847393126,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "7. Два направления связей\n\nРаздел Word → требования; основание →\nразделы Word. Найденный фрагмент\nтекста не доказывает смысловую\nполноту.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "XPO1mpIS",
+      "originalText": "7. Два направления связей\n\nРаздел Word → требования; основание →\nразделы Word. Найденный фрагмент\nтекста не доказывает смысловую\nполноту.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b22"
+    },
+    {
+      "id": "53CpRO9g",
+      "type": "rectangle",
+      "x": 1230,
+      "y": 4306.5,
+      "width": 380,
+      "height": 156.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "#ebfbee",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1092503176,
+      "version": 1,
+      "versionNonce": 1161721694,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "InVh793w"
+        },
+        {
+          "type": "arrow",
+          "id": "FHj0cwfr"
+        }
+      ],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "index": "b23"
+    },
+    {
+      "id": "InVh793w",
+      "type": "text",
+      "x": 1242,
+      "y": 4318.5,
+      "width": 345.6,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#2f9e44",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 700893575,
+      "version": 1,
+      "versionNonce": 1566900065,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "8. Чат правок с подтверждением\n\nТочный ID требования → предложение и\ndiff → принять, отклонить или\nотменить. Изменённые связи требуют\nновой проверки.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "53CpRO9g",
+      "originalText": "8. Чат правок с подтверждением\n\nТочный ID требования → предложение и\ndiff → принять, отклонить или\nотменить. Изменённые связи требуют\nновой проверки.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b24"
+    },
+    {
+      "id": "oi99SUzt",
+      "type": "arrow",
+      "x": 386,
+      "y": 4140.5,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 305102513,
+      "version": 1,
+      "versionNonce": 218354747,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "DK8kB7DT",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "WjKtxsaI",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b25"
+    },
+    {
+      "id": "z3x9ZzAb",
+      "type": "arrow",
+      "x": 796,
+      "y": 4140.5,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 2091969909,
+      "version": 1,
+      "versionNonce": 1449011898,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "WjKtxsaI",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "zQH8lyYT",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b26"
+    },
+    {
+      "id": "pI5SbfaH",
+      "type": "arrow",
+      "x": 1206,
+      "y": 4140.5,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 147294018,
+      "version": 1,
+      "versionNonce": 1556626306,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "zQH8lyYT",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "bSvmNXvi",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b27"
+    },
+    {
+      "id": "lvogpKBa",
+      "type": "arrow",
+      "x": 386,
+      "y": 4384.5,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1813708853,
+      "version": 1,
+      "versionNonce": 613515443,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "yEH4qwrM",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "ioigz0CL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b28"
+    },
+    {
+      "id": "D5eOHAZA",
+      "type": "arrow",
+      "x": 796,
+      "y": 4384.5,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1983139577,
+      "version": 1,
+      "versionNonce": 670435843,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "ioigz0CL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "XPO1mpIS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b29"
+    },
+    {
+      "id": "FHj0cwfr",
+      "type": "arrow",
+      "x": 1206,
+      "y": 4384.5,
+      "width": 18,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1778696208,
+      "version": 1,
+      "versionNonce": 1166402109,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0,
+          0.0
+        ],
+        [
+          18,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "XPO1mpIS",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "53CpRO9g",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b2A"
+    },
+    {
+      "id": "dCsLXsLf",
+      "type": "arrow",
+      "x": 1420.0,
+      "y": 4224.5,
+      "width": 1230.0,
+      "height": 76.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1364318110,
+      "version": 1,
+      "versionNonce": 348668764,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          37.0
+        ],
+        [
+          -1230.0,
+          37.0
+        ],
+        [
+          -1230.0,
+          76.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "bSvmNXvi",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          1
+        ]
+      },
+      "endBinding": {
+        "elementId": "yEH4qwrM",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0.5,
+          0
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "b2B"
+    },
+    {
+      "id": "pDc5xBAk",
+      "type": "text",
+      "x": 0,
+      "y": 4494.5,
+      "width": 1356.6,
+      "height": 42.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 2121128288,
+      "version": 1,
+      "versionNonce": 1287752845,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703602,
+      "link": null,
+      "locked": false,
+      "text": "Прослеживаемость охватывает извлечённые требования, а не гарантирует полноту всех оснований. Экспертная оценка первоначального Word —\nотдельно; принятые пользователем правки не переписывают первоначальный результат генерации.",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Прослеживаемость охватывает извлечённые требования, а не гарантирует полноту всех оснований. Экспертная оценка первоначального Word —\nотдельно; принятые пользователем правки не переписывают первоначальный результат генерации.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "b2C"
     }
   ],
   "appState": {

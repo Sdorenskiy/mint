@@ -2,8 +2,10 @@
 
 Запуск:  python render.py <схема.excalidraw> <картинка.png> [масштаб]
 """
+import hashlib
 import json
 import sys
+from pathlib import Path
 
 import matplotlib
 matplotlib.use("Agg")
@@ -64,7 +66,16 @@ def render(scene, out, scale=0.5):
         tx = e["x"] + (e["width"] / 2 if ha == "center" else (e["width"] if ha == "right" else 0))
         ax.text(tx, e["y"], e["text"], fontsize=e["fontSize"] * scale * 0.72, color=e.get("strokeColor", "#000"),
                 ha=ha, va="top", family="DejaVu Sans", linespacing=1.25)
-    fig.savefig(out)
+    # Embed the exact diagram scene fingerprint and release number in the PNG.
+    # This lets a release gate detect stale previews without comparing OS fonts.
+    project = Path(__file__).resolve().parents[2]
+    tag = json.loads((project / "release" / "manifest.json").read_text(encoding="utf-8"))["tag"]
+    elements = [{k: v for k, v in element.items() if k != "updated"}
+                for element in scene["elements"]]
+    payload = json.dumps(elements, ensure_ascii=False, sort_keys=True,
+                         separators=(",", ":")).encode("utf-8")
+    signature = hashlib.sha256(payload).hexdigest()
+    fig.savefig(out, metadata={"Description": f"Mint {tag} scene sha256={signature}"})
     plt.close(fig)
 
 

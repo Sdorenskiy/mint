@@ -2359,6 +2359,65 @@ answers are cached for all setting variants ^jFJb5Ccw
 Memory and disk (one Streamlit process for all users): FAISS IndexFlatL2 in memory — children × dimension × 4 bytes (Qwen3-Embedding-4B, 2560: ≈ 10 KB per child, 10,000 children ≈ 100 MB); BM25 — word positions of all parents; the
 _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the sources/ originals. LOG_DIR: mint_system.log (up to 60 MB with rotation) and feedback.jsonl — grows with the number of feedback entries. ^fdHqXOIZ
 
+Mint v21.4.1 ^vxxEtbWZ
+
+10. Word drafting: sources, applicability and editing ^e9a1ZHqG
+
+Separate from review: template and selected sources → confirmed context and applicability → Word → inspectable evidence links. ^6BckAk3e
+
+Word drafting setup
+tab_template_draft.py: template or completed
+example, and selected original documents.
+Data stays in the local knowledge base. ^nxUpPSu8
+
+Context
+document_context.py: infer_context()
+proposes target, objective, scope and
+participants from the template headings.
+confirm_context() requires human
+confirmation. ^9ZAyUH9g
+
+Extraction
+template_draft.py: create_draft() processes
+the template and exact source quotations;
+caching and parallel extraction preserve
+requirement ordering. ^LCDRemXz
+
+Applicability
+requirement_scope.py: classify() separates
+target/shared from
+interaction/other/uncertain; an actor is
+required for confident obligation
+assignment. ^Mj6j61Xp
+
+Draft Word
+template_draft.py: sections, paragraphs and
+tables are filled with source-supported
+content; formatting and protected fields are
+preserved. ^3aiQ1Rgi
+
+Two-way evidence links
+draft_traceability.py: build_traceability() links
+extracted requirements to Word sections and quotations
+in both directions. ^2a2ZxCSR
+
+Source to edit chat
+draft_traceability_ui.py passes the exact requirement
+ID; document_edit.py preserves applicability so external
+duties cannot become target obligations. ^h9s09UKW
+
+Human-approved change
+document_edit_chat.py: propose_edit() → diff → accept,
+reject or undo_accepted_version(). The full document is
+not regenerated. ^Pdk8g2am
+
+Changed evidence links
+mark_stale_after_edits() marks previous links as stale.
+Changed sections remain tracked; the latest 10 DOCX
+snapshots are only for undo. ^gOcFE9WQ
+
+Limit: evidence links do not prove that ALL requirements have been extracted from broad sources. Expert review remains necessary; green CI based on synthetic documents does not prove quality for a real template. ^JCtzuwPd
+
 %%
 ## Drawing
 ```json
@@ -2392,7 +2451,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a0"
@@ -2422,7 +2481,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 318228129,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a1"
@@ -2452,7 +2511,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 421009957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a2"
@@ -2482,7 +2541,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1930857069,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a3"
@@ -2512,7 +2571,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1990962993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a4"
@@ -2542,7 +2601,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1044727257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a5"
@@ -2572,7 +2631,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1619057106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a6"
@@ -2602,7 +2661,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 66655498,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a7"
@@ -2632,10 +2691,40 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 247438911,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a8"
+    },
+    {
+      "id": "wLFpUxag",
+      "type": "rectangle",
+      "x": 0,
+      "y": 17241.0,
+      "width": 2400,
+      "height": 493.25,
+      "angle": 0,
+      "strokeColor": "#95779c",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2022124569,
+      "version": 1,
+      "versionNonce": 966883474,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "a9"
     },
     {
       "id": "MEgp2krG",
@@ -2660,7 +2749,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "MINT — engineering diagram: how it works and how to tune parameters",
@@ -2672,7 +2761,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "MINT — engineering diagram: how it works and how to tune parameters",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "a9"
+      "index": "aA"
     },
     {
       "id": "KMGeyBAP",
@@ -2697,7 +2786,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Based on the code of MINT 20.1 and later (the mint/ package) and eval_search.py. For the administrator: what to set at installation, what MINT computes itself, what to tune with tests on your own data, and which\nfeatures of your organisation it depends on. Every fact appears in one place; “panel N” tells where to find details.",
@@ -2709,7 +2798,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Based on the code of MINT 20.1 and later (the mint/ package) and eval_search.py. For the administrator: what to set at installation, what MINT computes itself, what to tune with tests on your own data, and which\nfeatures of your organisation it depends on. Every fact appears in one place; “panel N” tells where to find details.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aA"
+      "index": "aB"
     },
     {
       "id": "0oaWIKSc",
@@ -2741,10 +2830,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "CMIJ6m5h"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aB"
+      "index": "aC"
     },
     {
       "id": "CMIJ6m5h",
@@ -2769,7 +2858,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] MANUAL — set by the\nadministrator: .env, config.yaml,\nsidebar",
@@ -2781,7 +2870,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] MANUAL — set by the\nadministrator: .env, config.yaml,\nsidebar",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aC"
+      "index": "aD"
     },
     {
       "id": "HKutuPIh",
@@ -2813,10 +2902,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "O8slPZY2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aD"
+      "index": "aE"
     },
     {
       "id": "O8slPZY2",
@@ -2841,7 +2930,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] AUTO — MINT computes it from\nthe models and the base; touch it\nonly if there is a warning or tests\ncall for it",
@@ -2853,7 +2942,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] AUTO — MINT computes it from\nthe models and the base; touch it\nonly if there is a warning or tests\ncall for it",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aE"
+      "index": "aF"
     },
     {
       "id": "BqcDo4pZ",
@@ -2885,10 +2974,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "uJcbtyhc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aF"
+      "index": "aG"
     },
     {
       "id": "uJcbtyhc",
@@ -2913,7 +3002,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] TEST — tuned with the quality\ncheck on your own question set",
@@ -2925,7 +3014,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] TEST — tuned with the quality\ncheck on your own question set",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aG"
+      "index": "aH"
     },
     {
       "id": "DhYvPR6K",
@@ -2957,10 +3046,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VYktHA1f"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aH"
+      "index": "aI"
     },
     {
       "id": "VYktHA1f",
@@ -2985,7 +3074,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] CHECK — tuned by hand on live\nexamples",
@@ -2997,7 +3086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] CHECK — tuned by hand on live\nexamples",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aI"
+      "index": "aJ"
     },
     {
       "id": "5Q9oYRkV",
@@ -3029,10 +3118,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZDbBQfJM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aJ"
+      "index": "aK"
     },
     {
       "id": "ZDbBQfJM",
@@ -3057,7 +3146,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] DEFAULT — usually leave as is",
@@ -3069,7 +3158,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] DEFAULT — usually leave as is",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aK"
+      "index": "aL"
     },
     {
       "id": "qIHhG3z1",
@@ -3101,10 +3190,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9EeuGh20"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aL"
+      "index": "aM"
     },
     {
       "id": "9EeuGh20",
@@ -3129,7 +3218,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "♻ — applies to documents uploaded after\nthe change; documents already uploaded\nneed re-indexing",
@@ -3141,7 +3230,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "♻ — applies to documents uploaded after\nthe change; documents already uploaded\nneed re-indexing",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aM"
+      "index": "aN"
     },
     {
       "id": "siuavdXh",
@@ -3173,10 +3262,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rX2XoBEz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aN"
+      "index": "aO"
     },
     {
       "id": "rX2XoBEz",
@@ -3201,7 +3290,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ KEY PARAMETER — MINT derives others from it: model limits, chars_per_token, max_tokens, top_k and the intermediate\nchat_budget / llm_budget. Change it — the dependent ones change.",
@@ -3213,7 +3302,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ KEY PARAMETER — MINT derives others from it: model limits, chars_per_token, max_tokens, top_k and the intermediate\nchat_budget / llm_budget. Change it — the dependent ones change.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aO"
+      "index": "aP"
     },
     {
       "id": "nZj9aaF1",
@@ -3245,10 +3334,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "x1vUqZsn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aP"
+      "index": "aQ"
     },
     {
       "id": "x1vUqZsn",
@@ -3273,7 +3362,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ AFFECTS A NEIGHBOUR — 1–2 parameters of the same group depend on it (parent_size → parent_overlap, audit_map_size →\naudit_context_max_chars …). Dependants are listed in the “Constraints and dependencies” column.",
@@ -3285,7 +3374,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ AFFECTS A NEIGHBOUR — 1–2 parameters of the same group depend on it (parent_size → parent_overlap, audit_map_size →\naudit_context_max_chars …). Dependants are listed in the “Constraints and dependencies” column.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aQ"
+      "index": "aR"
     },
     {
       "id": "W6098L0A",
@@ -3317,10 +3406,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "nukixQmd"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aR"
+      "index": "aS"
     },
     {
       "id": "nukixQmd",
@@ -3345,7 +3434,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "TOKENS AND CHARACTERS — two units of text length on this diagram\n• [tok.] tokens — how models count length: a token is a piece of a word (often 2–4 letters). Model limits\n   (llm_context_tokens, embed_max_tokens, rerank_max_tokens) and the answer length max_tokens are in tokens.\n• [chars] characters — how MINT cuts text (fragments, document sections, context). All fragment sizes and context\n   budgets are in characters.\n• Conversion: chars(t) = t × chars_per_token × 0.85, where 0.85 (LIMIT_SAFETY) is a 15 % margin for estimation error.\n   Example: 1000 tok. × 2.5 × 0.85 = 2125 chars that MINT will allow itself to send.",
@@ -3357,7 +3446,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "TOKENS AND CHARACTERS — two units of text length on this diagram\n• [tok.] tokens — how models count length: a token is a piece of a word (often 2–4 letters). Model limits\n   (llm_context_tokens, embed_max_tokens, rerank_max_tokens) and the answer length max_tokens are in tokens.\n• [chars] characters — how MINT cuts text (fragments, document sections, context). All fragment sizes and context\n   budgets are in characters.\n• Conversion: chars(t) = t × chars_per_token × 0.85, where 0.85 (LIMIT_SAFETY) is a 15 % margin for estimation error.\n   Example: 1000 tok. × 2.5 × 0.85 = 2125 chars that MINT will allow itself to send.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aS"
+      "index": "aT"
     },
     {
       "id": "cacUobET",
@@ -3389,10 +3478,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aT"
+      "index": "aU"
     },
     {
       "id": "WM7zl9XZ",
@@ -3417,7 +3506,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "HOW MANY CHARACTERS PER TOKEN (chars_per_token)\n• Russian text: 2.3–3 on modern multilingual tokenizers (Qwen2.5 / Qwen3, Llama 3); 1.5–2 on older “English” ones\n   (Llama 2, early Mistral)\n• English text: ≈ 4 (3.5–4.5);  tables, numbers, codes: 1.5–2.5\n• 2.5 is NOT computed by itself: it is the typical value (FALLBACK_LIMITS) until something is measured. It is measured\n   only by the “Detect from server” button: measure_chars_per_token() sends the LLM a sample in the language of the\n   base (kb_language(): Russian base — Russian, English — English, mixed or empty — both, the lower value is used) and\n   the same sample × 4; cpt = difference in characters / difference in prompt_tokens (service tokens cancel out). The\n   result lives until MINT restarts — to pin it: config.yaml → models: chars_per_token.\n• one value is used for embeddings and the reranker too, although their tokenizers differ — one more reason for the 15\n   % margin.",
@@ -3429,7 +3518,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "HOW MANY CHARACTERS PER TOKEN (chars_per_token)\n• Russian text: 2.3–3 on modern multilingual tokenizers (Qwen2.5 / Qwen3, Llama 3); 1.5–2 on older “English” ones\n   (Llama 2, early Mistral)\n• English text: ≈ 4 (3.5–4.5);  tables, numbers, codes: 1.5–2.5\n• 2.5 is NOT computed by itself: it is the typical value (FALLBACK_LIMITS) until something is measured. It is measured\n   only by the “Detect from server” button: measure_chars_per_token() sends the LLM a sample in the language of the\n   base (kb_language(): Russian base — Russian, English — English, mixed or empty — both, the lower value is used) and\n   the same sample × 4; cpt = difference in characters / difference in prompt_tokens (service tokens cancel out). The\n   result lives until MINT restarts — to pin it: config.yaml → models: chars_per_token.\n• one value is used for embeddings and the reranker too, although their tokenizers differ — one more reason for the 15\n   % margin.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aU"
+      "index": "aV"
     },
     {
       "id": "yjVfkkvt",
@@ -3454,7 +3543,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1. How MINT sets parameters at startup",
@@ -3466,7 +3555,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1. How MINT sets parameters at startup",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aV"
+      "index": "aW"
     },
     {
       "id": "lCjxa3JM",
@@ -3491,7 +3580,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "On every page rerun: main() → _base_settings() → resolve_model_limits() → resolve_settings(). Left — where values come from, centre — the functions that combine them, right — what takes precedence.",
@@ -3503,7 +3592,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "On every page rerun: main() → _base_settings() → resolve_model_limits() → resolve_settings(). Left — where values come from, centre — the functions that combine them, right — what takes precedence.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aW"
+      "index": "aX"
     },
     {
       "id": "za0DMpYx",
@@ -3539,10 +3628,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aX"
+      "index": "aY"
     },
     {
       "id": "T7mEkfFQ",
@@ -3567,7 +3656,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1587784481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Where values come from",
@@ -3579,7 +3668,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Where values come from",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aY"
+      "index": "aZ"
     },
     {
       "id": "mZpXKQNv",
@@ -3611,10 +3700,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TN1jFYgS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aZ"
+      "index": "aa"
     },
     {
       "id": "TN1jFYgS",
@@ -3639,7 +3728,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1878699547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] .env → load_settings() → _load_env_files()\nwhere to connect: API addresses and keys, model names, folders,\ncertificate. Full list — panel 3, “Connections”.",
@@ -3651,7 +3740,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] .env → load_settings() → _load_env_files()\nwhere to connect: API addresses and keys, model names, folders,\ncertificate. Full list — panel 3, “Connections”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aa"
+      "index": "ab"
     },
     {
       "id": "m25FKYcq",
@@ -3683,10 +3772,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GtxUZ3NF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "ab"
+      "index": "ac"
     },
     {
       "id": "GtxUZ3NF",
@@ -3711,7 +3800,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 832090367,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] config.yaml → load_settings()\nhow to work: model limits, search, review. Parameters set here are\nremembered (explicit_fields); connections here are ignored, unknown\nparameters give a warning in the sidebar.",
@@ -3723,7 +3812,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] config.yaml → load_settings()\nhow to work: model limits, search, review. Parameters set here are\nremembered (explicit_fields); connections here are ignored, unknown\nparameters give a warning in the sidebar.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ac"
+      "index": "ad"
     },
     {
       "id": "d7Q1WHl9",
@@ -3755,10 +3844,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NxT10CQ0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "ad"
+      "index": "ae"
     },
     {
       "id": "NxT10CQ0",
@@ -3783,7 +3872,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 544731864,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] Model servers → detect_server_info()\nGET …/models → context_from_model_info(): LLM window\n(max_model_len, context_length, n_ctx …), embedding and reranker\ninput — if the server reports them; cached for 10 min.",
@@ -3795,7 +3884,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] Model servers → detect_server_info()\nGET …/models → context_from_model_info(): LLM window\n(max_model_len, context_length, n_ctx …), embedding and reranker\ninput — if the server reports them; cached for 10 min.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ae"
+      "index": "af"
     },
     {
       "id": "cOzZf5k5",
@@ -3827,10 +3916,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "af"
+      "index": "ag"
     },
     {
       "id": "dwllkuSp",
@@ -3855,7 +3944,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] “Detect from server” button → measure_chars_per_token()\nmeasures “characters per token” in the language of the base (how —\nthe “Tokens and characters” block at the top).",
@@ -3867,7 +3956,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] “Detect from server” button → measure_chars_per_token()\nmeasures “characters per token” in the language of the base (how —\nthe “Tokens and characters” block at the top).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ag"
+      "index": "ah"
     },
     {
       "id": "fz2Zr53c",
@@ -3899,10 +3988,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "ah"
+      "index": "ai"
     },
     {
       "id": "0azVOzgo",
@@ -3927,7 +4016,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] Sidebar → st.session_state\n“Models and limits”, “Expert settings”: changes for the session;\n“Reset session changes” restores everything.",
@@ -3939,7 +4028,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] Sidebar → st.session_state\n“Models and limits”, “Expert settings”: changes for the session;\n“Reset session changes” restores everything.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ai"
+      "index": "aj"
     },
     {
       "id": "MO75qxS5",
@@ -3971,10 +4060,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fSKUH9E4"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "aj"
+      "index": "ak"
     },
     {
       "id": "fSKUH9E4",
@@ -3999,7 +4088,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1583187137,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] Knowledge base → kb_default_top_k()\nif top_k is not set (0), suggests it from the number of fragments\nin the base — 4 or 5 (details — panel 3, top_k).",
@@ -4011,7 +4100,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] Knowledge base → kb_default_top_k()\nif top_k is not set (0), suggests it from the number of fragments\nin the base — 4 or 5 (details — panel 3, top_k).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ak"
+      "index": "al"
     },
     {
       "id": "ixFn3XEj",
@@ -4051,10 +4140,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "al"
+      "index": "am"
     },
     {
       "id": "XCyBVpqO",
@@ -4079,7 +4168,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "resolve_model_limits() ← limits from the sources on the left\nfor each of the 4 model limits picks the source by precedence (right);\nnothing found — the typical value (why these — panel 3).",
@@ -4091,7 +4180,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "resolve_model_limits() ← limits from the sources on the left\nfor each of the 4 model limits picks the source by precedence (right);\nnothing found — the typical value (why these — panel 3).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "am"
+      "index": "an"
     },
     {
       "id": "hD5ZeGLD",
@@ -4131,10 +4220,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hMCVRlIk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "an"
+      "index": "ao"
     },
     {
       "id": "HmY8FuFN",
@@ -4159,7 +4248,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1777859923,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "embed_prefix_preset(EMBED_MODEL)\npicks the query and document prefixes by the embedding model name (table —\npanel 3, embed_query_prefix).",
@@ -4171,7 +4260,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "embed_prefix_preset(EMBED_MODEL)\npicks the query and document prefixes by the embedding model name (table —\npanel 3, embed_query_prefix).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "ao"
+      "index": "ap"
     },
     {
       "id": "tmov1cS1",
@@ -4215,10 +4304,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "ap"
+      "index": "aq"
     },
     {
       "id": "ybyQpWeD",
@@ -4243,7 +4332,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2006891536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "resolve_settings() → _derive() ← parameters from the sources on the left\ncomputes 12 parameters from the model limits. Rule: value = the smaller of\nthe default and the model's ceiling. A large window does not inflate\nfragments (long context adds noise), a small one shrinks them so nothing is\ncut off. Formulas — the “Constraints” column in panel 3, visually — panel 2.\nResult: cfg (immutable Settings) and info {value, auto, ceiling, source} →\nthe “Computed by MINT” block.",
@@ -4255,7 +4344,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "resolve_settings() → _derive() ← parameters from the sources on the left\ncomputes 12 parameters from the model limits. Rule: value = the smaller of\nthe default and the model's ceiling. A large window does not inflate\nfragments (long context adds noise), a small one shrinks them so nothing is\ncut off. Formulas — the “Constraints” column in panel 3, visually — panel 2.\nResult: cfg (immutable Settings) and info {value, auto, ceiling, source} →\nthe “Computed by MINT” block.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "aq"
+      "index": "ar"
     },
     {
       "id": "HQQ0tDBz",
@@ -4295,10 +4384,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "ar"
+      "index": "as"
     },
     {
       "id": "oUvIAzvS",
@@ -4323,7 +4412,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1679127538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "limits_warnings()\na warning in “Models and limits” if a value is above the ceiling or the\nmodel lacks room.",
@@ -4335,7 +4424,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "limits_warnings()\na warning in “Models and limits” if a value is above the ceiling or the\nmodel lacks room.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "as"
+      "index": "at"
     },
     {
       "id": "o4snPTpc",
@@ -4371,10 +4460,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "at"
+      "index": "au"
     },
     {
       "id": "frPxmTX3",
@@ -4399,7 +4488,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 386724997,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "ask_llm() on every call\nif the LLM window is known (server, config.yaml or sidebar): estimates the\nrequest in tokens; free < 256 tok. — error “CONTEXT DOES NOT FIT”; little\nroom for the answer — max_tokens is reduced. With the typical window the\nrequest is not checked.",
@@ -4411,7 +4500,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "ask_llm() on every call\nif the LLM window is known (server, config.yaml or sidebar): estimates the\nrequest in tokens; free < 256 tok. — error “CONTEXT DOES NOT FIT”; little\nroom for the answer — max_tokens is reduced. With the typical window the\nrequest is not checked.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "au"
+      "index": "av"
     },
     {
       "id": "KKTFtVje",
@@ -4438,7 +4527,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4475,7 +4564,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "av"
+      "index": "aw"
     },
     {
       "id": "hMCVRlIk",
@@ -4502,7 +4591,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 3324235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4539,7 +4628,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "aw"
+      "index": "ax"
     },
     {
       "id": "bzt8ESso",
@@ -4566,7 +4655,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4603,7 +4692,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ax"
+      "index": "ay"
     },
     {
       "id": "zJXSKFhC",
@@ -4630,7 +4719,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 22369781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4667,7 +4756,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "ay"
+      "index": "az"
     },
     {
       "id": "KyOaS2OB",
@@ -4694,7 +4783,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4731,7 +4820,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "az"
+      "index": "b10"
     },
     {
       "id": "GUq1zeZx",
@@ -4758,7 +4847,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 780732774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4795,7 +4884,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "b10"
+      "index": "b11"
     },
     {
       "id": "p0abAhKA",
@@ -4827,10 +4916,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3QZgUSQg"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b11"
+      "index": "b12"
     },
     {
       "id": "3QZgUSQg",
@@ -4855,7 +4944,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1416799419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "SOURCE PRECEDENCE — the same for all parameters\n(applied by resolve_model_limits() and resolve_settings())\n\n• connections (addresses, keys, models, folders): system environment\n   variables > .env\n• model limits: sidebar (session) > config.yaml > server / measurement >\n   typical value\n• other parameters: sidebar (session) > config.yaml > MINT's calculation\n   (for [A]) > default in code\n\nAn explicitly set value (sidebar or config.yaml) always wins over what\nthe server reports and what is computed. An [A] parameter pinned by hand\nis not recomputed, but MINT warns if it is above the model's ceiling\n(limits_warnings).",
@@ -4867,7 +4956,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "SOURCE PRECEDENCE — the same for all parameters\n(applied by resolve_model_limits() and resolve_settings())\n\n• connections (addresses, keys, models, folders): system environment\n   variables > .env\n• model limits: sidebar (session) > config.yaml > server / measurement >\n   typical value\n• other parameters: sidebar (session) > config.yaml > MINT's calculation\n   (for [A]) > default in code\n\nAn explicitly set value (sidebar or config.yaml) always wins over what\nthe server reports and what is computed. An [A] parameter pinned by hand\nis not recomputed, but MINT warns if it is above the model's ceiling\n(limits_warnings).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b12"
+      "index": "b13"
     },
     {
       "id": "HKhEQe0Z",
@@ -4892,7 +4981,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1913301777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2. How the model window is divided: what takes room and how much is left for text from the base",
@@ -4904,7 +4993,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2. How the model window is divided: what takes room and how much is left for text from the base",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b13"
+      "index": "b14"
     },
     {
       "id": "p07PEz84",
@@ -4929,7 +5018,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Left — the general view (not to scale), right — the same bars with numbers: LLM window 32768 tok., max_tokens 1500, chars_per_token 2.5, top_k 5, embedding and reranker input 8192 tok., Qwen3-Embedding. Narrow parts on the right\nbars are drawn wider than to scale. The formula of each part — the “Constraints” column in panel 3.",
@@ -4941,7 +5030,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Left — the general view (not to scale), right — the same bars with numbers: LLM window 32768 tok., max_tokens 1500, chars_per_token 2.5, top_k 5, embedding and reranker input 8192 tok., Qwen3-Embedding. Narrow parts on the right\nbars are drawn wider than to scale. The formula of each part — the “Constraints” column in panel 3.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b14"
+      "index": "b15"
     },
     {
       "id": "NeN18c5t",
@@ -4966,7 +5055,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 590271204,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "GENERAL VIEW",
@@ -4978,7 +5067,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "GENERAL VIEW",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b15"
+      "index": "b16"
     },
     {
       "id": "baST1uPq",
@@ -5003,7 +5092,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "EXAMPLE WITH NUMBERS",
@@ -5015,7 +5104,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "EXAMPLE WITH NUMBERS",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b16"
+      "index": "b17"
     },
     {
       "id": "1T4SNQGj",
@@ -5040,7 +5129,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT — one LLM call per question.  The whole bar = llm_context_tokens [tok.]",
@@ -5052,7 +5141,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "CHAT — one LLM call per question.  The whole bar = llm_context_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b17"
+      "index": "b18"
     },
     {
       "id": "A8h7VLvV",
@@ -5077,7 +5166,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1275421862,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT, window 32768 tok.",
@@ -5089,7 +5178,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "CHAT, window 32768 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b18"
+      "index": "b19"
     },
     {
       "id": "nBcm18E7",
@@ -5121,10 +5210,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lMqa6dyn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b19"
+      "index": "b1A"
     },
     {
       "id": "lMqa6dyn",
@@ -5149,7 +5238,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1668778927,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt, question, history,\nabbreviations\nCHAT_RESERVE 800 tok.",
@@ -5161,7 +5250,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt, question, history,\nabbreviations\nCHAT_RESERVE 800 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1A"
+      "index": "b1B"
     },
     {
       "id": "zDX0XsOI",
@@ -5193,10 +5282,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0IIzxMCH"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1B"
+      "index": "b1C"
     },
     {
       "id": "0IIzxMCH",
@@ -5221,7 +5310,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 638186731,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\nmax_tokens [tok.]",
@@ -5233,7 +5322,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\nmax_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1C"
+      "index": "b1D"
     },
     {
       "id": "L0k8cF7P",
@@ -5265,10 +5354,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1D"
+      "index": "b1E"
     },
     {
       "id": "wIPjVgMP",
@@ -5293,7 +5382,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1575679632,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin 15 %\n(× 0.85)",
@@ -5305,7 +5394,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin 15 %\n(× 0.85)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1E"
+      "index": "b1F"
     },
     {
       "id": "zAZSSevu",
@@ -5337,10 +5426,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1F"
+      "index": "b1G"
     },
     {
       "id": "wZnhXokE",
@@ -5365,7 +5454,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1117002960,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget\nthe rest → into characters",
@@ -5377,7 +5466,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "chat_budget\nthe rest → into characters",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1G"
+      "index": "b1H"
     },
     {
       "id": "vwSuw7eL",
@@ -5409,10 +5498,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "efio1e5v"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1H"
+      "index": "b1I"
     },
     {
       "id": "efio1e5v",
@@ -5437,7 +5526,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 621027637,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt etc.\n800 tok.",
@@ -5449,7 +5538,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt etc.\n800 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1I"
+      "index": "b1J"
     },
     {
       "id": "zufR1oa1",
@@ -5481,10 +5570,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MN45msGt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1J"
+      "index": "b1K"
     },
     {
       "id": "MN45msGt",
@@ -5509,7 +5598,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 737651295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -5521,7 +5610,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\n1500 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1K"
+      "index": "b1L"
     },
     {
       "id": "m4ESFAMB",
@@ -5553,10 +5642,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "d9PJHN50"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1L"
+      "index": "b1M"
     },
     {
       "id": "d9PJHN50",
@@ -5581,7 +5670,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1934321891,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin 15 %\n4,570 tok.",
@@ -5593,7 +5682,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin 15 %\n4,570 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1M"
+      "index": "b1N"
     },
     {
       "id": "VI6vaxks",
@@ -5625,10 +5714,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JhZOGm7N"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1N"
+      "index": "b1O"
     },
     {
       "id": "JhZOGm7N",
@@ -5653,7 +5742,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1438249924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget\n25,898 tok. × 2.5 = 64,744 chars",
@@ -5665,7 +5754,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "chat_budget\n25,898 tok. × 2.5 = 64,744 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1O"
+      "index": "b1P"
     },
     {
       "id": "lTJ2LlMC",
@@ -5690,7 +5779,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5716,7 +5805,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1P"
+      "index": "b1Q"
     },
     {
       "id": "000XjC8l",
@@ -5741,7 +5830,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "llm_context_tokens [tok.] — the whole model window",
@@ -5753,7 +5842,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "llm_context_tokens [tok.] — the whole model window",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1Q"
+      "index": "b1R"
     },
     {
       "id": "QNKeGZEh",
@@ -5778,7 +5867,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5804,7 +5893,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1R"
+      "index": "b1S"
     },
     {
       "id": "rB1WYiMd",
@@ -5829,7 +5918,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "32,768 tok. = 800 + 1,500 + 4,570 + 25,898",
@@ -5841,7 +5930,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "32,768 tok. = 800 + 1,500 + 4,570 + 25,898",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1S"
+      "index": "b1T"
     },
     {
       "id": "VAiZBjYp",
@@ -5866,7 +5955,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 722724126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5884,7 +5973,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1T"
+      "index": "b1U"
     },
     {
       "id": "zq5QqHWI",
@@ -5909,7 +5998,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5927,7 +6016,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1U"
+      "index": "b1V"
     },
     {
       "id": "8SXdDbVH",
@@ -5952,7 +6041,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 584673810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5970,7 +6059,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1V"
+      "index": "b1W"
     },
     {
       "id": "OhrcaOXe",
@@ -5995,7 +6084,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6013,7 +6102,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1W"
+      "index": "b1X"
     },
     {
       "id": "bRHim8qr",
@@ -6045,10 +6134,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NqXrwvw9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1X"
+      "index": "b1Y"
     },
     {
       "id": "NqXrwvw9",
@@ -6073,7 +6162,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "fragment 1\n≤ smart_truncate_chars",
@@ -6085,7 +6174,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "fragment 1\n≤ smart_truncate_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1Y"
+      "index": "b1Z"
     },
     {
       "id": "qkdFilPg",
@@ -6117,10 +6206,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bULLNvq3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1Z"
+      "index": "b1a"
     },
     {
       "id": "bULLNvq3",
@@ -6145,7 +6234,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "fragment 2",
@@ -6157,7 +6246,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "fragment 2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1a"
+      "index": "b1b"
     },
     {
       "id": "RoPDjkGG",
@@ -6189,10 +6278,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hMgyc1Ik"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1b"
+      "index": "b1c"
     },
     {
       "id": "hMgyc1Ik",
@@ -6217,7 +6306,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "…",
@@ -6229,7 +6318,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "…",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1c"
+      "index": "b1d"
     },
     {
       "id": "xWDkXwe4",
@@ -6261,10 +6350,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mavdOV9b"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1d"
+      "index": "b1e"
     },
     {
       "id": "mavdOV9b",
@@ -6289,7 +6378,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "fragment top_k",
@@ -6301,7 +6390,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "fragment top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1e"
+      "index": "b1f"
     },
     {
       "id": "MNEr0YvH",
@@ -6333,10 +6422,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "noOzI47H"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1f"
+      "index": "b1g"
     },
     {
       "id": "noOzI47H",
@@ -6361,7 +6450,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free if fragments are shorter",
@@ -6373,7 +6462,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free if fragments are shorter",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1g"
+      "index": "b1h"
     },
     {
       "id": "nWYhUPjG",
@@ -6405,10 +6494,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "uX8z8N1E"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1h"
+      "index": "b1i"
     },
     {
       "id": "uX8z8N1E",
@@ -6433,7 +6522,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1\n2500",
@@ -6445,7 +6534,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1i"
+      "index": "b1j"
     },
     {
       "id": "qWuQ5Tyt",
@@ -6477,10 +6566,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1j"
+      "index": "b1k"
     },
     {
       "id": "wFtpo5SN",
@@ -6505,7 +6594,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2\n2500",
@@ -6517,7 +6606,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1k"
+      "index": "b1l"
     },
     {
       "id": "ink1rcEm",
@@ -6549,10 +6638,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1l"
+      "index": "b1m"
     },
     {
       "id": "7xQsVvsf",
@@ -6577,7 +6666,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3\n2500",
@@ -6589,7 +6678,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1m"
+      "index": "b1n"
     },
     {
       "id": "QiDuXTvv",
@@ -6621,10 +6710,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1n"
+      "index": "b1o"
     },
     {
       "id": "4dLMpfoB",
@@ -6649,7 +6738,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4\n2500",
@@ -6661,7 +6750,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1o"
+      "index": "b1p"
     },
     {
       "id": "6mtwEXMY",
@@ -6693,10 +6782,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1p"
+      "index": "b1q"
     },
     {
       "id": "Stk5L1Iq",
@@ -6721,7 +6810,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5\n2500",
@@ -6733,7 +6822,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5\n2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1q"
+      "index": "b1r"
     },
     {
       "id": "alP4MKd2",
@@ -6765,10 +6854,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JbOT9pPk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1r"
+      "index": "b1s"
     },
     {
       "id": "JbOT9pPk",
@@ -6793,7 +6882,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free 52,244 chars\n(values capped by the defaults)",
@@ -6805,7 +6894,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free 52,244 chars\n(values capped by the defaults)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1s"
+      "index": "b1t"
     },
     {
       "id": "xS85cGzF",
@@ -6830,7 +6919,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1127199645,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6856,7 +6945,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1t"
+      "index": "b1u"
     },
     {
       "id": "CMVVPV5h",
@@ -6881,7 +6970,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1841050973,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget [chars] = top_k fragments + free space",
@@ -6893,7 +6982,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "chat_budget [chars] = top_k fragments + free space",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1u"
+      "index": "b1v"
     },
     {
       "id": "qTobGY3e",
@@ -6918,7 +7007,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1963743434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6944,7 +7033,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b1v"
+      "index": "b1w"
     },
     {
       "id": "DK8kB7DT",
@@ -6969,7 +7058,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 529228002,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "64,744 chars: 5 × 2500 = 12,500 used, 52,244 free",
@@ -6981,7 +7070,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "64,744 chars: 5 × 2500 = 12,500 used, 52,244 free",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1w"
+      "index": "b1x"
     },
     {
       "id": "phvLg0F1",
@@ -7013,10 +7102,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WjKtxsaI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b1x"
+      "index": "b1y"
     },
     {
       "id": "WjKtxsaI",
@@ -7041,7 +7130,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2008305028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "WHY 32768 tok. → ≈ 64,700 chars, BUT 4096 tok. → ONLY ≈ 3,800 chars\nParts of fixed size are subtracted from the window first: answer 1500 + prompt 800 = 2300 tok. They are the same for\nany window:\n• 32768 − 2300 = 30,468 tok. × 2.5 × 0.85 = 64,744 chars  — fixed parts took 7 % of the window\n• 4096 − 2300 = 1,796 tok. × 2.5 × 0.85 = 3,816 chars  — fixed parts took 56 % of the window\nThe window is 8 times smaller, the budget 17 times.",
@@ -7053,7 +7142,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "WHY 32768 tok. → ≈ 64,700 chars, BUT 4096 tok. → ONLY ≈ 3,800 chars\nParts of fixed size are subtracted from the window first: answer 1500 + prompt 800 = 2300 tok. They are the same for\nany window:\n• 32768 − 2300 = 30,468 tok. × 2.5 × 0.85 = 64,744 chars  — fixed parts took 7 % of the window\n• 4096 − 2300 = 1,796 tok. × 2.5 × 0.85 = 3,816 chars  — fixed parts took 56 % of the window\nThe window is 8 times smaller, the budget 17 times.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1y"
+      "index": "b1z"
     },
     {
       "id": "zkwy92jY",
@@ -7078,7 +7167,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 677440757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT, window 4096 tok. — the same on a small model",
@@ -7090,7 +7179,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "CHAT, window 4096 tok. — the same on a small model",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b1z"
+      "index": "b20"
     },
     {
       "id": "zQH8lyYT",
@@ -7122,10 +7211,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "leq8ut5p"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b20"
+      "index": "b21"
     },
     {
       "id": "leq8ut5p",
@@ -7150,7 +7239,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1842945878,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt etc.\n800 tok.",
@@ -7162,7 +7251,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt etc.\n800 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b21"
+      "index": "b22"
     },
     {
       "id": "bSvmNXvi",
@@ -7194,10 +7283,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "loAcQiAx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b22"
+      "index": "b23"
     },
     {
       "id": "loAcQiAx",
@@ -7222,7 +7311,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1935139015,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -7234,7 +7323,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\n1500 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b23"
+      "index": "b24"
     },
     {
       "id": "yEH4qwrM",
@@ -7266,10 +7355,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LwKD4Klc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b24"
+      "index": "b25"
     },
     {
       "id": "LwKD4Klc",
@@ -7294,7 +7383,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 851939754,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n269 tok.",
@@ -7306,7 +7395,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n269 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b25"
+      "index": "b26"
     },
     {
       "id": "ioigz0CL",
@@ -7338,10 +7427,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bjxl3eOv"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b26"
+      "index": "b27"
     },
     {
       "id": "bjxl3eOv",
@@ -7366,7 +7455,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1489119380,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget\n1,527 tok. × 2.5 = 3,816 chars",
@@ -7378,7 +7467,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "chat_budget\n1,527 tok. × 2.5 = 3,816 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b27"
+      "index": "b28"
     },
     {
       "id": "XPO1mpIS",
@@ -7403,7 +7492,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1334356844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7421,7 +7510,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b28"
+      "index": "b29"
     },
     {
       "id": "JbjFZK0o",
@@ -7446,7 +7535,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1847393126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7464,7 +7553,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b29"
+      "index": "b2A"
     },
     {
       "id": "53CpRO9g",
@@ -7496,10 +7585,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "InVh793w"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2A"
+      "index": "b2B"
     },
     {
       "id": "InVh793w",
@@ -7524,7 +7613,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1566900065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1\n763",
@@ -7536,7 +7625,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2B"
+      "index": "b2C"
     },
     {
       "id": "oi99SUzt",
@@ -7568,10 +7657,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "z3x9ZzAb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2C"
+      "index": "b2D"
     },
     {
       "id": "z3x9ZzAb",
@@ -7596,7 +7685,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1449011898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2\n763",
@@ -7608,7 +7697,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2D"
+      "index": "b2E"
     },
     {
       "id": "pI5SbfaH",
@@ -7640,10 +7729,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lvogpKBa"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2E"
+      "index": "b2F"
     },
     {
       "id": "lvogpKBa",
@@ -7668,7 +7757,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 613515443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3\n763",
@@ -7680,7 +7769,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2F"
+      "index": "b2G"
     },
     {
       "id": "D5eOHAZA",
@@ -7712,10 +7801,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2G"
+      "index": "b2H"
     },
     {
       "id": "FHj0cwfr",
@@ -7740,7 +7829,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1166402109,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4\n763",
@@ -7752,7 +7841,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2H"
+      "index": "b2I"
     },
     {
       "id": "dCsLXsLf",
@@ -7784,10 +7873,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "pDc5xBAk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2I"
+      "index": "b2J"
     },
     {
       "id": "pDc5xBAk",
@@ -7812,7 +7901,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1287752845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5\n763",
@@ -7824,7 +7913,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5\n763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2J"
+      "index": "b2K"
     },
     {
       "id": "BbYr0DNr",
@@ -7849,7 +7938,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2045375074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7875,7 +7964,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b2K"
+      "index": "b2L"
     },
     {
       "id": "VjHkLAXa",
@@ -7900,7 +7989,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 248780357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3,816 chars / 5 = 763 chars per fragment: MINT reduces parent_size and smart_truncate_chars to 763 and shows it in “Computed\n   by MINT”",
@@ -7912,7 +8001,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3,816 chars / 5 = 763 chars per fragment: MINT reduces parent_size and smart_truncate_chars to 763 and shows it in “Computed\n   by MINT”",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2L"
+      "index": "b2M"
     },
     {
       "id": "EYKnsdF5",
@@ -7937,7 +8026,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 666412184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW — one LLM call (review of one section).  The whole bar = llm_context_tokens [tok.]",
@@ -7949,7 +8038,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "DOCUMENT REVIEW — one LLM call (review of one section).  The whole bar = llm_context_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2M"
+      "index": "b2N"
     },
     {
       "id": "fI4GQqfW",
@@ -7974,7 +8063,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 242970542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "REVIEW, window 32768 tok.: chars(32768 − 1500) = 66,444 chars",
@@ -7986,7 +8075,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "REVIEW, window 32768 tok.: chars(32768 − 1500) = 66,444 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2N"
+      "index": "b2O"
     },
     {
       "id": "0j3k8I4J",
@@ -8018,10 +8107,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7rdFv432"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2O"
+      "index": "b2P"
     },
     {
       "id": "7rdFv432",
@@ -8046,7 +8135,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1102567897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\nmax_tokens [tok.]",
@@ -8058,7 +8147,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\nmax_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2P"
+      "index": "b2Q"
     },
     {
       "id": "wnaaTxJf",
@@ -8090,10 +8179,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "t16gQ7r9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2Q"
+      "index": "b2R"
     },
     {
       "id": "t16gQ7r9",
@@ -8118,7 +8207,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1848237837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -8130,7 +8219,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2R"
+      "index": "b2S"
     },
     {
       "id": "sKkgF9SD",
@@ -8162,10 +8251,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "v324B2u5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2S"
+      "index": "b2T"
     },
     {
       "id": "v324B2u5",
@@ -8190,7 +8279,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1380429683,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt with criteria\nAUDIT_RESERVE 3500 chars",
@@ -8202,7 +8291,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt with criteria\nAUDIT_RESERVE 3500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2T"
+      "index": "b2U"
     },
     {
       "id": "fvsNA25Z",
@@ -8234,10 +8323,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Yw1heHdw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2U"
+      "index": "b2V"
     },
     {
       "id": "Yw1heHdw",
@@ -8262,7 +8351,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 623651357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document section\naudit_map_size",
@@ -8274,7 +8363,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "document section\naudit_map_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2V"
+      "index": "b2W"
     },
     {
       "id": "TR2CHYcF",
@@ -8306,10 +8395,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MKAIv9RY"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2W"
+      "index": "b2X"
     },
     {
       "id": "MKAIv9RY",
@@ -8334,7 +8423,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 373411918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms from the base —\nwhole parents\naudit_context_max_chars",
@@ -8346,7 +8435,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "norms from the base —\nwhole parents\naudit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2X"
+      "index": "b2Y"
     },
     {
       "id": "iz2RHLkF",
@@ -8378,10 +8467,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3oHHcuXC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2Y"
+      "index": "b2Z"
     },
     {
       "id": "3oHHcuXC",
@@ -8406,7 +8495,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1194067783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -8418,7 +8507,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2Z"
+      "index": "b2a"
     },
     {
       "id": "DlULn0T8",
@@ -8450,10 +8539,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "UWYNgYTm"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2a"
+      "index": "b2b"
     },
     {
       "id": "UWYNgYTm",
@@ -8478,7 +8567,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2140098237,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -8490,7 +8579,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\n1500 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2b"
+      "index": "b2c"
     },
     {
       "id": "YRUXvHae",
@@ -8522,10 +8611,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "5wetaWmd"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2c"
+      "index": "b2d"
     },
     {
       "id": "5wetaWmd",
@@ -8550,7 +8639,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 977443932,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n4,690 tok.",
@@ -8562,7 +8651,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n4,690 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2d"
+      "index": "b2e"
     },
     {
       "id": "1lPVEy0F",
@@ -8594,10 +8683,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "nwBQd5Yt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2e"
+      "index": "b2f"
     },
     {
       "id": "nwBQd5Yt",
@@ -8622,7 +8711,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 611520879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt\n3500 chars",
@@ -8634,7 +8723,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt\n3500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2f"
+      "index": "b2g"
     },
     {
       "id": "ug4V9ZJ5",
@@ -8666,10 +8755,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KlWg4sOl"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2g"
+      "index": "b2h"
     },
     {
       "id": "KlWg4sOl",
@@ -8694,7 +8783,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1365719569,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "section\n4500 chars",
@@ -8706,7 +8795,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "section\n4500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2h"
+      "index": "b2i"
     },
     {
       "id": "iTiSNH0I",
@@ -8738,10 +8827,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SOxNTm64"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2i"
+      "index": "b2j"
     },
     {
       "id": "SOxNTm64",
@@ -8766,7 +8855,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 811674068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms ≤ 9000\nchars\n(≈ 3 whole\nparents)",
@@ -8778,7 +8867,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "norms ≤ 9000\nchars\n(≈ 3 whole\nparents)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2j"
+      "index": "b2k"
     },
     {
       "id": "gGZ8K9hx",
@@ -8810,10 +8899,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hv4VvuyZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2k"
+      "index": "b2l"
     },
     {
       "id": "hv4VvuyZ",
@@ -8838,7 +8927,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1926862321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free\n49,444 chars",
@@ -8850,7 +8939,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free\n49,444 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2l"
+      "index": "b2m"
     },
     {
       "id": "2PyncogU",
@@ -8875,7 +8964,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 832351319,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -8901,7 +8990,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b2m"
+      "index": "b2n"
     },
     {
       "id": "Lx61MPMD",
@@ -8926,7 +9015,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1116584361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "llm_budget [chars]",
@@ -8938,7 +9027,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "llm_budget [chars]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2n"
+      "index": "b2o"
     },
     {
       "id": "FvFHW0Zi",
@@ -8963,7 +9052,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 968813686,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -8989,7 +9078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "endBinding": null,
       "startArrowhead": null,
       "endArrowhead": null,
-      "index": "b2o"
+      "index": "b2p"
     },
     {
       "id": "uIyRjJQG",
@@ -9014,7 +9103,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 257588578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "llm_budget = 66,444 − 3,500 = 62,944 chars",
@@ -9026,7 +9115,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "llm_budget = 66,444 − 3,500 = 62,944 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2p"
+      "index": "b2q"
     },
     {
       "id": "yFMSjSy9",
@@ -9051,7 +9140,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 748399043,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "VERIFICATION OF FIXES — one LLM call per comment.  The whole bar = llm_context_tokens [tok.]",
@@ -9063,7 +9152,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "VERIFICATION OF FIXES — one LLM call per comment.  The whole bar = llm_context_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2q"
+      "index": "b2r"
     },
     {
       "id": "UNX9d21J",
@@ -9088,7 +9177,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1965113445,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "VERIFICATION, window 32768 tok.",
@@ -9100,7 +9189,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "VERIFICATION, window 32768 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2r"
+      "index": "b2s"
     },
     {
       "id": "yM76eDxM",
@@ -9132,10 +9221,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LajGgGfY"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2s"
+      "index": "b2t"
     },
     {
       "id": "LajGgGfY",
@@ -9160,7 +9249,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2008784886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\nmax_tokens",
@@ -9172,7 +9261,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\nmax_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2t"
+      "index": "b2u"
     },
     {
       "id": "uGjqop81",
@@ -9204,10 +9293,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ShtISKym"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2u"
+      "index": "b2v"
     },
     {
       "id": "ShtISKym",
@@ -9232,7 +9321,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1784713809,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -9244,7 +9333,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2v"
+      "index": "b2w"
     },
     {
       "id": "osIyFSGk",
@@ -9276,10 +9365,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZPO29Z85"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2w"
+      "index": "b2x"
     },
     {
       "id": "ZPO29Z85",
@@ -9304,7 +9393,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 49090000,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt\n3500 chars",
@@ -9316,7 +9405,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt\n3500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2x"
+      "index": "b2y"
     },
     {
       "id": "CqybfNvR",
@@ -9348,10 +9437,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Q8pcOgCV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b2y"
+      "index": "b2z"
     },
     {
       "id": "Q8pcOgCV",
@@ -9376,7 +9465,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1700388050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "comment\n≈ 1000 chars",
@@ -9388,7 +9477,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "comment\n≈ 1000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b2z"
+      "index": "b30"
     },
     {
       "id": "mcILQBbL",
@@ -9420,10 +9509,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KC1H2ntF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b30"
+      "index": "b31"
     },
     {
       "id": "KC1H2ntF",
@@ -9448,7 +9537,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1377316762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms —\nwhole parents\naudit_context_max_chars",
@@ -9460,7 +9549,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "norms —\nwhole parents\naudit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b31"
+      "index": "b32"
     },
     {
       "id": "EYmDset2",
@@ -9492,10 +9581,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "meKGw7dv"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b32"
+      "index": "b33"
     },
     {
       "id": "meKGw7dv",
@@ -9520,7 +9609,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1800598225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "sections of the new\nrevision\nreview_context_max_chars",
@@ -9532,7 +9621,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "sections of the new\nrevision\nreview_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b33"
+      "index": "b34"
     },
     {
       "id": "tLviKLJK",
@@ -9564,10 +9653,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "PAcdQHdw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b34"
+      "index": "b35"
     },
     {
       "id": "PAcdQHdw",
@@ -9592,7 +9681,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 801671152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -9604,7 +9693,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b35"
+      "index": "b36"
     },
     {
       "id": "SvmHaA8Z",
@@ -9636,10 +9725,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Ev2N9r9I"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b36"
+      "index": "b37"
     },
     {
       "id": "Ev2N9r9I",
@@ -9664,7 +9753,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1993208942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -9676,7 +9765,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answer\n1500 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b37"
+      "index": "b38"
     },
     {
       "id": "uQsSGFF3",
@@ -9708,10 +9797,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hDqrCRD7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b38"
+      "index": "b39"
     },
     {
       "id": "hDqrCRD7",
@@ -9736,7 +9825,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1356140762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n4,690 tok.",
@@ -9748,7 +9837,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n4,690 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b39"
+      "index": "b3A"
     },
     {
       "id": "lu9njCuA",
@@ -9780,10 +9869,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fdMC3RjW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3A"
+      "index": "b3B"
     },
     {
       "id": "fdMC3RjW",
@@ -9808,7 +9897,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 837135875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt\n3500",
@@ -9820,7 +9909,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prompt\n3500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3B"
+      "index": "b3C"
     },
     {
       "id": "pMQCO7NZ",
@@ -9852,10 +9941,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "j5fgYzkQ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3C"
+      "index": "b3D"
     },
     {
       "id": "j5fgYzkQ",
@@ -9880,7 +9969,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1296323541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "comment\n1000",
@@ -9892,7 +9981,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "comment\n1000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3D"
+      "index": "b3E"
     },
     {
       "id": "evM6GfER",
@@ -9924,10 +10013,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "071tN1nF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3E"
+      "index": "b3F"
     },
     {
       "id": "071tN1nF",
@@ -9952,7 +10041,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1792505757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms\n≤ 9000",
@@ -9964,7 +10053,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "norms\n≤ 9000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3F"
+      "index": "b3G"
     },
     {
       "id": "h1TJlQ2Z",
@@ -9996,10 +10085,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8ShPd4X4"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3G"
+      "index": "b3H"
     },
     {
       "id": "8ShPd4X4",
@@ -10024,7 +10113,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1354835712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "sections\n12,000 chars",
@@ -10036,7 +10125,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "sections\n12,000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3H"
+      "index": "b3I"
     },
     {
       "id": "N6UjAXdJ",
@@ -10068,10 +10157,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zPfZUBWj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3I"
+      "index": "b3J"
     },
     {
       "id": "zPfZUBWj",
@@ -10096,7 +10185,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 89975457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free\n40,944 chars",
@@ -10108,7 +10197,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free\n40,944 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3J"
+      "index": "b3K"
     },
     {
       "id": "nkYtsxF7",
@@ -10133,7 +10222,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1393172046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "EMBEDDINGS — one child at indexing.  The whole bar = embed_max_tokens [tok.]",
@@ -10145,7 +10234,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "EMBEDDINGS — one child at indexing.  The whole bar = embed_max_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3K"
+      "index": "b3L"
     },
     {
       "id": "OBPpucuv",
@@ -10170,7 +10259,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 948614400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "EMBEDDINGS, input 8192 tok.: chars(8192) = 17,408 chars",
@@ -10182,7 +10271,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "EMBEDDINGS, input 8192 tok.: chars(8192) = 17,408 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3L"
+      "index": "b3M"
     },
     {
       "id": "YxjyM9W5",
@@ -10214,10 +10303,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "oqJGgArB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3M"
+      "index": "b3N"
     },
     {
       "id": "oqJGgArB",
@@ -10242,7 +10331,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1428735309,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -10254,7 +10343,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3N"
+      "index": "b3O"
     },
     {
       "id": "j0X6p8FW",
@@ -10286,10 +10375,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Deoo4by7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3O"
+      "index": "b3P"
     },
     {
       "id": "Deoo4by7",
@@ -10314,7 +10403,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1302404610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "heading path\n250 chars",
@@ -10326,7 +10415,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "heading path\n250 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3P"
+      "index": "b3Q"
     },
     {
       "id": "BuSA9h4y",
@@ -10358,10 +10447,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MBfCmbN6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3Q"
+      "index": "b3R"
     },
     {
       "id": "MBfCmbN6",
@@ -10386,7 +10475,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2105701991,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document\nprefix",
@@ -10398,7 +10487,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "document\nprefix",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3R"
+      "index": "b3S"
     },
     {
       "id": "VOPISSxW",
@@ -10430,10 +10519,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hlFd0jRk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3S"
+      "index": "b3T"
     },
     {
       "id": "hlFd0jRk",
@@ -10458,7 +10547,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2052374652,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_size [chars]",
@@ -10470,7 +10559,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child_size [chars]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3T"
+      "index": "b3U"
     },
     {
       "id": "rTSC88gj",
@@ -10502,10 +10591,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "5Tg8R9VK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3U"
+      "index": "b3V"
     },
     {
       "id": "5Tg8R9VK",
@@ -10530,7 +10619,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 831166826,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -10542,7 +10631,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3V"
+      "index": "b3W"
     },
     {
       "id": "BMRP2PIs",
@@ -10574,10 +10663,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TD31j2ot"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3W"
+      "index": "b3X"
     },
     {
       "id": "TD31j2ot",
@@ -10602,7 +10691,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 956259476,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n1,229 tok.",
@@ -10614,7 +10703,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n1,229 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3X"
+      "index": "b3Y"
     },
     {
       "id": "ZnMsofUz",
@@ -10646,10 +10735,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3dSKBFot"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3Y"
+      "index": "b3Z"
     },
     {
       "id": "3dSKBFot",
@@ -10674,7 +10763,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 141713803,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "headings\n250",
@@ -10686,7 +10775,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "headings\n250",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3Z"
+      "index": "b3a"
     },
     {
       "id": "aQT5SwIo",
@@ -10718,10 +10807,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "q7ybY5xb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3a"
+      "index": "b3b"
     },
     {
       "id": "q7ybY5xb",
@@ -10746,7 +10835,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 838572558,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prefix\n0 (Qwen3)",
@@ -10758,7 +10847,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "prefix\n0 (Qwen3)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3b"
+      "index": "b3c"
     },
     {
       "id": "ouBN85cR",
@@ -10790,10 +10879,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "1laxvKml"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3c"
+      "index": "b3d"
     },
     {
       "id": "1laxvKml",
@@ -10818,7 +10907,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 896537800,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child\n400",
@@ -10830,7 +10919,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child\n400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3d"
+      "index": "b3e"
     },
     {
       "id": "bR7w1ha5",
@@ -10862,10 +10951,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rLchd2IL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3e"
+      "index": "b3f"
     },
     {
       "id": "rLchd2IL",
@@ -10890,7 +10979,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1545726614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free 16,758 chars",
@@ -10902,7 +10991,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free 16,758 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3f"
+      "index": "b3g"
     },
     {
       "id": "GoYxJ62j",
@@ -10927,7 +11016,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1675313614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A document section when matching sections (section_embed_chars) and a review query (audit_query_chars) have the same input —\nnumbers on the right.",
@@ -10939,7 +11028,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A document section when matching sections (section_embed_chars) and a review query (audit_query_chars) have the same input —\nnumbers on the right.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3g"
+      "index": "b3h"
     },
     {
       "id": "N7teg5Qi",
@@ -10964,7 +11053,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1217422132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Section: 0 + 4000 chars; review query: prefix 171 chars + 2000 — everything fits into 17,408. A model with a 512-tok. input →\n1,088 chars: child 400 still fits, section_embed_chars drops to 1,088.",
@@ -10976,7 +11065,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Section: 0 + 4000 chars; review query: prefix 171 chars + 2000 — everything fits into 17,408. A model with a 512-tok. input →\n1,088 chars: child 400 still fits, section_embed_chars drops to 1,088.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3h"
+      "index": "b3i"
     },
     {
       "id": "xUgefH6a",
@@ -11001,7 +11090,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1789039515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RERANKER — one “query + document” pair.  The whole bar = rerank_max_tokens [tok.]",
@@ -11013,7 +11102,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "RERANKER — one “query + document” pair.  The whole bar = rerank_max_tokens [tok.]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3i"
+      "index": "b3j"
     },
     {
       "id": "H7u0YOdP",
@@ -11038,7 +11127,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 395955641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RERANKER, input 8192 tok.: chars(8192) = 17,408 chars",
@@ -11050,7 +11139,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "RERANKER, input 8192 tok.: chars(8192) = 17,408 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3j"
+      "index": "b3k"
     },
     {
       "id": "n0z9n8Du",
@@ -11082,10 +11171,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XPIYe9qr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3k"
+      "index": "b3l"
     },
     {
       "id": "XPIYe9qr",
@@ -11110,7 +11199,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 967462205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -11122,7 +11211,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n15 %",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3l"
+      "index": "b3m"
     },
     {
       "id": "tfUQstZU",
@@ -11154,10 +11243,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9Q32E6aD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3m"
+      "index": "b3n"
     },
     {
       "id": "9Q32E6aD",
@@ -11182,7 +11271,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1012576463,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "query + abbreviations\nrerank_query_max_chars",
@@ -11194,7 +11283,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "query + abbreviations\nrerank_query_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3n"
+      "index": "b3o"
     },
     {
       "id": "mApgjHRk",
@@ -11226,10 +11315,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "q1MCxcQW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3o"
+      "index": "b3p"
     },
     {
       "id": "q1MCxcQW",
@@ -11254,7 +11343,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 574789849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document with file name and section\nrerank_doc_max_chars",
@@ -11266,7 +11355,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "document with file name and section\nrerank_doc_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3p"
+      "index": "b3q"
     },
     {
       "id": "DqMvpFI0",
@@ -11298,10 +11387,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "K5P4QAaa"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3q"
+      "index": "b3r"
     },
     {
       "id": "K5P4QAaa",
@@ -11326,7 +11415,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 741104059,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -11338,7 +11427,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3r"
+      "index": "b3s"
     },
     {
       "id": "tNCV1Zcy",
@@ -11370,10 +11459,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MoUIp0R3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3s"
+      "index": "b3t"
     },
     {
       "id": "MoUIp0R3",
@@ -11398,7 +11487,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 821999673,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n1,229 tok.",
@@ -11410,7 +11499,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "margin\n1,229 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3t"
+      "index": "b3u"
     },
     {
       "id": "l9eSjMdB",
@@ -11442,10 +11531,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MGULSd3Y"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3u"
+      "index": "b3v"
     },
     {
       "id": "MGULSd3Y",
@@ -11470,7 +11559,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 791129361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "query\n1500",
@@ -11482,7 +11571,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "query\n1500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3v"
+      "index": "b3w"
     },
     {
       "id": "yRJo8Z4K",
@@ -11514,10 +11603,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MKOGAK66"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3w"
+      "index": "b3x"
     },
     {
       "id": "MKOGAK66",
@@ -11542,7 +11631,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 848094804,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document\n800",
@@ -11554,7 +11643,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "document\n800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3x"
+      "index": "b3y"
     },
     {
       "id": "NgBmFuxQ",
@@ -11586,10 +11675,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4t3SVbse"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b3y"
+      "index": "b3z"
     },
     {
       "id": "4t3SVbse",
@@ -11614,7 +11703,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 167843790,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free 15,108 chars",
@@ -11626,7 +11715,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "free 15,108 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b3z"
+      "index": "b40"
     },
     {
       "id": "e2wg8x66",
@@ -11651,7 +11740,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1278540953,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What you get with different models (EMBED_MODEL = Qwen3-Embedding, top_k = 5); values in [chars]",
@@ -11663,7 +11752,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "What you get with different models (EMBED_MODEL = Qwen3-Embedding, top_k = 5); values in [chars]",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b40"
+      "index": "b41"
     },
     {
       "id": "a59B0jdZ",
@@ -11690,10 +11779,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 102288853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b41"
+      "index": "b42"
     },
     {
       "id": "tyJWVPkD",
@@ -11718,7 +11807,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 630593088,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Parameter",
@@ -11730,7 +11819,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Parameter",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b42"
+      "index": "b43"
     },
     {
       "id": "LHYf01Gi",
@@ -11755,7 +11844,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1393229085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4k / 512 / 512",
@@ -11767,7 +11856,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4k / 512 / 512",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b43"
+      "index": "b44"
     },
     {
       "id": "qDuUgkSV",
@@ -11792,7 +11881,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 950927209,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8k / 512 / 1k",
@@ -11804,7 +11893,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "8k / 512 / 1k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b44"
+      "index": "b45"
     },
     {
       "id": "yBckgFdj",
@@ -11829,7 +11918,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 121150401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "32k / 8k / 8k ★",
@@ -11841,7 +11930,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "32k / 8k / 8k ★",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b45"
+      "index": "b46"
     },
     {
       "id": "ADwQY9QD",
@@ -11866,7 +11955,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1260964420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128k / 32k / 8k",
@@ -11878,7 +11967,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "128k / 32k / 8k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b46"
+      "index": "b47"
     },
     {
       "id": "9COPABte",
@@ -11903,7 +11992,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1066784076,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "smart_truncate_chars",
@@ -11915,7 +12004,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "smart_truncate_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b47"
+      "index": "b48"
     },
     {
       "id": "UwZNqLrY",
@@ -11940,7 +12029,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 466324693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "763",
@@ -11952,7 +12041,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b48"
+      "index": "b49"
     },
     {
       "id": "pwYMJd17",
@@ -11977,7 +12066,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1889062173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2504",
@@ -11989,7 +12078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2504",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b49"
+      "index": "b4A"
     },
     {
       "id": "kaPWvPGO",
@@ -12014,7 +12103,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 460433098,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12026,7 +12115,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4A"
+      "index": "b4B"
     },
     {
       "id": "ZvINBrw3",
@@ -12051,7 +12140,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 599065165,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12063,7 +12152,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4B"
+      "index": "b4C"
     },
     {
       "id": "QS7USJci",
@@ -12088,7 +12177,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 700056294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parent_size ♻",
@@ -12100,7 +12189,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "parent_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4C"
+      "index": "b4D"
     },
     {
       "id": "CUk33Pb8",
@@ -12125,7 +12214,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 450904853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "763",
@@ -12137,7 +12226,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "763",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4D"
+      "index": "b4E"
     },
     {
       "id": "IBFG0jLt",
@@ -12162,7 +12251,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1836365578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12174,7 +12263,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4E"
+      "index": "b4F"
     },
     {
       "id": "Rah8axWo",
@@ -12199,7 +12288,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2119690112,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12211,7 +12300,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4F"
+      "index": "b4G"
     },
     {
       "id": "JtoXqDuJ",
@@ -12236,7 +12325,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1543977157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12248,7 +12337,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4G"
+      "index": "b4H"
     },
     {
       "id": "ML8UFeQb",
@@ -12273,7 +12362,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1202584896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parent_overlap ♻",
@@ -12285,7 +12374,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "parent_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4H"
+      "index": "b4I"
     },
     {
       "id": "bBnXv1bZ",
@@ -12310,7 +12399,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 969616860,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "152",
@@ -12322,7 +12411,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "152",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4I"
+      "index": "b4J"
     },
     {
       "id": "SmrBy6ln",
@@ -12347,7 +12436,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1032254950,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12359,7 +12448,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4J"
+      "index": "b4K"
     },
     {
       "id": "JCkGGVZe",
@@ -12384,7 +12473,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 917325805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12396,7 +12485,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4K"
+      "index": "b4L"
     },
     {
       "id": "dSUfGKne",
@@ -12421,7 +12510,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1227813481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12433,7 +12522,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4L"
+      "index": "b4M"
     },
     {
       "id": "uPTl7dEC",
@@ -12458,7 +12547,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1654205182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_size ♻",
@@ -12470,7 +12559,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4M"
+      "index": "b4N"
     },
     {
       "id": "mzHCF7TL",
@@ -12495,7 +12584,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 680441240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12507,7 +12596,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4N"
+      "index": "b4O"
     },
     {
       "id": "MX2RUok5",
@@ -12532,7 +12621,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1843089189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12544,7 +12633,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4O"
+      "index": "b4P"
     },
     {
       "id": "l7NlLSM4",
@@ -12569,7 +12658,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1964904436,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12581,7 +12670,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4P"
+      "index": "b4Q"
     },
     {
       "id": "NQyDfeBC",
@@ -12606,7 +12695,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 636680058,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12618,7 +12707,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "400",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4Q"
+      "index": "b4R"
     },
     {
       "id": "ypquTKcp",
@@ -12643,7 +12732,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1680046293,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_overlap ♻",
@@ -12655,7 +12744,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4R"
+      "index": "b4S"
     },
     {
       "id": "EkGFURQ6",
@@ -12680,7 +12769,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2138991201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12692,7 +12781,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4S"
+      "index": "b4T"
     },
     {
       "id": "FxJkxigX",
@@ -12717,7 +12806,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 479869036,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12729,7 +12818,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4T"
+      "index": "b4U"
     },
     {
       "id": "Xbqc924D",
@@ -12754,7 +12843,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 569567297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12766,7 +12855,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4U"
+      "index": "b4V"
     },
     {
       "id": "BKeINy2C",
@@ -12791,7 +12880,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1437266301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12803,7 +12892,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "150",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4V"
+      "index": "b4W"
     },
     {
       "id": "VLwuD6aL",
@@ -12828,7 +12917,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 268176082,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "section_embed_chars",
@@ -12840,7 +12929,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "section_embed_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4W"
+      "index": "b4X"
     },
     {
       "id": "8fFLYyhc",
@@ -12865,7 +12954,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 673049817,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12877,7 +12966,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1088",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4X"
+      "index": "b4Y"
     },
     {
       "id": "U6PL36uK",
@@ -12902,7 +12991,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2022736918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12914,7 +13003,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1088",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4Y"
+      "index": "b4Z"
     },
     {
       "id": "2jnh7T0y",
@@ -12939,7 +13028,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 395700189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -12951,7 +13040,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4Z"
+      "index": "b4a"
     },
     {
       "id": "sHx0uYDZ",
@@ -12976,7 +13065,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 828959356,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -12988,7 +13077,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4a"
+      "index": "b4b"
     },
     {
       "id": "IjuTYaGC",
@@ -13013,7 +13102,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 205894361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "audit_query_chars",
@@ -13025,7 +13114,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "audit_query_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4b"
+      "index": "b4c"
     },
     {
       "id": "xRYASd8H",
@@ -13050,7 +13139,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1013405264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13062,7 +13151,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "917",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4c"
+      "index": "b4d"
     },
     {
       "id": "6vng9dCz",
@@ -13087,7 +13176,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 554681883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13099,7 +13188,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "917",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4d"
+      "index": "b4e"
     },
     {
       "id": "dfcKxsMi",
@@ -13124,7 +13213,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2130327751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13136,7 +13225,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4e"
+      "index": "b4f"
     },
     {
       "id": "PNSGjn0Q",
@@ -13161,7 +13250,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1393923198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13173,7 +13262,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4f"
+      "index": "b4g"
     },
     {
       "id": "pJPoence",
@@ -13198,7 +13287,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1869709538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "audit_map_size",
@@ -13210,7 +13299,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "audit_map_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4g"
+      "index": "b4h"
     },
     {
       "id": "OArKlipS",
@@ -13235,7 +13324,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 163400435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13247,7 +13336,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1000 ⚠",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4h"
+      "index": "b4i"
     },
     {
       "id": "EYJEEuUl",
@@ -13272,7 +13361,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 420086255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3216",
@@ -13284,7 +13373,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3216",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4i"
+      "index": "b4j"
     },
     {
       "id": "SkC6hhAP",
@@ -13309,7 +13398,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1897697012,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13321,7 +13410,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4j"
+      "index": "b4k"
     },
     {
       "id": "Ktynq6hT",
@@ -13346,7 +13435,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 858504554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13358,7 +13447,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4k"
+      "index": "b4l"
     },
     {
       "id": "P0DW6nzE",
@@ -13383,7 +13472,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 927587867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "audit_context_max_chars",
@@ -13395,7 +13484,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "audit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4l"
+      "index": "b4m"
     },
     {
       "id": "2vdlfo0g",
@@ -13420,7 +13509,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1964355952,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1016",
@@ -13432,7 +13521,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1016",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4m"
+      "index": "b4n"
     },
     {
       "id": "nMV9mUYI",
@@ -13457,7 +13546,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1184283972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "7504",
@@ -13469,7 +13558,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "7504",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4n"
+      "index": "b4o"
     },
     {
       "id": "HgEL1hbO",
@@ -13494,7 +13583,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2014922567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13506,7 +13595,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "9000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4o"
+      "index": "b4p"
     },
     {
       "id": "lVgfkXIw",
@@ -13531,7 +13620,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1596915033,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13543,7 +13632,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "9000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4p"
+      "index": "b4q"
     },
     {
       "id": "8g2CTOje",
@@ -13568,7 +13657,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 903994887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "review_context_max_chars",
@@ -13580,7 +13669,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "review_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4q"
+      "index": "b4r"
     },
     {
       "id": "YdXZqORY",
@@ -13605,7 +13694,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 909678414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13617,7 +13706,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1000 ⚠",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4r"
+      "index": "b4s"
     },
     {
       "id": "tzJFRLr7",
@@ -13642,7 +13731,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1481757579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2216 ▼",
@@ -13654,7 +13743,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2216 ▼",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4s"
+      "index": "b4t"
     },
     {
       "id": "R1USFED9",
@@ -13679,7 +13768,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1272213233,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13691,7 +13780,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "12000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4t"
+      "index": "b4u"
     },
     {
       "id": "PcxWyLeF",
@@ -13716,7 +13805,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1104820697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13728,7 +13817,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "12000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4u"
+      "index": "b4v"
     },
     {
       "id": "qdoi8ZMK",
@@ -13753,7 +13842,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 988089562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "rerank_query_max_chars",
@@ -13765,7 +13854,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "rerank_query_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4v"
+      "index": "b4w"
     },
     {
       "id": "DwlglYYG",
@@ -13790,7 +13879,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 636050863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "362",
@@ -13802,7 +13891,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "362",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4w"
+      "index": "b4x"
     },
     {
       "id": "GoybSw4G",
@@ -13827,7 +13916,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1267914377,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "725",
@@ -13839,7 +13928,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "725",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4x"
+      "index": "b4y"
     },
     {
       "id": "x7f1MBP1",
@@ -13864,7 +13953,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1136933881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13876,7 +13965,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4y"
+      "index": "b4z"
     },
     {
       "id": "weZVFHuy",
@@ -13901,7 +13990,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 896434533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13913,7 +14002,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b4z"
+      "index": "b50"
     },
     {
       "id": "PXWAz4tE",
@@ -13938,7 +14027,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1502561313,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "rerank_doc_max_chars",
@@ -13950,7 +14039,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "rerank_doc_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b50"
+      "index": "b51"
     },
     {
       "id": "ys3nxAHE",
@@ -13975,7 +14064,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 958219321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "726",
@@ -13987,7 +14076,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "726",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b51"
+      "index": "b52"
     },
     {
       "id": "crdSvM7X",
@@ -14012,7 +14101,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 381657276,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14024,7 +14113,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b52"
+      "index": "b53"
     },
     {
       "id": "EOQogCRt",
@@ -14049,7 +14138,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 536329791,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14061,7 +14150,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b53"
+      "index": "b54"
     },
     {
       "id": "n6EVTMUt",
@@ -14086,7 +14175,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 666178832,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14098,7 +14187,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "800",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b54"
+      "index": "b55"
     },
     {
       "id": "Wde2e7w0",
@@ -14123,7 +14212,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1238808030,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Columns: LLM window / embedding input / reranker input, [tok.]; characters per token 2.5 (in the last one 3.0). ★ — typical\nlimits: the values equal the defaults. ⚠ — the model lacks room: MINT takes the minimum and shows a warning. ▼ — heavily cut:\nverification of fixes sees a small part of the new revision, false “not fixed” are likely. 128k gives the same values as 32k:\nthe defaults are the ceiling (rule — panel 1).",
@@ -14135,7 +14224,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Columns: LLM window / embedding input / reranker input, [tok.]; characters per token 2.5 (in the last one 3.0). ★ — typical\nlimits: the values equal the defaults. ⚠ — the model lacks room: MINT takes the minimum and shows a warning. ▼ — heavily cut:\nverification of fixes sees a small part of the new revision, false “not fixed” are likely. 128k gives the same values as 32k:\nthe defaults are the ceiling (rule — panel 1).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b55"
+      "index": "b56"
     },
     {
       "id": "UlPcpV3W",
@@ -14167,10 +14256,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9vQ3016Q"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b56"
+      "index": "b57"
     },
     {
       "id": "9vQ3016Q",
@@ -14195,7 +14284,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 772674090,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A LARGE LLM WINDOW (200k, 1M …) — WHAT THEN\nMINT has no window limit (the sidebar field accepts up to 4 million tokens). A large window raises the ceilings, but\nvalues stay at the defaults: chat gets ≈ top_k × 2500 chars, review — a 4500-char section and norms up to 9000 chars\n(3–4 whole parents). This is intended: extra context adds noise, time and cost, and accuracy usually does not grow.\n\nTo use a large window, raise values by hand in config.yaml:\n• more fragments in chat: top_k 8–12 → [T] runs with --k 5 / 8 / 12 and [C] a live check of answers\n• more norms in review: audit_context_max_chars 13,000 (5 whole parents) … 20,000+; larger sections: audit_map_size\n   12,000–30,000 (fewer calls, the model sees more of the document at once) → [C] on documents with known findings\n• verification of fixes: review_top_sections 5–8, review_context_max_chars 30,000+; long answers — max_tokens\n• parent_size ♻ usually leave as is: more context is better gained through the number of fragments (top_k)\n\nThe LLM window does not affect embeddings and the reranker — they have their own limits.",
@@ -14207,7 +14296,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A LARGE LLM WINDOW (200k, 1M …) — WHAT THEN\nMINT has no window limit (the sidebar field accepts up to 4 million tokens). A large window raises the ceilings, but\nvalues stay at the defaults: chat gets ≈ top_k × 2500 chars, review — a 4500-char section and norms up to 9000 chars\n(3–4 whole parents). This is intended: extra context adds noise, time and cost, and accuracy usually does not grow.\n\nTo use a large window, raise values by hand in config.yaml:\n• more fragments in chat: top_k 8–12 → [T] runs with --k 5 / 8 / 12 and [C] a live check of answers\n• more norms in review: audit_context_max_chars 13,000 (5 whole parents) … 20,000+; larger sections: audit_map_size\n   12,000–30,000 (fewer calls, the model sees more of the document at once) → [C] on documents with known findings\n• verification of fixes: review_top_sections 5–8, review_context_max_chars 30,000+; long answers — max_tokens\n• parent_size ♻ usually leave as is: more context is better gained through the number of fragments (top_k)\n\nThe LLM window does not affect embeddings and the reranker — they have their own limits.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b57"
+      "index": "b58"
     },
     {
       "id": "UcTByZ1D",
@@ -14232,7 +14321,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 101331283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3. Parameter reference: definitions, values, constraints",
@@ -14244,7 +14333,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3. Parameter reference: definitions, values, constraints",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b58"
+      "index": "b59"
     },
     {
       "id": "1N0hg5e2",
@@ -14269,7 +14358,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 490281628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Units: tok. — tokens, chars — characters. “Sidebar” — the slider range (if the value from config.yaml is larger, the slider widens). config.yaml checks only the value type; protection against incompatible values is in the code\n(the “Constraints” column).",
@@ -14281,7 +14370,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Units: tok. — tokens, chars — characters. “Sidebar” — the slider range (if the value from config.yaml is larger, the slider widens). config.yaml checks only the value type; protection against incompatible values is in the code\n(the “Constraints” column).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b59"
+      "index": "b5A"
     },
     {
       "id": "ciO3a5zO",
@@ -14313,10 +14402,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "CLcF2KMf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5A"
+      "index": "b5B"
     },
     {
       "id": "CLcF2KMf",
@@ -14341,7 +14430,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 44620693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "HOW TO READ “0 = auto: ① server ② otherwise 32768 tok.”\nThese are steps in order: what is in the code → where MINT takes the value from.\n• 0 — the value in the code and in config.yaml by default: “not set — detect automatically”. Zero rather than a number\n   lets MINT tell “the administrator set nothing” from an explicit value (precedence — panel 1).\n• ① server — the first step: MINT asks the model server for the limit (detect_server_info, panel 1). If it answers,\n   that number is used; “Models and limits” shows “Server: …”.\n• ② otherwise 32768 — the server did not report it (common for corporate gateways and cloud APIs): the typical value\n   is used — a safe guess (why exactly this one — on the right).\nThe typical value may not match your model: with it MINT does not check the request size. What an error leads to — the\nllm_context_tokens row; better set the limit by hand (sidebar or config.yaml).",
@@ -14353,7 +14442,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "HOW TO READ “0 = auto: ① server ② otherwise 32768 tok.”\nThese are steps in order: what is in the code → where MINT takes the value from.\n• 0 — the value in the code and in config.yaml by default: “not set — detect automatically”. Zero rather than a number\n   lets MINT tell “the administrator set nothing” from an explicit value (precedence — panel 1).\n• ① server — the first step: MINT asks the model server for the limit (detect_server_info, panel 1). If it answers,\n   that number is used; “Models and limits” shows “Server: …”.\n• ② otherwise 32768 — the server did not report it (common for corporate gateways and cloud APIs): the typical value\n   is used — a safe guess (why exactly this one — on the right).\nThe typical value may not match your model: with it MINT does not check the request size. What an error leads to — the\nllm_context_tokens row; better set the limit by hand (sidebar or config.yaml).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5B"
+      "index": "b5C"
     },
     {
       "id": "7TSDGZLr",
@@ -14385,10 +14474,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "U4HzW8Hd"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5C"
+      "index": "b5D"
     },
     {
       "id": "U4HzW8Hd",
@@ -14413,7 +14502,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1060881568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "WHY THESE TYPICAL VALUES (FALLBACK_LIMITS)\n• LLM window 32768 tok. — the usual window of open models when deployed (Qwen2.5 / Qwen3, Llama 3.x, Mistral on vLLM);\n   almost all modern models have at least this.\n• embedding input 8192 tok. — Qwen3-Embedding, bge-m3, gte-Qwen; 512-tok. models — see embed_max_tokens.\n• reranker input 8192 tok. — bge-reranker-v2-m3.\n• 2.5 chars/tok. — see the “Tokens and characters” block at the top.\n\nTHE NUMBER OF AN [A] PARAMETER (for example, 3500 chars)\nThis is the default. The calculation can only reduce it for a small model (formula — the “Constraints” column), never\nincrease it.",
@@ -14425,7 +14514,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "WHY THESE TYPICAL VALUES (FALLBACK_LIMITS)\n• LLM window 32768 tok. — the usual window of open models when deployed (Qwen2.5 / Qwen3, Llama 3.x, Mistral on vLLM);\n   almost all modern models have at least this.\n• embedding input 8192 tok. — Qwen3-Embedding, bge-m3, gte-Qwen; 512-tok. models — see embed_max_tokens.\n• reranker input 8192 tok. — bge-reranker-v2-m3.\n• 2.5 chars/tok. — see the “Tokens and characters” block at the top.\n\nTHE NUMBER OF AN [A] PARAMETER (for example, 3500 chars)\nThis is the default. The calculation can only reduce it for a small model (formula — the “Constraints” column), never\nincrease it.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5D"
+      "index": "b5E"
     },
     {
       "id": "jG1HfMMk",
@@ -14457,10 +14546,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2YQ5MS7L"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5E"
+      "index": "b5F"
     },
     {
       "id": "2YQ5MS7L",
@@ -14485,7 +14574,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1032825751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Parameter",
@@ -14497,7 +14586,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Parameter",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5F"
+      "index": "b5G"
     },
     {
       "id": "eDGzaI4K",
@@ -14529,10 +14618,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9KNAbksk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5G"
+      "index": "b5H"
     },
     {
       "id": "9KNAbksk",
@@ -14557,7 +14646,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 361100277,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What it is",
@@ -14569,7 +14658,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "What it is",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5H"
+      "index": "b5I"
     },
     {
       "id": "8l0YR9UY",
@@ -14601,10 +14690,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "puwzidOM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5I"
+      "index": "b5J"
     },
     {
       "id": "puwzidOM",
@@ -14629,7 +14718,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1814733556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Default",
@@ -14641,7 +14730,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Default",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5J"
+      "index": "b5K"
     },
     {
       "id": "OjkY8viH",
@@ -14673,10 +14762,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VGbp4dm8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5K"
+      "index": "b5L"
     },
     {
       "id": "VGbp4dm8",
@@ -14701,7 +14790,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1086220258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Sidebar",
@@ -14713,7 +14802,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Sidebar",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5L"
+      "index": "b5M"
     },
     {
       "id": "NGzfhwJn",
@@ -14745,10 +14834,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wsDhi5dq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5M"
+      "index": "b5N"
     },
     {
       "id": "wsDhi5dq",
@@ -14773,7 +14862,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 133979656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Constraints and dependencies",
@@ -14785,7 +14874,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Constraints and dependencies",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5N"
+      "index": "b5O"
     },
     {
       "id": "mxX9cJAs",
@@ -14817,10 +14906,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0KKnZWXi"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5O"
+      "index": "b5P"
     },
     {
       "id": "0KKnZWXi",
@@ -14845,7 +14934,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1464481216,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CONNECTIONS — .env",
@@ -14857,7 +14946,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "CONNECTIONS — .env",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5P"
+      "index": "b5Q"
     },
     {
       "id": "C91AXths",
@@ -14889,10 +14978,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yggj69o9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5Q"
+      "index": "b5R"
     },
     {
       "id": "yggj69o9",
@@ -14917,7 +15006,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2142958805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] LLM_API_URL",
@@ -14929,7 +15018,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] LLM_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5R"
+      "index": "b5S"
     },
     {
       "id": "IOJY7tlJ",
@@ -14961,10 +15050,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ESOuFabo"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5S"
+      "index": "b5T"
     },
     {
       "id": "ESOuFabo",
@@ -14989,7 +15078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1012750916,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Base address of the OpenAI-compatible API of the language model (…/v1);\n/chat/completions and /models are appended to it.",
@@ -15001,7 +15090,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Base address of the OpenAI-compatible API of the language model (…/v1);\n/chat/completions and /models are appended to it.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5T"
+      "index": "b5U"
     },
     {
       "id": "tQecK9OY",
@@ -15033,10 +15122,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "77bb0qUc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5U"
+      "index": "b5V"
     },
     {
       "id": "77bb0qUc",
@@ -15061,7 +15150,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1315767751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "— (required)",
@@ -15073,7 +15162,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "— (required)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5V"
+      "index": "b5W"
     },
     {
       "id": "rudnEjFS",
@@ -15105,10 +15194,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Ht61a5na"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5W"
+      "index": "b5X"
     },
     {
       "id": "Ht61a5na",
@@ -15133,7 +15222,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1722526171,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15145,7 +15234,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5X"
+      "index": "b5Y"
     },
     {
       "id": "jPOm4N8S",
@@ -15177,10 +15266,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "32RI4Vax"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5Y"
+      "index": "b5Z"
     },
     {
       "id": "32RI4Vax",
@@ -15205,7 +15294,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1488369257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Empty — an error in the sidebar: chat, review and verification do not work.",
@@ -15217,7 +15306,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Empty — an error in the sidebar: chat, review and verification do not work.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5Z"
+      "index": "b5a"
     },
     {
       "id": "DWOYjBI5",
@@ -15249,10 +15338,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KTEWklEb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5a"
+      "index": "b5b"
     },
     {
       "id": "KTEWklEb",
@@ -15277,7 +15366,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 877373401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] EMBED_API_URL",
@@ -15289,7 +15378,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] EMBED_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5b"
+      "index": "b5c"
     },
     {
       "id": "ONreHZ23",
@@ -15321,10 +15410,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MclAyQ4e"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5c"
+      "index": "b5d"
     },
     {
       "id": "MclAyQ4e",
@@ -15349,7 +15438,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1480905548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Full address of the embeddings endpoint (…/v1/embeddings).",
@@ -15361,7 +15450,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Full address of the embeddings endpoint (…/v1/embeddings).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5d"
+      "index": "b5e"
     },
     {
       "id": "LGOObTx6",
@@ -15393,10 +15482,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZcjfMvsO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5e"
+      "index": "b5f"
     },
     {
       "id": "ZcjfMvsO",
@@ -15421,7 +15510,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 559213718,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "— (required)",
@@ -15433,7 +15522,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "— (required)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5f"
+      "index": "b5g"
     },
     {
       "id": "TR4iTsB2",
@@ -15465,10 +15554,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "htbKFycS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5g"
+      "index": "b5h"
     },
     {
       "id": "htbKFycS",
@@ -15493,7 +15582,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1496972470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15505,7 +15594,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5h"
+      "index": "b5i"
     },
     {
       "id": "M37jsMEV",
@@ -15537,10 +15626,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "m9R4H4ku"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5i"
+      "index": "b5j"
     },
     {
       "id": "m9R4H4ku",
@@ -15565,7 +15654,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 55367169,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Empty — documents cannot be uploaded, search uses words only (BM25).",
@@ -15577,7 +15666,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Empty — documents cannot be uploaded, search uses words only (BM25).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5j"
+      "index": "b5k"
     },
     {
       "id": "mRSN0CMT",
@@ -15609,10 +15698,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xJ8zGawf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5k"
+      "index": "b5l"
     },
     {
       "id": "xJ8zGawf",
@@ -15637,7 +15726,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 181990875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] RERANK_API_URL",
@@ -15649,7 +15738,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] RERANK_API_URL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5l"
+      "index": "b5m"
     },
     {
       "id": "4o4o6ovp",
@@ -15681,10 +15770,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cbO9Y31d"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5m"
+      "index": "b5n"
     },
     {
       "id": "cbO9Y31d",
@@ -15709,7 +15798,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 949336474,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Full address of the reranker (…/v1/rerank).",
@@ -15721,7 +15810,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Full address of the reranker (…/v1/rerank).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5n"
+      "index": "b5o"
     },
     {
       "id": "7pb1AkdQ",
@@ -15753,10 +15842,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yRhgnasM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5o"
+      "index": "b5p"
     },
     {
       "id": "yRhgnasM",
@@ -15781,7 +15870,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 581769304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "empty — no reranker",
@@ -15793,7 +15882,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "empty — no reranker",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5p"
+      "index": "b5q"
     },
     {
       "id": "l6U5LxMc",
@@ -15825,10 +15914,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3Zc9FmxD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5q"
+      "index": "b5r"
     },
     {
       "id": "3Zc9FmxD",
@@ -15853,7 +15942,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 929912376,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15865,7 +15954,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5r"
+      "index": "b5s"
     },
     {
       "id": "9W3SLBS7",
@@ -15897,10 +15986,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "DKTOy7v0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5s"
+      "index": "b5t"
     },
     {
       "id": "DKTOy7v0",
@@ -15925,7 +16014,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1127614340,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Optional: without it the order is set by vector search and BM25.",
@@ -15937,7 +16026,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Optional: without it the order is set by vector search and BM25.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5t"
+      "index": "b5u"
     },
     {
       "id": "gw6zjVeY",
@@ -15969,10 +16058,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JemVd0g8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5u"
+      "index": "b5v"
     },
     {
       "id": "JemVd0g8",
@@ -15997,7 +16086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1511252339,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] LLM_API_KEY, EMBED_API_KEY,\nRERANK_API_KEY",
@@ -16009,7 +16098,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] LLM_API_KEY, EMBED_API_KEY,\nRERANK_API_KEY",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5v"
+      "index": "b5w"
     },
     {
       "id": "mYCfgnKM",
@@ -16041,10 +16130,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZE1GDn3r"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5w"
+      "index": "b5x"
     },
     {
       "id": "ZE1GDn3r",
@@ -16069,7 +16158,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1813782780,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Access keys (Bearer).",
@@ -16081,7 +16170,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Access keys (Bearer).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5x"
+      "index": "b5y"
     },
     {
       "id": "TvQKokCD",
@@ -16113,10 +16202,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tr3oPwIk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b5y"
+      "index": "b5z"
     },
     {
       "id": "tr3oPwIk",
@@ -16141,7 +16230,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 308331613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "empty",
@@ -16153,7 +16242,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "empty",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b5z"
+      "index": "b60"
     },
     {
       "id": "fJf5yJZw",
@@ -16185,10 +16274,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "RW6sIRIG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b60"
+      "index": "b61"
     },
     {
       "id": "RW6sIRIG",
@@ -16213,7 +16302,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1232645777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -16225,7 +16314,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b61"
+      "index": "b62"
     },
     {
       "id": "jQSN7Hbf",
@@ -16257,10 +16346,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7G3o96NV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b62"
+      "index": "b63"
     },
     {
       "id": "7G3o96NV",
@@ -16285,7 +16374,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1955071434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Empty EMBED_ / RERANK_ — LLM_API_KEY is used; empty LLM_API_KEY — requests without\nauthorisation.",
@@ -16297,7 +16386,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Empty EMBED_ / RERANK_ — LLM_API_KEY is used; empty LLM_API_KEY — requests without\nauthorisation.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b63"
+      "index": "b64"
     },
     {
       "id": "vSyemDws",
@@ -16329,10 +16418,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2tgq89z2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b64"
+      "index": "b65"
     },
     {
       "id": "2tgq89z2",
@@ -16357,7 +16446,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1952950688,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] LLM_MODEL",
@@ -16369,7 +16458,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] LLM_MODEL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b65"
+      "index": "b66"
     },
     {
       "id": "tkaDqejM",
@@ -16401,10 +16490,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mRPMzkCp"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b66"
+      "index": "b67"
     },
     {
       "id": "mRPMzkCp",
@@ -16429,7 +16518,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 744333812,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Default model in the “AI model” list (old name — DEFAULT_LLM_MODEL).",
@@ -16441,7 +16530,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Default model in the “AI model” list (old name — DEFAULT_LLM_MODEL).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b67"
+      "index": "b68"
     },
     {
       "id": "xLL4ElyU",
@@ -16473,10 +16562,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "K5dA1G96"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b68"
+      "index": "b69"
     },
     {
       "id": "K5dA1G96",
@@ -16501,7 +16590,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 981406186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "the first one listed by the\nserver",
@@ -16513,7 +16602,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "the first one listed by the\nserver",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b69"
+      "index": "b6A"
     },
     {
       "id": "sGW7BUUy",
@@ -16545,10 +16634,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "emH7nN39"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6A"
+      "index": "b6B"
     },
     {
       "id": "emH7nN39",
@@ -16573,7 +16662,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1795396205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "model list",
@@ -16585,7 +16674,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "model list",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6B"
+      "index": "b6C"
     },
     {
       "id": "sQHeeWtl",
@@ -16617,10 +16706,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "AStw5ic1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6C"
+      "index": "b6D"
     },
     {
       "id": "AStw5ic1",
@@ -16645,7 +16734,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1464035852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The list is requested from the server; the model from .env is added to it even if the\nserver did not return it.",
@@ -16657,7 +16746,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The list is requested from the server; the model from .env is added to it even if the\nserver did not return it.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6D"
+      "index": "b6E"
     },
     {
       "id": "LZSigOFi",
@@ -16689,10 +16778,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XKXJAvUN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6E"
+      "index": "b6F"
     },
     {
       "id": "XKXJAvUN",
@@ -16717,7 +16806,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2005035337,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] EMBED_MODEL ♻",
@@ -16729,7 +16818,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] EMBED_MODEL ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6F"
+      "index": "b6G"
     },
     {
       "id": "WTcD0fPk",
@@ -16761,10 +16850,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "f33ycfJe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6G"
+      "index": "b6H"
     },
     {
       "id": "f33ycfJe",
@@ -16789,7 +16878,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 647636602,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embedding model; recorded in the manifest of every document.",
@@ -16801,7 +16890,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Embedding model; recorded in the manifest of every document.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6H"
+      "index": "b6I"
     },
     {
       "id": "sHNSboID",
@@ -16833,10 +16922,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "IqsZLI99"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6I"
+      "index": "b6J"
     },
     {
       "id": "IqsZLI99",
@@ -16861,7 +16950,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1300755931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "qwen3-embedding-4b",
@@ -16873,7 +16962,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "qwen3-embedding-4b",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6J"
+      "index": "b6K"
     },
     {
       "id": "DaACDznC",
@@ -16905,10 +16994,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BAx6HfQF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6K"
+      "index": "b6L"
     },
     {
       "id": "BAx6HfQF",
@@ -16933,7 +17022,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 703525944,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -16945,7 +17034,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6L"
+      "index": "b6M"
     },
     {
       "id": "OpGEdso4",
@@ -16977,10 +17066,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "h6aJNanA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6M"
+      "index": "b6N"
     },
     {
       "id": "h6aJNanA",
@@ -17005,7 +17094,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 186779429,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Changing it — re-indexing; a different vector dimension — vector search is off until\nre-indexing.",
@@ -17017,7 +17106,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Changing it — re-indexing; a different vector dimension — vector search is off until\nre-indexing.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6N"
+      "index": "b6O"
     },
     {
       "id": "JwdgS3Iy",
@@ -17049,10 +17138,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0SZyn6i8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6O"
+      "index": "b6P"
     },
     {
       "id": "0SZyn6i8",
@@ -17077,7 +17166,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 447267511,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] RERANK_MODEL",
@@ -17089,7 +17178,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] RERANK_MODEL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6P"
+      "index": "b6Q"
     },
     {
       "id": "IO8ucXej",
@@ -17121,10 +17210,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "dTHkDFbI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6Q"
+      "index": "b6R"
     },
     {
       "id": "dTHkDFbI",
@@ -17149,7 +17238,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1205814253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker model.",
@@ -17161,7 +17250,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Reranker model.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6R"
+      "index": "b6S"
     },
     {
       "id": "sJjgDzRL",
@@ -17193,10 +17282,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WqUMpLwW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6S"
+      "index": "b6T"
     },
     {
       "id": "WqUMpLwW",
@@ -17221,7 +17310,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1267512368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "bge-reranker-v2-m3",
@@ -17233,7 +17322,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "bge-reranker-v2-m3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6T"
+      "index": "b6U"
     },
     {
       "id": "KO1mW2BD",
@@ -17265,10 +17354,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yyIG25jv"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6U"
+      "index": "b6V"
     },
     {
       "id": "yyIG25jv",
@@ -17293,7 +17382,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 469094310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17305,7 +17394,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6V"
+      "index": "b6W"
     },
     {
       "id": "84yfvPz9",
@@ -17337,10 +17426,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MUB5C9Wl"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6W"
+      "index": "b6X"
     },
     {
       "id": "MUB5C9Wl",
@@ -17365,7 +17454,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 367170949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17377,7 +17466,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6X"
+      "index": "b6Y"
     },
     {
       "id": "NjBS5LWQ",
@@ -17409,10 +17498,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GxKMyF0K"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6Y"
+      "index": "b6Z"
     },
     {
       "id": "GxKMyF0K",
@@ -17437,7 +17526,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1436421028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] CA_BUNDLE_PATH, SSL_INSECURE",
@@ -17449,7 +17538,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] CA_BUNDLE_PATH, SSL_INSECURE",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6Z"
+      "index": "b6a"
     },
     {
       "id": "bBPthivA",
@@ -17481,10 +17570,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "q5RvEk1j"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6a"
+      "index": "b6b"
     },
     {
       "id": "q5RvEk1j",
@@ -17509,7 +17598,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1582016170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "TLS certificate; SSL_INSECURE = 1 turns verification off.",
@@ -17521,7 +17610,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "TLS certificate; SSL_INSECURE = 1 turns verification off.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6b"
+      "index": "b6c"
     },
     {
       "id": "R7GGWTve",
@@ -17553,10 +17642,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BMfh4W2E"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6c"
+      "index": "b6d"
     },
     {
       "id": "BMfh4W2E",
@@ -17581,7 +17670,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 95466538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "system certificate file\n(Windows — the Windows store);\noff",
@@ -17593,7 +17682,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "system certificate file\n(Windows — the Windows store);\noff",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6d"
+      "index": "b6e"
     },
     {
       "id": "jkU89hMc",
@@ -17625,10 +17714,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GLTaFNm6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6e"
+      "index": "b6f"
     },
     {
       "id": "GLTaFNm6",
@@ -17653,7 +17742,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1264503417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17665,7 +17754,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6f"
+      "index": "b6g"
     },
     {
       "id": "p1ZrC4u5",
@@ -17697,10 +17786,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "PGbfPC1N"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6g"
+      "index": "b6h"
     },
     {
       "id": "PGbfPC1N",
@@ -17725,7 +17814,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1869244182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "No file — system certificates; on Windows via truststore. SSL_INSECURE — only in an\ninternal network.",
@@ -17737,7 +17826,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "No file — system certificates; on Windows via truststore. SSL_INSECURE — only in an\ninternal network.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6h"
+      "index": "b6i"
     },
     {
       "id": "DVgV3kWo",
@@ -17769,10 +17858,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yVqN2Tnj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6i"
+      "index": "b6j"
     },
     {
       "id": "yVqN2Tnj",
@@ -17797,7 +17886,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2123426261,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] KB_DIR, LOG_DIR,\nGLOSSARY_PATH, MINT_CONFIG",
@@ -17809,7 +17898,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] KB_DIR, LOG_DIR,\nGLOSSARY_PATH, MINT_CONFIG",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6j"
+      "index": "b6k"
     },
     {
       "id": "lMi8kImd",
@@ -17841,10 +17930,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "1OYpN5Qt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6k"
+      "index": "b6l"
     },
     {
       "id": "1OYpN5Qt",
@@ -17869,7 +17958,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 574710040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Knowledge base folder, folder for logs and feedback, paths to glossary.json and\nconfig.yaml.",
@@ -17881,7 +17970,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Knowledge base folder, folder for logs and feedback, paths to glossary.json and\nconfig.yaml.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6l"
+      "index": "b6m"
     },
     {
       "id": "5vqBmjI4",
@@ -17913,10 +18002,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "oouQcXeR"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6m"
+      "index": "b6n"
     },
     {
       "id": "oouQcXeR",
@@ -17941,7 +18030,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 78474149,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "~/knowledge_base; ~/mint_logs;\nnext to the program",
@@ -17953,7 +18042,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "~/knowledge_base; ~/mint_logs;\nnext to the program",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6n"
+      "index": "b6o"
     },
     {
       "id": "HO3Sjkgu",
@@ -17985,10 +18074,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HPeu2WZ2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6o"
+      "index": "b6p"
     },
     {
       "id": "HPeu2WZ2",
@@ -18013,7 +18102,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 676437166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -18025,7 +18114,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6p"
+      "index": "b6q"
     },
     {
       "id": "k34Hr61B",
@@ -18057,10 +18146,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "URKjBaOM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6q"
+      "index": "b6r"
     },
     {
       "id": "URKjBaOM",
@@ -18085,7 +18174,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 273261022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Log — mint_system.log rotated at 10 MB × 5; user feedback — feedback.jsonl.",
@@ -18097,7 +18186,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Log — mint_system.log rotated at 10 MB × 5; user feedback — feedback.jsonl.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6r"
+      "index": "b6s"
     },
     {
       "id": "lIjgauaX",
@@ -18129,10 +18218,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3rITogdG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6s"
+      "index": "b6t"
     },
     {
       "id": "3rITogdG",
@@ -18157,7 +18246,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1942424467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] MINT_LANG",
@@ -18169,7 +18258,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] MINT_LANG",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6t"
+      "index": "b6u"
     },
     {
       "id": "XPGmLXNM",
@@ -18201,10 +18290,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0UWnNv8Z"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6u"
+      "index": "b6v"
     },
     {
       "id": "0UWnNv8Z",
@@ -18229,7 +18318,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1656278656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Language of the interface, prompts and reports: en or ru.",
@@ -18241,7 +18330,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Language of the interface, prompts and reports: en or ru.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6v"
+      "index": "b6w"
     },
     {
       "id": "tkJJ4vlA",
@@ -18273,10 +18362,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "F8QpDSIv"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6w"
+      "index": "b6x"
     },
     {
       "id": "F8QpDSIv",
@@ -18301,7 +18390,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 409918936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "OS language (ru → ru,\notherwise en)",
@@ -18313,7 +18402,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "OS language (ru → ru,\notherwise en)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6x"
+      "index": "b6y"
     },
     {
       "id": "KjoDn20H",
@@ -18345,10 +18434,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "te5PjqQt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b6y"
+      "index": "b6z"
     },
     {
       "id": "te5PjqQt",
@@ -18373,7 +18462,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1755316998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "switch in the\nsidebar",
@@ -18385,7 +18474,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "switch in the\nsidebar",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b6z"
+      "index": "b70"
     },
     {
       "id": "TKxzBAXZ",
@@ -18417,10 +18506,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "T4V1fqRU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b70"
+      "index": "b71"
     },
     {
       "id": "T4V1fqRU",
@@ -18445,7 +18534,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 101711426,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The switch changes the language for the session; check_install.py writes in this\nlanguage too.",
@@ -18457,7 +18546,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The switch changes the language for the session; check_install.py writes in this\nlanguage too.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b71"
+      "index": "b72"
     },
     {
       "id": "g1SFzn6U",
@@ -18489,10 +18578,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "sxHaOQ3S"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b72"
+      "index": "b73"
     },
     {
       "id": "sxHaOQ3S",
@@ -18517,7 +18606,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 977189084,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "MODEL LIMITS — config.yaml, the models section",
@@ -18529,7 +18618,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "MODEL LIMITS — config.yaml, the models section",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b73"
+      "index": "b74"
     },
     {
       "id": "8Kjr9N2l",
@@ -18561,10 +18650,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2RK8kfoY"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b74"
+      "index": "b75"
     },
     {
       "id": "2RK8kfoY",
@@ -18589,7 +18678,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2123128102,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] llm_context_tokens",
@@ -18601,7 +18690,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [A] llm_context_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b75"
+      "index": "b76"
     },
     {
       "id": "Yc1MiJuB",
@@ -18633,10 +18722,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NrYlESGT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b76"
+      "index": "b77"
     },
     {
       "id": "NrYlESGT",
@@ -18661,7 +18750,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1840043612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LLM context window, tokens: everything the model takes in one call — prompt +\nretrieved fragments + history + answer.",
@@ -18673,7 +18762,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "LLM context window, tokens: everything the model takes in one call — prompt +\nretrieved fragments + history + answer.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b77"
+      "index": "b78"
     },
     {
       "id": "kq6KNCaM",
@@ -18705,10 +18794,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HK25jv5j"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b78"
+      "index": "b79"
     },
     {
       "id": "HK25jv5j",
@@ -18733,7 +18822,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 970812766,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① server (/models)\n② otherwise 32768 tok.",
@@ -18745,7 +18834,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 = auto:\n① server (/models)\n② otherwise 32768 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b79"
+      "index": "b7A"
     },
     {
       "id": "dsyKihKU",
@@ -18777,10 +18866,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "U1TSLbQx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7A"
+      "index": "b7B"
     },
     {
       "id": "U1TSLbQx",
@@ -18805,7 +18894,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 260939886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128 … 4 million",
@@ -18817,7 +18906,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "128 … 4 million",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7B"
+      "index": "b7C"
     },
     {
       "id": "mA4jGdOd",
@@ -18849,10 +18938,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jlswWGu6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7C"
+      "index": "b7D"
     },
     {
       "id": "jlswWGu6",
@@ -18877,7 +18966,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 565545273,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "No upper limit. Depending on it: chat_budget, llm_budget — and through them the\nceilings of smart_truncate_chars, parent_size, audit_map_size,\naudit_context_max_chars, review_context_max_chars.",
@@ -18889,7 +18978,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "No upper limit. Depending on it: chat_budget, llm_budget — and through them the\nceilings of smart_truncate_chars, parent_size, audit_map_size,\naudit_context_max_chars, review_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7D"
+      "index": "b7E"
     },
     {
       "id": "mhpKqWUh",
@@ -18921,10 +19010,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6BJh4DHO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7E"
+      "index": "b7F"
     },
     {
       "id": "6BJh4DHO",
@@ -18949,7 +19038,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1373321844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: MINT's main limit. Set what the server actually accepts: if the gateway cuts requests before the model window — the gateway's limit. An error upwards is more dangerous: MINT assumes everything fits, and the\nserver returns “GATEWAY ERROR: code 400” (vLLM) or silently cuts the start of the prompt (Ollama). An error downwards only makes fragments shorter than they could be.",
@@ -18961,7 +19050,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: MINT's main limit. Set what the server actually accepts: if the gateway cuts requests before the model window — the gateway's limit. An error upwards is more dangerous: MINT assumes everything fits, and the\nserver returns “GATEWAY ERROR: code 400” (vLLM) or silently cuts the start of the prompt (Ollama). An error downwards only makes fragments shorter than they could be.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7F"
+      "index": "b7G"
     },
     {
       "id": "lM4HhMjo",
@@ -18993,10 +19082,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "D2gVABen"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7G"
+      "index": "b7H"
     },
     {
       "id": "D2gVABen",
@@ -19021,7 +19110,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 934582497,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] embed_max_tokens",
@@ -19033,7 +19122,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [A] embed_max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7H"
+      "index": "b7I"
     },
     {
       "id": "YMFctjUn",
@@ -19065,10 +19154,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GaldY6FJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7I"
+      "index": "b7J"
     },
     {
       "id": "GaldY6FJ",
@@ -19093,7 +19182,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1672635998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum input length of the embedding model, tokens.",
@@ -19105,7 +19194,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maximum input length of the embedding model, tokens.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7J"
+      "index": "b7K"
     },
     {
       "id": "xDuzmyq8",
@@ -19137,10 +19226,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "UVAOK3Ed"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7K"
+      "index": "b7L"
     },
     {
       "id": "UVAOK3Ed",
@@ -19165,7 +19254,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1992030496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① server (/models)\n② otherwise 8192 tok.",
@@ -19177,7 +19266,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 = auto:\n① server (/models)\n② otherwise 8192 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7L"
+      "index": "b7M"
     },
     {
       "id": "lrdPMayw",
@@ -19209,10 +19298,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WRbuAtf7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7M"
+      "index": "b7N"
     },
     {
       "id": "WRbuAtf7",
@@ -19237,7 +19326,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1620026778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128 … 4 million",
@@ -19249,7 +19338,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "128 … 4 million",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7N"
+      "index": "b7O"
     },
     {
       "id": "lhT2Tf3Z",
@@ -19281,10 +19370,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "PLu3b4Ri"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7O"
+      "index": "b7P"
     },
     {
       "id": "PLu3b4Ri",
@@ -19309,7 +19398,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1096561344,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Depending on it: child_size ♻, section_embed_chars, audit_query_chars,\nembed_input_max_chars.",
@@ -19321,7 +19410,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Depending on it: child_size ♻, section_embed_chars, audit_query_chars,\nembed_input_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7P"
+      "index": "b7Q"
     },
     {
       "id": "PO8Ox4Mf",
@@ -19353,10 +19442,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "R1VaztrS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7Q"
+      "index": "b7R"
     },
     {
       "id": "R1VaztrS",
@@ -19381,7 +19470,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1208516040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: for models with a 512-token input (e5, ruBERT and other BERT-like ones) be sure to set 512 if the server does not report it: otherwise MINT assumes an 8192 input and sends 4000-char sections (≈ 1600 tokens) —\nthe server cuts them or returns an error. Changing the value changes child_size — re-indexing is needed ♻.",
@@ -19393,7 +19482,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: for models with a 512-token input (e5, ruBERT and other BERT-like ones) be sure to set 512 if the server does not report it: otherwise MINT assumes an 8192 input and sends 4000-char sections (≈ 1600 tokens) —\nthe server cuts them or returns an error. Changing the value changes child_size — re-indexing is needed ♻.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7R"
+      "index": "b7S"
     },
     {
       "id": "W2c6OzeY",
@@ -19425,10 +19514,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZQ9G7OhT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7S"
+      "index": "b7T"
     },
     {
       "id": "ZQ9G7OhT",
@@ -19453,7 +19542,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1587147883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] rerank_max_tokens",
@@ -19465,7 +19554,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [A] rerank_max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7T"
+      "index": "b7U"
     },
     {
       "id": "DEd5uS67",
@@ -19497,10 +19586,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "c0YlFrZ1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7U"
+      "index": "b7V"
     },
     {
       "id": "c0YlFrZ1",
@@ -19525,7 +19614,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 106716420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of a “query + document” pair for the reranker, tokens.",
@@ -19537,7 +19626,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maximum length of a “query + document” pair for the reranker, tokens.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7V"
+      "index": "b7W"
     },
     {
       "id": "agYfacNF",
@@ -19569,10 +19658,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "UtHp1h8Q"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7W"
+      "index": "b7X"
     },
     {
       "id": "UtHp1h8Q",
@@ -19597,7 +19686,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 777172821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① server (/models)\n② otherwise 8192 tok.",
@@ -19609,7 +19698,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 = auto:\n① server (/models)\n② otherwise 8192 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7X"
+      "index": "b7Y"
     },
     {
       "id": "svK0mL6G",
@@ -19641,10 +19730,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qch1xBp5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7Y"
+      "index": "b7Z"
     },
     {
       "id": "qch1xBp5",
@@ -19669,7 +19758,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1173804549,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128 … 4 million",
@@ -19681,7 +19770,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "128 … 4 million",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7Z"
+      "index": "b7a"
     },
     {
       "id": "aKMEk8dR",
@@ -19713,10 +19802,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "74CJP4MZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7a"
+      "index": "b7b"
     },
     {
       "id": "74CJP4MZ",
@@ -19741,7 +19830,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1809129674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Depending on it: rerank_query_max_chars, rerank_doc_max_chars.",
@@ -19753,7 +19842,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Depending on it: rerank_query_max_chars, rerank_doc_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7b"
+      "index": "b7c"
     },
     {
       "id": "DVZrhwfk",
@@ -19785,10 +19874,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hFMugV1w"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7c"
+      "index": "b7d"
     },
     {
       "id": "hFMugV1w",
@@ -19813,7 +19902,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 868100489,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] chars_per_token",
@@ -19825,7 +19914,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [A] chars_per_token",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7d"
+      "index": "b7e"
     },
     {
       "id": "YvfiLDcu",
@@ -19857,10 +19946,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OLLWyLz8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7e"
+      "index": "b7f"
     },
     {
       "id": "OLLWyLz8",
@@ -19885,7 +19974,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2080517786,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many characters of text make one token; converts model limits from tokens to\ncharacters.",
@@ -19897,7 +19986,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many characters of text make one token; converts model limits from tokens to\ncharacters.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7f"
+      "index": "b7g"
     },
     {
       "id": "kSryvkvK",
@@ -19929,10 +20018,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "DPoaTctN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7g"
+      "index": "b7h"
     },
     {
       "id": "DPoaTctN",
@@ -19957,7 +20046,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1569553532,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① measured by the button\n② otherwise 2.5 chars/tok.",
@@ -19969,7 +20058,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 = auto:\n① measured by the button\n② otherwise 2.5 chars/tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7h"
+      "index": "b7i"
     },
     {
       "id": "q9ybbyXc",
@@ -20001,10 +20090,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lqRVNdkw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7i"
+      "index": "b7j"
     },
     {
       "id": "lqRVNdkw",
@@ -20029,7 +20118,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1629028389,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1.0 … 8.0",
@@ -20041,7 +20130,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1.0 … 8.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7j"
+      "index": "b7k"
     },
     {
       "id": "O2zw4zDX",
@@ -20073,10 +20162,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HYiFhGsw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7k"
+      "index": "b7l"
     },
     {
       "id": "HYiFhGsw",
@@ -20101,7 +20190,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1795378404,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A measurement is accepted within 1 … 8. How it is measured and which values are\ntypical — the “Tokens and characters” block at the top.",
@@ -20113,7 +20202,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A measurement is accepted within 1 … 8. How it is measured and which values are\ntypical — the “Tokens and characters” block at the top.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7l"
+      "index": "b7m"
     },
     {
       "id": "o8z5Vi8g",
@@ -20145,10 +20234,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yDcEyhDr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7m"
+      "index": "b7n"
     },
     {
       "id": "yDcEyhDr",
@@ -20173,7 +20262,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 225296398,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: used in every formula where a model limit is converted to characters. Lower than real — MINT plays safe (fragments shorter than they could be). Higher than real — requests may not fit into the model.",
@@ -20185,7 +20274,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: used in every formula where a model limit is converted to characters. Lower than real — MINT plays safe (fragments shorter than they could be). Higher than real — requests may not fit into the model.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7n"
+      "index": "b7o"
     },
     {
       "id": "y1T1lQxH",
@@ -20217,10 +20306,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HSjPlUzV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7o"
+      "index": "b7p"
     },
     {
       "id": "HSjPlUzV",
@@ -20245,7 +20334,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1231921184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] embed_query_prefix",
@@ -20257,7 +20346,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] embed_query_prefix",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7p"
+      "index": "b7q"
     },
     {
       "id": "Sbyu0ZAw",
@@ -20289,10 +20378,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fQGMeKu5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7q"
+      "index": "b7r"
     },
     {
       "id": "fQGMeKu5",
@@ -20317,7 +20406,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 147998566,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Instruction before the query text for embedding models trained with instructions.",
@@ -20329,7 +20418,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Instruction before the query text for embedding models trained with instructions.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7r"
+      "index": "b7s"
     },
     {
       "id": "bE03W6tI",
@@ -20361,10 +20450,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cRZae0ap"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7s"
+      "index": "b7t"
     },
     {
       "id": "cRZae0ap",
@@ -20389,7 +20478,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1630425493,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "by model name",
@@ -20401,7 +20490,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "by model name",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7t"
+      "index": "b7u"
     },
     {
       "id": "gcGbwUZy",
@@ -20433,10 +20522,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MqaRRet2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7u"
+      "index": "b7v"
     },
     {
       "id": "MqaRRet2",
@@ -20461,7 +20550,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1085597234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -20473,7 +20562,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7v"
+      "index": "b7w"
     },
     {
       "id": "Gkwf628D",
@@ -20505,10 +20594,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "q1CplQku"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7w"
+      "index": "b7x"
     },
     {
       "id": "q1CplQku",
@@ -20533,7 +20622,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1795380914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reduces audit_query_chars by its length. Changing it does not require re-indexing.",
@@ -20545,7 +20634,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Reduces audit_query_chars by its length. Changing it does not require re-indexing.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7x"
+      "index": "b7y"
     },
     {
       "id": "FW4YWdFv",
@@ -20577,10 +20666,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "AOCl6ED2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b7y"
+      "index": "b7z"
     },
     {
       "id": "AOCl6ED2",
@@ -20605,7 +20694,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 885066649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: what it is: many embedding models are trained on “question — document” pairs where the question is marked with a special phrase. Without the mark such a model searches noticeably worse (question and document\n“sound” the same to it). Where it comes from: embed_prefix_preset() matches the EMBED_MODEL name against the EMBED_PREFIX_PRESETS table — Qwen3-Embedding, gte-Qwen, e5-instruct → “Instruct: <search task>\\nQuery:” (171\nchars; the task is the EMBED_TASK constant: “Given a question or a fragment of a document under review, retrieve passages from corporate regulations and architecture documents that are relevant to it”); e5 → “query: ”;\nnomic-embed, FRIDA, ru-en-RoSBERTa → “search_query: ”; bge-m3 and all others → no prefix. A value from config.yaml wins over the table. Where it is used: the chat question, the start of a document section when searching\nfor norms (review), a comment when matching sections (verification). What was chosen is shown in “Models and limits”: “Query prefix for the embedding model (…)”.",
@@ -20617,7 +20706,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: what it is: many embedding models are trained on “question — document” pairs where the question is marked with a special phrase. Without the mark such a model searches noticeably worse (question and document\n“sound” the same to it). Where it comes from: embed_prefix_preset() matches the EMBED_MODEL name against the EMBED_PREFIX_PRESETS table — Qwen3-Embedding, gte-Qwen, e5-instruct → “Instruct: <search task>\\nQuery:” (171\nchars; the task is the EMBED_TASK constant: “Given a question or a fragment of a document under review, retrieve passages from corporate regulations and architecture documents that are relevant to it”); e5 → “query: ”;\nnomic-embed, FRIDA, ru-en-RoSBERTa → “search_query: ”; bge-m3 and all others → no prefix. A value from config.yaml wins over the table. Where it is used: the chat question, the start of a document section when searching\nfor norms (review), a comment when matching sections (verification). What was chosen is shown in “Models and limits”: “Query prefix for the embedding model (…)”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b7z"
+      "index": "b80"
     },
     {
       "id": "SnI8lK0i",
@@ -20649,10 +20738,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "vfmIQ5DO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b80"
+      "index": "b81"
     },
     {
       "id": "vfmIQ5DO",
@@ -20677,7 +20766,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 553004478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] embed_doc_prefix ♻",
@@ -20689,7 +20778,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] embed_doc_prefix ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b81"
+      "index": "b82"
     },
     {
       "id": "NqlDbZ28",
@@ -20721,10 +20810,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "95JUzx5W"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b82"
+      "index": "b83"
     },
     {
       "id": "95JUzx5W",
@@ -20749,7 +20838,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 724499649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Prefix before the document text (e5, nomic, FRIDA).",
@@ -20761,7 +20850,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Prefix before the document text (e5, nomic, FRIDA).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b83"
+      "index": "b84"
     },
     {
       "id": "J4oofpYG",
@@ -20793,10 +20882,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "RVv24QcT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b84"
+      "index": "b85"
     },
     {
       "id": "RVv24QcT",
@@ -20821,7 +20910,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1992257830,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "by model name",
@@ -20833,7 +20922,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "by model name",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b85"
+      "index": "b86"
     },
     {
       "id": "wqz5FJIu",
@@ -20865,10 +20954,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TLlcos7T"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b86"
+      "index": "b87"
     },
     {
       "id": "TLlcos7T",
@@ -20893,7 +20982,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 193557779,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -20905,7 +20994,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b87"
+      "index": "b88"
     },
     {
       "id": "JmwAUkvW",
@@ -20937,10 +21026,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Cz02NF26"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b88"
+      "index": "b89"
     },
     {
       "id": "Cz02NF26",
@@ -20965,7 +21054,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1073934881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Changing it — re-indexing (compared with the manifest). Reduces child_size and\nsection_embed_chars.",
@@ -20977,7 +21066,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Changing it — re-indexing (compared with the manifest). Reduces child_size and\nsection_embed_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b89"
+      "index": "b8A"
     },
     {
       "id": "PDW9go1E",
@@ -21009,10 +21098,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "UW4UMKMT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8A"
+      "index": "b8B"
     },
     {
       "id": "UW4UMKMT",
@@ -21037,7 +21126,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1605045284,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: the pair of the query prefix — a mark for document text: e5 → “passage: ”, nomic, FRIDA, RoSBERTa → “search_document: ”; Qwen3-Embedding and bge-m3 — no prefix (Qwen3 has an instruction only for the query).\nAdded to every child at indexing and to the sections of the new revision on the verification tab. If the model on the gateway has its own name (for example, “emb-prod”) and is not recognised, both prefixes are empty: set\nthem in config.yaml from the model's documentation and compare with a quality check before and after.",
@@ -21049,7 +21138,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: the pair of the query prefix — a mark for document text: e5 → “passage: ”, nomic, FRIDA, RoSBERTa → “search_document: ”; Qwen3-Embedding and bge-m3 — no prefix (Qwen3 has an instruction only for the query).\nAdded to every child at indexing and to the sections of the new revision on the verification tab. If the model on the gateway has its own name (for example, “emb-prod”) and is not recognised, both prefixes are empty: set\nthem in config.yaml from the model's documentation and compare with a quality check before and after.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8B"
+      "index": "b8C"
     },
     {
       "id": "gaKeUkUG",
@@ -21081,10 +21170,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Dg8JUkmk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8C"
+      "index": "b8D"
     },
     {
       "id": "Dg8JUkmk",
@@ -21109,7 +21198,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 135781157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "INTERMEDIATE VALUES — computed in _derive(), not set: changed through model limits and max_tokens",
@@ -21121,7 +21210,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "INTERMEDIATE VALUES — computed in _derive(), not set: changed through model limits and max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8D"
+      "index": "b8E"
     },
     {
       "id": "oEO3q0uN",
@@ -21153,10 +21242,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "himPpGc3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8E"
+      "index": "b8F"
     },
     {
       "id": "himPpGc3",
@@ -21181,7 +21270,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1375635301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] chat_budget",
@@ -21193,7 +21282,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [A] chat_budget",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8F"
+      "index": "b8G"
     },
     {
       "id": "GBQlng3z",
@@ -21225,10 +21314,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "54VNtikx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8G"
+      "index": "b8H"
     },
     {
       "id": "54VNtikx",
@@ -21253,7 +21342,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 350814852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Chat context budget: how many characters of retrieved fragments fit into the LLM\nwindow for a chat answer — after room for the answer, the prompt, the question\nand the history is subtracted from the window.",
@@ -21265,7 +21354,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Chat context budget: how many characters of retrieved fragments fit into the LLM\nwindow for a chat answer — after room for the answer, the prompt, the question\nand the history is subtracted from the window.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8H"
+      "index": "b8I"
     },
     {
       "id": "eQ0XYuSd",
@@ -21297,10 +21386,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tN6V0zqv"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8I"
+      "index": "b8J"
     },
     {
       "id": "tN6V0zqv",
@@ -21325,7 +21414,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1332392301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 64,700 chars\n(window 32768, answer 1500)",
@@ -21337,7 +21426,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 64,700 chars\n(window 32768, answer 1500)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8J"
+      "index": "b8K"
     },
     {
       "id": "KCdDNDv1",
@@ -21369,10 +21458,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "II8Ns4pz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8K"
+      "index": "b8L"
     },
     {
       "id": "II8Ns4pz",
@@ -21397,7 +21486,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1405749183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "not set",
@@ -21409,7 +21498,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "not set",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8L"
+      "index": "b8M"
     },
     {
       "id": "0fLKd8lM",
@@ -21441,10 +21530,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lymZvK5z"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8M"
+      "index": "b8N"
     },
     {
       "id": "lymZvK5z",
@@ -21469,7 +21558,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 538768156,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens − 800); 800 tok. — CHAT_RESERVE_TOKENS\n(prompt, question, history). Depending on it: smart_truncate_chars, parent_size.",
@@ -21481,7 +21570,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "= chars(llm_context_tokens − max_tokens − 800); 800 tok. — CHAT_RESERVE_TOKENS\n(prompt, question, history). Depending on it: smart_truncate_chars, parent_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8N"
+      "index": "b8O"
     },
     {
       "id": "XYFoMi5O",
@@ -21513,10 +21602,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "iAfH9byQ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8O"
+      "index": "b8P"
     },
     {
       "id": "iAfH9byQ",
@@ -21541,7 +21630,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1610322258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: the budget can be increased with a larger window (if the model allows) or a smaller max_tokens. Why a 4096 window gives a budget 17 times smaller than 32768 — worked through with numbers in panel 2.",
@@ -21553,7 +21642,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: the budget can be increased with a larger window (if the model allows) or a smaller max_tokens. Why a 4096 window gives a budget 17 times smaller than 32768 — worked through with numbers in panel 2.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8P"
+      "index": "b8Q"
     },
     {
       "id": "vJecvJZc",
@@ -21585,10 +21674,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "vZjlZ4ea"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8Q"
+      "index": "b8R"
     },
     {
       "id": "vZjlZ4ea",
@@ -21613,7 +21702,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 882252771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] llm_budget",
@@ -21625,7 +21714,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [A] llm_budget",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8R"
+      "index": "b8S"
     },
     {
       "id": "Q0r9Y1eW",
@@ -21657,10 +21746,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "sm6EvWbR"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8S"
+      "index": "b8T"
     },
     {
       "id": "sm6EvWbR",
@@ -21685,7 +21774,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 493078871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Context budget of review and verification of fixes: how many characters (document\nsection + norms from the base + sections of the new revision) fit into the LLM\nwindow.",
@@ -21697,7 +21786,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Context budget of review and verification of fixes: how many characters (document\nsection + norms from the base + sections of the new revision) fit into the LLM\nwindow.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8T"
+      "index": "b8U"
     },
     {
       "id": "YJ0L0hEy",
@@ -21729,10 +21818,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "g6QyYmfL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8U"
+      "index": "b8V"
     },
     {
       "id": "g6QyYmfL",
@@ -21757,7 +21846,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1585837053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 62,900 chars\n(window 32768, answer 1500)",
@@ -21769,7 +21858,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 62,900 chars\n(window 32768, answer 1500)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8V"
+      "index": "b8W"
     },
     {
       "id": "XV2Y6Iz9",
@@ -21801,10 +21890,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VeJBFlAD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8W"
+      "index": "b8X"
     },
     {
       "id": "VeJBFlAD",
@@ -21829,7 +21918,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 781495067,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "not set",
@@ -21841,7 +21930,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "not set",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8X"
+      "index": "b8Y"
     },
     {
       "id": "oeajY1gb",
@@ -21873,10 +21962,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KVshIk7E"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8Y"
+      "index": "b8Z"
     },
     {
       "id": "KVshIk7E",
@@ -21901,7 +21990,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 164434957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens) − 3500; 3500 chars — AUDIT_RESERVE_CHARS\n(prompt with criteria). Depending on it: audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
@@ -21913,7 +22002,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "= chars(llm_context_tokens − max_tokens) − 3500; 3500 chars — AUDIT_RESERVE_CHARS\n(prompt with criteria). Depending on it: audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8Z"
+      "index": "b8a"
     },
     {
       "id": "x8KMWn9G",
@@ -21945,10 +22034,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NNTlhvIG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8a"
+      "index": "b8b"
     },
     {
       "id": "NNTlhvIG",
@@ -21973,7 +22062,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 843716051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] embed_input_max_chars",
@@ -21985,7 +22074,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] embed_input_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8b"
+      "index": "b8c"
     },
     {
       "id": "EL4Kn7oQ",
@@ -22017,10 +22106,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "AxyJxng3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8c"
+      "index": "b8d"
     },
     {
       "id": "AxyJxng3",
@@ -22045,7 +22134,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1987308604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of text sent to the embedding model; longer text is cut before\nsending (_embed_input).",
@@ -22057,7 +22146,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maximum length of text sent to the embedding model; longer text is cut before\nsending (_embed_input).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8d"
+      "index": "b8e"
     },
     {
       "id": "qqkZuBiv",
@@ -22089,10 +22178,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "m9PrWQw5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8e"
+      "index": "b8f"
     },
     {
       "id": "m9PrWQw5",
@@ -22117,7 +22206,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 6991822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 17,400 chars\n(input 8192)",
@@ -22129,7 +22218,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 17,400 chars\n(input 8192)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8f"
+      "index": "b8g"
     },
     {
       "id": "8jWW7CdU",
@@ -22161,10 +22250,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "81oPE1bs"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8g"
+      "index": "b8h"
     },
     {
       "id": "81oPE1bs",
@@ -22189,7 +22278,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 687035628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "not set",
@@ -22201,7 +22290,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "not set",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8h"
+      "index": "b8i"
     },
     {
       "id": "lkkkIUxY",
@@ -22233,10 +22322,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4oxQdtM9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8i"
+      "index": "b8j"
     },
     {
       "id": "4oxQdtM9",
@@ -22261,7 +22350,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2065424422,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "= chars(embed_max_tokens). A safeguard: no embedding request exceeds the model input.",
@@ -22273,7 +22362,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "= chars(embed_max_tokens). A safeguard: no embedding request exceeds the model input.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8j"
+      "index": "b8k"
     },
     {
       "id": "UZbLIfc6",
@@ -22305,10 +22394,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JolIvO6B"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8k"
+      "index": "b8l"
     },
     {
       "id": "JolIvO6B",
@@ -22333,7 +22422,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 34079664,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LANGUAGE MODEL",
@@ -22345,7 +22434,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "LANGUAGE MODEL",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8l"
+      "index": "b8m"
     },
     {
       "id": "ikjsCnYm",
@@ -22377,10 +22466,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LdT1rwS8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8m"
+      "index": "b8n"
     },
     {
       "id": "LdT1rwS8",
@@ -22405,7 +22494,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 418965385,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] temperature",
@@ -22417,7 +22506,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] temperature",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8n"
+      "index": "b8o"
     },
     {
       "id": "kQgXArMs",
@@ -22449,10 +22538,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "sRJYQM5D"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8o"
+      "index": "b8p"
     },
     {
       "id": "sRJYQM5D",
@@ -22477,7 +22566,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 414097207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Randomness of the LLM answer.",
@@ -22489,7 +22578,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Randomness of the LLM answer.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8p"
+      "index": "b8q"
     },
     {
       "id": "5GgKksWS",
@@ -22521,10 +22610,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tlWCqnrT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8q"
+      "index": "b8r"
     },
     {
       "id": "tlWCqnrT",
@@ -22549,7 +22638,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1686832598,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.1",
@@ -22561,7 +22650,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8r"
+      "index": "b8s"
     },
     {
       "id": "ykJTax5f",
@@ -22593,10 +22682,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yrMkZMCP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8s"
+      "index": "b8t"
     },
     {
       "id": "yrMkZMCP",
@@ -22621,7 +22710,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1176029364,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.0 … 1.0",
@@ -22633,7 +22722,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.0 … 1.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8t"
+      "index": "b8u"
     },
     {
       "id": "KRuWfwY6",
@@ -22665,10 +22754,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9NOTJDXJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8u"
+      "index": "b8v"
     },
     {
       "id": "9NOTJDXJ",
@@ -22693,7 +22782,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 563665863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Applies to chat answers, review, review self-critique and verification of fixes. The\nexception is the chat's service step condense_question(): a follow-up question (“and\nfor the second circuit?”) is always rewritten into a self-contained one with\ntemperature 0, so that search gets the same wording. Self-critique is not affected by\nthis.",
@@ -22705,7 +22794,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Applies to chat answers, review, review self-critique and verification of fixes. The\nexception is the chat's service step condense_question(): a follow-up question (“and\nfor the second circuit?”) is always rewritten into a self-contained one with\ntemperature 0, so that search gets the same wording. Self-critique is not affected by\nthis.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8v"
+      "index": "b8w"
     },
     {
       "id": "bOxOUYcC",
@@ -22737,10 +22826,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WgbNYoYF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8w"
+      "index": "b8x"
     },
     {
       "id": "WgbNYoYF",
@@ -22765,7 +22854,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 46654347,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [C] max_tokens",
@@ -22777,7 +22866,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [C] max_tokens",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8x"
+      "index": "b8y"
     },
     {
       "id": "KjC6TZ2L",
@@ -22809,10 +22898,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "EV9HMxPc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b8y"
+      "index": "b8z"
     },
     {
       "id": "EV9HMxPc",
@@ -22837,7 +22926,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1538000357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of the model answer, tokens.",
@@ -22849,7 +22938,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maximum length of the model answer, tokens.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b8z"
+      "index": "b90"
     },
     {
       "id": "7XzYwtzq",
@@ -22881,10 +22970,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aNL9mWhI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b90"
+      "index": "b91"
     },
     {
       "id": "aNL9mWhI",
@@ -22909,7 +22998,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1159348457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500 tok.",
@@ -22921,7 +23010,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1500 tok.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b91"
+      "index": "b92"
     },
     {
       "id": "z2oSvcYh",
@@ -22953,10 +23042,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FM1u4tZ2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b92"
+      "index": "b93"
     },
     {
       "id": "FM1u4tZ2",
@@ -22981,7 +23070,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 250078666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "256 … 8000",
@@ -22993,7 +23082,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "256 … 8000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b93"
+      "index": "b94"
     },
     {
       "id": "t5uqtYzn",
@@ -23025,10 +23114,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "z9L9ZHcI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b94"
+      "index": "b95"
     },
     {
       "id": "z9L9ZHcI",
@@ -23053,7 +23142,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1129957131,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Depending on it: chat_budget, llm_budget.",
@@ -23065,7 +23154,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Depending on it: chat_budget, llm_budget.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b95"
+      "index": "b96"
     },
     {
       "id": "h24T5JiL",
@@ -23097,10 +23186,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HlFnvawl"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b96"
+      "index": "b97"
     },
     {
       "id": "HlFnvawl",
@@ -23125,7 +23214,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 25234788,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: room for the answer is reserved in the window in advance, even if the answer turns out short: every +1000 tok. of answer take ≈ 2,100 chars from chat_budget and llm_budget. On a 32k window this is unnoticeable,\non 4–8k it matters. Reasoning models — panel 4.",
@@ -23137,7 +23226,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: room for the answer is reserved in the window in advance, even if the answer turns out short: every +1000 tok. of answer take ≈ 2,100 chars from chat_budget and llm_budget. On a 32k window this is unnoticeable,\non 4–8k it matters. Reasoning models — panel 4.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b97"
+      "index": "b98"
     },
     {
       "id": "aoa2KKWw",
@@ -23169,10 +23258,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZLk9v5UP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b98"
+      "index": "b99"
     },
     {
       "id": "ZLk9v5UP",
@@ -23197,7 +23286,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 365693240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] llm_timeout",
@@ -23209,7 +23298,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] llm_timeout",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b99"
+      "index": "b9A"
     },
     {
       "id": "sh9bngE6",
@@ -23241,10 +23330,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "X2N33JGe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9A"
+      "index": "b9B"
     },
     {
       "id": "X2N33JGe",
@@ -23269,7 +23358,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1517064354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Wait for an LLM answer per attempt, s.",
@@ -23281,7 +23370,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Wait for an LLM answer per attempt, s.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9B"
+      "index": "b9C"
     },
     {
       "id": "3cmHygjz",
@@ -23313,10 +23402,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LaTgdZOT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9C"
+      "index": "b9D"
     },
     {
       "id": "LaTgdZOT",
@@ -23341,7 +23430,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 420629132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "90",
@@ -23353,7 +23442,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "90",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9D"
+      "index": "b9E"
     },
     {
       "id": "eXUIfr5S",
@@ -23385,10 +23474,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "06PEziuw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9E"
+      "index": "b9F"
     },
     {
       "id": "06PEziuw",
@@ -23413,7 +23502,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1847041914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "30 … 300",
@@ -23425,7 +23514,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "30 … 300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9F"
+      "index": "b9G"
     },
     {
       "id": "UJOmJV5S",
@@ -23457,10 +23546,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "si4s3Jib"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9G"
+      "index": "b9H"
     },
     {
       "id": "si4s3Jib",
@@ -23485,7 +23574,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 773012138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "On timeout — the next attempt (llm_retries).",
@@ -23497,7 +23586,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "On timeout — the next attempt (llm_retries).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9H"
+      "index": "b9I"
     },
     {
       "id": "rdtiA2O0",
@@ -23529,10 +23618,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0poqev9l"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9I"
+      "index": "b9J"
     },
     {
       "id": "0poqev9l",
@@ -23557,7 +23646,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 307768080,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] llm_retries",
@@ -23569,7 +23658,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] llm_retries",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9J"
+      "index": "b9K"
     },
     {
       "id": "224Nhaqm",
@@ -23601,10 +23690,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "EHPDAX2N"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9K"
+      "index": "b9L"
     },
     {
       "id": "EHPDAX2N",
@@ -23629,7 +23718,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 195675575,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Number of attempts on timeout and 502 / 503 / 504; on 429 at least 4, with a\nshared pause.",
@@ -23641,7 +23730,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Number of attempts on timeout and 502 / 503 / 504; on 429 at least 4, with a\nshared pause.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9L"
+      "index": "b9M"
     },
     {
       "id": "YGm4ghhb",
@@ -23673,10 +23762,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "000HmX7c"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9M"
+      "index": "b9N"
     },
     {
       "id": "000HmX7c",
@@ -23701,7 +23790,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1498851070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2",
@@ -23713,7 +23802,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9N"
+      "index": "b9O"
     },
     {
       "id": "QmsIMGXs",
@@ -23745,10 +23834,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xgP8dwB7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9O"
+      "index": "b9P"
     },
     {
       "id": "xgP8dwB7",
@@ -23773,7 +23862,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 829894513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 5",
@@ -23785,7 +23874,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 … 5",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9P"
+      "index": "b9Q"
     },
     {
       "id": "L78QZNgg",
@@ -23817,10 +23906,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tgHldk8A"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9Q"
+      "index": "b9R"
     },
     {
       "id": "tgHldk8A",
@@ -23845,7 +23934,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1738486712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The pause grows: ≈ 2 s, 4 s … (+ random); 401 / 403 — an error at once.",
@@ -23857,7 +23946,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The pause grows: ≈ 2 s, 4 s … (+ random); 401 / 403 — an error at once.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9R"
+      "index": "b9S"
     },
     {
       "id": "GZ9un3fy",
@@ -23889,10 +23978,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OMWw4xpz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9S"
+      "index": "b9T"
     },
     {
       "id": "OMWw4xpz",
@@ -23917,7 +24006,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 134755326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] request_timeout",
@@ -23929,7 +24018,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] request_timeout",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9T"
+      "index": "b9U"
     },
     {
       "id": "aexhGT3P",
@@ -23961,10 +24050,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6CmTuZgj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9U"
+      "index": "b9V"
     },
     {
       "id": "6CmTuZgj",
@@ -23989,7 +24078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 266171333,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Wait for a reranker answer, s.",
@@ -24001,7 +24090,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Wait for a reranker answer, s.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9V"
+      "index": "b9W"
     },
     {
       "id": "GkIOyEyG",
@@ -24033,10 +24122,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qf7vv8ha"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9W"
+      "index": "b9X"
     },
     {
       "id": "qf7vv8ha",
@@ -24061,7 +24150,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 139910239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "120",
@@ -24073,7 +24162,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "120",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9X"
+      "index": "b9Y"
     },
     {
       "id": "ZbSMYkdW",
@@ -24105,10 +24194,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "puPOymQn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9Y"
+      "index": "b9Z"
     },
     {
       "id": "puPOymQn",
@@ -24133,7 +24222,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1840327698,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -24145,7 +24234,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9Z"
+      "index": "b9a"
     },
     {
       "id": "WHmJ284C",
@@ -24177,10 +24266,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jnBwc1i7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9a"
+      "index": "b9b"
     },
     {
       "id": "jnBwc1i7",
@@ -24205,7 +24294,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 426607353,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -24217,7 +24306,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9b"
+      "index": "b9c"
     },
     {
       "id": "kpR0GfcU",
@@ -24249,10 +24338,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "A4JyTH9F"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9c"
+      "index": "b9d"
     },
     {
       "id": "A4JyTH9F",
@@ -24277,7 +24366,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1946661933,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "INDEXING ♻",
@@ -24289,7 +24378,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "INDEXING ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9d"
+      "index": "b9e"
     },
     {
       "id": "DfZI851t",
@@ -24321,10 +24410,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yPzi4fdo"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9e"
+      "index": "b9f"
     },
     {
       "id": "yPzi4fdo",
@@ -24349,7 +24438,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 239055789,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] parent_size ♻",
@@ -24361,7 +24450,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] parent_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9f"
+      "index": "b9g"
     },
     {
       "id": "v1nCxrts",
@@ -24393,10 +24482,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "iTsB05Ut"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9g"
+      "index": "b9h"
     },
     {
       "id": "iTsB05Ut",
@@ -24421,7 +24510,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 214810541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Length of a parent fragment: the LLM reads it.",
@@ -24433,7 +24522,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Length of a parent fragment: the LLM reads it.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9h"
+      "index": "b9i"
     },
     {
       "id": "xhPevV8Y",
@@ -24465,10 +24554,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6U5U3EYe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9i"
+      "index": "b9j"
     },
     {
       "id": "6U5U3EYe",
@@ -24493,7 +24582,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 611575325,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500 chars",
@@ -24505,7 +24594,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9j"
+      "index": "b9k"
     },
     {
       "id": "FOI2ni8p",
@@ -24537,10 +24626,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "PwUPs7km"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9k"
+      "index": "b9l"
     },
     {
       "id": "PwUPs7km",
@@ -24565,7 +24654,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 862580752,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -24577,7 +24666,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300 … 6000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9l"
+      "index": "b9m"
     },
     {
       "id": "RyaXO40V",
@@ -24609,10 +24698,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "t50zd2E2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9m"
+      "index": "b9n"
     },
     {
       "id": "t50zd2E2",
@@ -24637,7 +24726,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1140711641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ chat_budget / 5 (minimum 300). In the code at least 200. Depending on it:\nparent_overlap.",
@@ -24649,7 +24738,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ chat_budget / 5 (minimum 300). In the code at least 200. Depending on it:\nparent_overlap.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9n"
+      "index": "b9o"
     },
     {
       "id": "PFOsYTZA",
@@ -24681,10 +24770,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3peWeGGx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9o"
+      "index": "b9p"
     },
     {
       "id": "3peWeGGx",
@@ -24709,7 +24798,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1817413225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: a parent is the “unit of reading”: search finds a small child, and the model gets the whole parent around it for context. Why it depends on chat_budget: the whole parent goes into the context; if it is longer\nthan its share of the budget, smart_truncate_chars cuts it around the match and the surrounding text is lost. Divided by 5, not by top_k: chunking happens once at upload, while top_k changes in every session — 5 is the\ntypical top_k. On a 32k window the limit does not apply (64,744 / 5 = 12,949 > 2500), on 4k it does (→ 763). A larger parent — fewer breaks in meaning, but more noise and fewer different places in the same budget. Cut\nalong the text — first at a paragraph break, then at a line, a sentence and a word; a heading is not separated from its text. One parent can take the end of one section and the start of the next.",
@@ -24721,7 +24810,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: a parent is the “unit of reading”: search finds a small child, and the model gets the whole parent around it for context. Why it depends on chat_budget: the whole parent goes into the context; if it is longer\nthan its share of the budget, smart_truncate_chars cuts it around the match and the surrounding text is lost. Divided by 5, not by top_k: chunking happens once at upload, while top_k changes in every session — 5 is the\ntypical top_k. On a 32k window the limit does not apply (64,744 / 5 = 12,949 > 2500), on 4k it does (→ 763). A larger parent — fewer breaks in meaning, but more noise and fewer different places in the same budget. Cut\nalong the text — first at a paragraph break, then at a line, a sentence and a word; a heading is not separated from its text. One parent can take the end of one section and the start of the next.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9p"
+      "index": "b9q"
     },
     {
       "id": "XQtPmcsk",
@@ -24753,10 +24842,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jYt5vo4T"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9q"
+      "index": "b9r"
     },
     {
       "id": "jYt5vo4T",
@@ -24781,7 +24870,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1562899068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] parent_overlap ♻",
@@ -24793,7 +24882,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] parent_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9r"
+      "index": "b9s"
     },
     {
       "id": "ZZ8IRCPj",
@@ -24825,10 +24914,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qgvuvZt6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9s"
+      "index": "b9t"
     },
     {
       "id": "qgvuvZt6",
@@ -24853,7 +24942,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 627008874,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Overlap of neighbouring parents.",
@@ -24865,7 +24954,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Overlap of neighbouring parents.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9t"
+      "index": "b9u"
     },
     {
       "id": "xKiaEjeQ",
@@ -24897,10 +24986,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "88ZyP745"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9u"
+      "index": "b9v"
     },
     {
       "id": "88ZyP745",
@@ -24925,7 +25014,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 471041157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 chars",
@@ -24937,7 +25026,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9v"
+      "index": "b9w"
     },
     {
       "id": "COsj1Bno",
@@ -24969,10 +25058,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "raPHDvZO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9w"
+      "index": "b9x"
     },
     {
       "id": "raPHDvZO",
@@ -24997,7 +25086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1088769402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1000",
@@ -25009,7 +25098,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 1000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9x"
+      "index": "b9y"
     },
     {
       "id": "u7DeRRlb",
@@ -25041,10 +25130,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4VLkDRIe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "b9y"
+      "index": "b9z"
     },
     {
       "id": "4VLkDRIe",
@@ -25069,7 +25158,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2072011106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ parent_size / 5; in the code less than parent_size.",
@@ -25081,7 +25170,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ parent_size / 5; in the code less than parent_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "b9z"
+      "index": "bA0"
     },
     {
       "id": "pucPUmhH",
@@ -25113,10 +25202,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "dBvDcyLG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bA0"
+      "index": "bA1"
     },
     {
       "id": "dBvDcyLG",
@@ -25141,7 +25230,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 232401949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] child_size ♻",
@@ -25153,7 +25242,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] child_size ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA1"
+      "index": "bA2"
     },
     {
       "id": "auz145CZ",
@@ -25185,10 +25274,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LSJDt32C"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bA2"
+      "index": "bA3"
     },
     {
       "id": "LSJDt32C",
@@ -25213,7 +25302,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1847832412,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Length of a child fragment — the unit of vector search.",
@@ -25225,7 +25314,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Length of a child fragment — the unit of vector search.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA3"
+      "index": "bA4"
     },
     {
       "id": "VbZwa8EJ",
@@ -25257,10 +25346,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9Bb4Manq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bA4"
+      "index": "bA5"
     },
     {
       "id": "9Bb4Manq",
@@ -25285,7 +25374,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1065547229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400 chars",
@@ -25297,7 +25386,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "400 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA5"
+      "index": "bA6"
     },
     {
       "id": "7KGUX4NC",
@@ -25329,10 +25418,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BgNVyth5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bA6"
+      "index": "bA7"
     },
     {
       "id": "BgNVyth5",
@@ -25357,7 +25446,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2132508470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "100 … 2000",
@@ -25369,7 +25458,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "100 … 2000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA7"
+      "index": "bA8"
     },
     {
       "id": "RQVf1fls",
@@ -25401,10 +25490,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NZa414TA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bA8"
+      "index": "bA9"
     },
     {
       "id": "NZa414TA",
@@ -25429,7 +25518,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1021168636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ embedding input − 250 − document prefix (minimum 100); 250 — the heading path\n(HEADING_RESERVE_CHARS); in the code from 50 to parent_size. Depending on it:\nchild_overlap.",
@@ -25441,7 +25530,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ embedding input − 250 − document prefix (minimum 100); 250 — the heading path\n(HEADING_RESERVE_CHARS); in the code from 50 to parent_size. Depending on it:\nchild_overlap.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bA9"
+      "index": "bAA"
     },
     {
       "id": "SRgaOet1",
@@ -25473,10 +25562,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "gN6GS3rF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAA"
+      "index": "bAB"
     },
     {
       "id": "gN6GS3rF",
@@ -25501,7 +25590,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 951998924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: a child is the “unit of search”: the vector is computed from it. A short child matches a question more precisely, a long one gets blurred. 400 chars (≈ 2–4 sentences) is a compromise for regulations.",
@@ -25513,7 +25602,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: a child is the “unit of search”: the vector is computed from it. A short child matches a question more precisely, a long one gets blurred. 400 chars (≈ 2–4 sentences) is a compromise for regulations.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAB"
+      "index": "bAC"
     },
     {
       "id": "woXpLHUx",
@@ -25545,10 +25634,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "5lxOkXDH"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAC"
+      "index": "bAD"
     },
     {
       "id": "5lxOkXDH",
@@ -25573,7 +25662,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1172250614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] child_overlap ♻",
@@ -25585,7 +25674,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] child_overlap ♻",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAD"
+      "index": "bAE"
     },
     {
       "id": "8dukK0zr",
@@ -25617,10 +25706,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NN7DKujP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAE"
+      "index": "bAF"
     },
     {
       "id": "NN7DKujP",
@@ -25645,7 +25734,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2086858777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Overlap of neighbouring children.",
@@ -25657,7 +25746,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Overlap of neighbouring children.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAF"
+      "index": "bAG"
     },
     {
       "id": "IhVFyY2x",
@@ -25689,10 +25778,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "EjmhfXQ1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAG"
+      "index": "bAH"
     },
     {
       "id": "EjmhfXQ1",
@@ -25717,7 +25806,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 136431113,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150 chars",
@@ -25729,7 +25818,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "150 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAH"
+      "index": "bAI"
     },
     {
       "id": "r7KfdqC3",
@@ -25761,10 +25850,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jBhx8Gbb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAI"
+      "index": "bAJ"
     },
     {
       "id": "jBhx8Gbb",
@@ -25789,7 +25878,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1810711877,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 500",
@@ -25801,7 +25890,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 500",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAJ"
+      "index": "bAK"
     },
     {
       "id": "x6qTvasL",
@@ -25833,10 +25922,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Sr9o1bP5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAK"
+      "index": "bAL"
     },
     {
       "id": "Sr9o1bP5",
@@ -25861,7 +25950,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1661393883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ child_size / 2; in the code less than child_size.",
@@ -25873,7 +25962,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ child_size / 2; in the code less than child_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAL"
+      "index": "bAM"
     },
     {
       "id": "RPAVQzci",
@@ -25905,10 +25994,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "RDn5p0oM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAM"
+      "index": "bAN"
     },
     {
       "id": "RDn5p0oM",
@@ -25933,7 +26022,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1979534607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] embed_batch_size",
@@ -25945,7 +26034,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] embed_batch_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAN"
+      "index": "bAO"
     },
     {
       "id": "0IKNUt8o",
@@ -25977,10 +26066,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Rk1dzgkd"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAO"
+      "index": "bAP"
     },
     {
       "id": "Rk1dzgkd",
@@ -26005,7 +26094,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1935024994,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Texts per embedding request at indexing.",
@@ -26017,7 +26106,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Texts per embedding request at indexing.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAP"
+      "index": "bAQ"
     },
     {
       "id": "XJTZgp9x",
@@ -26049,10 +26138,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WZBGAImS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAQ"
+      "index": "bAR"
     },
     {
       "id": "WZBGAImS",
@@ -26077,7 +26166,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 252322485,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "32",
@@ -26089,7 +26178,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "32",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAR"
+      "index": "bAS"
     },
     {
       "id": "4L9zySbU",
@@ -26121,10 +26210,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aQ14QhtO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAS"
+      "index": "bAT"
     },
     {
       "id": "aQ14QhtO",
@@ -26149,7 +26238,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1481868590,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -26161,7 +26250,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAT"
+      "index": "bAU"
     },
     {
       "id": "8zQwg8Qk",
@@ -26193,10 +26282,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "N6YDl6lU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAU"
+      "index": "bAV"
     },
     {
       "id": "N6YDl6lU",
@@ -26221,7 +26310,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1377016232,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At least 1; the limit is the embedding server. A failed batch — one by one.",
@@ -26233,7 +26322,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "At least 1; the limit is the embedding server. A failed batch — one by one.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAV"
+      "index": "bAW"
     },
     {
       "id": "FwmCtsC3",
@@ -26265,10 +26354,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "h2quvqAU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAW"
+      "index": "bAX"
     },
     {
       "id": "h2quvqAU",
@@ -26293,7 +26382,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1544551388,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "SEARCH",
@@ -26305,7 +26394,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "SEARCH",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAX"
+      "index": "bAY"
     },
     {
       "id": "ZkKrwPQg",
@@ -26337,10 +26426,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qhyS55kj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAY"
+      "index": "bAZ"
     },
     {
       "id": "qhyS55kj",
@@ -26365,7 +26454,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 331411183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [T] top_k",
@@ -26377,7 +26466,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◆ [T] top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAZ"
+      "index": "bAa"
     },
     {
       "id": "oXlCPYGk",
@@ -26409,10 +26498,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "vDq2wQkm"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAa"
+      "index": "bAb"
     },
     {
       "id": "vDq2wQkm",
@@ -26437,7 +26526,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1999428029,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many retrieved fragments (parents) MINT puts into the LLM context for a chat\nanswer. Document review (norms from the base) and verification of fixes use the\nsame top_k.",
@@ -26449,7 +26538,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many retrieved fragments (parents) MINT puts into the LLM context for a chat\nanswer. Document review (norms from the base) and verification of fixes use the\nsame top_k.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAb"
+      "index": "bAc"
     },
     {
       "id": "CA7c4anZ",
@@ -26481,10 +26570,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6GmcPHnk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAc"
+      "index": "bAd"
     },
     {
       "id": "6GmcPHnk",
@@ -26509,7 +26598,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1274996269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n4 if the base has ≤ 300\n   children\n5 if more",
@@ -26521,7 +26610,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 = auto:\n4 if the base has ≤ 300\n   children\n5 if more",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAd"
+      "index": "bAe"
     },
     {
       "id": "KNdsRIZD",
@@ -26553,10 +26642,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Sdqmb0to"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAe"
+      "index": "bAf"
     },
     {
       "id": "Sdqmb0to",
@@ -26581,7 +26670,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1232470040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2 … 8",
@@ -26593,7 +26682,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2 … 8",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAf"
+      "index": "bAg"
     },
     {
       "id": "2uMF9v5k",
@@ -26625,10 +26714,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GO0OlIlE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAg"
+      "index": "bAh"
     },
     {
       "id": "GO0OlIlE",
@@ -26653,7 +26742,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 823897368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At most rerank_top_k (selection is made from these candidates). No upper limit in the\ncode: above 8 — through config.yaml. Depending on it: smart_truncate_chars.",
@@ -26665,7 +26754,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "At most rerank_top_k (selection is made from these candidates). No upper limit in the\ncode: above 8 — through config.yaml. Depending on it: smart_truncate_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAh"
+      "index": "bAi"
     },
     {
       "id": "keoj5ZJE",
@@ -26697,10 +26786,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "m3fDHb4L"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAi"
+      "index": "bAj"
     },
     {
       "id": "m3fDHb4L",
@@ -26725,7 +26814,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 542109081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: in the code top_k = 0, i.e. “choose automatically”: MINT counts child fragments in the base (kb_default_top_k). ≤ 300 (≈ 10–15 regulations) → 4: a fifth fragment is usually a repeat or noise; more → 5: the\nanswer is more often spread over several places. The “Search depth (Top-K)” slider starts at the auto value and changes it for the session; config.yaml (search: top_k: 6) turns the automation off.\nLink to the limits: fragments share the window budget — each is cut to smart_truncate_chars ≈ (window − answer − reserve) / top_k. A larger top_k — the model sees more different places, but each is shorter. On a small\nwindow top_k 8 gives scraps (under the slider: “Chat context: up to ≈ N chars (Top-K × fragment)”); on a large one fragments stay whole. In review audit_context_max_chars applies as well.\nHow to tune: start with auto. Often “the information is not available” although the answer is in the base → look at hit@3 and hit@K in report.md: the correct fragment at place 5–8 → raise top_k to 6–8. Not even in the\ntop ten → top_k will not help: the problem is in search or chunking.",
@@ -26737,7 +26826,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: in the code top_k = 0, i.e. “choose automatically”: MINT counts child fragments in the base (kb_default_top_k). ≤ 300 (≈ 10–15 regulations) → 4: a fifth fragment is usually a repeat or noise; more → 5: the\nanswer is more often spread over several places. The “Search depth (Top-K)” slider starts at the auto value and changes it for the session; config.yaml (search: top_k: 6) turns the automation off.\nLink to the limits: fragments share the window budget — each is cut to smart_truncate_chars ≈ (window − answer − reserve) / top_k. A larger top_k — the model sees more different places, but each is shorter. On a small\nwindow top_k 8 gives scraps (under the slider: “Chat context: up to ≈ N chars (Top-K × fragment)”); on a large one fragments stay whole. In review audit_context_max_chars applies as well.\nHow to tune: start with auto. Often “the information is not available” although the answer is in the base → look at hit@3 and hit@K in report.md: the correct fragment at place 5–8 → raise top_k to 6–8. Not even in the\ntop ten → top_k will not help: the problem is in search or chunking.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAj"
+      "index": "bAk"
     },
     {
       "id": "9m4l44BH",
@@ -26769,10 +26858,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "UrPJBo2I"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAk"
+      "index": "bAl"
     },
     {
       "id": "UrPJBo2I",
@@ -26797,7 +26886,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1276112853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] initial_k",
@@ -26809,7 +26898,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] initial_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAl"
+      "index": "bAm"
     },
     {
       "id": "hG8MbSIC",
@@ -26841,10 +26930,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MbhQsFw2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAm"
+      "index": "bAn"
     },
     {
       "id": "MbhQsFw2",
@@ -26869,7 +26958,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2005436629,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many nearest children vector search takes.",
@@ -26881,7 +26970,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many nearest children vector search takes.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAn"
+      "index": "bAo"
     },
     {
       "id": "elcXp7Mz",
@@ -26913,10 +27002,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XOg0Pir0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAo"
+      "index": "bAp"
     },
     {
       "id": "XOg0Pir0",
@@ -26941,7 +27030,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1193430822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "50",
@@ -26953,7 +27042,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "50",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAp"
+      "index": "bAq"
     },
     {
       "id": "Kw7qLowX",
@@ -26985,10 +27074,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "n8Ct939d"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAq"
+      "index": "bAr"
     },
     {
       "id": "n8Ct939d",
@@ -27013,7 +27102,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1016851116,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10 … 200",
@@ -27025,7 +27114,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "10 … 200",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAr"
+      "index": "bAs"
     },
     {
       "id": "fB2fIekC",
@@ -27057,10 +27146,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "iMJ8IOlK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAs"
+      "index": "bAt"
     },
     {
       "id": "iMJ8IOlK",
@@ -27085,7 +27174,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1649910430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At most the number of vectors in the base; several children of one parent give one\ncandidate.",
@@ -27097,7 +27186,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "At most the number of vectors in the base; several children of one parent give one\ncandidate.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAt"
+      "index": "bAu"
     },
     {
       "id": "0Grog5Ph",
@@ -27129,10 +27218,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2iqO0LBA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAu"
+      "index": "bAv"
     },
     {
       "id": "2iqO0LBA",
@@ -27157,7 +27246,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 634411900,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] bm25_top_k",
@@ -27169,7 +27258,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] bm25_top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAv"
+      "index": "bAw"
     },
     {
       "id": "pnLb61iH",
@@ -27201,10 +27290,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aUhH9T2l"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAw"
+      "index": "bAx"
     },
     {
       "id": "aUhH9T2l",
@@ -27229,7 +27318,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 380320554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many parents word search takes.",
@@ -27241,7 +27330,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many parents word search takes.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAx"
+      "index": "bAy"
     },
     {
       "id": "qxdWcmvb",
@@ -27273,10 +27362,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Vm34PIIi"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bAy"
+      "index": "bAz"
     },
     {
       "id": "Vm34PIIi",
@@ -27301,7 +27390,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1365825083,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20",
@@ -27313,7 +27402,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "20",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bAz"
+      "index": "bB0"
     },
     {
       "id": "ijxpou4l",
@@ -27345,10 +27434,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mWYDR7ka"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bB0"
+      "index": "bB1"
     },
     {
       "id": "mWYDR7ka",
@@ -27373,7 +27462,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2064859778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5 … 100",
@@ -27385,7 +27474,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5 … 100",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB1"
+      "index": "bB2"
     },
     {
       "id": "Tw30SRBR",
@@ -27417,10 +27506,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "AyKkUekT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bB2"
+      "index": "bB3"
     },
     {
       "id": "AyKkUekT",
@@ -27445,7 +27534,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1444307314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only fragments with a score > 0 are taken.",
@@ -27457,7 +27546,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Only fragments with a score > 0 are taken.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB3"
+      "index": "bB4"
     },
     {
       "id": "0PzlWQlV",
@@ -27489,10 +27578,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MUJSe1fu"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bB4"
+      "index": "bB5"
     },
     {
       "id": "MUJSe1fu",
@@ -27517,7 +27606,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 641060697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [T] rerank_top_k",
@@ -27529,7 +27618,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [T] rerank_top_k",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB5"
+      "index": "bB6"
     },
     {
       "id": "cieakzwA",
@@ -27561,10 +27650,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6TPaLQwQ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bB6"
+      "index": "bB7"
     },
     {
       "id": "6TPaLQwQ",
@@ -27589,7 +27678,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1827669685,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Candidates after fusion: they go to reranking and to the top_k selection.",
@@ -27601,7 +27690,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Candidates after fusion: they go to reranking and to the top_k selection.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB7"
+      "index": "bB8"
     },
     {
       "id": "ENyIoc96",
@@ -27633,10 +27722,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tWQlDM6p"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bB8"
+      "index": "bB9"
     },
     {
       "id": "tWQlDM6p",
@@ -27661,7 +27750,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 851156310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "16",
@@ -27673,7 +27762,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "16",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bB9"
+      "index": "bBA"
     },
     {
       "id": "r2hTzK1x",
@@ -27705,10 +27794,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Ddki79Id"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBA"
+      "index": "bBB"
     },
     {
       "id": "Ddki79Id",
@@ -27733,7 +27822,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2071937153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4 … 40",
@@ -27745,7 +27834,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4 … 40",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBB"
+      "index": "bBC"
     },
     {
       "id": "1Uyv4g9g",
@@ -27777,10 +27866,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7avbvYGJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBC"
+      "index": "bBD"
     },
     {
       "id": "7avbvYGJ",
@@ -27805,7 +27894,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 474051466,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Caps top_k. More — more requests to the reranker.",
@@ -27817,7 +27906,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Caps top_k. More — more requests to the reranker.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBD"
+      "index": "bBE"
     },
     {
       "id": "utoc9Yka",
@@ -27849,10 +27938,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "S1xsiIVt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBE"
+      "index": "bBF"
     },
     {
       "id": "S1xsiIVt",
@@ -27877,7 +27966,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1253936659,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] rrf_constant",
@@ -27889,7 +27978,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] rrf_constant",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBF"
+      "index": "bBG"
     },
     {
       "id": "pRPKLTYI",
@@ -27921,10 +28010,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ORSsqFXe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBG"
+      "index": "bBH"
     },
     {
       "id": "ORSsqFXe",
@@ -27949,7 +28038,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 484419719,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Smoothing constant of RRF fusion (formula — panel 7).",
@@ -27961,7 +28050,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Smoothing constant of RRF fusion (formula — panel 7).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBH"
+      "index": "bBI"
     },
     {
       "id": "a8kDL58G",
@@ -27993,10 +28082,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bwK2mK3U"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBI"
+      "index": "bBJ"
     },
     {
       "id": "bwK2mK3U",
@@ -28021,7 +28110,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1674499110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "60",
@@ -28033,7 +28122,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "60",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBJ"
+      "index": "bBK"
     },
     {
       "id": "nmVDAcV6",
@@ -28065,10 +28154,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "RkkXukzB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBK"
+      "index": "bBL"
     },
     {
       "id": "RkkXukzB",
@@ -28093,7 +28182,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 800063630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10 … 120",
@@ -28105,7 +28194,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "10 … 120",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBL"
+      "index": "bBM"
     },
     {
       "id": "PkqbD16B",
@@ -28137,10 +28226,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "nadhX2TG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBM"
+      "index": "bBN"
     },
     {
       "id": "nadhX2TG",
@@ -28165,7 +28254,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1165863358,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Smaller — a stronger difference between the first places of the lists.",
@@ -28177,7 +28266,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Smaller — a stronger difference between the first places of the lists.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBN"
+      "index": "bBO"
     },
     {
       "id": "0oBqSud5",
@@ -28209,10 +28298,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "oZpOmCV0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBO"
+      "index": "bBP"
     },
     {
       "id": "oZpOmCV0",
@@ -28237,7 +28326,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2088345562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weight_dense",
@@ -28249,7 +28338,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] weight_dense",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBP"
+      "index": "bBQ"
     },
     {
       "id": "nmJSaNDQ",
@@ -28281,10 +28370,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "a7xnLRhF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBQ"
+      "index": "bBR"
     },
     {
       "id": "a7xnLRhF",
@@ -28309,7 +28398,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1351918146,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of vector search in the fusion.",
@@ -28321,7 +28410,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Weight of vector search in the fusion.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBR"
+      "index": "bBS"
     },
     {
       "id": "GyedoJxA",
@@ -28353,10 +28442,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "noA5bPxt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBS"
+      "index": "bBT"
     },
     {
       "id": "noA5bPxt",
@@ -28381,7 +28470,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 454621305,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28393,7 +28482,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBT"
+      "index": "bBU"
     },
     {
       "id": "bb2HES2B",
@@ -28425,10 +28514,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rdVn5UYf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBU"
+      "index": "bBV"
     },
     {
       "id": "rdVn5UYf",
@@ -28453,7 +28542,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1120431559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28465,7 +28554,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBV"
+      "index": "bBW"
     },
     {
       "id": "mNOhkyIM",
@@ -28497,10 +28586,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "r5mgqQjn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBW"
+      "index": "bBX"
     },
     {
       "id": "r5mgqQjn",
@@ -28525,7 +28614,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 8506312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — the channel is off.",
@@ -28537,7 +28626,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 — the channel is off.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBX"
+      "index": "bBY"
     },
     {
       "id": "GdWbTm3R",
@@ -28569,10 +28658,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "V1lp9Lrg"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBY"
+      "index": "bBZ"
     },
     {
       "id": "V1lp9Lrg",
@@ -28597,7 +28686,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 846842930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weight_bm25",
@@ -28609,7 +28698,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] weight_bm25",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBZ"
+      "index": "bBa"
     },
     {
       "id": "OCBTQk2G",
@@ -28641,10 +28730,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rR5T5YEO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBa"
+      "index": "bBb"
     },
     {
       "id": "rR5T5YEO",
@@ -28669,7 +28758,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1724480507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of word search in the fusion.",
@@ -28681,7 +28770,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Weight of word search in the fusion.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBb"
+      "index": "bBc"
     },
     {
       "id": "n7ejwOW2",
@@ -28713,10 +28802,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "gL8wkJTW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBc"
+      "index": "bBd"
     },
     {
       "id": "gL8wkJTW",
@@ -28741,7 +28830,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1836973738,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28753,7 +28842,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1.0",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBd"
+      "index": "bBe"
     },
     {
       "id": "fMQSm3X4",
@@ -28785,10 +28874,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "c7g6vR9n"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBe"
+      "index": "bBf"
     },
     {
       "id": "c7g6vR9n",
@@ -28813,7 +28902,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 394337601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28825,7 +28914,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBf"
+      "index": "bBg"
     },
     {
       "id": "jezzHZYm",
@@ -28857,10 +28946,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VGVsdIby"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBg"
+      "index": "bBh"
     },
     {
       "id": "VGVsdIby",
@@ -28885,7 +28974,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1926032956,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — the channel is off.",
@@ -28897,7 +28986,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 — the channel is off.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBh"
+      "index": "bBi"
     },
     {
       "id": "5hgYDsEp",
@@ -28929,10 +29018,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "QYF6j2H2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBi"
+      "index": "bBj"
     },
     {
       "id": "QYF6j2H2",
@@ -28957,7 +29046,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1966334157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weight_rerank",
@@ -28969,7 +29058,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] weight_rerank",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBj"
+      "index": "bBk"
     },
     {
       "id": "I3Ih5bAE",
@@ -29001,10 +29090,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "h96CclaH"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBk"
+      "index": "bBl"
     },
     {
       "id": "h96CclaH",
@@ -29029,7 +29118,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1311860275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of the reranker's vote in the fusion.",
@@ -29041,7 +29130,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Weight of the reranker's vote in the fusion.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBl"
+      "index": "bBm"
     },
     {
       "id": "3c1d2zu2",
@@ -29073,10 +29162,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cLZLw1ow"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBm"
+      "index": "bBn"
     },
     {
       "id": "cLZLw1ow",
@@ -29101,7 +29190,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1030008845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.7",
@@ -29113,7 +29202,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.7",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBn"
+      "index": "bBo"
     },
     {
       "id": "uJqQsOYO",
@@ -29145,10 +29234,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "N9yWMNWz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBo"
+      "index": "bBp"
     },
     {
       "id": "N9yWMNWz",
@@ -29173,7 +29262,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 355004110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -29185,7 +29274,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBp"
+      "index": "bBq"
     },
     {
       "id": "vuSFjfoa",
@@ -29217,10 +29306,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LV2EXof3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBq"
+      "index": "bBr"
     },
     {
       "id": "LV2EXof3",
@@ -29245,7 +29334,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 980790806,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only with a reranker. 0 — the order without the reranker, its scores still decide on\n“low confidence”.",
@@ -29257,7 +29346,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Only with a reranker. 0 — the order without the reranker, its scores still decide on\n“low confidence”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBr"
+      "index": "bBs"
     },
     {
       "id": "qzZZe83j",
@@ -29289,10 +29378,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cbF0Mdgf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBs"
+      "index": "bBt"
     },
     {
       "id": "cbF0Mdgf",
@@ -29317,7 +29406,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1556644430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: the reranker does not replace the order but votes in the fusion alongside vector search and BM25. 0.7 — the reranker is slightly weaker than each of the two searches; 1.5–3 — its opinion decides.",
@@ -29329,7 +29418,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: the reranker does not replace the order but votes in the fusion alongside vector search and BM25. 0.7 — the reranker is slightly weaker than each of the two searches; 1.5–3 — its opinion decides.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBt"
+      "index": "bBu"
     },
     {
       "id": "dtOYhbwj",
@@ -29361,10 +29450,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "a1Q0M1ot"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBu"
+      "index": "bBv"
     },
     {
       "id": "a1Q0M1ot",
@@ -29389,7 +29478,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 214740451,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] smart_truncate_chars",
@@ -29401,7 +29490,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] smart_truncate_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBv"
+      "index": "bBw"
     },
     {
       "id": "BW2QZxk9",
@@ -29433,10 +29522,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "pCGDd8tf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBw"
+      "index": "bBx"
     },
     {
       "id": "pCGDd8tf",
@@ -29461,7 +29550,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1143341541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of one fragment in the LLM context.",
@@ -29473,7 +29562,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maximum length of one fragment in the LLM context.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBx"
+      "index": "bBy"
     },
     {
       "id": "An9HVGjX",
@@ -29505,10 +29594,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tgyGwy0D"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bBy"
+      "index": "bBz"
     },
     {
       "id": "tgyGwy0D",
@@ -29533,7 +29622,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1717692357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3500 chars — or less\nif it does not fit",
@@ -29545,7 +29634,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3500 chars — or less\nif it does not fit",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bBz"
+      "index": "bC0"
     },
     {
       "id": "8rYHbL94",
@@ -29577,10 +29666,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FEqfyq8J"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bC0"
+      "index": "bC1"
     },
     {
       "id": "FEqfyq8J",
@@ -29605,7 +29694,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1404583304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "500 … 10000",
@@ -29617,7 +29706,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "500 … 10000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC1"
+      "index": "bC2"
     },
     {
       "id": "haedeeSv",
@@ -29649,10 +29738,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KZ4FCEc5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bC2"
+      "index": "bC3"
     },
     {
       "id": "KZ4FCEc5",
@@ -29677,7 +29766,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 771846374,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ chat_budget / top_k (minimum 500). Longer — the fragment is cut around the\nmatch (focus_passage); the nearest heading above is kept, a table keeps its title and\nheader.",
@@ -29689,7 +29778,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ chat_budget / top_k (minimum 500). Longer — the fragment is cut around the\nmatch (focus_passage); the nearest heading above is kept, a table keeps its title and\nheader.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC3"
+      "index": "bC4"
     },
     {
       "id": "vGsXYl7A",
@@ -29721,10 +29810,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aArGEXhe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bC4"
+      "index": "bC5"
     },
     {
       "id": "aArGEXhe",
@@ -29749,7 +29838,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 548993954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: with the defaults (parent 2500 < 3500) nothing is cut — the limit applies only with a small window or a large top_k. Cut around the match: the child from vector search or the window with the most question words.\nNeighbouring fragments of one document are joined into one block (merge_adjacent) without repeating the overlap; its limit is smart_truncate_chars × the number joined.",
@@ -29761,7 +29850,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: with the defaults (parent 2500 < 3500) nothing is cut — the limit applies only with a small window or a large top_k. Cut around the match: the child from vector search or the window with the most question words.\nNeighbouring fragments of one document are joined into one block (merge_adjacent) without repeating the overlap; its limit is smart_truncate_chars × the number joined.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC5"
+      "index": "bC6"
     },
     {
       "id": "r6y9lZfR",
@@ -29793,10 +29882,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "N09JjNDX"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bC6"
+      "index": "bC7"
     },
     {
       "id": "N09JjNDX",
@@ -29821,7 +29910,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 80705691,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] max_table_parts",
@@ -29833,7 +29922,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] max_table_parts",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC7"
+      "index": "bC8"
     },
     {
       "id": "tWb0Cy3D",
@@ -29865,10 +29954,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Qusp8itJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bC8"
+      "index": "bC9"
     },
     {
       "id": "Qusp8itJ",
@@ -29893,7 +29982,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 525768354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many parts of one table can get into the context.",
@@ -29905,7 +29994,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many parts of one table can get into the context.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bC9"
+      "index": "bCA"
     },
     {
       "id": "9zkYfcWS",
@@ -29937,10 +30026,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Wv8weQnk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCA"
+      "index": "bCB"
     },
     {
       "id": "Wv8weQnk",
@@ -29965,7 +30054,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 907414041,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2",
@@ -29977,7 +30066,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCB"
+      "index": "bCC"
     },
     {
       "id": "CHU9F8Xi",
@@ -30009,10 +30098,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "irSnrMCa"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCC"
+      "index": "bCD"
     },
     {
       "id": "irSnrMCa",
@@ -30037,7 +30126,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 999512133,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -30049,7 +30138,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 6",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCD"
+      "index": "bCE"
     },
     {
       "id": "hX1mFUZ5",
@@ -30081,10 +30170,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JxKvUeoS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCE"
+      "index": "bCF"
     },
     {
       "id": "JxKvUeoS",
@@ -30109,7 +30198,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 492453229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — no limit. A soft limit: free places are filled with parts.",
@@ -30121,7 +30210,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 — no limit. A soft limit: free places are filled with parts.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCF"
+      "index": "bCG"
     },
     {
       "id": "c9aQbnjk",
@@ -30153,10 +30242,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JSZaSneX"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCG"
+      "index": "bCH"
     },
     {
       "id": "JSZaSneX",
@@ -30181,7 +30270,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2010318907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] use_multi_query",
@@ -30193,7 +30282,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] use_multi_query",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCH"
+      "index": "bCI"
     },
     {
       "id": "dHXz855v",
@@ -30225,10 +30314,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cq3Le41V"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCI"
+      "index": "bCJ"
     },
     {
       "id": "cq3Le41V",
@@ -30253,7 +30342,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 194094055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A second wording of the question from the LLM; candidates are searched for both.",
@@ -30265,7 +30354,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A second wording of the question from the LLM; candidates are searched for both.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCJ"
+      "index": "bCK"
     },
     {
       "id": "UydjJq7H",
@@ -30297,10 +30386,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZahazBl9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCK"
+      "index": "bCL"
     },
     {
       "id": "ZahazBl9",
@@ -30325,7 +30414,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1911966443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "off",
@@ -30337,7 +30426,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "off",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCL"
+      "index": "bCM"
     },
     {
       "id": "Ir61ciEM",
@@ -30369,10 +30458,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XzrTFHKP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCM"
+      "index": "bCN"
     },
     {
       "id": "XzrTFHKP",
@@ -30397,7 +30486,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1456427275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -30409,7 +30498,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCN"
+      "index": "bCO"
     },
     {
       "id": "NgcwtHQB",
@@ -30441,10 +30530,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7NbX6LOI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCO"
+      "index": "bCP"
     },
     {
       "id": "7NbX6LOI",
@@ -30469,7 +30558,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 354713556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Questions longer than 1200 chars are not paraphrased.",
@@ -30481,7 +30570,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Questions longer than 1200 chars are not paraphrased.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCP"
+      "index": "bCQ"
     },
     {
       "id": "nCveSBJq",
@@ -30513,10 +30602,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jsFtANYn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCQ"
+      "index": "bCR"
     },
     {
       "id": "jsFtANYn",
@@ -30541,7 +30630,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 521842887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] multi_query_alt_weight",
@@ -30553,7 +30642,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] multi_query_alt_weight",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCR"
+      "index": "bCS"
     },
     {
       "id": "mdxQznyB",
@@ -30585,10 +30674,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "I5NSU8kH"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCS"
+      "index": "bCT"
     },
     {
       "id": "I5NSU8kH",
@@ -30613,7 +30702,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1685954646,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of the results for the second wording.",
@@ -30625,7 +30714,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Weight of the results for the second wording.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCT"
+      "index": "bCU"
     },
     {
       "id": "oHsjnb74",
@@ -30657,10 +30746,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ips6vUKY"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCU"
+      "index": "bCV"
     },
     {
       "id": "ips6vUKY",
@@ -30685,7 +30774,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1663812954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.85",
@@ -30697,7 +30786,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.85",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCV"
+      "index": "bCW"
     },
     {
       "id": "obt2MDY6",
@@ -30729,10 +30818,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "IUb0rYMK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCW"
+      "index": "bCX"
     },
     {
       "id": "IUb0rYMK",
@@ -30757,7 +30846,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 874755181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -30769,7 +30858,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCX"
+      "index": "bCY"
     },
     {
       "id": "KUUhIIrf",
@@ -30801,10 +30890,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FJxrZ9A0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCY"
+      "index": "bCZ"
     },
     {
       "id": "FJxrZ9A0",
@@ -30829,7 +30918,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2122502909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -30841,7 +30930,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCZ"
+      "index": "bCa"
     },
     {
       "id": "s4HqgMHK",
@@ -30873,10 +30962,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6X47paLs"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCa"
+      "index": "bCb"
     },
     {
       "id": "6X47paLs",
@@ -30901,7 +30990,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 73039095,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] max_query_chars",
@@ -30913,7 +31002,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] max_query_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCb"
+      "index": "bCc"
     },
     {
       "id": "EQxJxnoR",
@@ -30945,10 +31034,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XXCdMupI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCc"
+      "index": "bCd"
     },
     {
       "id": "XXCdMupI",
@@ -30973,7 +31062,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1745724202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of a search query; longer is cut.",
@@ -30985,7 +31074,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maximum length of a search query; longer is cut.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCd"
+      "index": "bCe"
     },
     {
       "id": "3UmOxtTB",
@@ -31017,10 +31106,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qHqTszNN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCe"
+      "index": "bCf"
     },
     {
       "id": "qHqTszNN",
@@ -31045,7 +31134,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1569199042,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "24000 chars",
@@ -31057,7 +31146,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "24000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCf"
+      "index": "bCg"
     },
     {
       "id": "2OJjJXpx",
@@ -31089,10 +31178,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BboBPRt1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCg"
+      "index": "bCh"
     },
     {
       "id": "BboBPRt1",
@@ -31117,7 +31206,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2074488271,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -31129,7 +31218,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCh"
+      "index": "bCi"
     },
     {
       "id": "yUKT8g5L",
@@ -31161,10 +31250,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "P5Lw2HGK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCi"
+      "index": "bCj"
     },
     {
       "id": "P5Lw2HGK",
@@ -31189,7 +31278,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 878427207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -31201,7 +31290,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCj"
+      "index": "bCk"
     },
     {
       "id": "ASvZEZ1J",
@@ -31233,10 +31322,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MIJpzCrn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCk"
+      "index": "bCl"
     },
     {
       "id": "MIJpzCrn",
@@ -31261,7 +31350,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1812677870,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] cascade_split_chars",
@@ -31273,7 +31362,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] cascade_split_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCl"
+      "index": "bCm"
     },
     {
       "id": "j93CgPLu",
@@ -31305,10 +31394,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "QX7L9Ks6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCm"
+      "index": "bCn"
     },
     {
       "id": "QX7L9Ks6",
@@ -31333,7 +31422,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 813387628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A longer query is split in half and searched in parts.",
@@ -31345,7 +31434,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A longer query is split in half and searched in parts.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCn"
+      "index": "bCo"
     },
     {
       "id": "5vxPEnDe",
@@ -31377,10 +31466,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wIPblXXD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCo"
+      "index": "bCp"
     },
     {
       "id": "wIPblXXD",
@@ -31405,7 +31494,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1164531974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20,000 chars",
@@ -31417,7 +31506,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "20,000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCp"
+      "index": "bCq"
     },
     {
       "id": "59W7s6m0",
@@ -31449,10 +31538,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XSa5QLFb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCq"
+      "index": "bCr"
     },
     {
       "id": "XSa5QLFb",
@@ -31477,7 +31566,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 177253050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -31489,7 +31578,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCr"
+      "index": "bCs"
     },
     {
       "id": "U86kloRp",
@@ -31521,10 +31610,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "C5uPmO3E"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCs"
+      "index": "bCt"
     },
     {
       "id": "C5uPmO3E",
@@ -31549,7 +31638,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 52014419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Split depth — at most 3.",
@@ -31561,7 +31650,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Split depth — at most 3.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCt"
+      "index": "bCu"
     },
     {
       "id": "Ttiu6JrE",
@@ -31593,10 +31682,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "g9Bu07MV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCu"
+      "index": "bCv"
     },
     {
       "id": "g9Bu07MV",
@@ -31621,7 +31710,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1676185245,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RERANKER — used only if RERANK_API_URL is set",
@@ -31633,7 +31722,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "RERANKER — used only if RERANK_API_URL is set",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCv"
+      "index": "bCw"
     },
     {
       "id": "6eJ828WP",
@@ -31665,10 +31754,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6U3h5qGW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCw"
+      "index": "bCx"
     },
     {
       "id": "6U3h5qGW",
@@ -31693,7 +31782,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 866677630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] rerank_max_docs",
@@ -31705,7 +31794,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] rerank_max_docs",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCx"
+      "index": "bCy"
     },
     {
       "id": "OwICU9h5",
@@ -31737,10 +31826,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "N7uFyEAr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bCy"
+      "index": "bCz"
     },
     {
       "id": "N7uFyEAr",
@@ -31765,7 +31854,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 904781665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Documents per reranker request.",
@@ -31777,7 +31866,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Documents per reranker request.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bCz"
+      "index": "bD0"
     },
     {
       "id": "RLUV5K3s",
@@ -31809,10 +31898,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "gIoU2zYu"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bD0"
+      "index": "bD1"
     },
     {
       "id": "gIoU2zYu",
@@ -31837,7 +31926,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1461941051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10",
@@ -31849,7 +31938,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "10",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD1"
+      "index": "bD2"
     },
     {
       "id": "hoIjVMhw",
@@ -31881,10 +31970,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MozZGAOC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bD2"
+      "index": "bD3"
     },
     {
       "id": "MozZGAOC",
@@ -31909,7 +31998,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1204815292,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3 … 30",
@@ -31921,7 +32010,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3 … 30",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD3"
+      "index": "bD4"
     },
     {
       "id": "DWFyAuMV",
@@ -31953,10 +32042,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "iQvZy7DU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bD4"
+      "index": "bD5"
     },
     {
       "id": "iQvZy7DU",
@@ -31981,7 +32070,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 627218922,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A gateway limit; the remaining candidates go in the next requests.",
@@ -31993,7 +32082,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A gateway limit; the remaining candidates go in the next requests.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD5"
+      "index": "bD6"
     },
     {
       "id": "k00hjtFW",
@@ -32025,10 +32114,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lTszA1S5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bD6"
+      "index": "bD7"
     },
     {
       "id": "lTszA1S5",
@@ -32053,7 +32142,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1610829386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] rerank_char_budget",
@@ -32065,7 +32154,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] rerank_char_budget",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD7"
+      "index": "bD8"
     },
     {
       "id": "Gxu471ZX",
@@ -32097,10 +32186,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mijEeau7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bD8"
+      "index": "bD9"
     },
     {
       "id": "mijEeau7",
@@ -32125,7 +32214,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1341445620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Characters per reranker request.",
@@ -32137,7 +32226,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Characters per reranker request.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bD9"
+      "index": "bDA"
     },
     {
       "id": "IyRIbScM",
@@ -32169,10 +32258,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "iqbo4Gc9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDA"
+      "index": "bDB"
     },
     {
       "id": "iqbo4Gc9",
@@ -32197,7 +32286,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 775511850,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000 chars",
@@ -32209,7 +32298,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "9000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDB"
+      "index": "bDC"
     },
     {
       "id": "7PySBL9m",
@@ -32241,10 +32330,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Jacs9NJD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDC"
+      "index": "bDD"
     },
     {
       "id": "Jacs9NJD",
@@ -32269,7 +32358,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 932387223,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3000 … 60000",
@@ -32281,7 +32370,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3000 … 60000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDD"
+      "index": "bDE"
     },
     {
       "id": "LhJBzBFb",
@@ -32313,10 +32402,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "a6AC5f2o"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDE"
+      "index": "bDF"
     },
     {
       "id": "a6AC5f2o",
@@ -32341,7 +32430,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 458854630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A gateway limit; one document is always sent, even if longer.",
@@ -32353,7 +32442,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A gateway limit; one document is always sent, even if longer.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDF"
+      "index": "bDG"
     },
     {
       "id": "HFB0rVos",
@@ -32385,10 +32474,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Z71aWLEK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDG"
+      "index": "bDH"
     },
     {
       "id": "Z71aWLEK",
@@ -32413,7 +32502,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 155608427,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] rerank_query_max_chars",
@@ -32425,7 +32514,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] rerank_query_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDH"
+      "index": "bDI"
     },
     {
       "id": "VZTl5pdN",
@@ -32457,10 +32546,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mqoC7i5e"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDI"
+      "index": "bDJ"
     },
     {
       "id": "mqoC7i5e",
@@ -32485,7 +32574,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 547547720,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Query length (with abbreviation expansions) for the reranker.",
@@ -32497,7 +32586,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Query length (with abbreviation expansions) for the reranker.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDJ"
+      "index": "bDK"
     },
     {
       "id": "hzOfjfnU",
@@ -32529,10 +32618,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "k1aXF4VF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDK"
+      "index": "bDL"
     },
     {
       "id": "k1aXF4VF",
@@ -32557,7 +32646,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1450256052,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500 chars",
@@ -32569,7 +32658,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDL"
+      "index": "bDM"
     },
     {
       "id": "sQxZhpsa",
@@ -32601,10 +32690,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Vsmcxsr0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDM"
+      "index": "bDN"
     },
     {
       "id": "Vsmcxsr0",
@@ -32629,7 +32718,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 375766132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "200 … 4000",
@@ -32641,7 +32730,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "200 … 4000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDN"
+      "index": "bDO"
     },
     {
       "id": "Y7slf9Ma",
@@ -32673,10 +32762,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4X4peVzG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDO"
+      "index": "bDP"
     },
     {
       "id": "4X4peVzG",
@@ -32701,7 +32790,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 730764475,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ reranker input / 3 (minimum 200). Depending on it: rerank_doc_max_chars.",
@@ -32713,7 +32802,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ reranker input / 3 (minimum 200). Depending on it: rerank_doc_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDP"
+      "index": "bDQ"
     },
     {
       "id": "PFpsVmvZ",
@@ -32745,10 +32834,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4qoxGy7W"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDQ"
+      "index": "bDR"
     },
     {
       "id": "4qoxGy7W",
@@ -32773,7 +32862,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 513501684,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] rerank_doc_max_chars",
@@ -32785,7 +32874,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] rerank_doc_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDR"
+      "index": "bDS"
     },
     {
       "id": "dPrh3Xzq",
@@ -32817,10 +32906,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "INdUbnCu"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDS"
+      "index": "bDT"
     },
     {
       "id": "INdUbnCu",
@@ -32845,7 +32934,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 512983989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Length of a document fragment for the reranker, including file name and section.",
@@ -32857,7 +32946,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Length of a document fragment for the reranker, including file name and section.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDT"
+      "index": "bDU"
     },
     {
       "id": "b9Wz9UTS",
@@ -32889,10 +32978,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Sy5ZC8tC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDU"
+      "index": "bDV"
     },
     {
       "id": "Sy5ZC8tC",
@@ -32917,7 +33006,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1067808700,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800 chars",
@@ -32929,7 +33018,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "800 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDV"
+      "index": "bDW"
     },
     {
       "id": "0ECQSsSt",
@@ -32961,10 +33050,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9jACZCFx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDW"
+      "index": "bDX"
     },
     {
       "id": "9jACZCFx",
@@ -32989,7 +33078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 821085603,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "200 … 6000",
@@ -33001,7 +33090,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "200 … 6000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDX"
+      "index": "bDY"
     },
     {
       "id": "awOaMgXv",
@@ -33033,10 +33122,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HxrSiSUs"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDY"
+      "index": "bDZ"
     },
     {
       "id": "HxrSiSUs",
@@ -33061,7 +33150,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2038585930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ reranker input − query length (minimum 200); the fragment itself at least 150\nchars.",
@@ -33073,7 +33162,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ reranker input − query length (minimum 200); the fragment itself at least 150\nchars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDZ"
+      "index": "bDa"
     },
     {
       "id": "SRYVhqMJ",
@@ -33105,10 +33194,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mNIHqE1g"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDa"
+      "index": "bDb"
     },
     {
       "id": "mNIHqE1g",
@@ -33133,7 +33222,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1894318756,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] rerank_with_meta",
@@ -33145,7 +33234,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] rerank_with_meta",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDb"
+      "index": "bDc"
     },
     {
       "id": "4rhlKByA",
@@ -33177,10 +33266,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "V3U1PIJj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDc"
+      "index": "bDd"
     },
     {
       "id": "V3U1PIJj",
@@ -33205,7 +33294,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 298691446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Add the file name, section and table to the start of the text for the reranker.",
@@ -33217,7 +33306,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Add the file name, section and table to the start of the text for the reranker.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDd"
+      "index": "bDe"
     },
     {
       "id": "xGbpe1Rt",
@@ -33249,10 +33338,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xsa8pbmz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDe"
+      "index": "bDf"
     },
     {
       "id": "xsa8pbmz",
@@ -33277,7 +33366,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1515200814,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -33289,7 +33378,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDf"
+      "index": "bDg"
     },
     {
       "id": "2Aqj7Ccj",
@@ -33321,10 +33410,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "RJWLpgff"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDg"
+      "index": "bDh"
     },
     {
       "id": "RJWLpgff",
@@ -33349,7 +33438,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1496251421,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -33361,7 +33450,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDh"
+      "index": "bDi"
     },
     {
       "id": "lSeRf3MM",
@@ -33393,10 +33482,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SEcymgpK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDi"
+      "index": "bDj"
     },
     {
       "id": "SEcymgpK",
@@ -33421,7 +33510,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 422124871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -33433,7 +33522,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDj"
+      "index": "bDk"
     },
     {
       "id": "mBHQ2ejh",
@@ -33465,10 +33554,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TJdmNAMe"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDk"
+      "index": "bDl"
     },
     {
       "id": "TJdmNAMe",
@@ -33493,7 +33582,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 191817896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] min_rerank_score",
@@ -33505,7 +33594,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] min_rerank_score",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDl"
+      "index": "bDm"
     },
     {
       "id": "RLElSVXO",
@@ -33537,10 +33626,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "L7htKRrT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDm"
+      "index": "bDn"
     },
     {
       "id": "L7htKRrT",
@@ -33565,7 +33654,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 684930038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Minimum score at which the reranker's vote counts.",
@@ -33577,7 +33666,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Minimum score at which the reranker's vote counts.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDn"
+      "index": "bDo"
     },
     {
       "id": "2fdxuS10",
@@ -33609,10 +33698,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ofiWJOXX"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDo"
+      "index": "bDp"
     },
     {
       "id": "ofiWJOXX",
@@ -33637,7 +33726,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 3194214,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.15",
@@ -33649,7 +33738,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.15",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDp"
+      "index": "bDq"
     },
     {
       "id": "Ry5Rakav",
@@ -33681,10 +33770,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "1yanl4zy"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDq"
+      "index": "bDr"
     },
     {
       "id": "1yanl4zy",
@@ -33709,7 +33798,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1233626925,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -33721,7 +33810,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDr"
+      "index": "bDs"
     },
     {
       "id": "fzg2h6on",
@@ -33753,10 +33842,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ngr5b7jc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDs"
+      "index": "bDt"
     },
     {
       "id": "ngr5b7jc",
@@ -33781,7 +33870,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 166250213,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Designed for a 0 … 1 scale; for a reranker with a different scale set it by hand.",
@@ -33793,7 +33882,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Designed for a 0 … 1 scale; for a reranker with a different scale set it by hand.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDt"
+      "index": "bDu"
     },
     {
       "id": "SsVYlIxl",
@@ -33825,10 +33914,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KEVNl4ei"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDu"
+      "index": "bDv"
     },
     {
       "id": "KEVNl4ei",
@@ -33853,7 +33942,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 152577046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "THE “LOW CONFIDENCE” SIGNAL — how it fires, see panel 7",
@@ -33865,7 +33954,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "THE “LOW CONFIDENCE” SIGNAL — how it fires, see panel 7",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDv"
+      "index": "bDw"
     },
     {
       "id": "2J2RK5ER",
@@ -33897,10 +33986,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "k27exYRU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDw"
+      "index": "bDx"
     },
     {
       "id": "k27exYRU",
@@ -33925,7 +34014,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1222981514,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] low_conf_rerank",
@@ -33937,7 +34026,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] low_conf_rerank",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDx"
+      "index": "bDy"
     },
     {
       "id": "oK26qcve",
@@ -33969,10 +34058,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7KbGX2hP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bDy"
+      "index": "bDz"
     },
     {
       "id": "7KbGX2hP",
@@ -33997,7 +34086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1552195540,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Threshold for the best reranker score.",
@@ -34009,7 +34098,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Threshold for the best reranker score.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bDz"
+      "index": "bE0"
     },
     {
       "id": "fEPoYUbf",
@@ -34041,10 +34130,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "kJZWPlbf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bE0"
+      "index": "bE1"
     },
     {
       "id": "kJZWPlbf",
@@ -34069,7 +34158,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 974641568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.30",
@@ -34081,7 +34170,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.30",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE1"
+      "index": "bE2"
     },
     {
       "id": "RehOOo03",
@@ -34113,10 +34202,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fcG42yGo"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bE2"
+      "index": "bE3"
     },
     {
       "id": "fcG42yGo",
@@ -34141,7 +34230,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1391928747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34153,7 +34242,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE3"
+      "index": "bE4"
     },
     {
       "id": "A56E0eMX",
@@ -34185,10 +34274,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Nm8RBnbX"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bE4"
+      "index": "bE5"
     },
     {
       "id": "Nm8RBnbX",
@@ -34213,7 +34302,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 370486613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "With a reranker the signal depends only on it.",
@@ -34225,7 +34314,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "With a reranker the signal depends only on it.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE5"
+      "index": "bE6"
     },
     {
       "id": "gHbQnF22",
@@ -34257,10 +34346,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MWpApVnV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bE6"
+      "index": "bE7"
     },
     {
       "id": "MWpApVnV",
@@ -34285,7 +34374,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1204987714,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] low_conf_lexical",
@@ -34297,7 +34386,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] low_conf_lexical",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE7"
+      "index": "bE8"
     },
     {
       "id": "sfDPd2BX",
@@ -34329,10 +34418,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ACarWAad"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bE8"
+      "index": "bE9"
     },
     {
       "id": "ACarWAad",
@@ -34357,7 +34446,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2045651288,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only without a reranker: threshold for the share of question words in the\ncontext.",
@@ -34369,7 +34458,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Only without a reranker: threshold for the share of question words in the\ncontext.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bE9"
+      "index": "bEA"
     },
     {
       "id": "80qIeTkA",
@@ -34401,10 +34490,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fc1JUIaG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEA"
+      "index": "bEB"
     },
     {
       "id": "fc1JUIaG",
@@ -34429,7 +34518,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 80691010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.50",
@@ -34441,7 +34530,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0.50",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEB"
+      "index": "bEC"
     },
     {
       "id": "2oXByhEp",
@@ -34473,10 +34562,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "p9oWISmG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEC"
+      "index": "bED"
     },
     {
       "id": "p9oWISmG",
@@ -34501,7 +34590,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 711609765,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34513,7 +34602,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bED"
+      "index": "bEE"
     },
     {
       "id": "jSiJlJEj",
@@ -34545,10 +34634,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "1Qlfo2XL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEE"
+      "index": "bEF"
     },
     {
       "id": "1Qlfo2XL",
@@ -34573,7 +34662,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 760757472,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Words are compared by stems; question words are not counted.",
@@ -34585,7 +34674,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Words are compared by stems; question words are not counted.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEF"
+      "index": "bEG"
     },
     {
       "id": "mgwArcxx",
@@ -34617,10 +34706,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "iT9QEihJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEG"
+      "index": "bEH"
     },
     {
       "id": "iT9QEihJ",
@@ -34645,7 +34734,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 685294118,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] low_conf_agree_top",
@@ -34657,7 +34746,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] low_conf_agree_top",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEH"
+      "index": "bEI"
     },
     {
       "id": "JcaExdmP",
@@ -34689,10 +34778,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "kyC0WRMs"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEI"
+      "index": "bEJ"
     },
     {
       "id": "kyC0WRMs",
@@ -34717,7 +34806,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 579166038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only without a reranker: depth at which vector search and BM25 must agree.",
@@ -34729,7 +34818,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Only without a reranker: depth at which vector search and BM25 must agree.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEJ"
+      "index": "bEK"
     },
     {
       "id": "ssgKLskU",
@@ -34761,10 +34850,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6YTV1x7X"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEK"
+      "index": "bEL"
     },
     {
       "id": "6YTV1x7X",
@@ -34789,7 +34878,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1064378993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5",
@@ -34801,7 +34890,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEL"
+      "index": "bEM"
     },
     {
       "id": "sXIFXYNW",
@@ -34833,10 +34922,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "c0QGMwZi"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEM"
+      "index": "bEN"
     },
     {
       "id": "c0QGMwZi",
@@ -34861,7 +34950,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1789911899,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 20",
@@ -34873,7 +34962,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 … 20",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEN"
+      "index": "bEO"
     },
     {
       "id": "ceq6uD2T",
@@ -34905,10 +34994,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LVL8K8aB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEO"
+      "index": "bEP"
     },
     {
       "id": "LVL8K8aB",
@@ -34933,7 +35022,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1034546173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -34945,7 +35034,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEP"
+      "index": "bEQ"
     },
     {
       "id": "9NVpreWz",
@@ -34977,10 +35066,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aKdribJq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEQ"
+      "index": "bER"
     },
     {
       "id": "aKdribJq",
@@ -35005,7 +35094,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 238385884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] show_source_details",
@@ -35017,7 +35106,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] show_source_details",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bER"
+      "index": "bES"
     },
     {
       "id": "9WI33Rzb",
@@ -35049,10 +35138,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fqAeFdJa"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bES"
+      "index": "bET"
     },
     {
       "id": "fqAeFdJa",
@@ -35077,7 +35166,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2030131176,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Show scores and positions next to sources in chat.",
@@ -35089,7 +35178,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Show scores and positions next to sources in chat.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bET"
+      "index": "bEU"
     },
     {
       "id": "n5anRVVz",
@@ -35121,10 +35210,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WPah7gt8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEU"
+      "index": "bEV"
     },
     {
       "id": "WPah7gt8",
@@ -35149,7 +35238,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 22784989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -35161,7 +35250,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEV"
+      "index": "bEW"
     },
     {
       "id": "b285nzxj",
@@ -35193,10 +35282,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "R6bYN10b"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEW"
+      "index": "bEX"
     },
     {
       "id": "R6bYN10b",
@@ -35221,7 +35310,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 415630397,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -35233,7 +35322,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEX"
+      "index": "bEY"
     },
     {
       "id": "BGWXHFQn",
@@ -35265,10 +35354,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mOz0rVBd"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEY"
+      "index": "bEZ"
     },
     {
       "id": "mOz0rVBd",
@@ -35293,7 +35382,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1690344630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -35305,7 +35394,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEZ"
+      "index": "bEa"
     },
     {
       "id": "vjFFYlhc",
@@ -35337,10 +35426,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NSo3kyF9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEa"
+      "index": "bEb"
     },
     {
       "id": "NSo3kyF9",
@@ -35365,7 +35454,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1705104604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT AND GLOSSARY",
@@ -35377,7 +35466,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "CHAT AND GLOSSARY",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEb"
+      "index": "bEc"
     },
     {
       "id": "obd3h7QW",
@@ -35409,10 +35498,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZpOylhSE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEc"
+      "index": "bEd"
     },
     {
       "id": "ZpOylhSE",
@@ -35437,7 +35526,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1358943467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] chat_history_turns",
@@ -35449,7 +35538,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] chat_history_turns",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEd"
+      "index": "bEe"
     },
     {
       "id": "mq8KBX5m",
@@ -35481,10 +35570,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hRM3b1AN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEe"
+      "index": "bEf"
     },
     {
       "id": "hRM3b1AN",
@@ -35509,7 +35598,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 696858975,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many past “question — answer” pairs to use for follow-up questions.",
@@ -35521,7 +35610,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many past “question — answer” pairs to use for follow-up questions.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEf"
+      "index": "bEg"
     },
     {
       "id": "9UGN9KDS",
@@ -35553,10 +35642,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YzlhjTln"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEg"
+      "index": "bEh"
     },
     {
       "id": "YzlhjTln",
@@ -35581,7 +35670,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1082927071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2",
@@ -35593,7 +35682,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEh"
+      "index": "bEi"
     },
     {
       "id": "sHjS7Xtw",
@@ -35625,10 +35714,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "55rx0YRk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEi"
+      "index": "bEj"
     },
     {
       "id": "55rx0YRk",
@@ -35653,7 +35742,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 121100775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -35665,7 +35754,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 6",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEj"
+      "index": "bEk"
     },
     {
       "id": "oYcop2KE",
@@ -35697,10 +35786,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "arKlEaeh"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEk"
+      "index": "bEl"
     },
     {
       "id": "arKlEaeh",
@@ -35725,7 +35814,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 230615823,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — no history; the assistant's answer in the history is cut to 1200 chars.",
@@ -35737,7 +35826,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 — no history; the assistant's answer in the history is cut to 1200 chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEl"
+      "index": "bEm"
     },
     {
       "id": "cEg5wCdh",
@@ -35769,10 +35858,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OspZwsrZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEm"
+      "index": "bEn"
     },
     {
       "id": "OspZwsrZ",
@@ -35797,7 +35886,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 290205931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] glossary_auto",
@@ -35809,7 +35898,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] glossary_auto",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEn"
+      "index": "bEo"
     },
     {
       "id": "CGkevO0h",
@@ -35841,10 +35930,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9MLAZphD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEo"
+      "index": "bEp"
     },
     {
       "id": "9MLAZphD",
@@ -35869,7 +35958,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1652058783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Collect abbreviations from uploaded documents.",
@@ -35881,7 +35970,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Collect abbreviations from uploaded documents.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEp"
+      "index": "bEq"
     },
     {
       "id": "KkV7KJEt",
@@ -35913,10 +36002,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9rmSqMSK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEq"
+      "index": "bEr"
     },
     {
       "id": "9rmSqMSK",
@@ -35941,7 +36030,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1615930585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -35953,7 +36042,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEr"
+      "index": "bEs"
     },
     {
       "id": "cz8G1Z39",
@@ -35985,10 +36074,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3PxH4tUg"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEs"
+      "index": "bEt"
     },
     {
       "id": "3PxH4tUg",
@@ -36013,7 +36102,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 388414857,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -36025,7 +36114,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEt"
+      "index": "bEu"
     },
     {
       "id": "ATI9bfwf",
@@ -36057,10 +36146,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8cTqlhHk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEu"
+      "index": "bEv"
     },
     {
       "id": "8cTqlhHk",
@@ -36085,7 +36174,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1934436383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -36097,7 +36186,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEv"
+      "index": "bEw"
     },
     {
       "id": "OleYZfQw",
@@ -36129,10 +36218,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "uUKzWGzl"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEw"
+      "index": "bEx"
     },
     {
       "id": "uUKzWGzl",
@@ -36157,7 +36246,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 961364065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] glossary_in_context",
@@ -36169,7 +36258,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] glossary_in_context",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEx"
+      "index": "bEy"
     },
     {
       "id": "89AMWi2w",
@@ -36201,10 +36290,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yupn1JC3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bEy"
+      "index": "bEz"
     },
     {
       "id": "yupn1JC3",
@@ -36229,7 +36318,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 117939210,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Give the model a reference of the abbreviations found.",
@@ -36241,7 +36330,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Give the model a reference of the abbreviations found.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bEz"
+      "index": "bF0"
     },
     {
       "id": "SwRlELnT",
@@ -36273,10 +36362,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hfQOxHTX"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bF0"
+      "index": "bF1"
     },
     {
       "id": "hfQOxHTX",
@@ -36301,7 +36390,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 521029987,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -36313,7 +36402,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF1"
+      "index": "bF2"
     },
     {
       "id": "PMit2ICO",
@@ -36345,10 +36434,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "3nCp0vyA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bF2"
+      "index": "bF3"
     },
     {
       "id": "3nCp0vyA",
@@ -36373,7 +36462,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 715682022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -36385,7 +36474,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF3"
+      "index": "bF4"
     },
     {
       "id": "8CaX7TVK",
@@ -36417,10 +36506,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "RStxU2hC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bF4"
+      "index": "bF5"
     },
     {
       "id": "RStxU2hC",
@@ -36445,7 +36534,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1152890893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Turn off if the auto-glossary gives wrong expansions.",
@@ -36457,7 +36546,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Turn off if the auto-glossary gives wrong expansions.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF5"
+      "index": "bF6"
     },
     {
       "id": "cRhUDq6L",
@@ -36489,10 +36578,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "EBKDzld7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bF6"
+      "index": "bF7"
     },
     {
       "id": "EBKDzld7",
@@ -36517,7 +36606,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1193726760,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] glossary_max_entries",
@@ -36529,7 +36618,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] glossary_max_entries",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF7"
+      "index": "bF8"
     },
     {
       "id": "Hpq8oRF1",
@@ -36561,10 +36650,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VP3WRsUB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bF8"
+      "index": "bF9"
     },
     {
       "id": "VP3WRsUB",
@@ -36589,7 +36678,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 921704075,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Abbreviations in the model's reference, at most.",
@@ -36601,7 +36690,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Abbreviations in the model's reference, at most.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bF9"
+      "index": "bFA"
     },
     {
       "id": "jliLLe1l",
@@ -36633,10 +36722,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mSIRcqSU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFA"
+      "index": "bFB"
     },
     {
       "id": "mSIRcqSU",
@@ -36661,7 +36750,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2057702627,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20",
@@ -36673,7 +36762,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "20",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFB"
+      "index": "bFC"
     },
     {
       "id": "CMn3YEBg",
@@ -36705,10 +36794,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "axzjxIxL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFC"
+      "index": "bFD"
     },
     {
       "id": "axzjxIxL",
@@ -36733,7 +36822,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 799336186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5 … 60",
@@ -36745,7 +36834,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5 … 60",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFD"
+      "index": "bFE"
     },
     {
       "id": "wEwwk1pg",
@@ -36777,10 +36866,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "DZoUZatD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFE"
+      "index": "bFF"
     },
     {
       "id": "DZoUZatD",
@@ -36805,7 +36894,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1034791827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "First abbreviations from the question, then from the retrieved fragments.",
@@ -36817,7 +36906,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "First abbreviations from the question, then from the retrieved fragments.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFF"
+      "index": "bFG"
     },
     {
       "id": "Lx7zg6Vf",
@@ -36849,10 +36938,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "5r6OBGig"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFG"
+      "index": "bFH"
     },
     {
       "id": "5r6OBGig",
@@ -36877,7 +36966,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 328757559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW AND VERIFICATION OF FIXES",
@@ -36889,7 +36978,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "DOCUMENT REVIEW AND VERIFICATION OF FIXES",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFH"
+      "index": "bFI"
     },
     {
       "id": "vsX3Dce3",
@@ -36921,10 +37010,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "puycRmjw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFI"
+      "index": "bFJ"
     },
     {
       "id": "puycRmjw",
@@ -36949,7 +37038,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1897840640,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] audit_map_size",
@@ -36961,7 +37050,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] audit_map_size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFJ"
+      "index": "bFK"
     },
     {
       "id": "fMUxf8gf",
@@ -36993,10 +37082,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ExxOXSCA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFK"
+      "index": "bFL"
     },
     {
       "id": "ExxOXSCA",
@@ -37021,7 +37110,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 799903258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Size of a document section per review call; sections on the verification tab have\nthe same size.",
@@ -37033,7 +37122,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Size of a document section per review call; sections on the verification tab have\nthe same size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFL"
+      "index": "bFM"
     },
     {
       "id": "4N5XzGZD",
@@ -37065,10 +37154,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "fXsqkpL9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFM"
+      "index": "bFN"
     },
     {
       "id": "fXsqkpL9",
@@ -37093,7 +37182,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 464157402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4500 chars",
@@ -37105,7 +37194,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4500 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFN"
+      "index": "bFO"
     },
     {
       "id": "43eBYqAM",
@@ -37137,10 +37226,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8R7STJuE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFO"
+      "index": "bFP"
     },
     {
       "id": "8R7STJuE",
@@ -37165,7 +37254,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 280071929,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 … 12000",
@@ -37177,7 +37266,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1000 … 12000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFP"
+      "index": "bFQ"
     },
     {
       "id": "wkEL9mO2",
@@ -37209,10 +37298,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bBGM7IeG"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFQ"
+      "index": "bFR"
     },
     {
       "id": "bBGM7IeG",
@@ -37237,7 +37326,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2031956423,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ 0.3 × llm_budget (minimum 1000). Smaller — more detailed, but more LLM calls.\nDepending on it: audit_context_max_chars.",
@@ -37249,7 +37338,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ 0.3 × llm_budget (minimum 1000). Smaller — more detailed, but more LLM calls.\nDepending on it: audit_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFR"
+      "index": "bFS"
     },
     {
       "id": "b9iv3sb3",
@@ -37281,10 +37370,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mwtxUCsB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFS"
+      "index": "bFT"
     },
     {
       "id": "mwtxUCsB",
@@ -37309,7 +37398,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 488934201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: The document is split into parts by section up to this size (a section up to 1.5 sizes stays whole), each checked by a separate LLM call. So that the model does not write “X is not specified” when X is in\nanother section, the part comes with the whole document (audit_full_document) or the outline.",
@@ -37321,7 +37410,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: The document is split into parts by section up to this size (a section up to 1.5 sizes stays whole), each checked by a separate LLM call. So that the model does not write “X is not specified” when X is in\nanother section, the part comes with the whole document (audit_full_document) or the outline.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFT"
+      "index": "bFU"
     },
     {
       "id": "5cp8TW7H",
@@ -37353,10 +37442,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SxRrVdq0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFU"
+      "index": "bFV"
     },
     {
       "id": "SxRrVdq0",
@@ -37381,7 +37470,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 303228371,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] use_self_critique",
@@ -37393,7 +37482,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] use_self_critique",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFV"
+      "index": "bFW"
     },
     {
       "id": "CEYFpsVT",
@@ -37425,10 +37514,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LHuPpQ2M"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFW"
+      "index": "bFX"
     },
     {
       "id": "LHuPpQ2M",
@@ -37453,7 +37542,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 215411871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A second “controller” pass over the draft findings.",
@@ -37465,7 +37554,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A second “controller” pass over the draft findings.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFX"
+      "index": "bFY"
     },
     {
       "id": "6JUzrqEb",
@@ -37497,10 +37586,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bzybp2u4"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFY"
+      "index": "bFZ"
     },
     {
       "id": "bzybp2u4",
@@ -37525,7 +37614,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1703500431,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -37537,7 +37626,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFZ"
+      "index": "bFa"
     },
     {
       "id": "DVOso7yh",
@@ -37569,10 +37658,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "dNd1EuUW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFa"
+      "index": "bFb"
     },
     {
       "id": "dNd1EuUW",
@@ -37597,7 +37686,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1449583895,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -37609,7 +37698,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFb"
+      "index": "bFc"
     },
     {
       "id": "hHQfmxU6",
@@ -37641,10 +37730,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "v3oETJ1H"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFc"
+      "index": "bFd"
     },
     {
       "id": "v3oETJ1H",
@@ -37669,7 +37758,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 507549522,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Filters out far-fetched findings; faster without it.",
@@ -37681,7 +37770,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Filters out far-fetched findings; faster without it.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFd"
+      "index": "bFe"
     },
     {
       "id": "NEDTX9DQ",
@@ -37713,10 +37802,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "oIxX952b"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFe"
+      "index": "bFf"
     },
     {
       "id": "oIxX952b",
@@ -37741,7 +37830,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 78982661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_full_document",
@@ -37753,7 +37842,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_full_document",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFf"
+      "index": "bFg"
     },
     {
       "id": "JhMliJyS",
@@ -37785,10 +37874,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "O3jzEUVm"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFg"
+      "index": "bFh"
     },
     {
       "id": "O3jzEUVm",
@@ -37813,7 +37902,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1876429488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The whole document in every section review and self-critique.",
@@ -37825,7 +37914,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The whole document in every section review and self-critique.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFh"
+      "index": "bFi"
     },
     {
       "id": "O1J2X7Ve",
@@ -37857,10 +37946,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NBcqQzar"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFi"
+      "index": "bFj"
     },
     {
       "id": "NBcqQzar",
@@ -37885,7 +37974,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2006537615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -37897,7 +37986,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFj"
+      "index": "bFk"
     },
     {
       "id": "sdxrVs11",
@@ -37929,10 +38018,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hzOQceql"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFk"
+      "index": "bFl"
     },
     {
       "id": "hzOQceql",
@@ -37957,7 +38046,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 71901712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -37969,7 +38058,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFl"
+      "index": "bFm"
     },
     {
       "id": "RiQvgt7r",
@@ -38001,10 +38090,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "csQrLVhM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFm"
+      "index": "bFn"
     },
     {
       "id": "csQrLVhM",
@@ -38029,7 +38118,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1416839545,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only if the document fits into the model's window; otherwise the outline and checking\n“not described” against other sections.",
@@ -38041,7 +38130,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Only if the document fits into the model's window; otherwise the outline and checking\n“not described” against other sections.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFn"
+      "index": "bFo"
     },
     {
       "id": "0WHQBH2N",
@@ -38073,10 +38162,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Uvv4TY9D"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFo"
+      "index": "bFp"
     },
     {
       "id": "Uvv4TY9D",
@@ -38101,7 +38190,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1666465480,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_merge_duplicates",
@@ -38113,7 +38202,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_merge_duplicates",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFp"
+      "index": "bFq"
     },
     {
       "id": "tq97K18M",
@@ -38145,10 +38234,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XT5W09d1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFq"
+      "index": "bFr"
     },
     {
       "id": "XT5W09d1",
@@ -38173,7 +38262,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 87471442,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Merging duplicate findings with the model at the end of the review.",
@@ -38185,7 +38274,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Merging duplicate findings with the model at the end of the review.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFr"
+      "index": "bFs"
     },
     {
       "id": "WPGnPtUy",
@@ -38217,10 +38306,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GNMYG98R"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFs"
+      "index": "bFt"
     },
     {
       "id": "GNMYG98R",
@@ -38245,7 +38334,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 648609525,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -38257,7 +38346,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFt"
+      "index": "bFu"
     },
     {
       "id": "olRDI05m",
@@ -38289,10 +38378,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8NmfW8ww"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFu"
+      "index": "bFv"
     },
     {
       "id": "8NmfW8ww",
@@ -38317,7 +38406,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 567406071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -38329,7 +38418,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFv"
+      "index": "bFw"
     },
     {
       "id": "wfntSaKC",
@@ -38361,10 +38450,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WiOttyoJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFw"
+      "index": "bFx"
     },
     {
       "id": "WiOttyoJ",
@@ -38389,7 +38478,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 502296104,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "+1 LLM call; when off, duplicates are merged only when their words match.",
@@ -38401,7 +38490,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "+1 LLM call; when off, duplicates are merged only when their words match.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFx"
+      "index": "bFy"
     },
     {
       "id": "BbPISCqu",
@@ -38433,10 +38522,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7vb6W4QR"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bFy"
+      "index": "bFz"
     },
     {
       "id": "7vb6W4QR",
@@ -38461,7 +38550,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 696585202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_passes",
@@ -38473,7 +38562,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_passes",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bFz"
+      "index": "bG0"
     },
     {
       "id": "2zKH1tFt",
@@ -38505,10 +38594,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "q0Fvr6vc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bG0"
+      "index": "bG1"
     },
     {
       "id": "q0Fvr6vc",
@@ -38533,7 +38622,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1540471178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Passes of the section review and of the deep review questions about the process\nand figures.",
@@ -38545,7 +38634,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Passes of the section review and of the deep review questions about the process\nand figures.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG1"
+      "index": "bG2"
     },
     {
       "id": "B29RGN7o",
@@ -38577,10 +38666,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GMaaH8pC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bG2"
+      "index": "bG3"
     },
     {
       "id": "GMaaH8pC",
@@ -38605,7 +38694,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 424717483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1",
@@ -38617,7 +38706,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG3"
+      "index": "bG4"
     },
     {
       "id": "VvzCrOhP",
@@ -38649,10 +38738,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YN8UOHtr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bG4"
+      "index": "bG5"
     },
     {
       "id": "YN8UOHtr",
@@ -38677,7 +38766,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 923127099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 3",
@@ -38689,7 +38778,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 … 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG5"
+      "index": "bG6"
     },
     {
       "id": "2gjhNbym",
@@ -38721,10 +38810,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "o3h1jtSz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bG6"
+      "index": "bG7"
     },
     {
       "id": "o3h1jtSz",
@@ -38749,7 +38838,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 683798192,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2–3 — with temperature ≥ 0.4; the findings of the passes are merged, what is found\n   several times ranks higher.",
@@ -38761,7 +38850,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2–3 — with temperature ≥ 0.4; the findings of the passes are merged, what is found\n   several times ranks higher.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG7"
+      "index": "bG8"
     },
     {
       "id": "Y8o9Ofs7",
@@ -38793,10 +38882,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "IZWuJx8y"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bG8"
+      "index": "bG9"
     },
     {
       "id": "IZWuJx8y",
@@ -38821,7 +38910,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1163966941,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_summary_max",
@@ -38833,7 +38922,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_summary_max",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bG9"
+      "index": "bGA"
     },
     {
       "id": "k2K2Cu0s",
@@ -38865,10 +38954,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bP9t1fBV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGA"
+      "index": "bGB"
     },
     {
       "id": "bP9t1fBV",
@@ -38893,7 +38982,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1424975636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "“Key points” at the top of the report: the most important findings as pointers to\ntheir numbers.",
@@ -38905,7 +38994,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "“Key points” at the top of the report: the most important findings as pointers to\ntheir numbers.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGB"
+      "index": "bGC"
     },
     {
       "id": "jz5Hetk8",
@@ -38937,10 +39026,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yzjcr1Oq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGC"
+      "index": "bGD"
     },
     {
       "id": "yzjcr1Oq",
@@ -38965,7 +39054,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 105177086,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12",
@@ -38977,7 +39066,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "12",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGD"
+      "index": "bGE"
     },
     {
       "id": "BSPvVGXY",
@@ -39009,10 +39098,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jKWBedUO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGE"
+      "index": "bGF"
     },
     {
       "id": "jKWBedUO",
@@ -39037,7 +39126,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2078789198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 30",
@@ -39049,7 +39138,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 30",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGF"
+      "index": "bGG"
     },
     {
       "id": "Am0QStP3",
@@ -39081,10 +39170,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NsT4YebW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGG"
+      "index": "bGH"
     },
     {
       "id": "NsT4YebW",
@@ -39109,7 +39198,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 731820361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "+1 LLM call (editor model); 0 — no block.",
@@ -39121,7 +39210,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "+1 LLM call (editor model); 0 — no block.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGH"
+      "index": "bGI"
     },
     {
       "id": "BuLFTkP2",
@@ -39153,10 +39242,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6kb05fRc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGI"
+      "index": "bGJ"
     },
     {
       "id": "6kb05fRc",
@@ -39181,7 +39270,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1326775936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_reasoning",
@@ -39193,7 +39282,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_reasoning",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGJ"
+      "index": "bGK"
     },
     {
       "id": "4LZc8Kkt",
@@ -39225,10 +39314,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "drHyzW3l"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGK"
+      "index": "bGL"
     },
     {
       "id": "drHyzW3l",
@@ -39253,7 +39342,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 528140515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Review with model reasoning (overrides llm_no_reasoning).",
@@ -39265,7 +39354,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Review with model reasoning (overrides llm_no_reasoning).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGL"
+      "index": "bGM"
     },
     {
       "id": "DVz5yXk1",
@@ -39297,10 +39386,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FFLhQxly"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGM"
+      "index": "bGN"
     },
     {
       "id": "FFLhQxly",
@@ -39325,7 +39414,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 319369939,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "off",
@@ -39337,7 +39426,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "off",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGN"
+      "index": "bGO"
     },
     {
       "id": "zWEKIFoh",
@@ -39369,10 +39458,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "uHwqYG3Z"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGO"
+      "index": "bGP"
     },
     {
       "id": "uHwqYG3Z",
@@ -39397,7 +39486,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1525803776,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -39409,7 +39498,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGP"
+      "index": "bGQ"
     },
     {
       "id": "eszUDJRQ",
@@ -39441,10 +39530,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "N86bJEJm"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGQ"
+      "index": "bGR"
     },
     {
       "id": "N86bJEJm",
@@ -39469,7 +39558,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 857880810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Answer +6000 tokens for reasoning, timeout ≥ 300 s; in the chat reasoning stays as\nconfigured.",
@@ -39481,7 +39570,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Answer +6000 tokens for reasoning, timeout ≥ 300 s; in the chat reasoning stays as\nconfigured.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGR"
+      "index": "bGS"
     },
     {
       "id": "6vLmx4x4",
@@ -39513,10 +39602,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qfvEGSvn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGS"
+      "index": "bGT"
     },
     {
       "id": "qfvEGSvn",
@@ -39541,7 +39630,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1465649990,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] audit_known_abbreviations",
@@ -39553,7 +39642,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[D] audit_known_abbreviations",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGT"
+      "index": "bGU"
     },
     {
       "id": "WI9OYTr2",
@@ -39585,10 +39674,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "R9Yh5aWS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGU"
+      "index": "bGV"
     },
     {
       "id": "R9Yh5aWS",
@@ -39613,7 +39702,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 654366624,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Well-known abbreviations the abbreviation check does not flag.",
@@ -39625,7 +39714,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Well-known abbreviations the abbreviation check does not flag.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGV"
+      "index": "bGW"
     },
     {
       "id": "Ch5JX8cy",
@@ -39657,10 +39746,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8ShEW9l6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGW"
+      "index": "bGX"
     },
     {
       "id": "8ShEW9l6",
@@ -39685,7 +39774,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 224194665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -39697,7 +39786,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGX"
+      "index": "bGY"
     },
     {
       "id": "JOhhFxIn",
@@ -39729,10 +39818,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "PYm0tFiL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGY"
+      "index": "bGZ"
     },
     {
       "id": "PYm0tFiL",
@@ -39757,7 +39846,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1019147097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -39769,7 +39858,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "config.yaml\nonly",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGZ"
+      "index": "bGa"
     },
     {
       "id": "p9mA1r4X",
@@ -39801,10 +39890,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JSqjkd7L"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGa"
+      "index": "bGb"
     },
     {
       "id": "JSqjkd7L",
@@ -39829,7 +39918,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1622513533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Comma-separated; GOST, RF, API and the like are already included.",
@@ -39841,7 +39930,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Comma-separated; GOST, RF, API and the like are already included.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGb"
+      "index": "bGc"
     },
     {
       "id": "2G6zvWJq",
@@ -39873,10 +39962,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xvhpdVme"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGc"
+      "index": "bGd"
     },
     {
       "id": "xvhpdVme",
@@ -39901,7 +39990,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1673976711,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_deep",
@@ -39913,7 +40002,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_deep",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGd"
+      "index": "bGe"
     },
     {
       "id": "kgTfNkfK",
@@ -39945,10 +40034,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ru9kMveP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGe"
+      "index": "bGf"
     },
     {
       "id": "ru9kMveP",
@@ -39973,7 +40062,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 146673239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Deep review: narrow questions to the model on the process, contradictions,\nfigures, typos.",
@@ -39985,7 +40074,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Deep review: narrow questions to the model on the process, contradictions,\nfigures, typos.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGf"
+      "index": "bGg"
     },
     {
       "id": "5jdrfRck",
@@ -40017,10 +40106,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rKCBoQSK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGg"
+      "index": "bGh"
     },
     {
       "id": "rKCBoQSK",
@@ -40045,7 +40134,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1940254612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -40057,7 +40146,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGh"
+      "index": "bGi"
     },
     {
       "id": "LTepwqoe",
@@ -40089,10 +40178,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "pt9Y0PFi"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGi"
+      "index": "bGj"
     },
     {
       "id": "pt9Y0PFi",
@@ -40117,7 +40206,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1648595060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -40129,7 +40218,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGj"
+      "index": "bGk"
     },
     {
       "id": "2IwIVbol",
@@ -40161,10 +40250,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Sr0wUi9u"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGk"
+      "index": "bGl"
     },
     {
       "id": "Sr0wUi9u",
@@ -40189,7 +40278,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 396108871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Dozens of short LLM calls; a medium-sized model handles a narrow question more\nreliably than a review of a whole section.",
@@ -40201,7 +40290,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Dozens of short LLM calls; a medium-sized model handles a narrow question more\nreliably than a review of a whole section.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGl"
+      "index": "bGm"
     },
     {
       "id": "Y7LTZo3Y",
@@ -40233,10 +40322,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lb8kzI9r"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGm"
+      "index": "bGn"
     },
     {
       "id": "lb8kzI9r",
@@ -40261,7 +40350,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 375390170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_deep_max_calls",
@@ -40273,7 +40362,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_deep_max_calls",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGn"
+      "index": "bGo"
     },
     {
       "id": "LuC5sQAT",
@@ -40305,10 +40394,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aE6zRqY5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGo"
+      "index": "bGp"
     },
     {
       "id": "aE6zRqY5",
@@ -40333,7 +40422,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1041959316,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At most this many deep review questions.",
@@ -40345,7 +40434,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "At most this many deep review questions.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGp"
+      "index": "bGq"
     },
     {
       "id": "YU6yY3JN",
@@ -40377,10 +40466,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "USjt9iID"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGq"
+      "index": "bGr"
     },
     {
       "id": "USjt9iID",
@@ -40405,7 +40494,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1371556573,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "60",
@@ -40417,7 +40506,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "60",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGr"
+      "index": "bGs"
     },
     {
       "id": "XAFvkSSF",
@@ -40449,10 +40538,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ExzzamR2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGs"
+      "index": "bGt"
     },
     {
       "id": "ExzzamR2",
@@ -40477,7 +40566,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 691387152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 300",
@@ -40489,7 +40578,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 300",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGt"
+      "index": "bGu"
     },
     {
       "id": "uLAZ8iZM",
@@ -40521,10 +40610,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xQ4LhHRb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGu"
+      "index": "bGv"
     },
     {
       "id": "xQ4LhHRb",
@@ -40549,7 +40638,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1638094993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — no limit; the process and figures first.",
@@ -40561,7 +40650,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 — no limit; the process and figures first.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGv"
+      "index": "bGw"
     },
     {
       "id": "XHoche0I",
@@ -40593,10 +40682,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OdI1WnBy"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGw"
+      "index": "bGx"
     },
     {
       "id": "OdI1WnBy",
@@ -40621,7 +40710,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1538985619,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_parallel",
@@ -40633,7 +40722,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_parallel",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGx"
+      "index": "bGy"
     },
     {
       "id": "KotcIpaN",
@@ -40665,10 +40754,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8QiNKB8L"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bGy"
+      "index": "bGz"
     },
     {
       "id": "8QiNKB8L",
@@ -40693,7 +40782,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 367628576,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Review requests at the same time: sections, deep review questions, items.",
@@ -40705,7 +40794,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Review requests at the same time: sections, deep review questions, items.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bGz"
+      "index": "bH0"
     },
     {
       "id": "JQW7MIxo",
@@ -40737,10 +40826,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "W1JCnT3V"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bH0"
+      "index": "bH1"
     },
     {
       "id": "W1JCnT3V",
@@ -40765,7 +40854,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2025769206,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3",
@@ -40777,7 +40866,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH1"
+      "index": "bH2"
     },
     {
       "id": "Wfaowp01",
@@ -40809,10 +40898,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "J2tota14"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bH2"
+      "index": "bH3"
     },
     {
       "id": "J2tota14",
@@ -40837,7 +40926,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1513837548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -40849,7 +40938,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 … 8",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH3"
+      "index": "bH4"
     },
     {
       "id": "atTxBNxy",
@@ -40881,10 +40970,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "b0g39P2E"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bH4"
+      "index": "bH5"
     },
     {
       "id": "b0g39P2E",
@@ -40909,7 +40998,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2061583063,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "More is faster; reduce it on 429 answers and timeouts.",
@@ -40921,7 +41010,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "More is faster; reduce it on 429 answers and timeouts.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH5"
+      "index": "bH6"
     },
     {
       "id": "DKP2hYwX",
@@ -40953,10 +41042,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mVqN8MMK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bH6"
+      "index": "bH7"
     },
     {
       "id": "mVqN8MMK",
@@ -40981,7 +41070,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1739737787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_pinned_max_chars",
@@ -40993,7 +41082,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_pinned_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH7"
+      "index": "bH8"
     },
     {
       "id": "cypOcyub",
@@ -41025,10 +41114,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TMYZXv0w"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bH8"
+      "index": "bH9"
     },
     {
       "id": "TMYZXv0w",
@@ -41053,7 +41142,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1640355855,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Expert rules and system cards per review request (on top of the norms).",
@@ -41065,7 +41154,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Expert rules and system cards per review request (on top of the norms).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bH9"
+      "index": "bHA"
     },
     {
       "id": "b4EnDMyb",
@@ -41097,10 +41186,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XRvWx1Ir"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHA"
+      "index": "bHB"
     },
     {
       "id": "XRvWx1Ir",
@@ -41125,7 +41214,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 252620028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20,000 chars",
@@ -41137,7 +41226,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "20,000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHB"
+      "index": "bHC"
     },
     {
       "id": "J0xZBle6",
@@ -41169,10 +41258,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "etELLugb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHC"
+      "index": "bHD"
     },
     {
       "id": "etELLugb",
@@ -41197,7 +41286,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 44613008,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 60000",
@@ -41209,7 +41298,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 60000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHD"
+      "index": "bHE"
     },
     {
       "id": "Ec62uYOQ",
@@ -41241,10 +41330,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "pjWCOq5H"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHE"
+      "index": "bHF"
     },
     {
       "id": "pjWCOq5H",
@@ -41269,7 +41358,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 315685461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "If they fit — in full, otherwise the fragments closest to the text; 0 — do not pass\nthem.",
@@ -41281,7 +41370,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "If they fit — in full, otherwise the fragments closest to the text; 0 — do not pass\nthem.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHF"
+      "index": "bHG"
     },
     {
       "id": "0xsQP8dh",
@@ -41313,10 +41402,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mfmZKqb6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHG"
+      "index": "bHH"
     },
     {
       "id": "mfmZKqb6",
@@ -41341,7 +41430,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1067042240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_systems",
@@ -41353,7 +41442,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_systems",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHH"
+      "index": "bHI"
     },
     {
       "id": "aPKSxm3Q",
@@ -41385,10 +41474,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GvJL314v"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHI"
+      "index": "bHJ"
     },
     {
       "id": "GvJL314v",
@@ -41413,7 +41502,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 750979183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What the document requires from each mentioned system — by its card.",
@@ -41425,7 +41514,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "What the document requires from each mentioned system — by its card.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHJ"
+      "index": "bHK"
     },
     {
       "id": "6kd7oSrq",
@@ -41457,10 +41546,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "a1ydRCmy"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHK"
+      "index": "bHL"
     },
     {
       "id": "a1ydRCmy",
@@ -41485,7 +41574,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 558326594,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -41497,7 +41586,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHL"
+      "index": "bHM"
     },
     {
       "id": "zHfgriGd",
@@ -41529,10 +41618,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "u5PVHw7P"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHM"
+      "index": "bHN"
     },
     {
       "id": "u5PVHw7P",
@@ -41557,7 +41646,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1411776787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -41569,7 +41658,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHN"
+      "index": "bHO"
     },
     {
       "id": "c6amAH1N",
@@ -41601,10 +41690,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HCP8pSA6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHO"
+      "index": "bHP"
     },
     {
       "id": "HCP8pSA6",
@@ -41629,7 +41718,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1753654173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "+1 LLM call per system mentioned in the document at least twice (up to 5 systems).",
@@ -41641,7 +41730,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "+1 LLM call per system mentioned in the document at least twice (up to 5 systems).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHP"
+      "index": "bHQ"
     },
     {
       "id": "0rV8zQLw",
@@ -41673,10 +41762,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mrJSeoUM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHQ"
+      "index": "bHR"
     },
     {
       "id": "mrJSeoUM",
@@ -41701,7 +41790,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 961363775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_basis_docs",
@@ -41713,7 +41802,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_basis_docs",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHR"
+      "index": "bHS"
     },
     {
       "id": "BlzZnIxn",
@@ -41745,10 +41834,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "EAmhDJga"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHS"
+      "index": "bHT"
     },
     {
       "id": "EAmhDJga",
@@ -41773,7 +41862,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 416336481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Basis documents: base documents by the references on the title page and in\n“Referenced documents” — in every section check.",
@@ -41785,7 +41874,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Basis documents: base documents by the references on the title page and in\n“Referenced documents” — in every section check.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHT"
+      "index": "bHU"
     },
     {
       "id": "ua3i8tnD",
@@ -41817,10 +41906,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cCpOv9EU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHU"
+      "index": "bHV"
     },
     {
       "id": "cCpOv9EU",
@@ -41845,7 +41934,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1163794768,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -41857,7 +41946,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "on",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHV"
+      "index": "bHW"
     },
     {
       "id": "OiEsOdCv",
@@ -41889,10 +41978,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ogAIkhRR"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHW"
+      "index": "bHX"
     },
     {
       "id": "ogAIkhRR",
@@ -41917,7 +42006,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 605109372,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -41929,7 +42018,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "checkbox",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHX"
+      "index": "bHY"
     },
     {
       "id": "trpVq7Zl",
@@ -41961,10 +42050,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "b7sq22Ni"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHY"
+      "index": "bHZ"
     },
     {
       "id": "b7sq22Ni",
@@ -41989,7 +42078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 760685218,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "No LLM calls; what was found — the “📎 Basis documents” block on the tab and the log;\nremove or add there.",
@@ -42001,7 +42090,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "No LLM calls; what was found — the “📎 Basis documents” block on the tab and the log;\nremove or add there.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHZ"
+      "index": "bHa"
     },
     {
       "id": "HAiZM2NO",
@@ -42033,10 +42122,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jIogvcro"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHa"
+      "index": "bHb"
     },
     {
       "id": "jIogvcro",
@@ -42061,7 +42150,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 325770346,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_basis_max_chars",
@@ -42073,7 +42162,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] audit_basis_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHb"
+      "index": "bHc"
     },
     {
       "id": "yGH6BtDi",
@@ -42105,10 +42194,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4HBQuTfw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHc"
+      "index": "bHd"
     },
     {
       "id": "4HBQuTfw",
@@ -42133,7 +42222,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 836442519,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Fragments of basis documents per review request (on top of the search norms).",
@@ -42145,7 +42234,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Fragments of basis documents per review request (on top of the search norms).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHd"
+      "index": "bHe"
     },
     {
       "id": "ZfDw8pJT",
@@ -42177,10 +42266,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "QwJjBK4k"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHe"
+      "index": "bHf"
     },
     {
       "id": "QwJjBK4k",
@@ -42205,7 +42294,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1485312612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8000",
@@ -42217,7 +42306,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "8000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHf"
+      "index": "bHg"
     },
     {
       "id": "s0rpVkop",
@@ -42249,10 +42338,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "QqyY0Plt"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHg"
+      "index": "bHh"
     },
     {
       "id": "QqyY0Plt",
@@ -42277,7 +42366,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 169573945,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 40000",
@@ -42289,7 +42378,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "0 … 40000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHh"
+      "index": "bHi"
     },
     {
       "id": "fZ6NjN4X",
@@ -42321,10 +42410,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "WwMI9DeE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHi"
+      "index": "bHj"
     },
     {
       "id": "WwMI9DeE",
@@ -42349,7 +42438,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1742221889,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The fragments closest to the section; 0 — do not pass.",
@@ -42361,7 +42450,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The fragments closest to the section; 0 — do not pass.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHj"
+      "index": "bHk"
     },
     {
       "id": "KK6I4V7o",
@@ -42393,10 +42482,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SCAqkh9h"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHk"
+      "index": "bHl"
     },
     {
       "id": "SCAqkh9h",
@@ -42421,7 +42510,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1368400772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] audit_query_chars",
@@ -42433,7 +42522,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] audit_query_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHl"
+      "index": "bHm"
     },
     {
       "id": "Txtm3YEr",
@@ -42465,10 +42554,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NnGZHfY7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHm"
+      "index": "bHn"
     },
     {
       "id": "NnGZHfY7",
@@ -42493,7 +42582,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1277480848,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many characters from the start of a section go into the search for norms.",
@@ -42505,7 +42594,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many characters from the start of a section go into the search for norms.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHn"
+      "index": "bHo"
     },
     {
       "id": "N1VTNvpq",
@@ -42537,10 +42626,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xp4dg1h5"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHo"
+      "index": "bHp"
     },
     {
       "id": "xp4dg1h5",
@@ -42565,7 +42654,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 300888124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2000 chars",
@@ -42577,7 +42666,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHp"
+      "index": "bHq"
     },
     {
       "id": "tJZOnIcg",
@@ -42609,10 +42698,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JDk1QkvO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHq"
+      "index": "bHr"
     },
     {
       "id": "JDk1QkvO",
@@ -42637,7 +42726,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1840864094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -42649,7 +42738,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300 … 6000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHr"
+      "index": "bHs"
     },
     {
       "id": "si8qRGhU",
@@ -42681,10 +42770,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8GrhfB92"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHs"
+      "index": "bHt"
     },
     {
       "id": "8GrhfB92",
@@ -42709,7 +42798,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 469941871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ embedding input − query prefix (minimum 300).",
@@ -42721,7 +42810,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ embedding input − query prefix (minimum 300).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHt"
+      "index": "bHu"
     },
     {
       "id": "TiguRACO",
@@ -42753,10 +42842,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JWqdf0ot"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHu"
+      "index": "bHv"
     },
     {
       "id": "JWqdf0ot",
@@ -42781,7 +42870,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1580207623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] audit_context_max_chars",
@@ -42793,7 +42882,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "◇ [A] audit_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHv"
+      "index": "bHw"
     },
     {
       "id": "lwQf5lAb",
@@ -42825,10 +42914,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SReMEifI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHw"
+      "index": "bHx"
     },
     {
       "id": "SReMEifI",
@@ -42853,7 +42942,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1348476919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How much norm text from the base (whole parents, in total) goes into the review\nof one document section.",
@@ -42865,7 +42954,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How much norm text from the base (whole parents, in total) goes into the review\nof one document section.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHx"
+      "index": "bHy"
     },
     {
       "id": "2g6zLHNV",
@@ -42897,10 +42986,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YSYBy8uu"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bHy"
+      "index": "bHz"
     },
     {
       "id": "YSYBy8uu",
@@ -42925,7 +43014,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 602107349,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000 chars",
@@ -42937,7 +43026,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "9000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bHz"
+      "index": "bI0"
     },
     {
       "id": "8tYR8PDI",
@@ -42969,10 +43058,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mXMevDpb"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bI0"
+      "index": "bI1"
     },
     {
       "id": "mXMevDpb",
@@ -42997,7 +43086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 59527035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 … 40000",
@@ -43009,7 +43098,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1000 … 40000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI1"
+      "index": "bI2"
     },
     {
       "id": "1j4vYNE4",
@@ -43041,10 +43130,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aR5t6Fnn"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bI2"
+      "index": "bI3"
     },
     {
       "id": "aR5t6Fnn",
@@ -43069,7 +43158,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1041012736,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ llm_budget − audit_map_size (minimum 1000). Parents are taken whole in order\nof relevance while the total fits — the rest are dropped (the first one always goes);\nat most top_k. Depending on it: review_context_max_chars.",
@@ -43081,7 +43170,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ llm_budget − audit_map_size (minimum 1000). Parents are taken whole in order\nof relevance while the total fits — the rest are dropped (the first one always goes);\nat most top_k. Depending on it: review_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI3"
+      "index": "bI4"
     },
     {
       "id": "9Jm5T6L8",
@@ -43113,10 +43202,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SVr4i5r2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bI4"
+      "index": "bI5"
     },
     {
       "id": "SVr4i5r2",
@@ -43141,7 +43230,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 370245411,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: five parents of ≈ 2500 chars with headings are ≈ 13,000 > 9000: review gets the 3 most relevant, the 4th and 5th are dropped and do not appear in “Sources used”. Collection stops at the first one that does not\nfit, even if the next is shorter. So raising top_k for review is pointless until this limit is raised: 5 whole parents need ≈ 13,000–13,500. Norms on the verification tab have the same limit.",
@@ -43153,7 +43242,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Details: five parents of ≈ 2500 chars with headings are ≈ 13,000 > 9000: review gets the 3 most relevant, the 4th and 5th are dropped and do not appear in “Sources used”. Collection stops at the first one that does not\nfit, even if the next is shorter. So raising top_k for review is pointless until this limit is raised: 5 whole parents need ≈ 13,000–13,500. Norms on the verification tab have the same limit.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI5"
+      "index": "bI6"
     },
     {
       "id": "1GlrIfD6",
@@ -43185,10 +43274,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GlY0wrjw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bI6"
+      "index": "bI7"
     },
     {
       "id": "GlY0wrjw",
@@ -43213,7 +43302,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 827778871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] review_top_sections",
@@ -43225,7 +43314,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] review_top_sections",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI7"
+      "index": "bI8"
     },
     {
       "id": "4dhWj0fu",
@@ -43257,10 +43346,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "IHLsaklC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bI8"
+      "index": "bI9"
     },
     {
       "id": "IHLsaklC",
@@ -43285,7 +43374,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 400341366,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many sections of the new revision the model gets per comment.",
@@ -43297,7 +43386,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many sections of the new revision the model gets per comment.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bI9"
+      "index": "bIA"
     },
     {
       "id": "yRqDiCAw",
@@ -43329,10 +43418,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JXmJzNQS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIA"
+      "index": "bIB"
     },
     {
       "id": "JXmJzNQS",
@@ -43357,7 +43446,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 134739126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3",
@@ -43369,7 +43458,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIB"
+      "index": "bIC"
     },
     {
       "id": "ynNQ8OUJ",
@@ -43401,10 +43490,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "msMvYdHU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIC"
+      "index": "bID"
     },
     {
       "id": "msMvYdHU",
@@ -43429,7 +43518,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1123713241,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -43441,7 +43530,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 … 8",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bID"
+      "index": "bIE"
     },
     {
       "id": "LC53pKGY",
@@ -43473,10 +43562,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FhhcChDM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIE"
+      "index": "bIF"
     },
     {
       "id": "FhhcChDM",
@@ -43501,7 +43590,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 132355727,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Capped by review_context_max_chars.",
@@ -43513,7 +43602,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Capped by review_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIF"
+      "index": "bIG"
     },
     {
       "id": "IUZArVyR",
@@ -43545,10 +43634,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Qj2uDhw6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIG"
+      "index": "bIH"
     },
     {
       "id": "Qj2uDhw6",
@@ -43573,7 +43662,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2110166949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] review_context_max_chars",
@@ -43585,7 +43674,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] review_context_max_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIH"
+      "index": "bII"
     },
     {
       "id": "LVbllfJ5",
@@ -43617,10 +43706,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Pqjokhc9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bII"
+      "index": "bIJ"
     },
     {
       "id": "Pqjokhc9",
@@ -43645,7 +43734,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2044644468,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Volume of these sections per comment.",
@@ -43657,7 +43746,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Volume of these sections per comment.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIJ"
+      "index": "bIK"
     },
     {
       "id": "PsHhHgHI",
@@ -43689,10 +43778,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "gXjxFvBf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIK"
+      "index": "bIL"
     },
     {
       "id": "gXjxFvBf",
@@ -43717,7 +43806,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2097371417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12000 chars",
@@ -43729,7 +43818,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "12000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIL"
+      "index": "bIM"
     },
     {
       "id": "IN5l2hU3",
@@ -43761,10 +43850,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "svnHjSE3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIM"
+      "index": "bIN"
     },
     {
       "id": "svnHjSE3",
@@ -43789,7 +43878,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1277731879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 … 50000",
@@ -43801,7 +43890,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1000 … 50000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIN"
+      "index": "bIO"
     },
     {
       "id": "R2P6cKlI",
@@ -43833,10 +43922,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mXIQ6Rj1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIO"
+      "index": "bIP"
     },
     {
       "id": "mXIQ6Rj1",
@@ -43861,7 +43950,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 654381728,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ llm_budget − audit_context_max_chars − 1000 (minimum 1000); the first section\nis always passed.",
@@ -43873,7 +43962,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ llm_budget − audit_context_max_chars − 1000 (minimum 1000); the first section\nis always passed.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIP"
+      "index": "bIQ"
     },
     {
       "id": "vTAMJEMB",
@@ -43905,10 +43994,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xLcUBYDV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIQ"
+      "index": "bIR"
     },
     {
       "id": "xLcUBYDV",
@@ -43933,7 +44022,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 342830070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] section_embed_chars",
@@ -43945,7 +44034,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[A] section_embed_chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIR"
+      "index": "bIS"
     },
     {
       "id": "Rh6f0R3S",
@@ -43977,10 +44066,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "R6F1O5eL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIS"
+      "index": "bIT"
     },
     {
       "id": "R6F1O5eL",
@@ -44005,7 +44094,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1424728446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many characters of a section go into the embedding when matching sections.",
@@ -44017,7 +44106,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How many characters of a section go into the embedding when matching sections.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIT"
+      "index": "bIU"
     },
     {
       "id": "yzUmTUGl",
@@ -44049,10 +44138,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MyoPiyip"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIU"
+      "index": "bIV"
     },
     {
       "id": "MyoPiyip",
@@ -44077,7 +44166,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1471377781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4000 chars",
@@ -44089,7 +44178,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4000 chars",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIV"
+      "index": "bIW"
     },
     {
       "id": "bKKOPTBY",
@@ -44121,10 +44210,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "9JrjHEnS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIW"
+      "index": "bIX"
     },
     {
       "id": "9JrjHEnS",
@@ -44149,7 +44238,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1561846094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 … 8000",
@@ -44161,7 +44250,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "300 … 8000",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIX"
+      "index": "bIY"
     },
     {
       "id": "EOeG9IlM",
@@ -44193,10 +44282,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "CnsqA2aw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIY"
+      "index": "bIZ"
     },
     {
       "id": "CnsqA2aw",
@@ -44221,7 +44310,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 903472236,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ embedding input − document prefix (minimum 300).",
@@ -44233,7 +44322,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Auto ≤ embedding input − document prefix (minimum 300).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIZ"
+      "index": "bIa"
     },
     {
       "id": "JXgddpE8",
@@ -44265,10 +44354,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "eGjl2REF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIa"
+      "index": "bIb"
     },
     {
       "id": "eGjl2REF",
@@ -44293,7 +44382,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 799508704,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Other code constants (changed only in the mint/ code): an abbreviation is 2 to 12 characters with at least 2 capitals; a rewritten follow-up question is up to 300 tokens. Other constants are given where they act: the margin and window\nreserves — in the parameter rows above and in the “Tokens and characters” block, the search algorithm (BM25, query expansion, deduplication) — in panel 7.",
@@ -44305,7 +44394,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Other code constants (changed only in the mint/ code): an abbreviation is 2 to 12 characters with at least 2 capitals; a rewritten follow-up question is up to 300 tokens. Other constants are given where they act: the margin and window\nreserves — in the parameter rows above and in the “Tokens and characters” block, the search algorithm (BM25, query expansion, deduplication) — in panel 7.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIb"
+      "index": "bIc"
     },
     {
       "id": "UoPGMLI0",
@@ -44330,7 +44419,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 616547026,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4. Features of your organisation → what they affect and how to tune",
@@ -44342,7 +44431,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4. Features of your organisation → what they affect and how to tune",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIc"
+      "index": "bId"
     },
     {
       "id": "cmeT2RHo",
@@ -44367,7 +44456,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1962821609,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Which starting conditions change MINT's settings. Items marked [T] are compared with a quality check before and after the change.",
@@ -44379,7 +44468,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Which starting conditions change MINT's settings. Items marked [T] are compared with a quality check before and after the change.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bId"
+      "index": "bIe"
     },
     {
       "id": "GDNCYEyJ",
@@ -44411,10 +44500,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "dVf9kB9k"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIe"
+      "index": "bIf"
     },
     {
       "id": "dVf9kB9k",
@@ -44439,7 +44528,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2088773317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Feature of the organisation",
@@ -44451,7 +44540,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Feature of the organisation",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIf"
+      "index": "bIg"
     },
     {
       "id": "B3F3wfD4",
@@ -44483,10 +44572,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "XzQLc990"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIg"
+      "index": "bIh"
     },
     {
       "id": "XzQLc990",
@@ -44511,7 +44600,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 371430628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What it affects in MINT",
@@ -44523,7 +44612,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "What it affects in MINT",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIh"
+      "index": "bIi"
     },
     {
       "id": "qsKJBXtE",
@@ -44555,10 +44644,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "szri6thD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIi"
+      "index": "bIj"
     },
     {
       "id": "szri6thD",
@@ -44583,7 +44672,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1551022416,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How to tune",
@@ -44595,7 +44684,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How to tune",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIj"
+      "index": "bIk"
     },
     {
       "id": "KMcgVNp1",
@@ -44627,10 +44716,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "m4QFihY8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIk"
+      "index": "bIl"
     },
     {
       "id": "m4QFihY8",
@@ -44655,7 +44744,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1559944672,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Size of the base: how many documents and\nfragments",
@@ -44667,7 +44756,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Size of the base: how many documents and\nfragments",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIl"
+      "index": "bIm"
     },
     {
       "id": "01JIgohP",
@@ -44699,10 +44788,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "QetrEesZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIm"
+      "index": "bIn"
     },
     {
       "id": "QetrEesZ",
@@ -44727,7 +44816,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1353698785,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Does NOT affect fragment sizes, reranker thresholds, prompts. DOES affect: auto top_k\n(panel 3); candidate depth initial_k / bm25_top_k / rerank_top_k (more similar documents —\nthe correct one lower in the list); the “low confidence” thresholds; memory and time (panel\n9).",
@@ -44739,7 +44828,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Does NOT affect fragment sizes, reranker thresholds, prompts. DOES affect: auto top_k\n(panel 3); candidate depth initial_k / bm25_top_k / rerank_top_k (more similar documents —\nthe correct one lower in the list); the “low confidence” thresholds; memory and time (panel\n9).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIn"
+      "index": "bIo"
     },
     {
       "id": "YyQ50uMz",
@@ -44771,10 +44860,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZvpPM0sN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIo"
+      "index": "bIp"
     },
     {
       "id": "ZvpPM0sN",
@@ -44799,7 +44888,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 264935164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] if the correct fragment is more and more often “> 10” — initial_k 80–100, bm25_top_k 30,\nrerank_top_k 24; recalibrate low_conf_rerank / low_conf_lexical. [M] set top_k explicitly if the\nautomatic choice does not suit you.",
@@ -44811,7 +44900,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] if the correct fragment is more and more often “> 10” — initial_k 80–100, bm25_top_k 30,\nrerank_top_k 24; recalibrate low_conf_rerank / low_conf_lexical. [M] set top_k explicitly if the\nautomatic choice does not suit you.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIp"
+      "index": "bIq"
     },
     {
       "id": "qVlRH9NV",
@@ -44843,10 +44932,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rK3SCZeN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIq"
+      "index": "bIr"
     },
     {
       "id": "rK3SCZeN",
@@ -44871,7 +44960,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 615367536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document structure: Word heading styles",
@@ -44883,7 +44972,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Document structure: Word heading styles",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIr"
+      "index": "bIs"
     },
     {
       "id": "d1pgcOAA",
@@ -44915,10 +45004,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BEPHz0sR"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIs"
+      "index": "bIt"
     },
     {
       "id": "BEPHz0sR",
@@ -44943,7 +45032,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1078770124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Without the “Heading 1–3” styles Docling finds no sections (collect_structure): references\ncontain only the file name, the section is not visible in the context or in evaluation.",
@@ -44955,7 +45044,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Without the “Heading 1–3” styles Docling finds no sections (collect_structure): references\ncontain only the file name, the section is not visible in the context or in evaluation.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIt"
+      "index": "bIu"
     },
     {
       "id": "z04mkqIH",
@@ -44987,10 +45076,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4hQ7EOs1"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIu"
+      "index": "bIv"
     },
     {
       "id": "4hQ7EOs1",
@@ -45015,7 +45104,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 534052678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Apply the styles in the source files and re-index ♻. MINT does not yet recognise numbered headings\nin the normal style.",
@@ -45027,7 +45116,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Apply the styles in the source files and re-index ♻. MINT does not yet recognise numbered headings\nin the normal style.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIv"
+      "index": "bIw"
     },
     {
       "id": "XRqMz8fM",
@@ -45059,10 +45148,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "uYakcDKS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIw"
+      "index": "bIx"
     },
     {
       "id": "uYakcDKS",
@@ -45087,7 +45176,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 627211998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Section length: short clauses of\nregulations or long descriptions",
@@ -45099,7 +45188,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Section length: short clauses of\nregulations or long descriptions",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIx"
+      "index": "bIy"
     },
     {
       "id": "qKnwxfwq",
@@ -45131,10 +45220,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4epp27sJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bIy"
+      "index": "bIz"
     },
     {
       "id": "4epp27sJ",
@@ -45159,7 +45248,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 14662260,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A parent covers several short clauses — precise questions “drown” in the neighbouring text;\nlong coherent descriptions, on the contrary, lack context.",
@@ -45171,7 +45260,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A parent covers several short clauses — precise questions “drown” in the neighbouring text;\nlong coherent descriptions, on the contrary, lack context.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bIz"
+      "index": "bJ0"
     },
     {
       "id": "2hHjchtt",
@@ -45203,10 +45292,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cjtPzMIw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJ0"
+      "index": "bJ1"
     },
     {
       "id": "cjtPzMIw",
@@ -45231,7 +45320,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1968254771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] on a copy of the base ♻: short clauses and precise questions — parent_size 1500–2000; long\ndescriptions — 3000–3500 (if the LLM window allows: MINT will not go above the ceiling). Compare\nwith --compare.",
@@ -45243,7 +45332,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] on a copy of the base ♻: short clauses and precise questions — parent_size 1500–2000; long\ndescriptions — 3000–3500 (if the LLM window allows: MINT will not go above the ceiling). Compare\nwith --compare.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ1"
+      "index": "bJ2"
     },
     {
       "id": "M8nTY8IN",
@@ -45275,10 +45364,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ZPqaoaaq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJ2"
+      "index": "bJ3"
     },
     {
       "id": "ZPqaoaaq",
@@ -45303,7 +45392,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 654915491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Many tables: requirement matrices, SLAs,\nlists",
@@ -45315,7 +45404,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Many tables: requirement matrices, SLAs,\nlists",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ3"
+      "index": "bJ4"
     },
     {
       "id": "wiWtblZm",
@@ -45347,10 +45436,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mtXAzR0l"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJ4"
+      "index": "bJ5"
     },
     {
       "id": "mtXAzR0l",
@@ -45375,7 +45464,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1089077115,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A large table is split into parts with the header repeated; some of them may not get into\nthe context (max_table_parts).",
@@ -45387,7 +45476,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "A large table is split into parts with the header repeated; some of them may not get into\nthe context (max_table_parts).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ5"
+      "index": "bJ6"
     },
     {
       "id": "wm8f8tST",
@@ -45419,10 +45508,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "CiVk46lr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJ6"
+      "index": "bJ7"
     },
     {
       "id": "CiVk46lr",
@@ -45447,7 +45536,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1602556528,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] max_table_parts 3–4 if questions are often about tables; [T] add such questions to the eval\nset and watch hit@K.",
@@ -45459,7 +45548,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] max_table_parts 3–4 if questions are often about tables; [T] add such questions to the eval\nset and watch hit@K.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ7"
+      "index": "bJ8"
     },
     {
       "id": "wYhKkYjr",
@@ -45491,10 +45580,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "JJXTLsbm"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJ8"
+      "index": "bJ9"
     },
     {
       "id": "JJXTLsbm",
@@ -45519,7 +45608,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 783425099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Many abbreviations and internal system\nnames",
@@ -45531,7 +45620,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Many abbreviations and internal system\nnames",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJ9"
+      "index": "bJA"
     },
     {
       "id": "zgqgqbOi",
@@ -45563,10 +45652,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0bcpbK9F"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJA"
+      "index": "bJB"
     },
     {
       "id": "0bcpbK9F",
@@ -45591,7 +45680,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 95246893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embeddings do not know internal names — BM25 and the glossary find them.",
@@ -45603,7 +45692,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Embeddings do not know internal names — BM25 and the glossary find them.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJB"
+      "index": "bJC"
     },
     {
       "id": "Gv4zsSVa",
@@ -45635,10 +45724,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "nFpFRJZL"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJC"
+      "index": "bJD"
     },
     {
       "id": "nFpFRJZL",
@@ -45663,7 +45752,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 972256512,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] glossary.json for abbreviations that are not in the documents (step 4, panel 5); [T] if “BM25\nonly” is clearly better than “dense only” — weight_bm25 1.3–1.5.",
@@ -45675,7 +45764,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] glossary.json for abbreviations that are not in the documents (step 4, panel 5); [T] if “BM25\nonly” is clearly better than “dense only” — weight_bm25 1.3–1.5.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJD"
+      "index": "bJE"
     },
     {
       "id": "D3CXX7pP",
@@ -45707,10 +45796,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "aPcPZ3ZV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJE"
+      "index": "bJF"
     },
     {
       "id": "aPcPZ3ZV",
@@ -45735,7 +45824,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1625194138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Several revisions of one document in the\nbase",
@@ -45747,7 +45836,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Several revisions of one document in the\nbase",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJF"
+      "index": "bJG"
     },
     {
       "id": "ncA2jM3D",
@@ -45779,10 +45868,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "rke4V9Z2"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJG"
+      "index": "bJH"
     },
     {
       "id": "rke4V9Z2",
@@ -45807,7 +45896,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1520934252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Duplicates take places in top_k; deduplication removes only identical fragments; the model\nmay cite an outdated revision.",
@@ -45819,7 +45908,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Duplicates take places in top_k; deduplication removes only identical fragments; the model\nmay cite an outdated revision.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJH"
+      "index": "bJI"
     },
     {
       "id": "PO8eWkeZ",
@@ -45851,10 +45940,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2Huprek4"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJI"
+      "index": "bJJ"
     },
     {
       "id": "2Huprek4",
@@ -45879,7 +45968,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1540048065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] keep only current revisions in the base (delete old ones); put the revision number into file\nnames; otherwise [T] a higher top_k.",
@@ -45891,7 +45980,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] keep only current revisions in the base (delete old ones); put the revision number into file\nnames; otherwise [T] a higher top_k.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJJ"
+      "index": "bJK"
     },
     {
       "id": "e8rbFd5r",
@@ -45923,10 +46012,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "mr2hhwza"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJK"
+      "index": "bJL"
     },
     {
       "id": "mr2hhwza",
@@ -45951,7 +46040,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 510192253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How users ask: terms, long situations,\ndialogue",
@@ -45963,7 +46052,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How users ask: terms, long situations,\ndialogue",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJL"
+      "index": "bJM"
     },
     {
       "id": "JRu3QXS8",
@@ -45995,10 +46084,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6yCpVX8X"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJM"
+      "index": "bJN"
     },
     {
       "id": "6yCpVX8X",
@@ -46023,7 +46112,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1606133978,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Short terms and codes are better found by BM25; long “in my own words” questions — by\nvector; follow-ups like “and for the second circuit?” need the history.",
@@ -46035,7 +46124,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Short terms and codes are better found by BM25; long “in my own words” questions — by\nvector; follow-ups like “and for the second circuit?” need the history.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJN"
+      "index": "bJO"
     },
     {
       "id": "JCR6aFVl",
@@ -46067,10 +46156,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xaqkwxoU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJO"
+      "index": "bJP"
     },
     {
       "id": "xaqkwxoU",
@@ -46095,7 +46184,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 530676326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weights weight_dense / weight_bm25, use_multi_query for vague questions; [C]\nchat_history_turns 0 / 2 / 3. The eval question set — from real requests.",
@@ -46107,7 +46196,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[T] weights weight_dense / weight_bm25, use_multi_query for vague questions; [C]\nchat_history_turns 0 / 2 / 3. The eval question set — from real requests.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJP"
+      "index": "bJQ"
     },
     {
       "id": "eFPsMaRe",
@@ -46139,10 +46228,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "NvU91P3P"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJQ"
+      "index": "bJR"
     },
     {
       "id": "NvU91P3P",
@@ -46167,7 +46256,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 487607499,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Language of documents: Russian, English,\nmixed",
@@ -46179,7 +46268,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Language of documents: Russian, English,\nmixed",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJR"
+      "index": "bJS"
     },
     {
       "id": "ThHfAtN8",
@@ -46211,10 +46300,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wHJUEh9T"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJS"
+      "index": "bJT"
     },
     {
       "id": "wHJUEh9T",
@@ -46239,7 +46328,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 280621587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "BM25 reduces words to stems with a Russian (Snowball) or English (Porter2) stemmer — word\nby word; codes are matched exactly; semantic search depends on the embedding model.",
@@ -46251,7 +46340,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "BM25 reduces words to stems with a Russian (Snowball) or English (Porter2) stemmer — word\nby word; codes are matched exactly; semantic search depends on the embedding model.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJT"
+      "index": "bJU"
     },
     {
       "id": "WUJJpNWx",
@@ -46283,10 +46372,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YGNPJZLK"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJU"
+      "index": "bJV"
     },
     {
       "id": "YGNPJZLK",
@@ -46311,7 +46400,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1446958055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] a multilingual embedding model (Qwen3-Embedding, bge-m3, multilingual-e5) ♻ — changing the\nmodel requires re-indexing; MINT_LANG — language of the interface, prompts and reports; “Detect\nfrom server” — after uploading documents in another language.",
@@ -46323,7 +46412,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] a multilingual embedding model (Qwen3-Embedding, bge-m3, multilingual-e5) ♻ — changing the\nmodel requires re-indexing; MINT_LANG — language of the interface, prompts and reports; “Detect\nfrom server” — after uploading documents in another language.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJV"
+      "index": "bJW"
     },
     {
       "id": "BcIxvRQg",
@@ -46355,10 +46444,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "A3VbvHOr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJW"
+      "index": "bJX"
     },
     {
       "id": "A3VbvHOr",
@@ -46383,7 +46472,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 790586243,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Requirements for answers: strictness,\nlength, references",
@@ -46395,7 +46484,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Requirements for answers: strictness,\nlength, references",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJX"
+      "index": "bJY"
     },
     {
       "id": "e7cSSdAi",
@@ -46427,10 +46516,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "olOEEW57"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJY"
+      "index": "bJZ"
     },
     {
       "id": "olOEEW57",
@@ -46455,7 +46544,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 678611114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Strictness — temperature; length — max_tokens (room for the answer is taken from the\ncontext, panel 2).",
@@ -46467,7 +46556,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Strictness — temperature; length — max_tokens (room for the answer is taken from the\ncontext, panel 2).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJZ"
+      "index": "bJa"
     },
     {
       "id": "7Al2MxHd",
@@ -46499,10 +46588,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "nif5GKNP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJa"
+      "index": "bJb"
     },
     {
       "id": "nif5GKNP",
@@ -46527,7 +46616,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1773312818,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] temperature 0–0.2; max_tokens — by the length of a typical answer; [file, section] references\n— in CHAT_SYSTEM_PROMPT / CHAT_SYSTEM_PROMPT_EN; check_citations() marks references outside the\ncontext with ⚠.",
@@ -46539,7 +46628,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] temperature 0–0.2; max_tokens — by the length of a typical answer; [file, section] references\n— in CHAT_SYSTEM_PROMPT / CHAT_SYSTEM_PROMPT_EN; check_citations() marks references outside the\ncontext with ⚠.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJb"
+      "index": "bJc"
     },
     {
       "id": "uUZ0xPG5",
@@ -46571,10 +46660,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "f6ZSVG0d"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJc"
+      "index": "bJd"
     },
     {
       "id": "f6ZSVG0d",
@@ -46599,7 +46688,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2053407093,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Your models: LLM window, embedding and\nreranker inputs, reasoning",
@@ -46611,7 +46700,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Your models: LLM window, embedding and\nreranker inputs, reasoning",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJd"
+      "index": "bJe"
     },
     {
       "id": "JGLrkyYj",
@@ -46643,10 +46732,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "nKirlDDF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJe"
+      "index": "bJf"
     },
     {
       "id": "nKirlDDF",
@@ -46671,7 +46760,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2046886815,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "They determine all [A] parameters through the ceilings (panels 1–2); reasoning models also\nspend max_tokens on <think> (strip_reasoning removes the reasoning from the answer).",
@@ -46683,7 +46772,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "They determine all [A] parameters through the ceilings (panels 1–2); reasoning models also\nspend max_tokens on <think> (strip_reasoning removes the reasoning from the answer).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJf"
+      "index": "bJg"
     },
     {
       "id": "KIltxipp",
@@ -46715,10 +46804,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6quyBIpz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJg"
+      "index": "bJh"
     },
     {
       "id": "6quyBIpz",
@@ -46743,7 +46832,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 493637255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] reasoning models: max_tokens 3000–4000 (otherwise the answer breaks off — “Answer truncated”),\nllm_timeout 150–180; a new embedding model ♻ — re-indexing (kb_document_status shows it).",
@@ -46755,7 +46844,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[C] reasoning models: max_tokens 3000–4000 (otherwise the answer breaks off — “Answer truncated”),\nllm_timeout 150–180; a new embedding model ♻ — re-indexing (kb_document_status shows it).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJh"
+      "index": "bJi"
     },
     {
       "id": "VLrGZN0Z",
@@ -46787,10 +46876,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Whg2uJVz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJi"
+      "index": "bJj"
     },
     {
       "id": "Whg2uJVz",
@@ -46815,7 +46904,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 735517270,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Corporate gateway: request limits,\ntimeouts, TLS",
@@ -46827,7 +46916,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Corporate gateway: request limits,\ntimeouts, TLS",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJj"
+      "index": "bJk"
     },
     {
       "id": "LqarqdN9",
@@ -46859,10 +46948,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "MT9HwudP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJk"
+      "index": "bJl"
     },
     {
       "id": "MT9HwudP",
@@ -46887,7 +46976,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 110204035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "HTTP 400 from the reranker on large batches, 429 / 504 under load, an own certificate.",
@@ -46899,7 +46988,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "HTTP 400 from the reranker on large batches, 429 / 504 under load, an own certificate.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJl"
+      "index": "bJm"
     },
     {
       "id": "WXzo3vNK",
@@ -46931,10 +47020,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wHB1bvqa"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJm"
+      "index": "bJn"
     },
     {
       "id": "wHB1bvqa",
@@ -46959,7 +47048,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1084664135,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] rerank_max_docs, rerank_char_budget; llm_timeout, llm_retries; CA_BUNDLE_PATH.",
@@ -46971,7 +47060,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] rerank_max_docs, rerank_char_budget; llm_timeout, llm_retries; CA_BUNDLE_PATH.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJn"
+      "index": "bJo"
     },
     {
       "id": "ytq3ChfZ",
@@ -47003,10 +47092,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "8U1HALtx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJo"
+      "index": "bJp"
     },
     {
       "id": "8U1HALtx",
@@ -47031,7 +47120,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 309098810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "System reference: what they can do, plans,\nlimitations",
@@ -47043,7 +47132,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "System reference: what they can do, plans,\nlimitations",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJp"
+      "index": "bJq"
     },
     {
       "id": "aAVNhEZj",
@@ -47075,10 +47164,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "6oJOpN2T"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJq"
+      "index": "bJr"
     },
     {
       "id": "6oJOpN2T",
@@ -47103,7 +47192,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 395073400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Without system cards the review does not know what the systems can do and cannot check what\nthe document requires from a system (answer_system) or whether it contradicts the system's\nlimitations.",
@@ -47115,7 +47204,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Without system cards the review does not know what the systems can do and cannot check what\nthe document requires from a system (answer_system) or whether it contradicts the system's\nlimitations.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJr"
+      "index": "bJs"
     },
     {
       "id": "q6YoC3sH",
@@ -47147,10 +47236,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "x8oE9iDW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJs"
+      "index": "bJt"
     },
     {
       "id": "x8oE9iDW",
@@ -47175,7 +47264,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 773450909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] a card draft from the base — the “Draft a system card from the base” button\n(draft_system_card): the expert checks it, fills the gaps and loads it into the base marked\n“System cards”; [C] audit_pinned_max_chars if there are many cards.",
@@ -47187,7 +47276,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] a card draft from the base — the “Draft a system card from the base” button\n(draft_system_card): the expert checks it, fills the gaps and loads it into the base marked\n“System cards”; [C] audit_pinned_max_chars if there are many cards.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJt"
+      "index": "bJu"
     },
     {
       "id": "iG40EFwv",
@@ -47219,10 +47308,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xK80JN1q"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJu"
+      "index": "bJv"
     },
     {
       "id": "xK80JN1q",
@@ -47247,7 +47336,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1392233615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document review rules: criteria,\nchecklists, document size",
@@ -47259,7 +47348,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Document review rules: criteria,\nchecklists, document size",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJv"
+      "index": "bJw"
     },
     {
       "id": "oI1ei2sJ",
@@ -47291,10 +47380,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "czYavJG7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJw"
+      "index": "bJx"
     },
     {
       "id": "czYavJG7",
@@ -47319,7 +47408,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1695888370,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Criteria and checklists define what review looks for; the section size — the level of\ndetail and the number of LLM calls.",
@@ -47331,7 +47420,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Criteria and checklists define what review looks for; the section size — the level of\ndetail and the number of LLM calls.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJx"
+      "index": "bJy"
     },
     {
       "id": "PC4b6Dzz",
@@ -47363,10 +47452,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "7aF5lt8T"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bJy"
+      "index": "bJz"
     },
     {
       "id": "7aF5lt8T",
@@ -47391,7 +47480,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 46699943,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] general criteria — the field on the “Document review” tab (default DEFAULT_AUDIT_FOCUS /\nDEFAULT_AUDIT_FOCUS_EN), checklists by document type — checklists.yaml (a file outside the program\nfolder — its path in MINT_CHECKLISTS); points that matter for a particular document — in the\n“Special attention” field; [C] audit_map_size and use_self_critique — on a live check (step 9,\npanel 5).",
@@ -47403,7 +47492,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] general criteria — the field on the “Document review” tab (default DEFAULT_AUDIT_FOCUS /\nDEFAULT_AUDIT_FOCUS_EN), checklists by document type — checklists.yaml (a file outside the program\nfolder — its path in MINT_CHECKLISTS); points that matter for a particular document — in the\n“Special attention” field; [C] audit_map_size and use_self_critique — on a live check (step 9,\npanel 5).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bJz"
+      "index": "bK0"
     },
     {
       "id": "hiSN4lDP",
@@ -47435,10 +47524,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "E2wkCdTi"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bK0"
+      "index": "bK1"
     },
     {
       "id": "E2wkCdTi",
@@ -47463,7 +47552,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 617919983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Load: number of simultaneous users",
@@ -47475,7 +47564,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Load: number of simultaneous users",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK1"
+      "index": "bK2"
     },
     {
       "id": "4BBEO8Jj",
@@ -47507,10 +47596,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wPF47zXy"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bK2"
+      "index": "bK3"
     },
     {
       "id": "wPF47zXy",
@@ -47535,7 +47624,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1019183681,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "All sessions share the LLM gateway; document parsing and writes to the base run one at a\ntime (panel 6).",
@@ -47547,7 +47636,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "All sessions share the LLM gateway; document parsing and writes to the base run one at a\ntime (panel 6).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK3"
+      "index": "bK4"
     },
     {
       "id": "LQHKuOzF",
@@ -47579,10 +47668,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "sUCfOE72"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bK4"
+      "index": "bK5"
     },
     {
       "id": "sUCfOE72",
@@ -47607,7 +47696,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2071282458,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] gateway limits and llm_retries; upload large batches of documents outside peak hours.",
@@ -47619,7 +47708,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "[M] gateway limits and llm_retries; upload large batches of documents outside peak hours.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK5"
+      "index": "bK6"
     },
     {
       "id": "ezDV1Yh1",
@@ -47644,7 +47733,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1910823580,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5. Setting it up at your place",
@@ -47656,7 +47745,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5. Setting it up at your place",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK6"
+      "index": "bK7"
     },
     {
       "id": "iF4X3ZIF",
@@ -47681,7 +47770,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1773778854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Steps 6–8 are repeated when: the base has doubled, a new type of documents, another embedding model or reranker, parent_size / child_size changed.",
@@ -47693,7 +47782,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Steps 6–8 are repeated when: the base has doubled, a new type of documents, another embedding model or reranker, parent_size / child_size changed.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK7"
+      "index": "bK8"
     },
     {
       "id": "3Fz4NUiq",
@@ -47729,10 +47818,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OHqPyssy"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bK8"
+      "index": "bK9"
     },
     {
       "id": "Oc0PA2YD",
@@ -47757,7 +47846,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 388444572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1. Connections\n.env: addresses, keys,\nmodels, KB_DIR,\ncertificate.\ncheck_install.py\nwithout errors; no red\nerrors in the sidebar,\nthe reranker is\n“available” or “not\nconnected”.",
@@ -47769,7 +47858,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1. Connections\n.env: addresses, keys,\nmodels, KB_DIR,\ncertificate.\ncheck_install.py\nwithout errors; no red\nerrors in the sidebar,\nthe reranker is\n“available” or “not\nconnected”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bK9"
+      "index": "bKA"
     },
     {
       "id": "1VtRjZSP",
@@ -47809,10 +47898,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "K4oBG4pf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKA"
+      "index": "bKB"
     },
     {
       "id": "bGTjLtdZ",
@@ -47837,7 +47926,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1483643020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2. Model limits\n“Models and limits” →\n“Detect from server”.\nWhat the server does\nnot report — into\nconfig.yaml (models).\nCheck “Computed by\nMINT” and the warnings.",
@@ -47849,7 +47938,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2. Model limits\n“Models and limits” →\n“Detect from server”.\nWhat the server does\nnot report — into\nconfig.yaml (models).\nCheck “Computed by\nMINT” and the warnings.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKB"
+      "index": "bKC"
     },
     {
       "id": "m6KboKBV",
@@ -47889,10 +47978,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BdlWkpK7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKC"
+      "index": "bKD"
     },
     {
       "id": "r0pBXSye",
@@ -47917,7 +48006,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2081139234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3. Documents\nUpload. Upload\nmessages: “Headings\nrecognised: N” (0 — no\nstyles, panel 4),\n“Skipped … chunks” — an\nembedding failure.",
@@ -47929,7 +48018,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "3. Documents\nUpload. Upload\nmessages: “Headings\nrecognised: N” (0 — no\nstyles, panel 4),\n“Skipped … chunks” — an\nembedding failure.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKD"
+      "index": "bKE"
     },
     {
       "id": "vw3puuYQ",
@@ -47969,10 +48058,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "eYBYdufU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKE"
+      "index": "bKF"
     },
     {
       "id": "w8nvk6B4",
@@ -47997,7 +48086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1730295219,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4. Abbreviations\nThe “Abbreviations”\nlist in the sidebar:\ninaccurate expansions\nand missing\nabbreviations — into\nglossary.json.",
@@ -48009,7 +48098,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "4. Abbreviations\nThe “Abbreviations”\nlist in the sidebar:\ninaccurate expansions\nand missing\nabbreviations — into\nglossary.json.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKF"
+      "index": "bKG"
     },
     {
       "id": "zPmDThiX",
@@ -48049,10 +48138,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Qrgoxrr6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKG"
+      "index": "bKH"
     },
     {
       "id": "HcoLbGI3",
@@ -48077,7 +48166,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 238394071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5. Question set\nThe “Quality check”\nbutton in the sidebar:\nMINT writes a draft —\nreword it, add real\nquestions and 5–10\nwithout an answer in\nthe base. 40–60 in\ntotal.",
@@ -48089,7 +48178,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "5. Question set\nThe “Quality check”\nbutton in the sidebar:\nMINT writes a draft —\nreword it, add real\nquestions and 5–10\nwithout an answer in\nthe base. 40–60 in\ntotal.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKH"
+      "index": "bKI"
     },
     {
       "id": "miEfrsC4",
@@ -48129,10 +48218,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HnAaJNzj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKI"
+      "index": "bKJ"
     },
     {
       "id": "PNHYQrVL",
@@ -48157,7 +48246,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1481069539,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "6. Baseline\n“Run the check” →\nresults on the page;\nreport.md, details.csv,\nsummary.json — in\nLOG_DIR/eval (from the\nconsole —\neval_search.py\nquestions.csv).",
@@ -48169,7 +48258,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "6. Baseline\n“Run the check” →\nresults on the page;\nreport.md, details.csv,\nsummary.json — in\nLOG_DIR/eval (from the\nconsole —\neval_search.py\nquestions.csv).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKJ"
+      "index": "bKK"
     },
     {
       "id": "dc6vYnxk",
@@ -48209,10 +48298,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hcvo70Qf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKK"
+      "index": "bKL"
     },
     {
       "id": "nqDstAGo",
@@ -48237,7 +48326,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 677932053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "7. Tuning from the\n   report\n“What to change” →\n“Apply to this\nsession”; keep it in\nconfig.yaml:\nweight_rerank, dense /\nBM25 weights, low_conf\nthresholds, top_k,\nmulti-query.",
@@ -48249,7 +48338,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "7. Tuning from the\n   report\n“What to change” →\n“Apply to this\nsession”; keep it in\nconfig.yaml:\nweight_rerank, dense /\nBM25 weights, low_conf\nthresholds, top_k,\nmulti-query.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKL"
+      "index": "bKM"
     },
     {
       "id": "FyHElPJA",
@@ -48289,10 +48378,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKM"
+      "index": "bKN"
     },
     {
       "id": "aHAfif3S",
@@ -48317,7 +48406,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1748425513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8. Check\nThe next check is\ncompared with the last\none (▲▼; from the\nconsole — --compare):\nMRR and hit@K went up,\nfalse alarms did not;\nthe difference is not\nchance (p < 0.05).",
@@ -48329,7 +48418,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "8. Check\nThe next check is\ncompared with the last\none (▲▼; from the\nconsole — --compare):\nMRR and hit@K went up,\nfalse alarms did not;\nthe difference is not\nchance (p < 0.05).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKN"
+      "index": "bKO"
     },
     {
       "id": "8yQo6NZE",
@@ -48365,10 +48454,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKO"
+      "index": "bKP"
     },
     {
       "id": "BEIGoygo",
@@ -48393,7 +48482,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1073950771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9. Live check\n15–20 chat answers;\n   review of 3–5\n   documents with known\n   findings;\n   verification — pairs\n   of revisions. Adjust\n   the [C] parameters.",
@@ -48405,7 +48494,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "9. Live check\n15–20 chat answers;\n   review of 3–5\n   documents with known\n   findings;\n   verification — pairs\n   of revisions. Adjust\n   the [C] parameters.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKP"
+      "index": "bKQ"
     },
     {
       "id": "OHqPyssy",
@@ -48432,7 +48521,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1415909849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48469,7 +48558,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKQ"
+      "index": "bKR"
     },
     {
       "id": "K4oBG4pf",
@@ -48496,7 +48585,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1884439373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48533,7 +48622,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKR"
+      "index": "bKS"
     },
     {
       "id": "BdlWkpK7",
@@ -48560,7 +48649,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 280981308,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48597,7 +48686,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKS"
+      "index": "bKT"
     },
     {
       "id": "eYBYdufU",
@@ -48624,7 +48713,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 599665469,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48661,7 +48750,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKT"
+      "index": "bKU"
     },
     {
       "id": "Qrgoxrr6",
@@ -48688,7 +48777,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1718604913,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48725,7 +48814,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKU"
+      "index": "bKV"
     },
     {
       "id": "HnAaJNzj",
@@ -48752,7 +48841,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 517582091,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48789,7 +48878,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKV"
+      "index": "bKW"
     },
     {
       "id": "hcvo70Qf",
@@ -48816,7 +48905,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 67617651,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48853,7 +48942,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKW"
+      "index": "bKX"
     },
     {
       "id": "VcFofqcU",
@@ -48880,7 +48969,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 912674016,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48917,7 +49006,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKX"
+      "index": "bKY"
     },
     {
       "id": "SLUCuYWZ",
@@ -48949,10 +49038,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "kTEV6qmE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKY"
+      "index": "bKZ"
     },
     {
       "id": "kTEV6qmE",
@@ -48977,7 +49066,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1004023954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How the quality check works — mint/evaluation.py: the “Quality check” button in the sidebar and eval_search.py from the console (the same search code as in chat; the base and services are real; the LLM only writes the draft questions, chat\nanswers and multi-query)\ngenerate_questions(): per fragment — a question in the fragment's language and a verbatim quote → the question table: edits, your own questions; rows_to_questions() and markup_problems() — labels that can never be counted → request_cache()\n(each service request once for all variants) → build_configs(): dense only, BM25 only, hybrid, hybrid + reranker 0.35 / 0.7 / 1 / 1.5 / 3 → run_question(): search_parent_child() to depth 10 + diagnostics at top_k → is_relevant(): file +\nsection (in the path or as a heading inside the fragment) + phrase → metrics(): hit@1, hit@3, hit@K, MRR, false alarms → paired() + sign_test_p(): on how many questions configurations differ and whether the difference is chance (sign test) →\ncalibrate(): the threshold by the same rule as in search (is_low_confidence) → check_answers() optionally (1–3 times): the chat answer (answer_question), a reference to the right document, references outside the fragments found, false and\nhonest “no information” (chat_no_info), a search or a model error; compare_answers() — with the previous answer check, question by question and by prompt version → recommendations(): what to change → save_run(): report.md, details.csv\nwithout empty cells, summary.json, questions.csv — in LOG_DIR/eval.",
@@ -48989,7 +49078,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "How the quality check works — mint/evaluation.py: the “Quality check” button in the sidebar and eval_search.py from the console (the same search code as in chat; the base and services are real; the LLM only writes the draft questions, chat\nanswers and multi-query)\ngenerate_questions(): per fragment — a question in the fragment's language and a verbatim quote → the question table: edits, your own questions; rows_to_questions() and markup_problems() — labels that can never be counted → request_cache()\n(each service request once for all variants) → build_configs(): dense only, BM25 only, hybrid, hybrid + reranker 0.35 / 0.7 / 1 / 1.5 / 3 → run_question(): search_parent_child() to depth 10 + diagnostics at top_k → is_relevant(): file +\nsection (in the path or as a heading inside the fragment) + phrase → metrics(): hit@1, hit@3, hit@K, MRR, false alarms → paired() + sign_test_p(): on how many questions configurations differ and whether the difference is chance (sign test) →\ncalibrate(): the threshold by the same rule as in search (is_low_confidence) → check_answers() optionally (1–3 times): the chat answer (answer_question), a reference to the right document, references outside the fragments found, false and\nhonest “no information” (chat_no_info), a search or a model error; compare_answers() — with the previous answer check, question by question and by prompt version → recommendations(): what to change → save_run(): report.md, details.csv\nwithout empty cells, summary.json, questions.csv — in LOG_DIR/eval.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKZ"
+      "index": "bKa"
     },
     {
       "id": "6FIMdrSj",
@@ -49014,7 +49103,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 762279921,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "6. Internals: adding documents to the base",
@@ -49026,7 +49115,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "6. Internals: adding documents to the base",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKa"
+      "index": "bKb"
     },
     {
       "id": "5aByTBcA",
@@ -49051,7 +49140,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1393306350,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The sidebar's document upload → process_and_add_to_kb() for each file. Embeddings are computed without locking the base; merging and writing — under kb_write_lock().",
@@ -49063,7 +49152,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The sidebar's document upload → process_and_add_to_kb() for each file. Embeddings are computed without locking the base; merging and writing — under kb_write_lock().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKb"
+      "index": "bKc"
     },
     {
       "id": "YxhudoHY",
@@ -49099,10 +49188,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YFFEv8aP"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKc"
+      "index": "bKd"
     },
     {
       "id": "L2ZwWtTS",
@@ -49127,7 +49216,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 490539631,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parse_document()\nby extension: .docx — docling_convert()\n(one DocumentConverter per process, one at\na time); .pdf — parse_pdf() without\nmodels; .md, .txt — parse_markdown(),\nparse_plain_text().",
@@ -49139,7 +49228,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "parse_document()\nby extension: .docx — docling_convert()\n(one DocumentConverter per process, one at\na time); .pdf — parse_pdf() without\nmodels; .md, .txt — parse_markdown(),\nparse_plain_text().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKd"
+      "index": "bKe"
     },
     {
       "id": "dDi6bTIy",
@@ -49179,10 +49268,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YGSyNfpa"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKe"
+      "index": "bKf"
     },
     {
       "id": "IbRDgUjI",
@@ -49207,7 +49296,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 850818247,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "collect_structure()\nwalks iterate_items(): section_header /\ntitle → heading stack, heading_path_str();\ntable → markdown and caption; headers,\nfooters and pictures are skipped. On\nfailure → collect_structure_flat() without\nheadings.",
@@ -49219,7 +49308,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "collect_structure()\nwalks iterate_items(): section_header /\ntitle → heading stack, heading_path_str();\ntable → markdown and caption; headers,\nfooters and pictures are skipped. On\nfailure → collect_structure_flat() without\nheadings.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKf"
+      "index": "bKg"
     },
     {
       "id": "0jMIrFge",
@@ -49259,10 +49348,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "85LG5t8G"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKg"
+      "index": "bKh"
     },
     {
       "id": "5b2i1r7w",
@@ -49287,7 +49376,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 528676536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "build_parent_chunks()\ntext as one stream with “## headings” →\nsplit_with_overlap_pos(parent_size ♻,\nparent_overlap ♻; cuts at a paragraph,\nline, sentence, word; a heading stays with\nits text) → children in each parent\n(child_size ♻, child_overlap ♻); a child's\nheading path — by its position (bisect).\nTables: clean_table_markdown() →\nsplit_table_markdown() by rows with the\nheader repeated.",
@@ -49299,7 +49388,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "build_parent_chunks()\ntext as one stream with “## headings” →\nsplit_with_overlap_pos(parent_size ♻,\nparent_overlap ♻; cuts at a paragraph,\nline, sentence, word; a heading stays with\nits text) → children in each parent\n(child_size ♻, child_overlap ♻); a child's\nheading path — by its position (bisect).\nTables: clean_table_markdown() →\nsplit_table_markdown() by rows with the\nheader repeated.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKh"
+      "index": "bKi"
     },
     {
       "id": "ClvjE0sB",
@@ -49339,10 +49428,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xCWMjzd9"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKi"
+      "index": "bKj"
     },
     {
       "id": "2P65GnAg",
@@ -49367,7 +49456,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 799495283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "index_parsed_document()\nembedding input = embed_doc_prefix ♻ +\nheading path + child →\nget_query_embeddings_batch() (in batches\nof embed_batch_size; _embed_input() cuts\nto embed_input_max_chars) →\nl2_normalize().",
@@ -49379,7 +49468,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "index_parsed_document()\nembedding input = embed_doc_prefix ♻ +\nheading path + child →\nget_query_embeddings_batch() (in batches\nof embed_batch_size; _embed_input() cuts\nto embed_input_max_chars) →\nl2_normalize().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKj"
+      "index": "bKk"
     },
     {
       "id": "5EM1OVdu",
@@ -49419,10 +49508,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKk"
+      "index": "bKl"
     },
     {
       "id": "l0pmjmne",
@@ -49447,7 +49536,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1059699661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Write under kb_write_lock()\nre-read the base, remove the previous\nversion of the file, check the vector\ndimension → IndexFlatL2 → _commit_kb():\ntemporary folder + os.replace →\nsave_bm25_index() →\nrebuild_auto_glossary()\n(extract_abbreviations →\nbuild_auto_glossary).",
@@ -49459,7 +49548,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Write under kb_write_lock()\nre-read the base, remove the previous\nversion of the file, check the vector\ndimension → IndexFlatL2 → _commit_kb():\ntemporary folder + os.replace →\nsave_bm25_index() →\nrebuild_auto_glossary()\n(extract_abbreviations →\nbuild_auto_glossary).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKl"
+      "index": "bKm"
     },
     {
       "id": "YFFEv8aP",
@@ -49486,7 +49575,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1810995622,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49523,7 +49612,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKm"
+      "index": "bKn"
     },
     {
       "id": "YGSyNfpa",
@@ -49550,7 +49639,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1844155297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49587,7 +49676,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKn"
+      "index": "bKo"
     },
     {
       "id": "85LG5t8G",
@@ -49614,7 +49703,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 700700824,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49651,7 +49740,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKo"
+      "index": "bKp"
     },
     {
       "id": "xCWMjzd9",
@@ -49678,7 +49767,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1502999695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49715,7 +49804,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bKp"
+      "index": "bKq"
     },
     {
       "id": "a7YZeaJ0",
@@ -49747,10 +49836,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKq"
+      "index": "bKr"
     },
     {
       "id": "sLvY5c2i",
@@ -49782,10 +49871,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TtHTZQoz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKr"
+      "index": "bKs"
     },
     {
       "id": "TtHTZQoz",
@@ -49810,7 +49899,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 445824178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_index.faiss\nchild vectors, normalised\n(cosine search)",
@@ -49822,7 +49911,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child_index.faiss\nchild vectors, normalised\n(cosine search)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKs"
+      "index": "bKt"
     },
     {
       "id": "zlzCJ7l5",
@@ -49854,10 +49943,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GpCYCPYT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKt"
+      "index": "bKu"
     },
     {
       "id": "GpCYCPYT",
@@ -49882,7 +49971,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1185537876,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_metadata.pkl\nparent_id, source, page, text\nchild",
@@ -49894,7 +49983,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child_metadata.pkl\nparent_id, source, page, text\nchild",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKu"
+      "index": "bKv"
     },
     {
       "id": "yJAUVHy3",
@@ -49926,10 +50015,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "enmiaBPB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKv"
+      "index": "bKw"
     },
     {
       "id": "enmiaBPB",
@@ -49954,7 +50043,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1964228610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parent_store.json\nparent text, heading_path, type,\nsection, page",
@@ -49966,7 +50055,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "parent_store.json\nparent text, heading_path, type,\nsection, page",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKw"
+      "index": "bKx"
     },
     {
       "id": "osy87dgH",
@@ -49998,10 +50087,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HiSCTsUS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKx"
+      "index": "bKy"
     },
     {
       "id": "HiSCTsUS",
@@ -50026,7 +50115,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2709796,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl\nword stems, positions; format\nsignature (otherwise rebuilt)",
@@ -50038,7 +50127,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "bm25_index.pkl\nword stems, positions; format\nsignature (otherwise rebuilt)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bKy"
+      "index": "bKz"
     },
     {
       "id": "6cBQtzH0",
@@ -50070,10 +50159,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KsyqIjrE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bKz"
+      "index": "bL0"
     },
     {
       "id": "KsyqIjrE",
@@ -50098,7 +50187,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 55632841,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json\nabbreviations from documents",
@@ -50110,7 +50199,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "auto_glossary.json\nabbreviations from documents",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL0"
+      "index": "bL1"
     },
     {
       "id": "Su1RmndN",
@@ -50142,10 +50231,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "S5yCJ6Rf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bL1"
+      "index": "bL2"
     },
     {
       "id": "S5yCJ6Rf",
@@ -50170,7 +50259,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 641056343,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "manifest.json\nembed_model, embed_dim, prefix,\nparent / child for each document",
@@ -50182,7 +50271,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "manifest.json\nembed_model, embed_dim, prefix,\nparent / child for each document",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL2"
+      "index": "bL3"
     },
     {
       "id": "gztqbSUw",
@@ -50214,10 +50303,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "pI8keL7f"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bL3"
+      "index": "bL4"
     },
     {
       "id": "pI8keL7f",
@@ -50242,7 +50331,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 429688919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "sources/\noriginal documents for\nre-indexing",
@@ -50254,7 +50343,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "sources/\noriginal documents for\nre-indexing",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL4"
+      "index": "bL5"
     },
     {
       "id": "ga6FpAv7",
@@ -50279,7 +50368,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 736231461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Store — the KB_DIR folder",
@@ -50291,7 +50380,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Store — the KB_DIR folder",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL5"
+      "index": "bL6"
     },
     {
       "id": "bLsTZZL7",
@@ -50323,7 +50412,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "KDfcYhTI"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -50360,7 +50449,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bL6"
+      "index": "bL7"
     },
     {
       "id": "KDfcYhTI",
@@ -50385,7 +50474,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 990097690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "write",
@@ -50397,7 +50486,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "write",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL7"
+      "index": "bL8"
     },
     {
       "id": "GYfuyK3R",
@@ -50429,10 +50518,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jksG97Di"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bL8"
+      "index": "bL9"
     },
     {
       "id": "jksG97Di",
@@ -50457,7 +50546,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1090333905,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maintaining and reading the base\n• kb_document_status(): compares the manifest with the current settings — “another embedding model” (vector search over the document does not work) or “other chunking / uploaded before v18”.\n• reindex_documents(): from sources/; if the vector dimension changed — _clear_kb_index() and a full rebuild. delete_document_from_kb() — removal together with the original.\n• load_kb_snapshot(): cache by file modification time, a short read lock; normalized_index() normalises an old base in memory. load_bm25_for(): rebuild when the format or the set of fragments changes. load_glossary(): glossary.json wins over\n   the auto-glossary, the old v17 format is understood.",
@@ -50469,7 +50558,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Maintaining and reading the base\n• kb_document_status(): compares the manifest with the current settings — “another embedding model” (vector search over the document does not work) or “other chunking / uploaded before v18”.\n• reindex_documents(): from sources/; if the vector dimension changed — _clear_kb_index() and a full rebuild. delete_document_from_kb() — removal together with the original.\n• load_kb_snapshot(): cache by file modification time, a short read lock; normalized_index() normalises an old base in memory. load_bm25_for(): rebuild when the format or the set of fragments changes. load_glossary(): glossary.json wins over\n   the auto-glossary, the old v17 format is understood.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bL9"
+      "index": "bLA"
     },
     {
       "id": "EP92o8Ec",
@@ -50494,7 +50583,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1574166414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "7. Internals: search_parent_child() and the chat answer",
@@ -50506,7 +50595,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "7. Internals: search_parent_child() and the chat answer",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLA"
+      "index": "bLB"
     },
     {
       "id": "NW5wQgEh",
@@ -50531,7 +50620,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1825086887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The steps are shared by chat, review (build_norms_context) and verification of fixes; the LLM answer — only in chat. Parameters are named — values and categories are in the reference (panel 3).",
@@ -50543,7 +50632,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The steps are shared by chat, review (build_norms_context) and verification of fixes; the LLM answer — only in chat. Parameters are named — values and categories are in the reference (panel 3).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLB"
+      "index": "bLC"
     },
     {
       "id": "hsH01HGz",
@@ -50579,10 +50668,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "LFZ5YJTJ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLC"
+      "index": "bLD"
     },
     {
       "id": "1F6nqOSG",
@@ -50607,7 +50696,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1139278013,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "User question",
@@ -50619,7 +50708,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "User question",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLD"
+      "index": "bLE"
     },
     {
       "id": "5tnk18Yn",
@@ -50659,10 +50748,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0Wz9qm3a"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLE"
+      "index": "bLF"
     },
     {
       "id": "DIrmVCDQ",
@@ -50687,7 +50776,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 745856269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_history() + condense_question()\nchat only: the last chat_history_turns\n“question — answer” pairs; a follow-up → a\nself-contained question (CONDENSE_SYSTEM).",
@@ -50699,7 +50788,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "chat_history() + condense_question()\nchat only: the last chat_history_turns\n“question — answer” pairs; a follow-up → a\nself-contained question (CONDENSE_SYSTEM).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLF"
+      "index": "bLG"
     },
     {
       "id": "UMWXKBEE",
@@ -50743,10 +50832,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "EIeLaNmx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLG"
+      "index": "bLH"
     },
     {
       "id": "cSWCJdEK",
@@ -50771,7 +50860,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1920183696,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "analyze_query()\nquestions “what is X”, “components of X” and\ntheir Russian forms (up to 300 chars): subject\nX → exact-phrase boost; expansion words ×0.3,\nsubject words +0.5 — in BM25 only.\nexpand_query_multi() — if use_multi_query.",
@@ -50783,7 +50872,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "analyze_query()\nquestions “what is X”, “components of X” and\ntheir Russian forms (up to 300 chars): subject\nX → exact-phrase boost; expansion words ×0.3,\nsubject words +0.5 — in BM25 only.\nexpand_query_multi() — if use_multi_query.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLH"
+      "index": "bLI"
     },
     {
       "id": "iz5Ol3xC",
@@ -50823,10 +50912,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "dkubhVHg"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLI"
+      "index": "bLJ"
     },
     {
       "id": "6xJ1lLj8",
@@ -50851,7 +50940,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1432856654,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Vector: _query_vector()\nembed_query_prefix + question → embedding → l2_normalize() →\nFAISS search: initial_k children → their parents; best_child —\nthe text for the reranker. No embedding or another dimension —\nthe channel is off, BM25 works.",
@@ -50863,7 +50952,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Vector: _query_vector()\nembed_query_prefix + question → embedding → l2_normalize() →\nFAISS search: initial_k children → their parents; best_child —\nthe text for the reranker. No embedding or another dimension —\nthe channel is off, BM25 works.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLJ"
+      "index": "bLK"
     },
     {
       "id": "eyrbc4oM",
@@ -50903,10 +50992,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "5t357I7T"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLK"
+      "index": "bLL"
     },
     {
       "id": "YKpuouxM",
@@ -50931,7 +51020,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1506396127,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Words: LightweightBM25.get_scores()\nword stems (russian_stem — Cyrillic words from 5 letters,\nenglish_stem — Latin words from 4 letters), without stop and\nquestion words (EN and RU); + Glossary.bm25_terms() ×0.5; k1\n1.5, b 0.75, IDF ≥ 0.25; exact phrase +10 (up to 8 words);\nquestion words close together (≤ 3, up to 12 significant\nwords) +2 → bm25_top_k.",
@@ -50943,7 +51032,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Words: LightweightBM25.get_scores()\nword stems (russian_stem — Cyrillic words from 5 letters,\nenglish_stem — Latin words from 4 letters), without stop and\nquestion words (EN and RU); + Glossary.bm25_terms() ×0.5; k1\n1.5, b 0.75, IDF ≥ 0.25; exact phrase +10 (up to 8 words);\nquestion words close together (≤ 3, up to 12 significant\nwords) +2 → bm25_top_k.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLL"
+      "index": "bLM"
     },
     {
       "id": "kLA5D0tl",
@@ -50987,10 +51076,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "SQkMkF4W"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLM"
+      "index": "bLN"
     },
     {
       "id": "jKflgiLZ",
@@ -51015,7 +51104,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 283789755,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RRF fusion\ncontribution of a list = weight /\n(rrf_constant + place): weight_dense,\nweight_bm25 → rerank_top_k candidates.",
@@ -51027,7 +51116,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "RRF fusion\ncontribution of a list = weight /\n(rrf_constant + place): weight_dense,\nweight_bm25 → rerank_top_k candidates.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLN"
+      "index": "bLO"
     },
     {
       "id": "LFZ5YJTJ",
@@ -51054,7 +51143,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1541396449,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51091,7 +51180,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLO"
+      "index": "bLP"
     },
     {
       "id": "0Wz9qm3a",
@@ -51118,7 +51207,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 62209716,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51155,7 +51244,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLP"
+      "index": "bLQ"
     },
     {
       "id": "mDM236wF",
@@ -51182,7 +51271,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 788600749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51219,7 +51308,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLQ"
+      "index": "bLR"
     },
     {
       "id": "EIeLaNmx",
@@ -51246,7 +51335,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 478970563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51283,7 +51372,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLR"
+      "index": "bLS"
     },
     {
       "id": "dkubhVHg",
@@ -51310,7 +51399,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1416376628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51347,7 +51436,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLS"
+      "index": "bLT"
     },
     {
       "id": "5t357I7T",
@@ -51374,7 +51463,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 397319003,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51411,7 +51500,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLT"
+      "index": "bLU"
     },
     {
       "id": "56370MqR",
@@ -51451,10 +51540,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "D8WukJ2o"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLU"
+      "index": "bLV"
     },
     {
       "id": "oees9Qae",
@@ -51479,7 +51568,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 424299482,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker (if RERANK_API_URL is set)\nGlossary.enrich_query(); rerank_document(): file name and section + the\nchild with its surroundings (passage_around) or the window densest in\nquestion words (best_window), up to rerank_doc_max_chars →\nrerank_scores(): all candidates in batches (rerank_max_docs,\nrerank_char_budget); if some batches fail, no scores are used. Vote:\nscore ≥ min_rerank_score → + weight_rerank / (rrf_constant + place).",
@@ -51491,7 +51580,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Reranker (if RERANK_API_URL is set)\nGlossary.enrich_query(); rerank_document(): file name and section + the\nchild with its surroundings (passage_around) or the window densest in\nquestion words (best_window), up to rerank_doc_max_chars →\nrerank_scores(): all candidates in batches (rerank_max_docs,\nrerank_char_budget); if some batches fail, no scores are used. Vote:\nscore ≥ min_rerank_score → + weight_rerank / (rrf_constant + place).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLV"
+      "index": "bLW"
     },
     {
       "id": "jvlADHdA",
@@ -51535,10 +51624,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "cFQB4gvA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLW"
+      "index": "bLX"
     },
     {
       "id": "nkKOCxQD",
@@ -51563,7 +51652,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 229726974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Select top_k\nno duplicates (file + first 80\nchars); at most max_table_parts parts\nof one table.",
@@ -51575,7 +51664,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Select top_k\nno duplicates (file + first 80\nchars); at most max_table_parts parts\nof one table.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLX"
+      "index": "bLY"
     },
     {
       "id": "SSZa7Lx2",
@@ -51615,10 +51704,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "xqa2LSkF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLY"
+      "index": "bLZ"
     },
     {
       "id": "WIag236v",
@@ -51643,7 +51732,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1518067034,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Context\nmerge_adjacent(): neighbouring fragments of one document — one\nblock in text order; _source_header(): file | section at the\nstart of the fragment | further in the fragment\n(inner_headings, up to 8) | table | page; focus_passage():\nlonger than smart_truncate_chars — around the match. The\nsource list shows the section where the match is (section_at).",
@@ -51655,7 +51744,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Context\nmerge_adjacent(): neighbouring fragments of one document — one\nblock in text order; _source_header(): file | section at the\nstart of the fragment | further in the fragment\n(inner_headings, up to 8) | table | page; focus_passage():\nlonger than smart_truncate_chars — around the match. The\nsource list shows the section where the match is (section_at).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLZ"
+      "index": "bLa"
     },
     {
       "id": "yvOTjYIP",
@@ -51695,10 +51784,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLa"
+      "index": "bLb"
     },
     {
       "id": "3o4rMlYv",
@@ -51723,7 +51812,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 263487114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The “low confidence” signal\nis_low_confidence(): with a reranker — its best score <\nlow_conf_rerank; without one — share of question words in the\ncontext < low_conf_lexical and dense and BM25 did not agree in\nthe top low_conf_agree_top → LOW_CONFIDENCE_NOTE at the start\nof the context.",
@@ -51735,7 +51824,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The “low confidence” signal\nis_low_confidence(): with a reranker — its best score <\nlow_conf_rerank; without one — share of question words in the\ncontext < low_conf_lexical and dense and BM25 did not agree in\nthe top low_conf_agree_top → LOW_CONFIDENCE_NOTE at the start\nof the context.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLb"
+      "index": "bLc"
     },
     {
       "id": "NfedzdlN",
@@ -51775,10 +51864,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLc"
+      "index": "bLd"
     },
     {
       "id": "jGKRyon6",
@@ -51803,7 +51892,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1704890157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Answer (chat)\nGlossary.reference_block() up to\nglossary_max_entries; chat_user_content();\nask_llm(chat_system_prompt() — EN / RU, history):\ntemperature, max_tokens; strip_reasoning()\nremoves <think>; finish_reason = length → “answer\ntruncated” mark; check_citations(): [file,\nsection] references are checked against the\ncontext, wrong ones — ⚠ and a warning under the\nanswer.",
@@ -51815,7 +51904,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Answer (chat)\nGlossary.reference_block() up to\nglossary_max_entries; chat_user_content();\nask_llm(chat_system_prompt() — EN / RU, history):\ntemperature, max_tokens; strip_reasoning()\nremoves <think>; finish_reason = length → “answer\ntruncated” mark; check_citations(): [file,\nsection] references are checked against the\ncontext, wrong ones — ⚠ and a warning under the\nanswer.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLd"
+      "index": "bLe"
     },
     {
       "id": "SQkMkF4W",
@@ -51842,7 +51931,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 278693230,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51887,7 +51976,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLe"
+      "index": "bLf"
     },
     {
       "id": "D8WukJ2o",
@@ -51914,7 +52003,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1580135453,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51951,7 +52040,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLf"
+      "index": "bLg"
     },
     {
       "id": "33rGwpeW",
@@ -51978,7 +52067,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 619172898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52015,7 +52104,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLg"
+      "index": "bLh"
     },
     {
       "id": "cFQB4gvA",
@@ -52042,7 +52131,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 532260690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52079,7 +52168,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLh"
+      "index": "bLi"
     },
     {
       "id": "xqa2LSkF",
@@ -52106,7 +52195,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 319777839,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52143,7 +52232,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLi"
+      "index": "bLj"
     },
     {
       "id": "CsHZMLD0",
@@ -52170,7 +52259,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1021795599,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52207,7 +52296,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bLj"
+      "index": "bLk"
     },
     {
       "id": "LuMSaWFW",
@@ -52232,7 +52321,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 295458663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The reranker with a dashed frame is optional: without it the order is set by the “Vector”, “Words” and “RRF fusion” steps. Word normalisation (normalize_token: russian_stem / english_stem) is shared by the BM25 index, the query and the glossary.",
@@ -52244,7 +52333,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The reranker with a dashed frame is optional: without it the order is set by the “Vector”, “Words” and “RRF fusion” steps. Word normalisation (normalize_token: russian_stem / english_stem) is shared by the BM25 index, the query and the glossary.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLk"
+      "index": "bLl"
     },
     {
       "id": "owat3Zfr",
@@ -52269,7 +52358,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 559478248,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8. Internals: document review, verification of fixes and the system card draft",
@@ -52281,7 +52370,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "8. Internals: document review, verification of fixes and the system card draft",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLl"
+      "index": "bLm"
     },
     {
       "id": "10wdOIU8",
@@ -52306,7 +52395,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1151731663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The “Document review” and “Verification of fixes” tabs, the card draft button on the sidebar. How many service calls go into a section, a comment and a card — panel 9.",
@@ -52318,7 +52407,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "The “Document review” and “Verification of fixes” tabs, the card draft button on the sidebar. How many service calls go into a section, a comment and a card — panel 9.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLm"
+      "index": "bLn"
     },
     {
       "id": "DwLZNqdn",
@@ -52343,7 +52432,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1558299979,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW — the “Document review” tab, settings — the “⚙️ Review settings” block on it",
@@ -52355,7 +52444,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "DOCUMENT REVIEW — the “Document review” tab, settings — the “⚙️ Review settings” block on it",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLn"
+      "index": "bLo"
     },
     {
       "id": "rETAkngy",
@@ -52391,10 +52480,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "gP899Gls"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLo"
+      "index": "bLp"
     },
     {
       "id": "6Bd81CsR",
@@ -52419,7 +52508,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1830369373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "run_audit()\naudit_cfg():\naudit_reasoning — without\nthe reasoning switch-off,\nmax_tokens + 6000, timeout\n≥ 300 s; reasoning_on() —\nthe switch-on in the\nrequest. record_answers():\nevery model request and\nanswer word for word.",
@@ -52431,7 +52520,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "run_audit()\naudit_cfg():\naudit_reasoning — without\nthe reasoning switch-off,\nmax_tokens + 6000, timeout\n≥ 300 s; reasoning_on() —\nthe switch-on in the\nrequest. record_answers():\nevery model request and\nanswer word for word.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLp"
+      "index": "bLq"
     },
     {
       "id": "MuD4E896",
@@ -52471,10 +52560,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OVU8BgUp"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLq"
+      "index": "bLr"
     },
     {
       "id": "MUbaY5AX",
@@ -52499,7 +52588,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1575129948,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document_to_markdown()\n.docx — Docling →\nexport_to_markdown() →\nclean_docling_markdown()\n(duplicates of merged\ncells) →\ncompact_markdown_tables()\n(no padding); .pdf —\nparse_pdf() →\nblocks_to_markdown().",
@@ -52511,7 +52600,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "document_to_markdown()\n.docx — Docling →\nexport_to_markdown() →\nclean_docling_markdown()\n(duplicates of merged\ncells) →\ncompact_markdown_tables()\n(no padding); .pdf —\nparse_pdf() →\nblocks_to_markdown().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLr"
+      "index": "bLs"
     },
     {
       "id": "GxQA2193",
@@ -52551,10 +52640,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yySnDpUF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLs"
+      "index": "bLt"
     },
     {
       "id": "pNRZRPtP",
@@ -52579,7 +52668,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1190851160,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "split_document_parts()\nby section: a heading with\nits text and tables; small\nones together up to\naudit_map_size, a section\nup to 1.5 limits — whole;\na large table — by rows\nwith the header.\ndocument_mode(): the whole\ndocument if it fits into\nthe window, otherwise\ndocument_outline(). “The\nwhole document in one\nrequest” —\nwhole_document_part().",
@@ -52591,7 +52680,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "split_document_parts()\nby section: a heading with\nits text and tables; small\nones together up to\naudit_map_size, a section\nup to 1.5 limits — whole;\na large table — by rows\nwith the header.\ndocument_mode(): the whole\ndocument if it fits into\nthe window, otherwise\ndocument_outline(). “The\nwhole document in one\nrequest” —\nwhole_document_part().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLt"
+      "index": "bLu"
     },
     {
       "id": "D9AspuI3",
@@ -52631,10 +52720,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zrMh2SeF"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLu"
+      "index": "bLv"
     },
     {
       "id": "lsO4Dvds",
@@ -52659,7 +52748,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1906022995,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Norms\n“special attention” →\nspecial_focus_norms(): one\nsearch per review, up to 2\nparents (low confidence —\nnone). For a section\nbuild_norms_context():\nsmart_truncate(section,\naudit_query_chars) →\nsearch_parent_child() →\nnorms for special\nattention first, then for\nthe section; whole parents\nup to\naudit_context_max_chars;\nnone — NO_NORMS_NOTE.\nselect_pinned(): expert\nrules and cards — up to\naudit_pinned_max_chars.\nbasis_references() →\nfind_basis_documents():\nbasis documents by code\nand title — their\nfragments closest to the\nsection up to\naudit_basis_max_chars.",
@@ -52671,7 +52760,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Norms\n“special attention” →\nspecial_focus_norms(): one\nsearch per review, up to 2\nparents (low confidence —\nnone). For a section\nbuild_norms_context():\nsmart_truncate(section,\naudit_query_chars) →\nsearch_parent_child() →\nnorms for special\nattention first, then for\nthe section; whole parents\nup to\naudit_context_max_chars;\nnone — NO_NORMS_NOTE.\nselect_pinned(): expert\nrules and cards — up to\naudit_pinned_max_chars.\nbasis_references() →\nfind_basis_documents():\nbasis documents by code\nand title — their\nfragments closest to the\nsection up to\naudit_basis_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLv"
+      "index": "bLw"
     },
     {
       "id": "qs8pL0Af",
@@ -52711,10 +52800,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "kafNxSVO"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLw"
+      "index": "bLx"
     },
     {
       "id": "IZVWtEfn",
@@ -52739,7 +52828,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2141418060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "MAP\naudit_section(): the whole\ndocument or the outline +\nlocation_line() + the part\n→ ask_llm() →\nparse_findings()\n(sub-items stay in their\nfinding) →\nfinding_from_line(); with\nthe outline —\nverify_absence(). Sections\n— in parallel\n(audit_parallel).",
@@ -52751,7 +52840,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "MAP\naudit_section(): the whole\ndocument or the outline +\nlocation_line() + the part\n→ ask_llm() →\nparse_findings()\n(sub-items stay in their\nfinding) →\nfinding_from_line(); with\nthe outline —\nverify_absence(). Sections\n— in parallel\n(audit_parallel).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLx"
+      "index": "bLy"
     },
     {
       "id": "McoQshqI",
@@ -52791,10 +52880,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "j12eG9nh"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bLy"
+      "index": "bLz"
     },
     {
       "id": "ZLYA0LRc",
@@ -52819,7 +52908,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1909089081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Self-critique\nuse_self_critique:\ncritique_findings() —\nCRITIQUE_SYSTEM, the whole\ndocument + “special\nattention” (such findings\nare dropped only when\nrefuted) → JSON {verdict,\nseverity, category,\nquote}; the quote is\nchecked by\nquote_in_text().",
@@ -52831,7 +52920,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Self-critique\nuse_self_critique:\ncritique_findings() —\nCRITIQUE_SYSTEM, the whole\ndocument + “special\nattention” (such findings\nare dropped only when\nrefuted) → JSON {verdict,\nseverity, category,\nquote}; the quote is\nchecked by\nquote_in_text().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bLz"
+      "index": "bM0"
     },
     {
       "id": "6F6nwrZO",
@@ -52871,10 +52960,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "GJ96ZiuZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bM0"
+      "index": "bM1"
     },
     {
       "id": "V5bZuhwy",
@@ -52899,7 +52988,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 458806166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Deep review\n_run_deep():\nfind_processes() — steps\nfrom a table of\noperations, a list of\nsteps or “Step N”\nsubsections →\nbuild_deep_tasks() →\nlimit_tasks(): at most\naudit_deep_max_calls →\nrun_tasks(): pairs of\nsteps, requirements,\nboundaries, claims of\nparts → conflict_tasks():\ncontradictions; figures —\nquantity_calculations();\ntypos.",
@@ -52911,7 +53000,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Deep review\n_run_deep():\nfind_processes() — steps\nfrom a table of\noperations, a list of\nsteps or “Step N”\nsubsections →\nbuild_deep_tasks() →\nlimit_tasks(): at most\naudit_deep_max_calls →\nrun_tasks(): pairs of\nsteps, requirements,\nboundaries, claims of\nparts → conflict_tasks():\ncontradictions; figures —\nquantity_calculations();\ntypos.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bM1"
+      "index": "bM2"
     },
     {
       "id": "vNGIpVJL",
@@ -52951,10 +53040,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bM2"
+      "index": "bM3"
     },
     {
       "id": "ypdrVwJY",
@@ -52979,7 +53068,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1967309312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Passes 2–3\n_run_passes()\n(audit_passes): the\nsections and the\nPASS_DEEP_KINDS questions\nonce more at temperature ≥\nPASS_TEMPERATURE (0.4);\norigins get “#p2”, “#p3”:\nwhat several passes found\ncounts as corroborated.",
@@ -52991,7 +53080,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Passes 2–3\n_run_passes()\n(audit_passes): the\nsections and the\nPASS_DEEP_KINDS questions\nonce more at temperature ≥\nPASS_TEMPERATURE (0.4);\norigins get “#p2”, “#p3”:\nwhat several passes found\ncounts as corroborated.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bM3"
+      "index": "bM4"
     },
     {
       "id": "gP899Gls",
@@ -53018,7 +53107,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1302374772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53055,7 +53144,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM4"
+      "index": "bM5"
     },
     {
       "id": "OVU8BgUp",
@@ -53082,7 +53171,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 989291074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53119,7 +53208,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM5"
+      "index": "bM6"
     },
     {
       "id": "yySnDpUF",
@@ -53146,7 +53235,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2123838774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53183,7 +53272,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM6"
+      "index": "bM7"
     },
     {
       "id": "zrMh2SeF",
@@ -53210,7 +53299,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1271288365,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53247,7 +53336,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM7"
+      "index": "bM8"
     },
     {
       "id": "kafNxSVO",
@@ -53274,7 +53363,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1487354759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53311,7 +53400,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM8"
+      "index": "bM9"
     },
     {
       "id": "j12eG9nh",
@@ -53338,7 +53427,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 900965996,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53375,7 +53464,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bM9"
+      "index": "bMA"
     },
     {
       "id": "GJ96ZiuZ",
@@ -53402,7 +53491,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 442574064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53439,7 +53528,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMA"
+      "index": "bMB"
     },
     {
       "id": "La52gouI",
@@ -53479,10 +53568,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMB"
+      "index": "bMC"
     },
     {
       "id": "bOj4RnYI",
@@ -53507,7 +53596,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1738418226,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Items\nfound_so_far_block():\nfindings of the other\nchecks (up to 12 000\nchars) →\nanswer_focus_point():\n“special attention” and\nthe checklist — an answer\nfrom the document, new\nfindings, “unclear from\nthe document”;\nanswer_system(): what the\ndocument requires from a\nsystem with a card\n(audit_systems).",
@@ -53519,7 +53608,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Items\nfound_so_far_block():\nfindings of the other\nchecks (up to 12 000\nchars) →\nanswer_focus_point():\n“special attention” and\nthe checklist — an answer\nfrom the document, new\nfindings, “unclear from\nthe document”;\nanswer_system(): what the\ndocument requires from a\nsystem with a card\n(audit_systems).",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMC"
+      "index": "bMD"
     },
     {
       "id": "vujimxkk",
@@ -53559,10 +53648,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tX38AYgs"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMD"
+      "index": "bME"
     },
     {
       "id": "iPOOvSoV",
@@ -53587,7 +53676,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1466250251,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Retry and checks without\nthe model\n_recheck(): sections the\nmodel did not answer —\nonce more with\nretry_timeout().\ncheck_abbreviations(),\ncheck_formatting() —\nbefore the section checks;\nunverified_refs() and\ncheck_citations():\nreferences and figures of\nfindings — in the document\nand the norms.",
@@ -53599,7 +53688,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Retry and checks without\nthe model\n_recheck(): sections the\nmodel did not answer —\nonce more with\nretry_timeout().\ncheck_abbreviations(),\ncheck_formatting() —\nbefore the section checks;\nunverified_refs() and\ncheck_citations():\nreferences and figures of\nfindings — in the document\nand the norms.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bME"
+      "index": "bMF"
     },
     {
       "id": "wdlboIle",
@@ -53639,10 +53728,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "wnbtzw0P"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMF"
+      "index": "bMG"
     },
     {
       "id": "x7w6MR2n",
@@ -53667,7 +53756,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1611850607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "REDUCE: duplicates\nmodel_findings() →\ncollect_unique_findings()\n(stems ≥ 80 %, in the\npieces of one section —\nsection_runs() — ≥ 40 %;\nsteps_conflict() —\ndifferent steps are not\njoined) → clean_typos()\n(without the model) →\nmerge_duplicate_findings()\n(audit_merge_duplicates,\n+1 call): findings of one\nanswer and about different\nsteps are not merged.",
@@ -53679,7 +53768,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "REDUCE: duplicates\nmodel_findings() →\ncollect_unique_findings()\n(stems ≥ 80 %, in the\npieces of one section —\nsection_runs() — ≥ 40 %;\nsteps_conflict() —\ndifferent steps are not\njoined) → clean_typos()\n(without the model) →\nmerge_duplicate_findings()\n(audit_merge_duplicates,\n+1 call): findings of one\nanswer and about different\nsteps are not merged.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMG"
+      "index": "bMH"
     },
     {
       "id": "zJiZX7Zn",
@@ -53719,10 +53808,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Ejv9n8MW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMH"
+      "index": "bMI"
     },
     {
       "id": "V1NKzCq9",
@@ -53747,7 +53836,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 333788272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Sections\nsplit_minor_findings():\nmain, minor, typos →\ngroup_by_section(): by\ndocument section, in\ndocument order;\ncorroboration() — how many\nchecks found the finding.",
@@ -53759,7 +53848,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Sections\nsplit_minor_findings():\nmain, minor, typos →\ngroup_by_section(): by\ndocument section, in\ndocument order;\ncorroboration() — how many\nchecks found the finding.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMI"
+      "index": "bMJ"
     },
     {
       "id": "iSBNSO9S",
@@ -53799,10 +53888,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "16VaL3EV"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMJ"
+      "index": "bMK"
     },
     {
       "id": "h0SN0t42",
@@ -53827,7 +53916,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1210471730,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "“Key points”\nsummary_candidates() →\nselect_summary()\n(audit_summary_max, +1\ncall): an editor model\npicks what matters and\nwrites the gist in a line\nwith a pointer to the\nnumber; no answer —\n_summary_fallback(): by\ncorroboration and\nseverity.",
@@ -53839,7 +53928,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "“Key points”\nsummary_candidates() →\nselect_summary()\n(audit_summary_max, +1\ncall): an editor model\npicks what matters and\nwrites the gist in a line\nwith a pointer to the\nnumber; no answer —\n_summary_fallback(): by\ncorroboration and\nseverity.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMK"
+      "index": "bML"
     },
     {
       "id": "MLM3kINZ",
@@ -53879,10 +53968,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "emnEvmko"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bML"
+      "index": "bMM"
     },
     {
       "id": "wJZd85gr",
@@ -53907,7 +53996,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2128766942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Report and log\nbuild_final_report(): “Key\npoints”, findings by\nsection, answers to items,\nsystems;\naudit_log_markdown(): the\nlog with the run settings;\nraw_answers_markdown():\nraw model answers .md.",
@@ -53919,7 +54008,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Report and log\nbuild_final_report(): “Key\npoints”, findings by\nsection, answers to items,\nsystems;\naudit_log_markdown(): the\nlog with the run settings;\nraw_answers_markdown():\nraw model answers .md.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMM"
+      "index": "bMN"
     },
     {
       "id": "hx8woo9N",
@@ -53959,10 +54048,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMN"
+      "index": "bMO"
     },
     {
       "id": "iKBY6K5p",
@@ -53987,7 +54076,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1345748601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document with findings\nannotate_docx_with_findings():\n_locate_by_quote() →\n_isolate_range() →\nadd_comment(); without a\nquote — _locate_by_words()\n(≥ 2 words and ≥ 30 %,\nunambiguous); otherwise —\na list at the start of the\ndocument.",
@@ -53999,7 +54088,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Document with findings\nannotate_docx_with_findings():\n_locate_by_quote() →\n_isolate_range() →\nadd_comment(); without a\nquote — _locate_by_words()\n(≥ 2 words and ≥ 30 %,\nunambiguous); otherwise —\na list at the start of the\ndocument.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMO"
+      "index": "bMP"
     },
     {
       "id": "afp2iGWn",
@@ -54035,10 +54124,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMP"
+      "index": "bMQ"
     },
     {
       "id": "KSnAoUBM",
@@ -54063,7 +54152,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 919886983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Comparison with a\nreference\ncompare_with_reference():\nthe model matches each\nreference item against the\nreview findings — the same\nplace and substance:\nfound, partial, missed; in\nbatches, missing ones are\nasked again →\nreference_markdown().",
@@ -54075,7 +54164,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Comparison with a\nreference\ncompare_with_reference():\nthe model matches each\nreference item against the\nreview findings — the same\nplace and substance:\nfound, partial, missed; in\nbatches, missing ones are\nasked again →\nreference_markdown().",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMQ"
+      "index": "bMR"
     },
     {
       "id": "X8Wu67Sw",
@@ -54102,7 +54191,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1976364314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54139,7 +54228,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMR"
+      "index": "bMS"
     },
     {
       "id": "tX38AYgs",
@@ -54166,7 +54255,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2103868351,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54203,7 +54292,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMS"
+      "index": "bMT"
     },
     {
       "id": "wnbtzw0P",
@@ -54230,7 +54319,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1437884666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54267,7 +54356,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMT"
+      "index": "bMU"
     },
     {
       "id": "Ejv9n8MW",
@@ -54294,7 +54383,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1495516759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54331,7 +54420,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMU"
+      "index": "bMV"
     },
     {
       "id": "16VaL3EV",
@@ -54358,7 +54447,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 573772488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54395,7 +54484,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMV"
+      "index": "bMW"
     },
     {
       "id": "emnEvmko",
@@ -54422,7 +54511,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2132548085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54459,7 +54548,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMW"
+      "index": "bMX"
     },
     {
       "id": "TZYNSf5h",
@@ -54486,7 +54575,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1205195099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54523,7 +54612,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMX"
+      "index": "bMY"
     },
     {
       "id": "yKseTRwq",
@@ -54550,7 +54639,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2099732778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54595,7 +54684,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMY"
+      "index": "bMZ"
     },
     {
       "id": "N9Om56lu",
@@ -54620,7 +54709,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 91742678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "VERIFICATION OF FIXES — the “Verification of fixes” tab",
@@ -54632,7 +54721,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "VERIFICATION OF FIXES — the “Verification of fixes” tab",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMZ"
+      "index": "bMa"
     },
     {
       "id": "nTSSlEjj",
@@ -54668,10 +54757,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Zar9Y3LN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMa"
+      "index": "bMb"
     },
     {
       "id": "uGzxhM1L",
@@ -54696,7 +54785,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 804496879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document_to_markdown() →\nsplit_into_sections()\nthe new revision of the document,\nsections up to audit_map_size.",
@@ -54708,7 +54797,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "document_to_markdown() →\nsplit_into_sections()\nthe new revision of the document,\nsections up to audit_map_size.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMb"
+      "index": "bMc"
     },
     {
       "id": "WZV3D3Fx",
@@ -54748,10 +54837,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2Yvbu1dU"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMc"
+      "index": "bMd"
     },
     {
       "id": "jvCTLAIf",
@@ -54776,7 +54865,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 419436533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "build_section_index()\nsection embeddings (up to\nsection_embed_chars) +\nLightweightBM25 over sections; once\nper document.",
@@ -54788,7 +54877,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "build_section_index()\nsection embeddings (up to\nsection_embed_chars) +\nLightweightBM25 over sections; once\nper document.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMd"
+      "index": "bMe"
     },
     {
       "id": "vb9LjxEi",
@@ -54828,10 +54917,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "p2ERzJbS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMe"
+      "index": "bMf"
     },
     {
       "id": "dCGPTpDu",
@@ -54856,7 +54945,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 762571332,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "verify_remark(): matching\nnorms — build_norms_context() (the\n“knowledge base” checkbox);\npick_sections_for_remark(): cosine +\nBM25 + reranker (best_window), RRF →\nreview_top_sections sections up to\nreview_context_max_chars.",
@@ -54868,7 +54957,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "verify_remark(): matching\nnorms — build_norms_context() (the\n“knowledge base” checkbox);\npick_sections_for_remark(): cosine +\nBM25 + reranker (best_window), RRF →\nreview_top_sections sections up to\nreview_context_max_chars.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMf"
+      "index": "bMg"
     },
     {
       "id": "I7P2VCzP",
@@ -54908,10 +54997,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4iAX8TvS"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMg"
+      "index": "bMh"
     },
     {
       "id": "aOGk1F4k",
@@ -54936,7 +55025,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1433573942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "review_prompt() → ask_llm()\nJSON {status, quote, comment}.",
@@ -54948,7 +55037,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "review_prompt() → ask_llm()\nJSON {status, quote, comment}.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMh"
+      "index": "bMi"
     },
     {
       "id": "xI48zG4D",
@@ -54988,10 +55077,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMi"
+      "index": "bMj"
     },
     {
       "id": "kbeI2RDs",
@@ -55016,7 +55105,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 285805235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parse_verification()\n“fixed” and “partially” count only if\nquote_in_text() found the quote in\nthe sections; otherwise “could not be\nverified”.",
@@ -55028,7 +55117,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "parse_verification()\n“fixed” and “partially” count only if\nquote_in_text() found the quote in\nthe sections; otherwise “could not be\nverified”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMj"
+      "index": "bMk"
     },
     {
       "id": "G2Fvpjah",
@@ -55064,10 +55153,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMk"
+      "index": "bMl"
     },
     {
       "id": "Td2zMVKT",
@@ -55092,7 +55181,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 49769556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "build_matrix_markdown() /\ngenerate_word_matrix()\nverification matrix .md and .docx.",
@@ -55104,7 +55193,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "build_matrix_markdown() /\ngenerate_word_matrix()\nverification matrix .md and .docx.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMl"
+      "index": "bMm"
     },
     {
       "id": "Zar9Y3LN",
@@ -55131,7 +55220,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1192375867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55168,7 +55257,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMm"
+      "index": "bMn"
     },
     {
       "id": "2Yvbu1dU",
@@ -55195,7 +55284,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1912741177,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55232,7 +55321,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMn"
+      "index": "bMo"
     },
     {
       "id": "p2ERzJbS",
@@ -55259,7 +55348,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1753808393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55296,7 +55385,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMo"
+      "index": "bMp"
     },
     {
       "id": "4iAX8TvS",
@@ -55323,7 +55412,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1209698496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55360,7 +55449,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMp"
+      "index": "bMq"
     },
     {
       "id": "79AfqqOw",
@@ -55387,7 +55476,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 649390567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55424,7 +55513,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bMq"
+      "index": "bMr"
     },
     {
       "id": "BAMVzGWG",
@@ -55449,7 +55538,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 769097572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Service errors do not turn into “clean”: is_llm_error() — the section goes to “could not be reviewed”, the report is marked “review incomplete”. The report and the section log are kept in the session and survive downloads.",
@@ -55461,7 +55550,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Service errors do not turn into “clean”: is_llm_error() — the section goes to “could not be reviewed”, the report is marked “review incomplete”. The report and the section log are kept in the session and survive downloads.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMr"
+      "index": "bMs"
     },
     {
       "id": "QyCi5azJ",
@@ -55486,7 +55575,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 139838873,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "SYSTEM CARD DRAFT — the “Draft a system card from the base” button in the “For the review” block of the sidebar (mint/cards.py)",
@@ -55498,7 +55587,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "SYSTEM CARD DRAFT — the “Draft a system card from the base” button in the “For the review” block of the sidebar (mint/cards.py)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMs"
+      "index": "bMt"
     },
     {
       "id": "VeNnbFEy",
@@ -55534,10 +55623,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "i74dH3Hk"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMt"
+      "index": "bMu"
     },
     {
       "id": "TYT6RVjB",
@@ -55562,7 +55651,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 539470164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "draft_system_card()\nthe card sections CARD_SECTIONS (10:\nnames, purpose, services, limits,\ndata protection and storage, plans,\nlimitations, connection,\nrequirements) — in parallel, at most\nCARD_PARALLEL and audit_parallel.",
@@ -55574,7 +55663,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "draft_system_card()\nthe card sections CARD_SECTIONS (10:\nnames, purpose, services, limits,\ndata protection and storage, plans,\nlimitations, connection,\nrequirements) — in parallel, at most\nCARD_PARALLEL and audit_parallel.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMu"
+      "index": "bMv"
     },
     {
       "id": "3HVpjO9S",
@@ -55614,10 +55703,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jJ9GWsBf"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMv"
+      "index": "bMw"
     },
     {
       "id": "8E7T5UEN",
@@ -55642,7 +55731,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 912697281,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "ask_section()\nits own search query per section →\nsearch_parent_child(): CARD_TOP_K\nfragments, without multi-query;\nnothing found — the section is empty,\nno LLM call.",
@@ -55654,7 +55743,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "ask_section()\nits own search query per section →\nsearch_parent_child(): CARD_TOP_K\nfragments, without multi-query;\nnothing found — the section is empty,\nno LLM call.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMw"
+      "index": "bMx"
     },
     {
       "id": "G6egOv7I",
@@ -55694,10 +55783,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "vy0q1Yfx"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMx"
+      "index": "bMy"
     },
     {
       "id": "MbVY2aBm",
@@ -55722,7 +55811,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 667925749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "ask_llm()\ncard_section_system: only from the\nfragments, every fact with [Source:\nfile, section]; no information — “NOT\nIN THE BASE”.",
@@ -55734,7 +55823,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "ask_llm()\ncard_section_system: only from the\nfragments, every fact with [Source:\nfile, section]; no information — “NOT\nIN THE BASE”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bMy"
+      "index": "bMz"
     },
     {
       "id": "jegCd0eR",
@@ -55774,10 +55863,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "gnjGhy5q"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bMz"
+      "index": "bN0"
     },
     {
       "id": "qdSMG5VE",
@@ -55802,7 +55891,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 897888917,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "check_citations()\na fact without a reference or with a\nreference outside the found fragments\n— marked “⚠️ check”.",
@@ -55814,7 +55903,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "check_citations()\na fact without a reference or with a\nreference outside the found fragments\n— marked “⚠️ check”.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bN0"
+      "index": "bN1"
     },
     {
       "id": "5oQAEtVY",
@@ -55854,10 +55943,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bN1"
+      "index": "bN2"
     },
     {
       "id": "GbOQu2Mb",
@@ -55882,7 +55971,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 854319438,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "card_markdown()\nthe card from the template: “Names:”\n(the review recognizes the system in\na document by them), a “draft” mark,\nthe CARD_LAYOUT sections, gaps “not\nin the base”, sources — source_name()\nwithout search scores → download .md.",
@@ -55894,7 +55983,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "card_markdown()\nthe card from the template: “Names:”\n(the review recognizes the system in\na document by them), a “draft” mark,\nthe CARD_LAYOUT sections, gaps “not\nin the base”, sources — source_name()\nwithout search scores → download .md.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bN2"
+      "index": "bN3"
     },
     {
       "id": "1mlyVsKn",
@@ -55930,10 +56019,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bN3"
+      "index": "bN4"
     },
     {
       "id": "PgclhLM7",
@@ -55958,7 +56047,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 505414483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Expert\nchecks the facts against the sources,\nfills the gaps (limitations, plans\nwith dates), removes the mark → loads\nthe card into the base → marks it in\n“System cards”: the review takes it\ninto every check.",
@@ -55970,7 +56059,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Expert\nchecks the facts against the sources,\nfills the gaps (limitations, plans\nwith dates), removes the mark → loads\nthe card into the base → marks it in\n“System cards”: the review takes it\ninto every check.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bN4"
+      "index": "bN5"
     },
     {
       "id": "i74dH3Hk",
@@ -55997,7 +56086,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1045373394,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56034,7 +56123,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN5"
+      "index": "bN6"
     },
     {
       "id": "jJ9GWsBf",
@@ -56061,7 +56150,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 787637507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56098,7 +56187,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN6"
+      "index": "bN7"
     },
     {
       "id": "vy0q1Yfx",
@@ -56125,7 +56214,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 675627666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56162,7 +56251,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN7"
+      "index": "bN8"
     },
     {
       "id": "gnjGhy5q",
@@ -56189,7 +56278,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1128558142,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56226,7 +56315,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN8"
+      "index": "bN9"
     },
     {
       "id": "zp8qPU8V",
@@ -56253,7 +56342,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1337792537,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56290,7 +56379,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "startArrowhead": null,
       "endArrowhead": "arrow",
       "elbowed": false,
-      "index": "bN9"
+      "index": "bNA"
     },
     {
       "id": "BTEGRtD5",
@@ -56315,7 +56404,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1511860888,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9. Service calls and load",
@@ -56327,7 +56416,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "9. Service calls and load",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNA"
+      "index": "bNB"
     },
     {
       "id": "o59P4WPj",
@@ -56352,7 +56441,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1742391837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "For sizing the gateway for your number of users and document volume. All services are an OpenAI-compatible HTTP API.",
@@ -56364,7 +56453,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "For sizing the gateway for your number of users and document volume. All services are an OpenAI-compatible HTTP API.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNB"
+      "index": "bNC"
     },
     {
       "id": "Qaaxk4uy",
@@ -56396,10 +56485,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "zrn6omfM"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNC"
+      "index": "bND"
     },
     {
       "id": "zrn6omfM",
@@ -56424,7 +56513,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1445141011,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LLM — POST {LLM_API_URL}/chat/completions\n• ask_llm(): chat answer, condense_question(); in review — MAP,\n   critique_findings(), the deep review, items, merge_duplicate_findings(),\n   select_summary(), compare_with_reference(); verify_remark() in\n   verification; draft_system_card() — a call per card section; --generate in\n   eval\n• expand_query_multi() — if use_multi_query\n• _llm_prompt_tokens() — measuring “characters per token” (max_tokens = 1)\n• GET {LLM_API_URL}/models — detect_server_info(): model list and windows\n   (panel 1)\nRetries — llm_retries (panel 3); HTTP 429 — a shared pause for all threads\n(_note_rate_limit(), Retry-After), _wait_rate_limit() before every request.",
@@ -56436,7 +56525,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "LLM — POST {LLM_API_URL}/chat/completions\n• ask_llm(): chat answer, condense_question(); in review — MAP,\n   critique_findings(), the deep review, items, merge_duplicate_findings(),\n   select_summary(), compare_with_reference(); verify_remark() in\n   verification; draft_system_card() — a call per card section; --generate in\n   eval\n• expand_query_multi() — if use_multi_query\n• _llm_prompt_tokens() — measuring “characters per token” (max_tokens = 1)\n• GET {LLM_API_URL}/models — detect_server_info(): model list and windows\n   (panel 1)\nRetries — llm_retries (panel 3); HTTP 429 — a shared pause for all threads\n(_note_rate_limit(), Retry-After), _wait_rate_limit() before every request.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bND"
+      "index": "bNE"
     },
     {
       "id": "N5V20F1a",
@@ -56468,10 +56557,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ITaNoM1N"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNE"
+      "index": "bNF"
     },
     {
       "id": "ITaNoM1N",
@@ -56496,7 +56585,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 886368424,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embeddings — POST {EMBED_API_URL}\n• get_query_embedding(): the question, a document section in review, a\n   comment in verification\n• get_query_embeddings_batch(): indexing (in batches of embed_batch_size) and\n   build_section_index()\n• in search up to 3 attempts with a 2 s pause\n• GET …/models next to EMBED_API_URL — the model input (panel 1)",
@@ -56508,7 +56597,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Embeddings — POST {EMBED_API_URL}\n• get_query_embedding(): the question, a document section in review, a\n   comment in verification\n• get_query_embeddings_batch(): indexing (in batches of embed_batch_size) and\n   build_section_index()\n• in search up to 3 attempts with a 2 s pause\n• GET …/models next to EMBED_API_URL — the model input (panel 1)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNF"
+      "index": "bNG"
     },
     {
       "id": "92CBj9Ed",
@@ -56540,10 +56629,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "pBGwmcpp"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNG"
+      "index": "bNH"
     },
     {
       "id": "pBGwmcpp",
@@ -56568,7 +56657,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1849075733,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker — POST {RERANK_API_URL} (optional)\n• _rerank_request() via rerank_scores(): search and\n   pick_sections_for_remark()\n• in batches (rerank_max_docs, rerank_char_budget)\n• no retries: an error → search without the reranker (the log shows the HTTP\n   code and the batch size)\n• probe_reranker() — connection check in the sidebar (cached for 5 min)\nResponse: {results: [{index, relevance_score}]} or [{index, score}].",
@@ -56580,7 +56669,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Reranker — POST {RERANK_API_URL} (optional)\n• _rerank_request() via rerank_scores(): search and\n   pick_sections_for_remark()\n• in batches (rerank_max_docs, rerank_char_budget)\n• no retries: an error → search without the reranker (the log shows the HTTP\n   code and the batch size)\n• probe_reranker() — connection check in the sidebar (cached for 5 min)\nResponse: {results: [{index, relevance_score}]} or [{index, score}].",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNH"
+      "index": "bNI"
     },
     {
       "id": "ONSVr95E",
@@ -56612,10 +56701,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "lUPSXlwW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNI"
+      "index": "bNJ"
     },
     {
       "id": "lUPSXlwW",
@@ -56640,7 +56729,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 263174842,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Operation",
@@ -56652,7 +56741,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Operation",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNJ"
+      "index": "bNK"
     },
     {
       "id": "URYNuNaj",
@@ -56684,10 +56773,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bLWf2x3k"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNK"
+      "index": "bNL"
     },
     {
       "id": "bLWf2x3k",
@@ -56712,7 +56801,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 867626584,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LLM",
@@ -56724,7 +56813,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "LLM",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNL"
+      "index": "bNM"
     },
     {
       "id": "x7nmx2Rg",
@@ -56756,10 +56845,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "0u9rPgsT"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNM"
+      "index": "bNN"
     },
     {
       "id": "0u9rPgsT",
@@ -56784,7 +56873,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 607210338,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embeddings",
@@ -56796,7 +56885,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Embeddings",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNN"
+      "index": "bNO"
     },
     {
       "id": "yeS4ZIqj",
@@ -56828,10 +56917,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "VD7ZOtdC"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNO"
+      "index": "bNP"
     },
     {
       "id": "VD7ZOtdC",
@@ -56856,7 +56945,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1335103564,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker",
@@ -56868,7 +56957,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Reranker",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNP"
+      "index": "bNQ"
     },
     {
       "id": "SMIgiwrm",
@@ -56900,10 +56989,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "G5yPNdK8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNQ"
+      "index": "bNR"
     },
     {
       "id": "G5yPNdK8",
@@ -56928,7 +57017,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 506630157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What grows with business volume",
@@ -56940,7 +57029,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "What grows with business volume",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNR"
+      "index": "bNS"
     },
     {
       "id": "5WHiA0c0",
@@ -56972,10 +57061,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "IloYhSbH"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNS"
+      "index": "bNT"
     },
     {
       "id": "IloYhSbH",
@@ -57000,7 +57089,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 894803547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Chat question",
@@ -57012,7 +57101,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Chat question",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNT"
+      "index": "bNU"
     },
     {
       "id": "NFfUALBD",
@@ -57044,10 +57133,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2TaCVR3j"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNU"
+      "index": "bNV"
     },
     {
       "id": "2TaCVR3j",
@@ -57072,7 +57161,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 311891354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 rewrite with history, +1\n   multi-query)",
@@ -57084,7 +57173,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 (+1 rewrite with history, +1\n   multi-query)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNV"
+      "index": "bNW"
     },
     {
       "id": "EzxYBSjL",
@@ -57116,10 +57205,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "bX18GIPp"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNW"
+      "index": "bNX"
     },
     {
       "id": "bX18GIPp",
@@ -57144,7 +57233,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2123077737,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 multi-query)",
@@ -57156,7 +57245,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 (+1 multi-query)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNX"
+      "index": "bNY"
     },
     {
       "id": "qGM4siz9",
@@ -57188,10 +57277,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "tyR4QZRj"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNY"
+      "index": "bNZ"
     },
     {
       "id": "tyR4QZRj",
@@ -57216,7 +57305,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 305959585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2 requests (16 candidates in\nbatches)",
@@ -57228,7 +57317,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 2 requests (16 candidates in\nbatches)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNZ"
+      "index": "bNa"
     },
     {
       "id": "s5nu901v",
@@ -57260,10 +57349,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "HWSkPDLW"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNa"
+      "index": "bNb"
     },
     {
       "id": "HWSkPDLW",
@@ -57288,7 +57377,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1387135285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "number of users × questions per day",
@@ -57300,7 +57389,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "number of users × questions per day",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNb"
+      "index": "bNc"
     },
     {
       "id": "0UwvHJM8",
@@ -57332,10 +57421,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "oJdTV4GZ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNc"
+      "index": "bNd"
     },
     {
       "id": "oJdTV4GZ",
@@ -57360,7 +57449,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 320229884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document review, per section",
@@ -57372,7 +57461,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Document review, per section",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNd"
+      "index": "bNe"
     },
     {
       "id": "6OTQHL9w",
@@ -57404,10 +57493,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "UolJPPIB"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNe"
+      "index": "bNf"
     },
     {
       "id": "UolJPPIB",
@@ -57432,7 +57521,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1050657136,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2 (MAP + self-critique) or 1; per review:\n   +1 per “special attention” and\n   checklist item, +1 per system with a\n   card, +1 merging duplicates, +1 “Key\n   points”, with the outline — checking\n   “not described” (up to 15); the deep\n   review — up to audit_deep_max_calls;\n   passes 2–3 (audit_passes) repeat the\n   sections and the process and figures\n   questions",
@@ -57444,7 +57533,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "2 (MAP + self-critique) or 1; per review:\n   +1 per “special attention” and\n   checklist item, +1 per system with a\n   card, +1 merging duplicates, +1 “Key\n   points”, with the outline — checking\n   “not described” (up to 15); the deep\n   review — up to audit_deep_max_calls;\n   passes 2–3 (audit_passes) repeat the\n   sections and the process and figures\n   questions",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNf"
+      "index": "bNg"
     },
     {
       "id": "m3IFdm9f",
@@ -57476,10 +57565,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "TNY2gnV7"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNg"
+      "index": "bNh"
     },
     {
       "id": "TNY2gnV7",
@@ -57504,7 +57593,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 14525363,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 per review and +1 per\n   point with “special\n   attention”)",
@@ -57516,7 +57605,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 (+1 per review and +1 per\n   point with “special\n   attention”)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNh"
+      "index": "bNi"
     },
     {
       "id": "pGWanLVu",
@@ -57548,10 +57637,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "YzIGSqVE"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNi"
+      "index": "bNj"
     },
     {
       "id": "YzIGSqVE",
@@ -57576,7 +57665,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1228853070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2",
@@ -57588,7 +57677,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 2",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNj"
+      "index": "bNk"
     },
     {
       "id": "wHOTaeZY",
@@ -57620,10 +57709,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "DyMYLFzN"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNk"
+      "index": "bNl"
     },
     {
       "id": "DyMYLFzN",
@@ -57648,7 +57737,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1565992457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parts ≈ document size / audit_map_size: 20,000-char requirements ≈ 6 parts ≈ 12 LLM calls +\n≈ 35 short deep review questions (process steps, requirements and parts); the whole\ndocument adds its size to the input of every section review",
@@ -57660,7 +57749,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "parts ≈ document size / audit_map_size: 20,000-char requirements ≈ 6 parts ≈ 12 LLM calls +\n≈ 35 short deep review questions (process steps, requirements and parts); the whole\ndocument adds its size to the input of every section review",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNl"
+      "index": "bNm"
     },
     {
       "id": "ul2MTGut",
@@ -57692,10 +57781,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "D9tJ3Tow"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNm"
+      "index": "bNn"
     },
     {
       "id": "D9tJ3Tow",
@@ -57720,7 +57809,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2121712154,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Verification of fixes, per comment",
@@ -57732,7 +57821,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Verification of fixes, per comment",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNn"
+      "index": "bNo"
     },
     {
       "id": "G5Em71Sp",
@@ -57764,10 +57853,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "4Aq3UXiQ"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNo"
+      "index": "bNp"
     },
     {
       "id": "4Aq3UXiQ",
@@ -57792,7 +57881,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1023123295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1",
@@ -57804,7 +57893,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNp"
+      "index": "bNq"
     },
     {
       "id": "vlGye5H3",
@@ -57836,10 +57925,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "G4Em2JVD"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNq"
+      "index": "bNr"
     },
     {
       "id": "G4Em2JVD",
@@ -57864,7 +57953,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 95312819,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 with norms)",
@@ -57876,7 +57965,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 (+1 with norms)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNr"
+      "index": "bNs"
     },
     {
       "id": "hCj7lj7o",
@@ -57908,10 +57997,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "FCY02wkH"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNs"
+      "index": "bNt"
     },
     {
       "id": "FCY02wkH",
@@ -57936,7 +58025,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1205086542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 1–2 (+2 with norms)",
@@ -57948,7 +58037,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 1–2 (+2 with norms)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNt"
+      "index": "bNu"
     },
     {
       "id": "yUU2sF2U",
@@ -57980,10 +58069,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BhI01aLi"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNu"
+      "index": "bNv"
     },
     {
       "id": "BhI01aLi",
@@ -58008,7 +58097,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1757123440,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "number of comments; plus embeddings of all sections of the new revision once",
@@ -58020,7 +58109,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "number of comments; plus embeddings of all sections of the new revision once",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNv"
+      "index": "bNw"
     },
     {
       "id": "9uDy9ElD",
@@ -58052,10 +58141,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "d47Qi4c8"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNw"
+      "index": "bNx"
     },
     {
       "id": "d47Qi4c8",
@@ -58080,7 +58169,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 516467266,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "System card draft",
@@ -58092,7 +58181,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "System card draft",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNx"
+      "index": "bNy"
     },
     {
       "id": "5Bo1eILu",
@@ -58124,10 +58213,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "OVpBqpyA"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bNy"
+      "index": "bNz"
     },
     {
       "id": "OVpBqpyA",
@@ -58152,7 +58241,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 548421217,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "up to 10 (a section with nothing found in\nthe base — no call)",
@@ -58164,7 +58253,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "up to 10 (a section with nothing found in\nthe base — no call)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bNz"
+      "index": "bO0"
     },
     {
       "id": "AK7riwIq",
@@ -58196,10 +58285,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ap4rJbup"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bO0"
+      "index": "bO1"
     },
     {
       "id": "ap4rJbup",
@@ -58224,7 +58313,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 184907741,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "up to 10 (a search per\nsection)",
@@ -58236,7 +58325,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "up to 10 (a search per\nsection)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO1"
+      "index": "bO2"
     },
     {
       "id": "0RNIR7ci",
@@ -58268,10 +58357,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "BoKptbKz"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bO2"
+      "index": "bO3"
     },
     {
       "id": "BoKptbKz",
@@ -58296,7 +58385,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 419990020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2 per section",
@@ -58308,7 +58397,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 2 per section",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO3"
+      "index": "bO4"
     },
     {
       "id": "1mokJrEw",
@@ -58340,10 +58429,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "Mnh4KAXc"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bO4"
+      "index": "bO5"
     },
     {
       "id": "Mnh4KAXc",
@@ -58368,7 +58457,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 698831687,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "number of systems; sections — in parallel, at most 3",
@@ -58380,7 +58469,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "number of systems; sections — in parallel, at most 3",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO5"
+      "index": "bO6"
     },
     {
       "id": "XoIWhG3o",
@@ -58412,10 +58501,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "T23DUfNr"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bO6"
+      "index": "bO7"
     },
     {
       "id": "T23DUfNr",
@@ -58440,7 +58529,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1944348611,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document upload",
@@ -58452,7 +58541,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Document upload",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO7"
+      "index": "bO8"
     },
     {
       "id": "RuxVmdzR",
@@ -58484,10 +58573,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "PwGoZtx6"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bO8"
+      "index": "bO9"
     },
     {
       "id": "PwGoZtx6",
@@ -58512,7 +58601,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1534635193,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58524,7 +58613,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bO9"
+      "index": "bOA"
     },
     {
       "id": "BrfX5oiy",
@@ -58556,10 +58645,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "ajBgJD8y"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOA"
+      "index": "bOB"
     },
     {
       "id": "ajBgJD8y",
@@ -58584,7 +58673,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1750748887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child / embed_batch_size\nrequests",
@@ -58596,7 +58685,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "child / embed_batch_size\nrequests",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOB"
+      "index": "bOC"
     },
     {
       "id": "fkocSPMc",
@@ -58628,10 +58717,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "DGFEz4o3"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOC"
+      "index": "bOD"
     },
     {
       "id": "DGFEz4o3",
@@ -58656,7 +58745,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1638919536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58668,7 +58757,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "—",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOD"
+      "index": "bOE"
     },
     {
       "id": "E5OP4Zgo",
@@ -58700,10 +58789,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "2X8dGEvm"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOE"
+      "index": "bOF"
     },
     {
       "id": "2X8dGEvm",
@@ -58728,7 +58817,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 794423897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 1 child per 250 chars (400 − overlap 150): 250,000 chars ≈ 1000 children ≈ 32 requests",
@@ -58740,7 +58829,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 1 child per 250 chars (400 − overlap 150): 250,000 chars ≈ 1000 children ≈ 32 requests",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOF"
+      "index": "bOG"
     },
     {
       "id": "xjw3Mynd",
@@ -58772,10 +58861,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "qvHktf6X"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOG"
+      "index": "bOH"
     },
     {
       "id": "qvHktf6X",
@@ -58800,7 +58889,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 32723047,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Quality check (and eval_search.py)",
@@ -58812,7 +58901,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Quality check (and eval_search.py)",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOH"
+      "index": "bOI"
     },
     {
       "id": "vRslnl2x",
@@ -58844,10 +58933,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "hrw0lZir"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOI"
+      "index": "bOJ"
     },
     {
       "id": "hrw0lZir",
@@ -58872,7 +58961,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 2002138294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 per question when writing questions; +1\n   with chat answers or multi-query",
@@ -58884,7 +58973,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 per question when writing questions; +1\n   with chat answers or multi-query",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOJ"
+      "index": "bOK"
     },
     {
       "id": "0GJRhlHR",
@@ -58916,10 +59005,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "O4xjcVYw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOK"
+      "index": "bOL"
     },
     {
       "id": "O4xjcVYw",
@@ -58944,7 +59033,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 715066907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 per question",
@@ -58956,7 +59045,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "1 per question",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOL"
+      "index": "bOM"
     },
     {
       "id": "lRhtutdd",
@@ -58988,10 +59077,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "QvJQiejl"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOM"
+      "index": "bON"
     },
     {
       "id": "QvJQiejl",
@@ -59016,7 +59105,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 644553354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2 per question",
@@ -59028,7 +59117,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "≈ 2 per question",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bON"
+      "index": "bOO"
     },
     {
       "id": "inakCaFQ",
@@ -59060,10 +59149,10 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
           "id": "jFJb5Ccw"
         }
       ],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
-      "index": "bOO"
+      "index": "bOP"
     },
     {
       "id": "jFJb5Ccw",
@@ -59088,7 +59177,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1674963114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answers are cached for all setting variants",
@@ -59100,7 +59189,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "answers are cached for all setting variants",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOP"
+      "index": "bOQ"
     },
     {
       "id": "fdHqXOIZ",
@@ -59125,7 +59214,7 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "versionNonce": 1727908868,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1792790777051,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Memory and disk (one Streamlit process for all users): FAISS IndexFlatL2 in memory — children × dimension × 4 bytes (Qwen3-Embedding-4B, 2560: ≈ 10 KB per child, 10,000 children ≈ 100 MB); BM25 — word positions of all parents; the\n_process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the sources/ originals. LOG_DIR: mint_system.log (up to 60 MB with rotation) and feedback.jsonl — grows with the number of feedback entries.",
@@ -59137,7 +59226,1307 @@ _process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the so
       "originalText": "Memory and disk (one Streamlit process for all users): FAISS IndexFlatL2 in memory — children × dimension × 4 bytes (Qwen3-Embedding-4B, 2560: ≈ 10 KB per child, 10,000 children ≈ 100 MB); BM25 — word positions of all parents; the\n_process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the sources/ originals. LOG_DIR: mint_system.log (up to 60 MB with rotation) and feedback.jsonl — grows with the number of feedback entries.",
       "autoResize": true,
       "lineHeight": 1.25,
-      "index": "bOQ"
+      "index": "bOR"
+    },
+    {
+      "id": "vxxEtbWZ",
+      "type": "text",
+      "x": 2200,
+      "y": 17261.0,
+      "width": 100.8,
+      "height": 17.5,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1095261605,
+      "version": 1,
+      "versionNonce": 460084027,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Mint v21.4.1",
+      "fontSize": 14,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Mint v21.4.1",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOS"
+    },
+    {
+      "id": "e9a1ZHqG",
+      "type": "text",
+      "x": 30,
+      "y": 17261.0,
+      "width": 954.0,
+      "height": 37.5,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1538676438,
+      "version": 1,
+      "versionNonce": 1145825540,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "10. Word drafting: sources, applicability and editing",
+      "fontSize": 30,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "10. Word drafting: sources, applicability and editing",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOT"
+    },
+    {
+      "id": "6BckAk3e",
+      "type": "text",
+      "x": 30,
+      "y": 17305.0,
+      "width": 1285.2,
+      "height": 21.25,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 618131305,
+      "version": 1,
+      "versionNonce": 875329573,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Separate from review: template and selected sources → confirmed context and applicability → Word → inspectable evidence links.",
+      "fontSize": 17,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Separate from review: template and selected sources → confirmed context and applicability → Word → inspectable evidence links.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOU"
+    },
+    {
+      "id": "o8Ny7MOp",
+      "type": "rectangle",
+      "x": 30,
+      "y": 17344.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1004139431,
+      "version": 1,
+      "versionNonce": 935607231,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "nxUpPSu8"
+        },
+        {
+          "type": "arrow",
+          "id": "iliqImhw"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOV"
+    },
+    {
+      "id": "nxUpPSu8",
+      "type": "text",
+      "x": 42,
+      "y": 17356.25,
+      "width": 422.4,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 555008891,
+      "version": 1,
+      "versionNonce": 1237715787,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Word drafting setup\ntab_template_draft.py: template or completed\nexample, and selected original documents.\nData stays in the local knowledge base.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "o8Ny7MOp",
+      "originalText": "Word drafting setup\ntab_template_draft.py: template or completed\nexample, and selected original documents.\nData stays in the local knowledge base.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOW"
+    },
+    {
+      "id": "WV3vpYIc",
+      "type": "rectangle",
+      "x": 502.8,
+      "y": 17344.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 2044199681,
+      "version": 1,
+      "versionNonce": 1180064102,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "9ZAyUH9g"
+        },
+        {
+          "type": "arrow",
+          "id": "iliqImhw"
+        },
+        {
+          "type": "arrow",
+          "id": "NzINpFEo"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOX"
+    },
+    {
+      "id": "9ZAyUH9g",
+      "type": "text",
+      "x": 514.8,
+      "y": 17356.25,
+      "width": 384.0,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 279863885,
+      "version": 1,
+      "versionNonce": 671709622,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Context\ndocument_context.py: infer_context()\nproposes target, objective, scope and\nparticipants from the template headings.\nconfirm_context() requires human\nconfirmation.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "WV3vpYIc",
+      "originalText": "Context\ndocument_context.py: infer_context()\nproposes target, objective, scope and\nparticipants from the template headings.\nconfirm_context() requires human\nconfirmation.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOY"
+    },
+    {
+      "id": "FCHqJNrQ",
+      "type": "rectangle",
+      "x": 975.6,
+      "y": 17344.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1526636591,
+      "version": 1,
+      "versionNonce": 703847967,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "LCDRemXz"
+        },
+        {
+          "type": "arrow",
+          "id": "NzINpFEo"
+        },
+        {
+          "type": "arrow",
+          "id": "gihbWK2h"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOZ"
+    },
+    {
+      "id": "LCDRemXz",
+      "type": "text",
+      "x": 987.6,
+      "y": 17356.25,
+      "width": 412.8,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 512682960,
+      "version": 1,
+      "versionNonce": 232900639,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Extraction\ntemplate_draft.py: create_draft() processes\nthe template and exact source quotations;\ncaching and parallel extraction preserve\nrequirement ordering.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "FCHqJNrQ",
+      "originalText": "Extraction\ntemplate_draft.py: create_draft() processes\nthe template and exact source quotations;\ncaching and parallel extraction preserve\nrequirement ordering.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOa"
+    },
+    {
+      "id": "iIOuRs4D",
+      "type": "rectangle",
+      "x": 1448.4,
+      "y": 17344.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1699685336,
+      "version": 1,
+      "versionNonce": 518524424,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "Mj6j61Xp"
+        },
+        {
+          "type": "arrow",
+          "id": "gihbWK2h"
+        },
+        {
+          "type": "arrow",
+          "id": "FZ7RYD2I"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOb"
+    },
+    {
+      "id": "Mj6j61Xp",
+      "type": "text",
+      "x": 1460.4,
+      "y": 17356.25,
+      "width": 403.2,
+      "height": 120.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 66370517,
+      "version": 1,
+      "versionNonce": 2088710681,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Applicability\nrequirement_scope.py: classify() separates\ntarget/shared from\ninteraction/other/uncertain; an actor is\nrequired for confident obligation\nassignment.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "iIOuRs4D",
+      "originalText": "Applicability\nrequirement_scope.py: classify() separates\ntarget/shared from\ninteraction/other/uncertain; an actor is\nrequired for confident obligation\nassignment.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOc"
+    },
+    {
+      "id": "pnK9P1fD",
+      "type": "rectangle",
+      "x": 1921.2,
+      "y": 17344.25,
+      "width": 448.8,
+      "height": 152.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "#e7f5ff",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 1207443029,
+      "version": 1,
+      "versionNonce": 929180283,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "3aiQ1Rgi"
+        },
+        {
+          "type": "arrow",
+          "id": "FZ7RYD2I"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOd"
+    },
+    {
+      "id": "3aiQ1Rgi",
+      "type": "text",
+      "x": 1933.2,
+      "y": 17356.25,
+      "width": 422.4,
+      "height": 100.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1620418816,
+      "version": 1,
+      "versionNonce": 1425371644,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Draft Word\ntemplate_draft.py: sections, paragraphs and\ntables are filled with source-supported\ncontent; formatting and protected fields are\npreserved.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "pnK9P1fD",
+      "originalText": "Draft Word\ntemplate_draft.py: sections, paragraphs and\ntables are filled with source-supported\ncontent; formatting and protected fields are\npreserved.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOe"
+    },
+    {
+      "id": "iliqImhw",
+      "type": "arrow",
+      "x": 484.8,
+      "y": 17420.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 104091559,
+      "version": 1,
+      "versionNonce": 1638003102,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "o8Ny7MOp",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "WV3vpYIc",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOf"
+    },
+    {
+      "id": "NzINpFEo",
+      "type": "arrow",
+      "x": 957.6,
+      "y": 17420.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 807529813,
+      "version": 1,
+      "versionNonce": 1208816828,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "WV3vpYIc",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "FCHqJNrQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOg"
+    },
+    {
+      "id": "gihbWK2h",
+      "type": "arrow",
+      "x": 1430.4,
+      "y": 17420.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1346938791,
+      "version": 1,
+      "versionNonce": 459787257,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "FCHqJNrQ",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "iIOuRs4D",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOh"
+    },
+    {
+      "id": "FZ7RYD2I",
+      "type": "arrow",
+      "x": 1903.2,
+      "y": 17420.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 1684329690,
+      "version": 1,
+      "versionNonce": 1722869346,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "iIOuRs4D",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1.0,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "pnK9P1fD",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOi"
+    },
+    {
+      "id": "IznEQWcC",
+      "type": "rectangle",
+      "x": 30,
+      "y": 17530.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 777671658,
+      "version": 1,
+      "versionNonce": 1081132578,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "2a2ZxCSR"
+        },
+        {
+          "type": "arrow",
+          "id": "QAbGQTYv"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOj"
+    },
+    {
+      "id": "2a2ZxCSR",
+      "type": "text",
+      "x": 42,
+      "y": 17542.25,
+      "width": 518.4,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1553072240,
+      "version": 1,
+      "versionNonce": 110758404,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Two-way evidence links\ndraft_traceability.py: build_traceability() links\nextracted requirements to Word sections and quotations\nin both directions.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "IznEQWcC",
+      "originalText": "Two-way evidence links\ndraft_traceability.py: build_traceability() links\nextracted requirements to Word sections and quotations\nin both directions.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOk"
+    },
+    {
+      "id": "cCYKea1V",
+      "type": "rectangle",
+      "x": 621.0,
+      "y": 17530.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 824780676,
+      "version": 1,
+      "versionNonce": 1739750,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "h9s09UKW"
+        },
+        {
+          "type": "arrow",
+          "id": "QAbGQTYv"
+        },
+        {
+          "type": "arrow",
+          "id": "vaMlW5Vb"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOl"
+    },
+    {
+      "id": "h9s09UKW",
+      "type": "text",
+      "x": 633.0,
+      "y": 17542.25,
+      "width": 537.6,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1466310692,
+      "version": 1,
+      "versionNonce": 507668719,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Source to edit chat\ndraft_traceability_ui.py passes the exact requirement\nID; document_edit.py preserves applicability so external\nduties cannot become target obligations.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "cCYKea1V",
+      "originalText": "Source to edit chat\ndraft_traceability_ui.py passes the exact requirement\nID; document_edit.py preserves applicability so external\nduties cannot become target obligations.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOm"
+    },
+    {
+      "id": "9DOCy4wL",
+      "type": "rectangle",
+      "x": 1212.0,
+      "y": 17530.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 887863823,
+      "version": 1,
+      "versionNonce": 2050692273,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "Pdk8g2am"
+        },
+        {
+          "type": "arrow",
+          "id": "vaMlW5Vb"
+        },
+        {
+          "type": "arrow",
+          "id": "HoI8Omwn"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOn"
+    },
+    {
+      "id": "Pdk8g2am",
+      "type": "text",
+      "x": 1224.0,
+      "y": 17542.25,
+      "width": 528.0,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1994177841,
+      "version": 1,
+      "versionNonce": 600225567,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Human-approved change\ndocument_edit_chat.py: propose_edit() → diff → accept,\nreject or undo_accepted_version(). The full document is\nnot regenerated.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "9DOCy4wL",
+      "originalText": "Human-approved change\ndocument_edit_chat.py: propose_edit() → diff → accept,\nreject or undo_accepted_version(). The full document is\nnot regenerated.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOo"
+    },
+    {
+      "id": "INLf7B4r",
+      "type": "rectangle",
+      "x": 1803.0,
+      "y": 17530.25,
+      "width": 567.0,
+      "height": 112.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#fff9db",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 3
+      },
+      "seed": 140541513,
+      "version": 1,
+      "versionNonce": 212296401,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "type": "text",
+          "id": "gOcFE9WQ"
+        },
+        {
+          "type": "arrow",
+          "id": "HoI8Omwn"
+        }
+      ],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "index": "bOp"
+    },
+    {
+      "id": "gOcFE9WQ",
+      "type": "text",
+      "x": 1815.0,
+      "y": 17542.25,
+      "width": 528.0,
+      "height": 80.0,
+      "angle": 0,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 1070156888,
+      "version": 1,
+      "versionNonce": 2004613835,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Changed evidence links\nmark_stale_after_edits() marks previous links as stale.\nChanged sections remain tracked; the latest 10 DOCX\nsnapshots are only for undo.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": "INLf7B4r",
+      "originalText": "Changed evidence links\nmark_stale_after_edits() marks previous links as stale.\nChanged sections remain tracked; the latest 10 DOCX\nsnapshots are only for undo.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOq"
+    },
+    {
+      "id": "QAbGQTYv",
+      "type": "arrow",
+      "x": 603.0,
+      "y": 17586.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 460381108,
+      "version": 1,
+      "versionNonce": 1974913608,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "IznEQWcC",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "cCYKea1V",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOr"
+    },
+    {
+      "id": "vaMlW5Vb",
+      "type": "arrow",
+      "x": 1194.0,
+      "y": 17586.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 274619326,
+      "version": 1,
+      "versionNonce": 1006881587,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "cCYKea1V",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "9DOCy4wL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOs"
+    },
+    {
+      "id": "HoI8Omwn",
+      "type": "arrow",
+      "x": 1785.0,
+      "y": 17586.25,
+      "width": 12.0,
+      "height": 0.0,
+      "angle": 0,
+      "strokeColor": "#1971c2",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": {
+        "type": 2
+      },
+      "seed": 401479824,
+      "version": 1,
+      "versionNonce": 699083238,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "points": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          12.0,
+          0.0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "9DOCy4wL",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          1,
+          0.5
+        ]
+      },
+      "endBinding": {
+        "elementId": "INLf7B4r",
+        "focus": 0,
+        "gap": 8,
+        "mode": "orbit",
+        "fixedPoint": [
+          0,
+          0.5
+        ]
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false,
+      "index": "bOt"
+    },
+    {
+      "id": "JCtzuwPd",
+      "type": "text",
+      "x": 30,
+      "y": 17666.25,
+      "width": 2025.6,
+      "height": 20.0,
+      "angle": 0,
+      "strokeColor": "#868e96",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 1,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "roundness": null,
+      "seed": 716216987,
+      "version": 1,
+      "versionNonce": 296372588,
+      "isDeleted": false,
+      "boundElements": [],
+      "updated": 1795462703848,
+      "link": null,
+      "locked": false,
+      "text": "Limit: evidence links do not prove that ALL requirements have been extracted from broad sources. Expert review remains necessary; green CI based on synthetic documents does not prove quality for a real template.",
+      "fontSize": 16,
+      "fontFamily": 5,
+      "textAlign": "left",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Limit: evidence links do not prove that ALL requirements have been extracted from broad sources. Expert review remains necessary; green CI based on synthetic documents does not prove quality for a real template.",
+      "autoResize": true,
+      "lineHeight": 1.25,
+      "index": "bOu"
     }
   ],
   "appState": {

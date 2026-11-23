@@ -2,11 +2,58 @@
 значение — перевод. Сборка с --lang en без перевода хотя бы одной надписи завершается с ошибкой (lang.py)."""
 
 EN = {
+    # ---------------- v21.4.1: Word lifecycle and evidence traceability
+    "Локальная RAG-система: чат, аудит, контроль исправлений и формирование Word с прослеживаемостью. Python + Streamlit, пакет mint/; русский и английский":
+        "A local RAG system: chat, document review, correction verification and traceable Word drafting. Python + Streamlit, mint/ package; Russian and English.",
+    "Формирование Word — отдельный поток от аудита и контроля замечаний":
+        "Word drafting — a separate workflow from review and correction verification",
+    "Основания не являются автоматически применимыми: сначала определяем целевую систему, затем учитываем субъект каждого требования.":
+        "Source requirements are not automatically applicable: first confirm the target system, then classify each requirement by obligated actor.",
+    "1. Шаблон Word и основания Пользователь выбирает DOCX и исходные документы из локальной базы знаний. Оригиналы не отправляются в GitHub.":
+        "1. Word template and sources\n\nThe user selects a DOCX template and original documents from the local knowledge base. Originals are never uploaded to GitHub.",
+    "2. Определение контекста Модель предлагает целевую систему, цель, границы и участников по шаблону; основания могут относиться к разным системам.":
+        "2. Infer context\n\nThe model proposes the target system, objective, scope and participants from the template; sources can describe different systems.",
+    "3. Подтверждение человеком Перед сборкой пользователь проверяет контекст. Он задаёт направление поиска, но не доказывает факты.":
+        "3. Human confirmation\n\nBefore drafting, the user verifies the context. It guides search but is not evidence of factual obligations.",
+    "4. Извлечение требований Цитаты сверяются с исходным текстом; сбои и неопределённость остаются видимыми для эксперта.":
+        "4. Extract requirements\n\nQuotes are checked against the original text; errors and uncertainty remain visible for expert review.",
+    "5. Применимость по исполнителю Целевая / общая / внешнее взаимодействие / другая система / неясно. Чужие обязанности не приписываются цели.":
+        "5. Classify applicability by actor\n\nTarget / shared / external interaction / another system / uncertain. Other systems' duties are not assigned to the target.",
+    "6. Формирование Word План по разделам, заполнение полей и таблиц, проверка источников и сохранение защищённого оформления.":
+        "6. Draft Word\n\nSection planning, filling fields and tables, source verification, and preservation of protected formatting.",
+    "7. Два направления связей Раздел Word → требования; основание → разделы Word. Найденный фрагмент текста не доказывает смысловую полноту.":
+        "7. Two-way evidence links\n\nWord section → requirements; source → Word sections. A text match does not prove semantic completeness.",
+    "8. Чат правок с подтверждением Точный ID требования → предложение и diff → принять, отклонить или отменить. Изменённые связи требуют новой проверки.":
+        "8. Accepted chat edits\n\nExact requirement ID → proposal and diff → accept, reject or undo. Changed evidence links require revalidation.",
+    "Прослеживаемость охватывает извлечённые требования, а не гарантирует полноту всех оснований. Экспертная оценка первоначального Word — отдельно; принятые пользователем правки не переписывают первоначальный результат генерации.":
+        "Traceability covers extracted requirements; it does not guarantee complete coverage of the source documents. The initial Word draft is evaluated separately; user-approved edits do not rewrite the initial generation result.",
+    "10. Формирование Word: основания, применимость и правки":
+        "10. Word drafting: sources, applicability and editing",
+    "Отдельный поток от аудита: шаблон и выбранные основания → контекст и применимость → Word → проверяемые связи.":
+        "Separate from review: template and selected sources → confirmed context and applicability → Word → inspectable evidence links.",
+    "Задание из Word tab_template_draft.py: шаблон или пример и выбранные исходные документы. Данные остаются в локальной базе знаний.":
+        "Word drafting setup\ntab_template_draft.py: template or completed example, and selected original documents. Data stays in the local knowledge base.",
+    "Контекст document_context.py: infer_context() предлагает target, objective, scope, participants по заголовкам шаблона. confirm_context() требует подтверждения человеком.":
+        "Context\ndocument_context.py: infer_context() proposes target, objective, scope and participants from the template headings. confirm_context() requires human confirmation.",
+    "Извлечение template_draft.py: create_draft() обходит шаблон, извлекает точные цитаты оснований; кэш и параллельный разбор не меняют порядок требований.":
+        "Extraction\ntemplate_draft.py: create_draft() processes the template and exact source quotations; caching and parallel extraction preserve requirement ordering.",
+    "Применимость requirement_scope.py: classify() отделяет target/shared от interaction/other/uncertain; без исполнителя нельзя уверенно назначить обязанность.":
+        "Applicability\nrequirement_scope.py: classify() separates target/shared from interaction/other/uncertain; an actor is required for confident obligation assignment.",
+    "Сборка Word template_draft.py: разделы, абзацы и таблицы заполняются доказуемым содержанием; форматирование и защищённые поля сохраняются.":
+        "Draft Word\ntemplate_draft.py: sections, paragraphs and tables are filled with source-supported content; formatting and protected fields are preserved.",
+    "Двусторонние связи draft_traceability.py: build_traceability() сопоставляет извлечённые требования с разделами и цитатами. От Word к основанию и от основания к Word.":
+        "Two-way evidence links\ndraft_traceability.py: build_traceability() links extracted requirements to Word sections and quotations in both directions.",
+    "От основания в чат draft_traceability_ui.py передаёт точный ID требования; document_edit.py сохраняет применимость: внешние обязанности не становятся обязательствами цели.":
+        "Source to edit chat\ndraft_traceability_ui.py passes the exact requirement ID; document_edit.py preserves applicability so external duties cannot become target obligations.",
+    "Правка с решением человека document_edit_chat.py: propose_edit() → сравнение → подтверждение, отклонение или undo_accepted_version(). Весь документ заново не генерируется.":
+        "Human-approved change\ndocument_edit_chat.py: propose_edit() → diff → accept, reject or undo_accepted_version(). The full document is not regenerated.",
+    "Изменённые связи mark_stale_after_edits() помечает прежние связи устаревшими. История изменённых разделов полная; последние 10 DOCX-снимков нужны только для отмены.":
+        "Changed evidence links\nmark_stale_after_edits() marks previous links as stale. Changed sections remain tracked; the latest 10 DOCX snapshots are only for undo.",
+    "Ограничение: связи не доказывают, что извлечены ВСЕ требования широкого основания. Экспертная оценка после генерации остаётся необходимой; зелёные CI-тесты на синтетических документах не означают качество на реальном шаблоне.":
+        "Limit: evidence links do not prove that ALL requirements have been extracted from broad sources. Expert review remains necessary; green CI based on synthetic documents does not prove quality for a real template.",
     # ---------------------------------------------------------------- build_architecture.py
     "MINT — архитектура решения":
         "MINT — solution architecture",
-    "Интеллектуальная RAG-система: чат по базе знаний, аудит документов и контроль исправления замечаний. Python + Streamlit, пакет mint/; русский и английский":
-        "An intelligent RAG system: knowledge base chat, document review, verification of fixes. Python + Streamlit, mint/ package; English and Russian",
     "Документы для базы (.docx, .pdf, .md, .txt): регламенты, стандарты":
         "Documents for the base (.docx, .pdf, .md, .txt): regulations, standards",
     "Вопрос пользователя":

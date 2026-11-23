@@ -1,4 +1,4 @@
 """Версия MINT."""
 
 
-MINT_VERSION = "21.3.1"
+MINT_VERSION = "21.4.1"

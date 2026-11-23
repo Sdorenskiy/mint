@@ -4,6 +4,11 @@
 
 ## Unreleased
 
+## 21.4.1 — diagrams refreshed and release guard
+
+- Rebuild architecture and engineering diagrams (RU/EN editable scenes and previews) for the Word drafting, applicability and evidence traceability workflows; align the application version displayed in the UI with v21.4.1.
+- Require diagram/source and preview fingerprint parity before publishing any future release; see [release notes](docs/releases/v21.4.1.md).
+
 ## 21.4 — Word drafting, traceability, and reliability
 
 - Draft Word documents with human-confirmed target system, requirement applicability, two-way source traceability, and source-aware edit chat with acceptance and undo.
