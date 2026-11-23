@@ -8,6 +8,7 @@ from ..kb import list_kb_documents, source_path
 from ..template_draft import DraftError, create_draft
 from .draft_review_ui import render_draft_reviews
 from .document_edit_chat import render_draft_edit_chat
+from .draft_context_ui import render_draft_context
 
 
 def render_template_draft_tab(cfg, glossary):
@@ -35,8 +36,10 @@ def render_template_draft_tab(cfg, glossary):
                 versions.append((name, None, None))
         return (str(cfg.kb_path), example, hashlib.sha256(raw).hexdigest(), tuple(versions))
 
-    key = input_key()
-    if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources) or bool(missing), key="draft_start"):
+    base_key = input_key()
+    context = render_draft_context(cfg, raw, sources if not missing else [], base_key)
+    key = (base_key, tuple(sorted(context.items())) if context else None)
+    if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources and context) or bool(missing), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=True) as status:
             extraction = {"total": 0, "cached": 0, "durations": [], "hit": False}
@@ -75,8 +78,8 @@ def render_template_draft_tab(cfg, glossary):
 
             try:
                 result = create_draft(raw, cfg, sources, glossary, progress, example=example,
-                                      reset_extract_cache=reset_extract_cache)
-                if input_key() != key:
+                                      reset_extract_cache=reset_extract_cache, context=context)
+                if input_key() != base_key:
                     raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
             except DraftError as exc:
                 status.update(label=str(exc), state="error")
