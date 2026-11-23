@@ -1314,6 +1314,52 @@ text_el(PX, y, mem_w, 16, DARK)
 y += text_size(mem_w, 16)[1] + 10
 y = panel_end(p8, y)
 
+
+# ======================================================================== 10. черновик Word
+y += 40
+p10 = y
+y = panel_start(y, "10. Формирование Word: основания, применимость и правки",
+                "Отдельный поток от аудита: шаблон и выбранные основания → контекст и применимость → Word → проверяемые связи.")
+stages = [
+    "Задание из Word\ntab_template_draft.py: шаблон или пример и выбранные исходные документы. "
+    "Данные остаются в локальной базе знаний.",
+    "Контекст\ndocument_context.py: infer_context() предлагает target, objective, scope, participants "
+    "по заголовкам шаблона. confirm_context() требует подтверждения человеком.",
+    "Извлечение\ntemplate_draft.py: create_draft() обходит шаблон, извлекает точные цитаты оснований; "
+    "кэш и параллельный разбор не меняют порядок требований.",
+    "Применимость\nrequirement_scope.py: classify() отделяет target/shared от interaction/other/uncertain; "
+    "без исполнителя нельзя уверенно назначить обязанность.",
+    "Сборка Word\ntemplate_draft.py: разделы, абзацы и таблицы заполняются доказуемым содержанием; "
+    "форматирование и защищённые поля сохраняются.",
+]
+sw = (W - 2 * PX - 4 * 24) / 5
+flow, fh = row_boxes(PX, y, [sw] * 5, stages, (CODE, CODE_BG), gap=24, size=16)
+for first, second in zip(flow, flow[1:]):
+    arrow(first, second, CODE, a_side="right", b_side="left")
+y += fh + 34
+next_steps = [
+    "Двусторонние связи\ndraft_traceability.py: build_traceability() сопоставляет извлечённые требования "
+    "с разделами и цитатами. От Word к основанию и от основания к Word.",
+    "От основания в чат\ndraft_traceability_ui.py передаёт точный ID требования; "
+    "document_edit.py сохраняет применимость: внешние обязанности не становятся обязательствами цели.",
+    "Правка с решением человека\ndocument_edit_chat.py: propose_edit() → сравнение → подтверждение, "
+    "отклонение или undo_accepted_version(). Весь документ заново не генерируется.",
+    "Изменённые связи\nmark_stale_after_edits() помечает прежние связи устаревшими. "
+    "История изменённых разделов полная; последние 10 DOCX-снимков нужны только для отмены.",
+]
+sw2 = (W - 2 * PX - 3 * 24) / 4
+edit_flow, eh = row_boxes(PX, y, [sw2] * 4, next_steps, (STORE, STORE_BG), gap=24, size=16, text_color=DARK)
+for first, second in zip(edit_flow, edit_flow[1:]):
+    arrow(first, second, CODE, a_side="right", b_side="left")
+y += eh + 24
+note = ("Ограничение: связи не доказывают, что извлечены ВСЕ требования широкого основания. "
+        "Экспертная оценка после генерации остаётся необходимой; зелёные CI-тесты на синтетических документах "
+        "не означают качество на реальном шаблоне.")
+wrapped = wrap(note, int((W - 2 * PX) / (16 * xl.CHAR_W)))
+text_el(PX, y, wrapped, 16, GRAY)
+y += text_size(wrapped, 16)[1] + 18
+y = panel_end(p10, y)
+
 # рамки панелей — под остальными элементами
 for fr in reversed(frames):
     elements.insert(0, fr)
