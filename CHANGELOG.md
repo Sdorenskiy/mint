@@ -4,6 +4,12 @@
 
 ## Unreleased
 
+## 21.4 — Word drafting, traceability, and reliability
+
+- Draft Word documents with human-confirmed target system, requirement applicability, two-way source traceability, and source-aware edit chat with acceptance and undo.
+- Preserve accurate trace status across many edits; carry exact selected requirement IDs into chat; treat missing obligated actors as uncertain.
+- See [release notes](docs/releases/v21.4.md). Quality on real documents after this release remains to be assessed separately.
+
 - Add Word drafting from a template or completed example, with sources selected from the knowledge base, simple table expansion, and visible findings from source and wiki checks.
 
 - Reject incompatible or unknown embedding profiles even at equal dimensions; use BM25 until a complete, separately built re-index succeeds. Preserve the old base on missing sources, partial embeddings or publication errors.
