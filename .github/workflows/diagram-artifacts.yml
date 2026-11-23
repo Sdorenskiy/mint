@@ -6,9 +6,17 @@ on:
       - 'docs/diagrams-*'
     paths:
       - '.github/workflows/diagram-artifacts.yml'
-      - 'tools/diagrams/**'
+      - 'tools/diagrams/build_architecture.py'
+      - 'tools/diagrams/build_engineering.py'
+      - 'tools/diagrams/en.py'
+      - 'tools/diagrams/render.py'
+      - 'tools/diagrams/xl.py'
       - 'release/manifest.json'
   workflow_dispatch:
+
+concurrency:
+  group: mint-diagrams-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -56,4 +64,6 @@ jobs:
             exit 0
           fi
           git commit -m 'docs: regenerate v21.4.1 architecture and engineering diagrams'
+          git fetch origin "refs/heads/${GITHUB_REF_NAME}"
+          git rebase FETCH_HEAD
           git push origin "HEAD:${GITHUB_REF_NAME}"
