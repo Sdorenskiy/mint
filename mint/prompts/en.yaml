@@ -671,6 +671,10 @@ draft_edit: |-
   Propose an edit to an ALREADY GENERATED Word document; do not create it again.
   The user selected section/paragraph/cell and provided request. Return only one JSON object.
   original is the exact selected content; conversation contains previous requests/proposals.
+  document_context is the confirmed target-system context. requirements contains
+  only target/shared obligations; external_context is other participants' behavior.
+  Never turn an external actor's obligations into duties of the target system,
+  even when the user asks about a possibly omitted quote from a broad source.
   Change ONLY the selected content. Preserve correct functions, conditions, exchange directions,
   error handling, exceptions, negations, numbers, units and real citations unless explicitly changed.
   No invented dates, deadlines, identifiers or obligations absent from requirements or direct user

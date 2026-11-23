@@ -76,12 +76,42 @@ def by_basis_document(rows, source_names=()):
     return {name: [row for row in rows if row["source"] == name] for name in names}
 
 
+
+def mark_stale_after_edits(rows, changed_sections):
+    """Previously anchored evidence cannot certify the user-edited Word version."""
+    touched = set(changed_sections)
+    updated = []
+    for item in rows:
+        row = {**item}
+        mapped = set(row["candidate_sections"])
+        mapped.update(evidence["section"] for evidence in row["anchored"] + row["cited_without_anchor"])
+        stale = sorted(mapped & touched)
+        row["stale_sections"] = stale
+        if stale and row["coverage"] == "output_anchor" and all(
+                match["section"] in touched for match in row["anchored"]):
+            row["coverage"] = "stale_after_edit"
+        updated.append(row)
+    return updated
+
+
+
+def chat_request_for_requirement(row):
+    """Ground a follow-up chat request without silently assigning the wrong actor."""
+    citation = f'{row["source"]} › {row["source_section"]}: {row["quote"][:1200]}'
+    if row.get("applicability") in {"other", "interaction", "uncertain"}:
+        return ("Проверь применимость к целевой системе и правильного исполнителя. "
+                "Не переносить чужую обязанность автоматически. Источник " + citation)[:3000]
+    return ("Проверь и при необходимости дополни этот фрагмент по требованию "
+            "из " + citation + ". Сохрани прочие корректные требования и оформление.")[:3000]
+
+
 def trace_counts(rows):
     """Counts of extracted quotes, not a claim that extraction itself was complete."""
     return {
         "extracted": len(rows),
         "anchored": sum(row["coverage"] == "output_anchor" for row in rows),
         "pending": sum(row["coverage"] in {"cited_without_anchor", "candidate_only",
-                                             "not_selected", "scope_uncertain"} for row in rows),
+                                             "not_selected", "scope_uncertain",
+                                             "stale_after_edit"} for row in rows),
         "external": sum(row["coverage"] == "external" for row in rows),
     }

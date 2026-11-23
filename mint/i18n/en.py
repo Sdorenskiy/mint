@@ -3144,5 +3144,11 @@ EN = {
     "Где найден текст в Word": "Where this text appears in Word",
     "Ссылка модели без подтверждённого текстового фрагмента: {sections}": "Model citation without a confirmed output excerpt: {sections}",
     "Разделы, для которых требование рассматривалось: {sections}": "Sections for which the requirement was considered: {sections}",
+    "После принятой правки требуется повторно проверить отражение в Word": "Recheck Word representation after an accepted edit",
+    "После исправления Word": "After Word editing",
+    "Документ изменён в разделах {sections}. Прежнюю связь нужно проверить заново.": "The document changed in sections {sections}. Previous evidence needs rechecking.",
+    "Куда направлять исправления из списка": "Destination fragment for fixes from the list",
+    "Доработать через чат": "Revise through chat",
     "Требование": "Requirement",
+    "Word уже изменён через чат. Отчёт построен по первоначальной генерации; неподтверждённые связи требуют повторной проверки.": "Word was edited in chat. The report reflects the initial draft; unconfirmed links need rechecking.",
 }

@@ -109,7 +109,7 @@ def get_target(docx, target_id):
     return next((row for row in list_targets(docx) if row["id"] == target_id), None)
 
 
-def propose_edit(cfg, docx, target_id, instruction, requirements, history=()):
+def propose_edit(cfg, docx, target_id, instruction, requirements, history=(), context=None):
     """Produce a text-only proposal. Does NOT change the Word document."""
     if not isinstance(instruction, str) or not instruction.strip() or len(instruction) > MAX_COMMAND_CHARS:
         raise DraftError("Enter a non-empty edit request (up to 3000 characters).")
@@ -122,7 +122,11 @@ def propose_edit(cfg, docx, target_id, instruction, requirements, history=()):
     if len(original) > MAX_PROPOSAL_CHARS:
         raise DraftError("Selected fragment is too large for one controlled change.")
     # Reuse the same source selection mechanism as initial drafting.
-    indexed = {r["id"]: r for r in (requirements or []) if isinstance(r, dict) and r.get("id")}
+    extracted = {r["id"]: r for r in (requirements or []) if isinstance(r, dict) and r.get("id")}
+    # Reuse the central applicability categories instead of allowing the chat
+    # to reassign external obligations to the draft's target system.
+    from .requirement_scope import partition
+    indexed, external = partition(extracted, context)
     candidates = _candidates(" ".join((target["section"], original[:2500], instruction)),
                              indexed, size=_candidate_budget(cfg))
     allowed = {r["id"]: r for r in candidates}
@@ -131,6 +135,9 @@ def propose_edit(cfg, docx, target_id, instruction, requirements, history=()):
                 and item.get("role") in {"user", "assistant"}]
     row = _json(cfg, "edit", {"section": target["section"], "target_type": target["kind"],
                               "original": original, "request": instruction,
+                              "document_context": context or {},
+                              "external_context": _candidates(target["section"] + " " + instruction,
+                                                              external, size=2000),
                               "requirements": candidates, "conversation": previous})
     text = _text(row, "text")
     if not text or len(text) > MAX_PROPOSAL_CHARS:
