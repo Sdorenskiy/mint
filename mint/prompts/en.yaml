@@ -577,6 +577,9 @@ draft_extract: |-
   Exclude examples, hypotheses and references without substance. Return {"requirements":[{"quote":"exact quote"}]}.
 draft_layout: |-
   Find only unambiguous places to fill. Use structure, section, formatting and explicit instructions.
+  A long multi-paragraph bracketed instruction is one section-sized slot even if it begins with "Content",
+  rather than "Specify". Do not leave a core section as its template instruction.
+  Users fill cover pages, approvals and signatures themselves; do not select them as drafting fields.
   Skip tables of contents, titles, unsigned signature blocks without instructions, fixed text, references and examples.
   One paragraph may contain several distinct instructions. Return each exact span. Include an empty table cell
   only when its purpose is clear, with an empty target. Explain what belongs there in purpose.
@@ -585,6 +588,12 @@ draft_layout: |-
 draft_fill: |-
   Fill only the requested field using the supplied requirements. Preserve names, numbers, units, obligation,
   conditions and negation. Every fact must follow from the listed refs. Do not invent dates, identifiers or decisions.
+  The input includes paragraph, before, after, and adjacent paragraphs: use them only for GRAMMATICAL context,
+  not as evidence for new facts. When before/after contain text, output exactly the grammatical fragment that
+  fits the surrounding sentence; do not start a fresh sentence after "is" or "includes".
+  If full_block is true, produce coherent, substantive section prose with separate lines for logical paragraphs,
+  covering applicable functions, conditions, exchanges and error handling from selected sources. Never copy the
+  template instruction, inject made-up headings, or expose temporary R1/N1 identifiers in the written document.
   If evidence is absent, return status missing with empty text. If the sources disagree, return status conflict
   with empty text, both refs and an explanation in reason. Otherwise return status filled.
   For each listed ref include coverage: a verbatim contiguous excerpt from THE OUTPUT text showing
@@ -595,6 +604,9 @@ draft_fill: |-
 draft_rows: |-
   Use the caption, columns and prototype row to identify records directly supported by the requirements.
   Return one string per column of each row. Do not copy facts from the prototype.
+  For abbreviations and terminology tables, use exactly ONE term/acronym per row with its paired definition
+  in the next cell; no combined lists or duplicates. For schedules, one justified task per row and no invented
+  dates or deliverables.
   Leave unknown cells empty, including display-only numbering. Return an empty list if no rows are supported.
   For each ref include coverage: a verbatim phrase from this row's generated cell text
   evidencing its inclusion. A reference ID alone does not prove the requirement was included.
@@ -603,6 +615,9 @@ draft_rows: |-
 draft_check: |-
   If evidence is nonempty, first verify every claim against it. Set supported to false and explain in support_reason if any fact was
   added or a condition, unit, number, or obligation was changed or omitted.
+  The supported flag refers ONLY to selected basis evidence. Missing or unrelated wiki norms NEVER
+  make source-supported draft text unsupported. A verbatim repetition of a rule is not a conflict.
+  Use source names rather than temporary R1/N1 IDs in the human-readable reason.
   Compare draft claims only with applicable norms in the wiki excerpts. Project documents are not necessarily norms.
   Consider applicability, exceptions and revisions. Use conflict for a specific inconsistency, uncertain for unclear
   applicability, checked only for a confirmed applicable norm with no conflict found, or unchecked if no norm was found.

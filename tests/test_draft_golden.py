@@ -99,14 +99,15 @@ def test_golden_section_and_word():
                 draft, "search_parent_child", return_value=([], [])):
             result = draft.create_draft(before, cfg, ["fictional_basis.md"])
         after = Document(io.BytesIO(result["docx"]))
-        block = after.paragraphs[1].text
-        assert all(fact in block for fact in FACTS), block
+        paragraphs = [p.text for p in after.paragraphs]
+        assert all(fact in paragraphs for fact in FACTS), paragraphs
         assert "Требуется" not in after.element.xml and "Проверка по вики" not in after.element.xml
-        assert after.paragraphs[2].runs[0].bold
-        assert after.paragraphs[2].text == "Постоянный текст, который нельзя изменять."
+        constant = next(p for p in after.paragraphs if p.text == "Постоянный текст, который нельзя изменять.")
+        assert constant.runs[0].bold
         assert len(after.tables) == 1
         assert len(after.tables[0].rows) == 2
-        assert "[Укажите номер]" in after.tables[0].cell(1, 0).text  # never invent unknown data
+        assert after.tables[0].cell(1, 0).text == ""  # unknown number stays blank without a template instruction
+        assert after.tables[0].cell(1, 1).text == ""  # no unsupported row was invented
         assert "[Требуется" not in after.tables[0].cell(1, 0).text
         assert before != result["docx"]
         assert after.tables[0].cell(1, 0)._tc.tcPr.xml == original.tables[0].cell(1, 0)._tc.tcPr.xml

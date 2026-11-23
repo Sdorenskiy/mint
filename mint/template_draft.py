@@ -26,7 +26,14 @@ SECTION_PLAN_LIMIT = 24000
 _DRAFT_METRICS = contextvars.ContextVar('mint_draft_metrics', default=None)
 _DRAFT_METRICS_LOCK = contextvars.ContextVar('mint_draft_metrics_lock', default=None)
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)?")
-_EXAMPLE = re.compile(r"^\s*(?:пример|example|sample)\s*[:：]", re.I)
+_EXAMPLE = re.compile(r"^\s*\[?\s*(?:пример|example|sample)(?:\s+(?:заполнения|оформления|данных|completion|format))?\s*[:：]", re.I)
+_COVER = re.compile(r"(?iu)\b(?:титульн\w*\s+лист|лист\s+согласования|title\s+page|cover\s+page|approval\s+sheet)\b")
+_INSTRUCTION = re.compile(
+    r"(?iu)\b(?:указ\w*|укаж\w*|опис\w*|опиш\w*|привед\w*|привод\w*|перечисл\w*|раскро\w*|"
+    r"заполн\w*|встав\w*|сформиру\w*|добав\w*|"
+    r"необходимо\b|следует\b|"
+    r"enter\b|insert\b|fill\b|specify\b|describe\b|include\b|list\b)\b"
+)
 _PROTECTED = (".//w:fldChar | .//w:instrText | .//w:fldSimple | .//w:drawing | .//w:pict | .//w:object | "
               ".//w:sdt | .//w:ins | .//w:del | "
               ".//w:hyperlink | .//w:commentRangeStart | .//w:commentRangeEnd | .//w:commentReference")
@@ -279,12 +286,20 @@ def _layout(doc):
 
     slots, tables, examples = {}, {}, {}
     section, example_color, example = "", set(), False
+    # Unsectioned front matter is a cover/signature area when the document
+    # contains actual headings. Leave it for the owner to complete manually.
+    has_headings = any(_heading(Paragraph(e, doc)) for e in doc.element.body
+                       if e.tag.split("}")[-1] == "p")
+    cover = has_headings
     for idx, element in enumerate(doc.element.body):
         tag = element.tag.split("}")[-1]
         if tag == "p":
             p = Paragraph(element, doc)
             if _heading(p):
                 section, example = p.text, False
+                cover = bool(_COVER.search(section))
+                continue
+            if cover:
                 continue
             colored = {str(r.font.color.rgb) for r in p.runs if r.text.strip()}
             if _EXAMPLE.search(p.text):
@@ -302,6 +317,8 @@ def _layout(doc):
             if not p._p.xpath(_PROTECTED) and not (p.style and p.style.name.lower().startswith("toc")):
                 slots[f"P{idx}"] = Slot(p, p.text, section, writable=_simple(p))
         elif tag == "tbl":
+            if cover:
+                continue
             table = Table(element, doc)
             if example:
                 example = False
@@ -342,13 +359,15 @@ def _join_instruction_blocks(slots):
         following = []
         element = first.paragraph._p.getnext()
         number = int(key[1:])
-        for i in range(1, 8):
+        for i in range(1, 33):
             member = f"P{number + i}"
             other = slots.get(member)
             if (other is None or other.section != first.section or not other.writable or
                     other.paragraph._p is not element or "[" in other.text):
                 break
             following.append((member, other))
+            if sum(len(x.text) for _, x in following) + len(first.text) > 6000:
+                break
             if "]" in other.text:
                 if other.text.rstrip().endswith("]"):
                     first.text = "\n".join([first.text] + [x.text for _, x in following])
@@ -366,22 +385,96 @@ def _write_run(run, text):
         run._r.insert(1 if run._r.rPr is not None else 0, element)
 
 
+def _insert_after(paragraph, run, value):
+    """Split placeholder runs so generated text cannot inherit their colors.
+
+    Keep the surrounding original runs (including their bold/italic and text)
+    intact. Only the newly inserted run is reset to ordinary document color.
+    """
+    from docx.text.run import Run
+
+    element = deepcopy(run._r)
+    inserted = Run(element, paragraph)
+    inserted.text = value
+    inserted.font.color.rgb = None
+    inserted.font.highlight_color = None
+    run._r.addnext(element)
+    return inserted
+
+
 def _replace(paragraph, start, end, text):
-    """Edit text runs without rebuilding the paragraph or changing neighboring formatting."""
+    """Replace a plain span while preserving unaffected Word runs and their styles."""
+    runs = list(paragraph.runs)
+    if not runs:
+        run = paragraph.add_run(text)
+        run.font.color.rgb = None
+        return
     pos = 0
-    for run in paragraph.runs:
+    inserted = False
+    for run in runs:
         old = run.text
         stop = pos + len(old)
-        if start == end and pos <= start <= stop:
-            _write_run(run, old[:start - pos] + text + old[start - pos:])
-            return
+        if start == end and not inserted and pos <= start <= stop:
+            offset = start - pos
+            _write_run(run, old[:offset])
+            new = _insert_after(paragraph, run, text)
+            if old[offset:]:
+                _insert_after(paragraph, new, old[offset:]).font.color.rgb = run.font.color.rgb
+            inserted = True
+            break
         if start < stop and end > pos:
-            prefix = old[:max(0, start - pos)]
-            suffix = old[max(0, end - pos):]
-            _write_run(run, prefix + (text if pos <= start < stop else "") + suffix)
+            if not inserted:
+                prefix = old[:max(0, start - pos)]
+                suffix = old[min(len(old), max(0, end - pos)):]
+                _write_run(run, prefix)
+                new = _insert_after(paragraph, run, text)
+                if suffix:
+                    tail = _insert_after(paragraph, new, suffix)
+                    tail.font.color.rgb = run.font.color.rgb
+                    tail.font.highlight_color = run.font.highlight_color
+                inserted = True
+            else:
+                # The following original run may still contain the end of the
+                # targeted placeholder; retain only its unaffected suffix.
+                _write_run(run, old[min(len(old), max(0, end - pos)):])
         pos = stop
-    if start == end:
-        paragraph.add_run(text)
+    if not inserted and start == end:
+        run = paragraph.add_run(text)
+        run.font.color.rgb = None
+
+
+def _fill_block(slot, start, end, content):
+    """Write multiline section prose as Word paragraphs, not one giant run."""
+    paragraph = slot.paragraph
+    if (slot.table or start != 0 or end != len(slot.text) or "\n" not in content):
+        _replace(paragraph, start, end, content)
+        return
+    from docx.oxml import OxmlElement
+    from docx.text.paragraph import Paragraph
+
+    parts = [part.strip() for part in content.splitlines() if part.strip()]
+    if not parts:
+        _replace(paragraph, start, end, "")
+        return
+    _replace(paragraph, start, end, parts[0])
+    anchor = paragraph._p
+    for part in parts[1:]:
+        element = OxmlElement("w:p")
+        if paragraph._p.pPr is not None:
+            element.append(deepcopy(paragraph._p.pPr))
+        anchor.addnext(element)
+        new_paragraph = Paragraph(element, paragraph._parent)
+        run = new_paragraph.add_run(part)
+        run.font.color.rgb = None
+        anchor = element
+
+
+def _remove_continuations(slot):
+    """Merged bracket instructions leave no empty placeholder paragraphs."""
+    for paragraph in slot.following:
+        xml = paragraph._p
+        if xml.getparent() is not None and _simple(paragraph):
+            xml.getparent().remove(xml)
 
 
 def _note(doc, paragraph, title, detail="", conflict=False):
@@ -404,10 +497,17 @@ def _safe_target(slot, target):
     if slot.following and target != slot.text.strip():
         return False
     return bool(body and slot.text.count(target) == 1 and (
-        re.match(r"^\[\s*(?:указ\w*|укаж\w*|встав\w*|заполн\w*|опис\w*|прив\w*|перечисл\w*|"
-                 r"enter|insert|fill|specify|describe|add|list)\b", body, re.I) and body.endswith("]") or
-        re.match(r"^(?:укаж(?:ите|и|ать)|указыва\w+|заполн\w+|встав\w+|опиш\w+|"
-                 r"уточн\w+|enter|insert|fill|specify|describe)\b", body, re.I) or
+        (body.startswith("[") and body.endswith("]") and (
+            _INSTRUCTION.search(body) or
+            re.match(r"(?iu)^\[\s*включ(?:ите|ить)\b", body) or (
+                re.match(r"(?iu)^\[\s*(?:содержание|описание|наполнение|перечень|content)\b", body)
+                and re.search(r"(?iu)\b(?:должн\w*|must\b|should\b)\b", body)))) or
+        re.match(r"(?iu)^(?:указ\w*|укаж\w*|заполн\w*|встав\w*|опис\w*|опиш\w*|"
+                 r"уточн\w*|перечисл\w*|привед\w*|enter|insert|fill|specify|describe)\b", body) or
+        (target == slot.text.strip() and re.match(
+            r"(?iu)^(?:в\s+(?:данном|этом|настоящем)\s+(?:разделе|подразделе|пункте)|здесь)\b", body)
+         and re.search(r"(?iu)\b(?:необходимо|следует|нужно|указать|описать|привести|"
+                       r"перечислить|раскрыть|включить|указываются)\b", body)) or
         re.fullmatch(r"[_…⋯.]{2,}", body)))
 
 
@@ -441,6 +541,22 @@ def _format_ref(req):
     return f'{req["source"]} › {req["section"] or "—"}: «{req["quote"]}»'
 
 
+def _public_reason(reason, requirements, norms=None):
+    """Do not expose temporary R/N IDs from model JSON in user-facing notes."""
+    for key, row in {**(requirements or {}), **(norms or {})}.items():
+        label = row["source"] + (" › " + row["section"] if row.get("section") else "")
+        reason = re.sub(r"\b" + re.escape(key) + r"\b", lambda _m: label, reason)
+    return reason
+
+
+def _adjacent_text(paragraph, direction):
+    """Small local prose window for grammatical insertion, not as factual evidence."""
+    node = paragraph._p.getprevious() if direction == "before" else paragraph._p.getnext()
+    if node is None or node.tag.split("}")[-1] != "p":
+        return ""
+    return _normalized(" ".join(node.xpath(".//w:t/text()")))[:500]
+
+
 def _find_fields(cfg, slots, issues, emit):
     fields, fixed = {}, {}
     for i, batch in enumerate(_batches(list(slots.items()), lambda item: item[1].text), 1):
@@ -450,7 +566,9 @@ def _find_fields(cfg, slots, issues, emit):
             rows = _records(analysis, "fields")
         except DraftError:
             issues.append(tr("Не удалось разобрать часть шаблона: блок {n}.", n=i))
-            continue
+            # Still fill only deterministic, explicitly recognizable bracketed
+            # instructions. Do not abandon the entire document on layout error.
+            analysis, rows = {"fixed": []}, []
         allowed = dict(batch)
         occupied = {}
         for row in rows:
@@ -466,6 +584,18 @@ def _find_fields(cfg, slots, issues, emit):
                 continue
             ranges.append((start, end))
             fields[f"F{len(fields) + 1}"] = (key, start, end, purpose, safe)
+        # A clear fill-in instruction is a valid fallback even when the
+        # layout model misses it. This is not a model bypass for arbitrary
+        # square-bracket citations (e.g. [12]) or ordinary source text.
+        for key, slot in batch:
+            if key in occupied or not slot.text.strip().startswith("["):
+                continue
+            target = slot.text.strip()
+            if _safe_target(slot, target):
+                fields[f"F{len(fields) + 1}"] = (
+                    key, slot.text.find(target), slot.text.find(target) + len(target),
+                    (slot.section + " — " if slot.section else "") + target, True)
+                occupied[key] = [(slot.text.find(target), slot.text.find(target) + len(target))]
         fixed_ids = analysis.get("fixed", [])
         if isinstance(fixed_ids, list):
             for key in fixed_ids:
@@ -577,7 +707,9 @@ def _verify(cfg, text, refs, requirements, glossary, issues, sources):
         return "manual", tr("Модель не завершила проверку по основаниям.")
     # Basis support is independent of the presence or relevance of KB documents.
     if refs and row.get("supported") is not True:
-        return "manual", _text(row, "support_reason") or tr("Формулировка требует сверки с основаниями.")
+        return "manual", _public_reason(
+            _text(row, "support_reason") or tr("Формулировка требует сверки с основаниями."),
+            requirements, norms)
     ref = _text(row, "ref")
     norm = norms.get(ref)
     if not norm:
@@ -592,7 +724,12 @@ def _verify(cfg, text, refs, requirements, glossary, issues, sources):
     status = proof["status"]
     if status == "unchecked":
         return status, ""
-    detail = (proof["reason"] + "\n" if proof["reason"] else "")
+    # Exactly repeated claims cannot contradict the cited exact quote. Do not
+    # turn a source citation into a conflict merely because the model says so.
+    if status == "conflict" and _normalized(proof["claim_quote"]).casefold() == _normalized(
+            proof["norm_quote"]).casefold():
+        return "checked", ""
+    detail = (_public_reason(proof["reason"], requirements, norms) + "\n" if proof["reason"] else "")
     detail += _format_ref({**norm, "quote": proof["norm_quote"]})
     return status, detail
 
@@ -601,13 +738,27 @@ def _number_column(header):
     return _normalized(header).lower().rstrip(".") in {"№", "№ п/п", "#", "no", "nº"}
 
 
+def _dictionary_table(headers, caption):
+    """Formatting hint based on column semantics, never on a section number."""
+    names = [h.strip().casefold() for h in headers]
+    return (len(names) >= 2 and
+            any(k in names[0] for k in ("сокращ", "аббревиат", "термин", "abbreviation", "acronym", "term")) and
+            any(k in names[1] for k in ("расшифр", "определен", "значен", "полное наименован",
+                                       "наименован", "full name", "definition", "meaning", "expansion")))
+
+
+def _table_sample(cell):
+    text = cell.text.strip()
+    return _safe_target(Slot(cell.paragraphs[0], cell.text, "", writable=True), text) or bool(
+        _EXAMPLE.match(text))
+
+
 def _row_plans(cfg, tables, requirements, issues, emit):
     plans = {}
     for i, (key, table) in enumerate(tables.items(), 1):
         headers = [c.text for c in table.rows[0].cells]
         sample = table.rows[-1]
-        if any(not _safe_target(Slot(c.paragraphs[0], c.text, "", writable=True), c.text.strip())
-               for c in sample.cells):
+        if any(not _table_sample(c) for c in sample.cells):
             continue
         emit("table", i)
         nearby = table._tbl.getprevious()
@@ -622,16 +773,30 @@ def _row_plans(cfg, tables, requirements, issues, emit):
             issues.append(tr("Не удалось подготовить строки таблицы: {table}.", table=key))
             continue
         valid = []
+        glossary = _dictionary_table(headers, caption)
+        seen_entries = set()
         for row in rows[:ROW_LIMIT]:
             cells = row.get("cells")
             refs = _refs(row, allowed)
             if (isinstance(cells, list) and len(cells) == len(headers) and
                     all(isinstance(x, str) for x in cells) and refs):
                 values = ["" if _number_column(h) else x.strip() for h, x in zip(headers, cells)]
+                # Dictionary entries must each occupy their own row. A giant
+                # newline-separated cell or an empty definition is not usable.
+                if glossary and (not values[0] or not values[1] or
+                                 any("\n" in v or "\r" in v for v in values) or
+                                 len(values[0]) > 100):
+                    issues.append(tr("Одна из предложенных строк таблицы «{table}» требует проверки.", table=key))
+                    continue
+                entry = values[0].casefold() if glossary else None
+                if entry is not None and entry in seen_entries:
+                    continue
                 if any(values) and _numbers_supported(" ".join(values), refs, allowed):
                     coverage = covered_refs(" | ".join(values), refs, row.get("coverage"))
                     if not any(values == other for other, _, _ in valid):
                         valid.append((values, refs, coverage))
+                        if entry is not None:
+                            seen_entries.add(entry)
                     continue
             issues.append(tr("Одна из предложенных строк таблицы «{table}» требует проверки.", table=key))
         if len(rows) > ROW_LIMIT:
@@ -646,8 +811,8 @@ def _mark_wiki(doc, paragraph, status, detail):
         _note(doc, paragraph, tr("Противоречие с вики"), detail, conflict=True)
     elif status == "uncertain":
         _note(doc, paragraph, tr("Проверить применимость нормы"), detail)
-    elif status == "unchecked":
-        _note(doc, paragraph, tr("Проверка по вики не завершена"))
+    # No matching wiki norm is normal for a draft supported by selected
+    # source documents. Do not flood Word with one comment per such field.
 
 
 @_measure_draft
@@ -696,18 +861,25 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         candidates = candidates_by_field.get(field, [])
         allowed = {r["id"]: r for r in candidates}
         try:
-            row = _json(cfg, "fill", {"field": purpose, "section": slot.section, "column": slot.column,
-                                      "requirements": candidates}) if candidates else {}
+            row = _json(cfg, "fill", {
+                "field": purpose, "section": slot.section, "column": slot.column,
+                "requirements": candidates,
+                "paragraph": slot.text, "before": slot.text[:start], "after": slot.text[end:],
+                "previous_paragraph": _adjacent_text(slot.paragraph, "before"),
+                "next_paragraph": _adjacent_text(slot.paragraph, "after"),
+                "full_block": bool(slot.following or (start == 0 and end == len(slot.text))),
+            }) if candidates else {}
         except DraftError:
             row = {}
             issues.append(tr("Не удалось завершить заполнение поля: {field}.", field=purpose))
         refs, content = _refs(row, allowed), _text(row, "text")
         grounded = covered_refs(content, refs, row.get("coverage"))
         decision = _text(row, "status")
-        status, detail = "missing", _text(row, "reason") or purpose
+        status, detail = "missing", _public_reason(_text(row, "reason") or purpose, requirements)
         if decision == "conflict" and len({requirements[r]["source"] for r in refs}) > 1:
             status = "basis_conflict"
-            detail += "\n" + "\n".join(_format_ref(requirements[r]) for r in refs)
+            detail = _public_reason(detail, requirements) + "\n" + "\n".join(
+                _format_ref(requirements[r]) for r in refs)
         elif decision == "filled" and refs and content and _numbers_supported(content, refs, requirements):
             if safe:
                 status, detail = _verify(cfg, content, refs, requirements, glossary, issues, sources)
@@ -722,22 +894,23 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             edits, key=lambda x: (x[0], -x[1])):
         slot = slots[key]
         p = slot.paragraph
-        if slot.following and safe and status in {"checked", "conflict", "uncertain", "unchecked"}:
-            end = len(p.text)
-            for other in slot.following:
-                _replace(other, 0, len(other.text), "")
+        if safe and slot.following:
+            _remove_continuations(slot)
         if status in {"checked", "conflict", "uncertain", "unchecked"}:
-            _replace(p, start, end, content)
+            _fill_block(slot, start, end, content)
             _mark_wiki(doc, p, status, detail)
         elif status == "basis_conflict":
             if safe:
                 _replace(p, start, end, "")
             _note(doc, p, tr("Противоречие в основаниях"), detail, conflict=True)
-        elif status == "missing":
-            # Keep the original instruction: deleting it would erase what the editor must supply.
-            _note(doc, p, tr("Требуется уточнение"), detail)
-        elif status == "manual":
-            _note(doc, p, tr("Требуется ручная вставка"), detail or purpose)
+        elif status in {"missing", "manual"}:
+            # Leave the reviewed *field* empty, not a template instruction
+            # that might be mistaken for document content. The section,
+            # reason and source references remain in results for the editor.
+            if safe:
+                _replace(p, start, end, "")
+            issues.append((tr("Требуется уточнение") if status == "missing" else
+                           tr("Требуется ручная вставка")) + ": " + purpose)
         results.append({"field": purpose, "status": status, "text": content, "detail": detail, "refs": refs,
                         "unconfirmed_coverage": sorted(set(refs) - grounded) if status in
                         {"checked", "conflict", "uncertain", "unchecked"} else []})
@@ -767,13 +940,21 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
                 p = cell.paragraphs[0]
                 _replace(p, 0, len(p.text), str(written) if i not in content_columns else value)
                 if i in content_columns and not value:
-                    _note(doc, p, tr("Уточнить"), headers[i])
+                    issues.append(tr("Уточнить") + ": " + key + " › " + headers[i])
             anchor = max((target.cells[i] for i in content_columns if values[i]), key=lambda c: c.width or 0)
             _mark_wiki(doc, anchor.paragraphs[0], status, detail)
             used.update(grounded)
         if not written:
-            anchor = max((prototype.cells[i] for i in content_columns), key=lambda c: c.width or 0)
-            _note(doc, anchor.paragraphs[0], tr("Требуется ручная вставка"))
+            issues.append(tr("Требуется ручная вставка") + ": " + key)
+
+    # Clear unfilled instructional rows without changing actual populated
+    # rows. Their missing information remains visible in the review report.
+    for key, table in tables.items():
+        if key not in plans and all(_table_sample(c) for c in table.rows[-1].cells):
+            for cell in table.rows[-1].cells:
+                p = cell.paragraphs[0]
+                _replace(p, 0, len(p.text), "")
+            issues.append(tr("Требуется ручная вставка") + ": " + key)
 
     for i, slot in enumerate(fixed.values(), 1):
         emit("fixed", i)
