@@ -44,7 +44,8 @@ def render_template_draft_tab(cfg, glossary):
         with st.status(tr("Готовим черновик"), expanded=True) as status:
             extraction = {"total": 0, "cached": 0, "durations": [], "hit": False}
             stages = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
-                      "table": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
+                      "table": tr("Подготовка таблиц"), "scope": tr("Применимость требований"),
+                      "fill": tr("Заполнение и сверка с вики"),
                       "fixed": tr("Сверка требований шаблона")}
 
             def progress(stage, index):
@@ -129,6 +130,11 @@ def render_template_draft_tab(cfg, glossary):
                     item = requirements.get(rid)
                     if item:
                         st.text(f"{rid}: {item['source']} › {item['section']} — {item['quote']}")
+    scope_counts = result.get("scope_counts", {})
+    if scope_counts:
+        st.caption(tr("Применимость: целевая система — {target}, общие — {shared}, "
+                      "взаимодействия — {interaction}, другие системы — {other}, неясные — {uncertain}.",
+                      **scope_counts))
     if result["removed_examples"]:
         st.caption(tr("Удалено блоков с примерами: {n}.", n=result["removed_examples"]))
     statuses = {"checked": tr("Проверено по найденной норме"), "conflict": tr("Противоречие с вики"),

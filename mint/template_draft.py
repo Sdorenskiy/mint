@@ -856,8 +856,11 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         from .document_context import confirm_context
         context = confirm_context(context)
     requirements, chunks = _requirements(cfg, documents, issues, emit, reset_cache=reset_extract_cache)
-    plans = _row_plans(cfg, tables, requirements, issues, emit, context=context) if requirements else {}
-    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, requirements, context=context)
+    from .requirement_scope import classify, partition
+    requirements = classify(cfg, requirements, context, issues, emit)
+    eligible, interactions = partition(requirements, context)
+    plans = _row_plans(cfg, tables, eligible, issues, emit, context=context) if eligible else {}
+    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, eligible, context=context)
     edits = []
     for i, (field, (key, start, end, purpose, safe)) in enumerate(fields.items(), 1):
         slot = slots[key]
@@ -870,6 +873,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             row = _json(cfg, "fill", {
                 "field": purpose, "section": slot.section, "column": slot.column,
                 "document_context": context or {}, "requirements": candidates,
+                "external_context": _candidates(slot.section + " " + purpose, interactions, size=1500),
                 "paragraph": slot.text, "before": slot.text[:start], "after": slot.text[end:],
                 "previous_paragraph": _adjacent_text(slot.paragraph, "before"),
                 "next_paragraph": _adjacent_text(slot.paragraph, "after"),
@@ -982,7 +986,10 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             "requirements": list(requirements.values()), "used": used,
             "section_plan": section_plan,
             "unresolved_candidates": unresolved_candidates(section_plan, used),
-            "removed_examples": len(examples) if remove_examples else 0, "document_context": context}
+            "removed_examples": len(examples) if remove_examples else 0, "document_context": context,
+            "scope_counts": {label: sum(r.get("applicability", {}).get("category") == label
+                                        for r in requirements.values()) for label in
+                             ("target", "shared", "interaction", "other", "uncertain")} if context else {}}
 
 
 def _from_example(sample, issues):
