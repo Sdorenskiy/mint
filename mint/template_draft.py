@@ -499,6 +499,22 @@ def _format_ref(req):
     return f'{req["source"]} › {req["section"] or "—"}: «{req["quote"]}»'
 
 
+def _public_reason(reason, requirements, norms=None):
+    """Do not expose temporary R/N IDs from model JSON in user-facing notes."""
+    for key, row in {**(requirements or {}), **(norms or {})}.items():
+        label = row["source"] + (" › " + row["section"] if row.get("section") else "")
+        reason = re.sub(r"\b" + re.escape(key) + r"\b", lambda _m: label, reason)
+    return reason
+
+
+def _adjacent_text(paragraph, direction):
+    """Small local prose window for grammatical insertion, not as factual evidence."""
+    node = paragraph._p.getprevious() if direction == "before" else paragraph._p.getnext()
+    if node is None or node.tag.split("}")[-1] != "p":
+        return ""
+    return _normalized(" ".join(node.xpath(".//w:t/text()")))[:500]
+
+
 def _find_fields(cfg, slots, issues, emit):
     fields, fixed = {}, {}
     for i, batch in enumerate(_batches(list(slots.items()), lambda item: item[1].text), 1):
@@ -647,7 +663,9 @@ def _verify(cfg, text, refs, requirements, glossary, issues, sources):
         return "manual", tr("Модель не завершила проверку по основаниям.")
     # Basis support is independent of the presence or relevance of KB documents.
     if refs and row.get("supported") is not True:
-        return "manual", _text(row, "support_reason") or tr("Формулировка требует сверки с основаниями.")
+        return "manual", _public_reason(
+            _text(row, "support_reason") or tr("Формулировка требует сверки с основаниями."),
+            requirements, norms)
     ref = _text(row, "ref")
     norm = norms.get(ref)
     if not norm:
@@ -662,7 +680,12 @@ def _verify(cfg, text, refs, requirements, glossary, issues, sources):
     status = proof["status"]
     if status == "unchecked":
         return status, ""
-    detail = (proof["reason"] + "\n" if proof["reason"] else "")
+    # Exactly repeated claims cannot contradict the cited exact quote. Do not
+    # turn a source citation into a conflict merely because the model says so.
+    if status == "conflict" and _normalized(proof["claim_quote"]).casefold() == _normalized(
+            proof["norm_quote"]).casefold():
+        return "checked", ""
+    detail = (_public_reason(proof["reason"], requirements, norms) + "\n" if proof["reason"] else "")
     detail += _format_ref({**norm, "quote": proof["norm_quote"]})
     return status, detail
 
@@ -716,8 +739,8 @@ def _mark_wiki(doc, paragraph, status, detail):
         _note(doc, paragraph, tr("Противоречие с вики"), detail, conflict=True)
     elif status == "uncertain":
         _note(doc, paragraph, tr("Проверить применимость нормы"), detail)
-    elif status == "unchecked":
-        _note(doc, paragraph, tr("Проверка по вики не завершена"))
+    # No matching wiki norm is normal for a draft supported by selected
+    # source documents. Do not flood Word with one comment per such field.
 
 
 @_measure_draft
@@ -766,18 +789,25 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         candidates = candidates_by_field.get(field, [])
         allowed = {r["id"]: r for r in candidates}
         try:
-            row = _json(cfg, "fill", {"field": purpose, "section": slot.section, "column": slot.column,
-                                      "requirements": candidates}) if candidates else {}
+            row = _json(cfg, "fill", {
+                "field": purpose, "section": slot.section, "column": slot.column,
+                "requirements": candidates,
+                "paragraph": slot.text, "before": slot.text[:start], "after": slot.text[end:],
+                "previous_paragraph": _adjacent_text(slot.paragraph, "before"),
+                "next_paragraph": _adjacent_text(slot.paragraph, "after"),
+                "full_block": bool(slot.following or (start == 0 and end == len(slot.text))),
+            }) if candidates else {}
         except DraftError:
             row = {}
             issues.append(tr("Не удалось завершить заполнение поля: {field}.", field=purpose))
         refs, content = _refs(row, allowed), _text(row, "text")
         grounded = covered_refs(content, refs, row.get("coverage"))
         decision = _text(row, "status")
-        status, detail = "missing", _text(row, "reason") or purpose
+        status, detail = "missing", _public_reason(_text(row, "reason") or purpose, requirements)
         if decision == "conflict" and len({requirements[r]["source"] for r in refs}) > 1:
             status = "basis_conflict"
-            detail += "\n" + "\n".join(_format_ref(requirements[r]) for r in refs)
+            detail = _public_reason(detail, requirements) + "\n" + "\n".join(
+                _format_ref(requirements[r]) for r in refs)
         elif decision == "filled" and refs and content and _numbers_supported(content, refs, requirements):
             if safe:
                 status, detail = _verify(cfg, content, refs, requirements, glossary, issues, sources)
