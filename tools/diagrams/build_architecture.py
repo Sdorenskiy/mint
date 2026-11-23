@@ -10,6 +10,7 @@ from lang import T
 RND = random.Random(20261010)
 B62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
 NOW = int(time.time() * 1000)
+DIAGRAM_RELEASE = "v21.4.1"   # Update together with release/manifest.json before publishing.
 FONT = 5            # Excalifont, как в образце
 CHAR_W = 0.6        # оценка ширины символа (доля размера шрифта) для переноса строк
 LINE_H = 1.25
@@ -398,6 +399,7 @@ DRAFT_Y = ROW_Y + H_full + 180
 text_el(0, DRAFT_Y, "Формирование Word — отдельный поток от аудита и контроля замечаний", 30, DARK)
 text_el(0, DRAFT_Y + 48, "Основания не являются автоматически применимыми: сначала определяем целевую систему, "
         "затем учитываем субъект каждого требования.", 18, GRAY)
+text_el(0, DRAFT_Y + 84, f"Mint {DIAGRAM_RELEASE}", 14, GRAY)
 draft_steps = [
     "1. Шаблон Word и основания\n\nПользователь выбирает DOCX и исходные документы из локальной базы знаний. "
     "Оригиналы не отправляются в GitHub.",
