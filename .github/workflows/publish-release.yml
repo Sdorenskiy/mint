@@ -55,10 +55,6 @@ jobs:
               output.write(f"tag={tag}\nnotes={notes}\n")
           PY
 
-      - name: Verify all release diagrams and previews
-        shell: bash
-        run: python tools/diagrams/check_release.py
-
       - name: Publish source-only GitHub release
         shell: bash
         env:

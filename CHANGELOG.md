@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Refresh the code map for the current Word-drafting and source-traceability architecture. Keep the code map and both diagrams on the mandatory **manual** pre-release checklist; remove diagram rendering and diagram checks from GitHub Actions to avoid unnecessary CI workload.
+
 ## 21.4.1 — diagrams refreshed and release guard
 
 - Rebuild architecture and engineering diagrams (RU/EN editable scenes and previews) for the Word drafting, applicability and evidence traceability workflows; align the application version displayed in the UI with v21.4.1.

@@ -87,11 +87,11 @@ fails if a diagram differs from its script, `en.py` has translations for labels 
 names a function or parameter that no longer exists, or shows parameter values that differ from what the code
 computes.
 
-## Diagram and release gate (mandatory)
+## Mandatory manual documentation review before each release
 
-Before **every release**, verify both diagrams against the current code, not an earlier PR description. Update the source generators in `tools/diagrams/build_architecture.py` and `build_engineering.py`, and RU-to-EN labels in `en.py`. Rebuild **all four** editable Excalidraw documents and their PNG previews in `docs/` and `docs/ru/` (see `tools/diagrams/README.md`). Set `DIAGRAM_RELEASE` in both generators and `MINT_VERSION` in `mint/version.py` to the new tag in `release/manifest.json`; even when a diagram needs no structural edits, revalidate and regenerate its release-stamped previews. Commit generated files, not only generators. Never include private source documents, configuration, credentials, or working samples in these diagrams.
+Before **every release**, first compare [`docs/CODE_MAP.md`](docs/CODE_MAP.md) with the current code, update its module/entry-point/test map and record a checked base SHA (the existing commit before this PR). Next, review both architecture and engineering diagrams against the code. When necessary, update `tools/diagrams/build_architecture.py`, `build_engineering.py`, and `en.py`, and locally regenerate RU/EN `.excalidraw`, `.excalidraw.md` and `_preview.png` files (commands in `tools/diagrams/README.md`). Synchronize `release/manifest.json`, `DIAGRAM_RELEASE` and `mint/version.py` with a new release tag. Never include private documents, secrets, or work-specific data in the code map or diagrams.
 
-`python tests/test_diagrams.py` checks generators, RU/EN output and diagram/code consistency. `python tools/diagrams/check_release.py` checks the release tag, all four editable diagrams and PNG fingerprints. **The GitHub release workflow refuses to publish if the diagram release guard fails.** Do not bypass the guard or backdate a tag.
+**This is a manual developer/AI-agent obligation, not a GitHub Actions task.** When preparing the release, manually run `python tests/test_diagrams.py` and `python tools/diagrams/check_release.py`; record what was reviewed and the results in the PR/release report. No automatic diagram generation, code-map checks, or diagram checks belong in the CI/release workflow. Ordinary application tests and the confidential-file release gate remain in place.
 
 ## Interface
 

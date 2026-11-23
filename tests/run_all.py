@@ -47,7 +47,6 @@ SUITES = [
     ("Самопроверка установки", ["test_check_install.py"]),
     ("Обновление на месте (update.sh)", ["test_update.py"]),
     ("Английский интерфейс и поиск, полнота перевода", ["test_i18n.py"]),
-    ("Схемы в docs/ не отстают от кода", ["test_diagrams.py"]),
     ("Страница на настоящем Streamlit (смоук)", ["test_streamlit_smoke.py"]),
 ]
 
