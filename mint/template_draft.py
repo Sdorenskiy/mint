@@ -31,7 +31,7 @@ _COVER = re.compile(r"(?iu)\b(?:титульн\w*\s+лист|лист\s+согл
 _INSTRUCTION = re.compile(
     r"(?iu)\b(?:указ\w*|укаж\w*|опис\w*|опиш\w*|привед\w*|привод\w*|перечисл\w*|раскро\w*|"
     r"заполн\w*|встав\w*|сформиру\w*|добав\w*|включ\w*|"
-    r"необходимо\b|следует\b|должн\w*|"
+    r"необходимо\b|следует\b|"
     r"enter\b|insert\b|fill\b|specify\b|describe\b|include\b|list\b)\b"
 )
 _PROTECTED = (".//w:fldChar | .//w:instrText | .//w:fldSimple | .//w:drawing | .//w:pict | .//w:object | "
@@ -497,7 +497,10 @@ def _safe_target(slot, target):
     if slot.following and target != slot.text.strip():
         return False
     return bool(body and slot.text.count(target) == 1 and (
-        (body.startswith("[") and body.endswith("]") and _INSTRUCTION.search(body)) or
+        (body.startswith("[") and body.endswith("]") and (
+            _INSTRUCTION.search(body) or (
+                re.match(r"(?iu)^\[\s*(?:содержание|описание|наполнение|перечень|content)\b", body)
+                and re.search(r"(?iu)\b(?:должн\w*|must\b|should\b)\b", body)))) or
         re.match(r"(?iu)^(?:указ\w*|укаж\w*|заполн\w*|встав\w*|опис\w*|опиш\w*|"
                  r"уточн\w*|перечисл\w*|привед\w*|enter|insert|fill|specify|describe)\b", body) or
         (target == slot.text.strip() and re.match(
