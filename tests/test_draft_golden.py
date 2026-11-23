@@ -106,7 +106,8 @@ def test_golden_section_and_word():
         assert after.paragraphs[2].text == "Постоянный текст, который нельзя изменять."
         assert len(after.tables) == 1
         assert len(after.tables[0].rows) == 2
-        assert "[Укажите номер]" in after.tables[0].cell(1, 0).text  # never invent unknown data
+        assert after.tables[0].cell(1, 0).text == ""  # unknown number stays blank without a template instruction
+        assert after.tables[0].cell(1, 1).text == ""  # no unsupported row was invented
         assert "[Требуется" not in after.tables[0].cell(1, 0).text
         assert before != result["docx"]
         assert after.tables[0].cell(1, 0)._tc.tcPr.xml == original.tables[0].cell(1, 0)._tc.tcPr.xml
