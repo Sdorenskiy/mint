@@ -641,13 +641,15 @@ def _candidate_budget(cfg):
     return min(SECTION_PLAN_LIMIT, max(1500, int(max(600, limit - output - 1100) * ratio)))
 
 
-def _section_plan(cfg, fields, slots, requirements):
+def _section_plan(cfg, fields, slots, requirements, context=None):
     """Plan source coverage for each template section BEFORE filling any field.
 
     A section-wide candidate pool complements field-specific retrieval, preventing
     generic placeholders from discarding requirements mentioned in the heading.
     Only verified quotations from selected documents may appear in this plan.
     """
+    from .document_context import context_search_terms
+    focus = context_search_terms(context)
     by_section = {}
     for field_id, (key, _start, _end, purpose, _safe) in fields.items():
         slot = slots[key]
@@ -655,11 +657,11 @@ def _section_plan(cfg, fields, slots, requirements):
     budget = _candidate_budget(cfg)
     field_candidates, summary = {}, {}
     for section, entries in by_section.items():
-        section_query = " ".join([section] + [purpose + " " + column for _, purpose, column in entries])
+        section_query = " ".join([focus, section] + [purpose + " " + column for _, purpose, column in entries])
         group = _candidates(section_query, requirements, size=budget)
         selected_ids = set()
         for field_id, purpose, column in entries:
-            query = " ".join([section, purpose, column])
+            query = " ".join([focus, section, purpose, column])
             # Field-specific terms win, but the section context is not lost.
             focused = _candidates(query, requirements, size=max(1500, budget // 2))
             items, consumed, seen = [], 0, set()
@@ -753,7 +755,7 @@ def _table_sample(cell):
         _EXAMPLE.match(text))
 
 
-def _row_plans(cfg, tables, requirements, issues, emit):
+def _row_plans(cfg, tables, requirements, issues, emit, context=None):
     plans = {}
     for i, (key, table) in enumerate(tables.items(), 1):
         headers = [c.text for c in table.rows[0].cells]
@@ -763,7 +765,8 @@ def _row_plans(cfg, tables, requirements, issues, emit):
         emit("table", i)
         nearby = table._tbl.getprevious()
         caption = " ".join(nearby.xpath(".//w:t/text()")) if nearby is not None else ""
-        candidates = _candidates(caption + " " + " ".join(headers), requirements)
+        from .document_context import context_search_terms
+        candidates = _candidates(context_search_terms(context) + " " + caption + " " + " ".join(headers), requirements)
         allowed = {r["id"]: r for r in candidates}
         try:
             rows = _records(_json(cfg, "rows", {"caption": caption, "columns": headers,
@@ -816,7 +819,7 @@ def _mark_wiki(doc, paragraph, status, detail):
 
 
 @_measure_draft
-def create_draft(template, cfg, sources, glossary=None, progress=None, *, example=False, reset_extract_cache=False):
+def create_draft(template, cfg, sources, glossary=None, progress=None, *, example=False, reset_extract_cache=False, context=None):
     """Return a new DOCX plus field/requirement coverage. Never alter the input files."""
     from docx import Document
     from docx.table import _Row
@@ -849,9 +852,12 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     else:
         slots, tables, examples = _layout(doc)
         fields, fixed = _find_fields(cfg, slots, issues, emit)
+    if context is not None:
+        from .document_context import confirm_context
+        context = confirm_context(context)
     requirements, chunks = _requirements(cfg, documents, issues, emit, reset_cache=reset_extract_cache)
-    plans = _row_plans(cfg, tables, requirements, issues, emit) if requirements else {}
-    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, requirements)
+    plans = _row_plans(cfg, tables, requirements, issues, emit, context=context) if requirements else {}
+    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, requirements, context=context)
     edits = []
     for i, (field, (key, start, end, purpose, safe)) in enumerate(fields.items(), 1):
         slot = slots[key]
@@ -863,7 +869,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
         try:
             row = _json(cfg, "fill", {
                 "field": purpose, "section": slot.section, "column": slot.column,
-                "requirements": candidates,
+                "document_context": context or {}, "requirements": candidates,
                 "paragraph": slot.text, "before": slot.text[:start], "after": slot.text[end:],
                 "previous_paragraph": _adjacent_text(slot.paragraph, "before"),
                 "next_paragraph": _adjacent_text(slot.paragraph, "after"),
@@ -976,7 +982,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
             "requirements": list(requirements.values()), "used": used,
             "section_plan": section_plan,
             "unresolved_candidates": unresolved_candidates(section_plan, used),
-            "removed_examples": len(examples) if remove_examples else 0}
+            "removed_examples": len(examples) if remove_examples else 0, "document_context": context}
 
 
 def _from_example(sample, issues):
