@@ -149,6 +149,18 @@ def test_usable_draft():
     assert len(result["used"]) > 0
 
 
+def test_literal_brackets_are_not_edit_instructions():
+    doc = Document()
+    for literal in ("[12]", "[Система должна сохранять журнал 30 суток.]",
+                    "[Функция включает подтверждение приёма.]"):
+        p = doc.add_paragraph(literal)
+        slot = draft.Slot(p, p.text, "Требования", writable=True)
+        assert not draft._safe_target(slot, literal), literal
+    p = doc.add_paragraph("[Содержание раздела должно описывать функции.]")
+    slot = draft.Slot(p, p.text, "Требования", writable=True)
+    assert draft._safe_target(slot, p.text)
+
+
 def test_verbatim_norm_and_public_refs():
     text = "Сервис сохраняет журнал 30 суток."
     norm = {"N1": {"id": "N1", "source": "policy.md", "section": "2.1", "quote": text}}
@@ -174,5 +186,6 @@ def test_verbatim_norm_and_public_refs():
 
 if __name__ == "__main__":
     test_usable_draft()
+    test_literal_brackets_are_not_edit_instructions()
     test_verbatim_norm_and_public_refs()
     print("ИТОГ: большой раздел, титул, цвет, грамматический контекст, таблицы, примеры и N1")
