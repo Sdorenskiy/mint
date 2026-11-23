@@ -30,7 +30,7 @@ _EXAMPLE = re.compile(r"^\s*\[?\s*(?:пример|example|sample)(?:\s+(?:зап
 _COVER = re.compile(r"(?iu)\b(?:титульн\w*\s+лист|лист\s+согласования|title\s+page|cover\s+page|approval\s+sheet)\b")
 _INSTRUCTION = re.compile(
     r"(?iu)\b(?:указ\w*|укаж\w*|опис\w*|опиш\w*|привед\w*|привод\w*|перечисл\w*|раскро\w*|"
-    r"заполн\w*|встав\w*|сформиру\w*|добав\w*|включ\w*|"
+    r"заполн\w*|встав\w*|сформиру\w*|добав\w*|"
     r"необходимо\b|следует\b|"
     r"enter\b|insert\b|fill\b|specify\b|describe\b|include\b|list\b)\b"
 )
@@ -498,7 +498,8 @@ def _safe_target(slot, target):
         return False
     return bool(body and slot.text.count(target) == 1 and (
         (body.startswith("[") and body.endswith("]") and (
-            _INSTRUCTION.search(body) or (
+            _INSTRUCTION.search(body) or
+            re.match(r"(?iu)^\[\s*включ(?:ите|ить)\b", body) or (
                 re.match(r"(?iu)^\[\s*(?:содержание|описание|наполнение|перечень|content)\b", body)
                 and re.search(r"(?iu)\b(?:должн\w*|must\b|should\b)\b", body)))) or
         re.match(r"(?iu)^(?:указ\w*|укаж\w*|заполн\w*|встав\w*|опис\w*|опиш\w*|"
