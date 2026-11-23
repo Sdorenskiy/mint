@@ -1,5 +1,7 @@
 # Секреты и локальные настройки — только образцы (*.example) попадают в репозиторий
 .env
+.env.*
+!.env.example
 config.yaml
 glossary.json
 checklists.yaml
@@ -24,8 +26,23 @@ local_eval/
 eval/questions.csv
 eval/questions.draft.csv
 
-# Документы Word, загружаемые для проверки
+# Документы и архивы с пользовательскими данными
 *.docx
+*.DOCX
+*.doc
+*.DOC
+*.pdf
+*.PDF
+*.xlsx
+*.XLSX
+*.pptx
+*.PPTX
+*.zip
+*.7z
+*.rar
+*.pem
+*.p12
+*.key
 
 # Python
 __pycache__/
