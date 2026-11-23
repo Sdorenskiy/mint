@@ -109,7 +109,8 @@ def get_target(docx, target_id):
     return next((row for row in list_targets(docx) if row["id"] == target_id), None)
 
 
-def propose_edit(cfg, docx, target_id, instruction, requirements, history=(), context=None):
+def propose_edit(cfg, docx, target_id, instruction, requirements, history=(), context=None,
+                 *, focus_requirement_id=None):
     """Produce a text-only proposal. Does NOT change the Word document."""
     if not isinstance(instruction, str) or not instruction.strip() or len(instruction) > MAX_COMMAND_CHARS:
         raise DraftError("Enter a non-empty edit request (up to 3000 characters).")
@@ -123,12 +124,27 @@ def propose_edit(cfg, docx, target_id, instruction, requirements, history=(), co
         raise DraftError("Selected fragment is too large for one controlled change.")
     # Reuse the same source selection mechanism as initial drafting.
     extracted = {r["id"]: r for r in (requirements or []) if isinstance(r, dict) and r.get("id")}
-    # Reuse the central applicability categories instead of allowing the chat
-    # to reassign external obligations to the draft's target system.
-    from .requirement_scope import partition
+    # An explicitly selected traceability item must survive lexical retrieval,
+    # without granting inapplicable source claims permission to support this draft.
+    from .requirement_scope import DRAFTABLE, category_of, partition
+    focused = None
+    if focus_requirement_id is not None:
+        if not isinstance(focus_requirement_id, str) or focus_requirement_id not in extracted:
+            raise DraftError("The selected source requirement is no longer available.")
+        focused = extracted[focus_requirement_id]
     indexed, external = partition(extracted, context)
-    candidates = _candidates(" ".join((target["section"], original[:2500], instruction)),
-                             indexed, size=_candidate_budget(cfg))
+    if focused is not None and category_of(focused) not in DRAFTABLE:
+        indexed.pop(focus_requirement_id, None)
+    query = " ".join((target["section"], original[:2500], instruction))
+    budget = _candidate_budget(cfg)
+    if focused is not None and focus_requirement_id in indexed:
+        cost = len(focused["quote"]) + 95
+        if cost > budget:
+            raise DraftError("Selected source requirement exceeds the safe edit context budget.")
+        remainder = {key: value for key, value in indexed.items() if key != focus_requirement_id}
+        candidates = [focused] + _candidates(query, remainder, size=budget - cost)
+    else:
+        candidates = _candidates(query, indexed, size=budget)
     allowed = {r["id"]: r for r in candidates}
     previous = [{"role": item["role"], "content": str(item["content"])[:3000]}
                 for item in list(history)[-6:] if isinstance(item, dict)
@@ -136,6 +152,7 @@ def propose_edit(cfg, docx, target_id, instruction, requirements, history=(), co
     row = _json(cfg, "edit", {"section": target["section"], "target_type": target["kind"],
                               "original": original, "request": instruction,
                               "document_context": context or {},
+                              "focused_requirement": focused,
                               "external_context": _candidates(target["section"] + " " + instruction,
                                                               external, size=2000),
                               "requirements": candidates, "conversation": previous})
@@ -219,3 +236,21 @@ def apply_edit(docx, proposal):
     buffer = io.BytesIO()
     doc.save(buffer)
     return buffer.getvalue()
+
+
+def record_accepted_version(state, new_docx, section, target_id, *, max_undo=10):
+    """Keep complete change evidence while bounding only large DOCX undo snapshots."""
+    state["versions"].append(state["docx"])
+    if len(state["versions"]) > max_undo:
+        state["versions"].pop(0)
+    state["changes"].append((section, target_id))
+    state["docx"] = new_docx
+
+
+def undo_accepted_version(state):
+    """Undo the latest reversible edit without erasing earlier change evidence."""
+    if not state["versions"]:
+        return False
+    state["docx"] = state["versions"].pop()
+    state["changes"].pop()
+    return True
