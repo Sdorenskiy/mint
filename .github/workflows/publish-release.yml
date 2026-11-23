@@ -39,11 +39,15 @@ jobs:
           names = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
           forbidden = []
           for name in filter(None, names):
-              parts = name.split("/")
-              if (name.endswith((".doc", ".docx", ".pdf", ".xls", ".xlsx", ".ppt", ".pptx"))
-                      or any(part in {"knowledge_base", "sources", "mint_logs", "local_eval", "eval_results"}
-                             for part in parts)
-                      or parts[-1] in {".env", "config.yaml", "secrets.toml", "feedback.jsonl"}):
+              lower = name.casefold()
+              parts = lower.split("/")
+              leaf = parts[-1]
+              if (lower.endswith((".doc", ".docx", ".pdf", ".xls", ".xlsx", ".ppt",
+                                  ".pptx", ".zip", ".7z", ".rar", ".pem", ".p12", ".key"))
+                      or any(part in {"knowledge_base", "sources", "mint_logs", "local_eval",
+                                      "eval_results"} for part in parts)
+                      or leaf in {".env", "config.yaml", "secrets.toml", "feedback.jsonl"}
+                      or (leaf.startswith(".env.") and leaf != ".env.example")):
                   forbidden.append(name)
           if forbidden:
               raise SystemExit("Potentially confidential files are tracked; release blocked")
