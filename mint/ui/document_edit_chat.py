@@ -24,7 +24,8 @@ def _chat_state(input_key, result):
 def render_draft_edit_chat(cfg, input_key, result):
     """Return current accepted DOCX; keep initial result immutable for quality review."""
     state = _chat_state(input_key, result)
-    with st.expander(tr("Чат по сформированному документу"), expanded=False):
+    with st.expander(tr("Чат по сформированному документу"),
+                     expanded=bool(st.session_state.pop("word_edit_focus", False))):
         st.caption(tr("Выберите фрагмент, опишите изменение, проверьте предложение и только затем примените. "
                       "Исходный результат генерации остаётся доступен до новой сборки."))
         st.caption(tr("Принято правок: {count}. История хранится только в текущем сеансе.",
@@ -59,12 +60,13 @@ def render_draft_edit_chat(cfg, input_key, result):
         with st.form("word_edit_form", clear_on_submit=True):
             request = st.text_area(tr("Что изменить в этом фрагменте?"),
                                    placeholder=tr("Например: уточни порядок повторной доставки по основаниям"),
-                                   max_chars=3000, height=100)
+                                   max_chars=3000, height=100, key="word_edit_request")
             sent = st.form_submit_button(tr("Предложить изменение"))
         if sent and request.strip():
             try:
                 proposed = propose_edit(cfg, state["docx"], selected_id, request,
-                                        result["requirements"], thread)
+                                        result["requirements"], thread,
+                                        context=result.get("document_context"))
             except DraftError as exc:
                 st.warning(str(exc))
             else:
