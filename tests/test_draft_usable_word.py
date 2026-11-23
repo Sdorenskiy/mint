@@ -80,7 +80,7 @@ def model(_cfg, stage, payload):
             return {"rows": [
                 {"cells": ["СЗ", "Сервис заявок"], "refs": [rid], "coverage": {rid: "Сервис заявок"}},
                 {"cells": ["СЗ", "Сервис заявок"], "refs": [rid], "coverage": {rid: "Сервис заявок"}},
-                {"cells": ["СЗ\\nАК", "Сервис заявок\\nАналитический комплекс"],
+                {"cells": ["СЗ\nАК", "Сервис заявок\nАналитический комплекс"],
                  "refs": [rid], "coverage": {rid: "Сервис заявок"}},
             ]}
         if "Результат" in heads:
@@ -92,7 +92,7 @@ def model(_cfg, stage, payload):
         if "Содержание раздела" in field:
             assert "обработку ошибок" in payload["paragraph"]
             assert payload["full_block"]
-            return {"status": "filled", "text": "Сервис заявок регистрирует заявки.\\n"
+            return {"status": "filled", "text": "Сервис заявок регистрирует заявки.\n"
                      "При недоступности получателя сообщение ставится в очередь.",
                     "refs": [r["id"] for r in payload["requirements"][:2]], "coverage": {
                         r["id"]: ("Сервис заявок" if i == 0 else "сообщение ставится в очередь")
