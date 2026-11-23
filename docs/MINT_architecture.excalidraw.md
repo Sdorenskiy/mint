@@ -464,7 +464,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2045375074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a0"
@@ -494,7 +494,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a1"
@@ -524,7 +524,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a2"
@@ -554,7 +554,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 573793694,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a3"
@@ -589,7 +589,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "efio1e5v"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a4"
@@ -617,7 +617,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "MINT — solution architecture",
@@ -654,7 +654,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "A local RAG system: chat, document review, correction verification and traceable Word drafting. Python + Streamlit, mint/ package; Russian and English.",
@@ -702,7 +702,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "cacUobET"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a7"
@@ -730,7 +730,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Documents for the base (.docx,\n.pdf, .md, .txt): regulations,\nstandards",
@@ -778,7 +778,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "a9"
@@ -806,7 +806,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "User question",
@@ -854,7 +854,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "yjVfkkvt"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aB"
@@ -882,7 +882,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Document submitted for approval\n(.docx, .pdf, .md, .txt),\ncriteria and “special attention”",
@@ -930,7 +930,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "lCjxa3JM"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aD"
@@ -958,7 +958,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Issued comments and the new\nrevision of the document (.docx,\n.pdf, .md, .txt)",
@@ -995,7 +995,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Interface — Streamlit",
@@ -1047,7 +1047,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aG"
@@ -1075,7 +1075,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Sidebar: base documents, settings,\nmodels and limits, abbreviations,\nexpert rules and system cards (a\ncard draft — from the base),\nquality check, prompts, language\nEN / RU, feedback",
@@ -1127,7 +1127,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "fz2Zr53c"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aI"
@@ -1155,7 +1155,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "“Chat” tab",
@@ -1207,7 +1207,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aK"
@@ -1235,7 +1235,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "“Document review” tab: the\ndocument, criteria, “special\nattention”, ⚙️ review settings in\none block, “Saved reviews”",
@@ -1287,7 +1287,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "MO75qxS5"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aM"
@@ -1315,7 +1315,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "“Verification of fixes” tab",
@@ -1354,7 +1354,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 962771986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -1418,7 +1418,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -1482,7 +1482,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -1546,7 +1546,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -1627,7 +1627,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aS"
@@ -1655,7 +1655,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 397301692,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "ADDING DOCUMENTS TO THE BASE\n\n1. Parsing: .docx — Docling; .pdf\n   — without models (headings from\n   bookmarks, the contents page,\n   font size); .md, .txt → text,\n   headings, tables\n2. Chunking at paragraph and\n   sentence boundaries: parent\n   2500 chars for the LLM, child\n   400 chars for search; tables —\n   by rows\n3. Child embeddings (together with\n   the heading path)\n4. Write to the store: vectors,\n   fragments, word index\n5. Abbreviations collected from\n   documents; the manifest records\n   the model and the chunking\n   parameters\n6. A system card draft (a button\n   on the sidebar): for each card\n   section — a search of the base\n   and an LLM answer only from\n   what was found, every fact with\n   its source, gaps — “not in the\n   base”; the expert checks it,\n   fills it in and loads the card\n   into the base",
@@ -1707,7 +1707,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "ixFn3XEj"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aU"
@@ -1735,7 +1735,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 723834894,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "CHAT OVER THE KNOWLEDGE BASE\n\n1. A follow-up question is\n   rewritten into a self-contained\n   one using the conversation\n   history\n2. Search the base → the 4–5 best\n   fragments\n3. Context: fragments with file\n   and sections (neighbours as one\n   block, long ones around the\n   match) + abbreviation reference\n4. The LLM answers from the\n   context only\n5. Answer with [file, section]\n   references and a source list;\n   references are checked against\n   the retrieved fragments, wrong\n   ones are marked ⚠; feedback:\n   rating and comment",
@@ -1787,7 +1787,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "XCyBVpqO"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aW"
@@ -1815,7 +1815,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1240655623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW (MAP → REDUCE)\n\n1. Parsing the document → .md →\n   parts by section up to 4500\n   chars (a section with its table\n   — whole); for comparison — the\n   whole document in one request\n2. MAP: each part — with norms\n   from the base, basis documents\n   (by the document's references\n   to them), expert rules, the\n   cards of mentioned systems and\n   the whole document for\n   reference (if it does not fit\n   into the window — with the\n   outline) → the LLM writes\n   findings; a described process —\n   step by step; optionally — with\n   model reasoning\n3. Self-critique (can be turned\n   off): keep or drop, severity,\n   verbatim quote; a finding about\n   a clause of another part is\n   dropped\n4. Deep review: narrow questions —\n   each pair of process steps,\n   each requirement, the\n   boundaries; contradictions\n   between sections; figures (the\n   program calculates); typos\n5. Passes 2–3 (optional): the\n   sections and the process and\n   figures questions once more at\n   temperature ≥ 0.4; what several\n   passes found ranks higher\n6. “Special attention” and the\n   checklist for the document type\n   — an answer per item from the\n   whole document, together with\n   the findings other checks\n   already made; what the document\n   requires from each mentioned\n   system\n7. Without the model:\n   abbreviations, formatting;\n   references and figures in\n   findings are checked against\n   the document and the norms\n8. REDUCE: duplicates — by words\n   (more leniently in the pieces\n   of one long table) and by the\n   model (findings about different\n   process steps are not merged);\n   findings by document section,\n   in document order; “Key points”\n   — an editor model picks the\n   most important\n9. Report .md, the document with\n   Word comments, the review log\n   and raw model answers .md;\n   comparison with a reference;\n   feedback: rating and comment\n10. The review is saved\n   (LOG_DIR/audits) and can be\n   opened later; the expert marks\n   the findings (“keep” / “minor”\n   / “wrong” with a reason) and\n   adds their own → “My findings”\n   as Word / .md and an assessment\n   file for improving MINT",
@@ -1867,7 +1867,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "hD5ZeGLD"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aY"
@@ -1895,7 +1895,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1773752865,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "VERIFICATION OF FIXES\n\n1. New revision of the document →\n   sections\n2. For each comment — matching\n   sections (vector + words +\n   reranker) and, optionally,\n   norms from the base\n3. LLM: status “fixed / partially\n   / not fixed” and a verbatim\n   quote\n4. The quote is checked against\n   the revision text\n5. Verification matrix .md /\n   .docx; feedback: rating and\n   comment",
@@ -1934,7 +1934,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -1998,7 +1998,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1747155805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2062,7 +2062,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2126,7 +2126,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 331251064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2215,7 +2215,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "ae"
@@ -2243,7 +2243,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 234782881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Search engine (shared by chat, review and verification of fixes)\nvector (FAISS, meaning) + words (BM25: stems of Russian and English words, abbreviation expansions) → rank\nfusion (RRF) → reranker (optional) → best fragments + the “low confidence” signal. Details — in the diagram\nbelow.",
@@ -2282,7 +2282,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1562140317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2346,7 +2346,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2410,7 +2410,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1713103680,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2479,7 +2479,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "tmov1cS1"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -2545,7 +2545,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1139303386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "card draft",
@@ -2582,7 +2582,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 493025635,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "MINT core — Python",
@@ -2630,7 +2630,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "am"
@@ -2658,7 +2658,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 942050464,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Knowledge base store — the KB_DIR folder on the machine",
@@ -2702,7 +2702,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "KKTFtVje"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "ao"
@@ -2730,7 +2730,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "FAISS — child vectors (searched by\n“vector”)",
@@ -2774,7 +2774,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "bzt8ESso"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aq"
@@ -2802,7 +2802,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "parent_store.json — parent fragments\n(read by the LLM)",
@@ -2846,7 +2846,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "as"
@@ -2874,7 +2874,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl — word index by stems",
@@ -2918,7 +2918,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "p0abAhKA"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "au"
@@ -2946,7 +2946,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2048044620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json — abbreviations\nfrom documents",
@@ -2990,7 +2990,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "jXvBssE7"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "aw"
@@ -3018,7 +3018,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "manifest.json — embedding model and\nchunking of each document;\naudit_roles.json — expert rules and\nsystem cards for the review",
@@ -3062,7 +3062,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "p07PEz84"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "ay"
@@ -3090,7 +3090,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "sources/ — original documents for\nre-indexing",
@@ -3134,7 +3134,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "efio1e5v"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b10"
@@ -3162,7 +3162,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "External services",
@@ -3199,7 +3199,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "any OpenAI-compatible API",
@@ -3243,7 +3243,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "nBcm18E7"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b13"
@@ -3271,7 +3271,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1076978060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "LLM — answers, findings,\ncritique, “Key points”, card\ndrafts",
@@ -3315,7 +3315,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "zDX0XsOI"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b15"
@@ -3343,7 +3343,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1231588435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Embedding model — vectors",
@@ -3387,7 +3387,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "L0k8cF7P"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b17"
@@ -3415,7 +3415,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 224550167,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Reranker — relevance (optional)",
@@ -3459,7 +3459,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "zAZSSevu"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -3521,7 +3521,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 130875986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "write",
@@ -3565,7 +3565,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "vwSuw7eL"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -3627,7 +3627,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 634279936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "read",
@@ -3671,7 +3671,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "zufR1oa1"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -3733,7 +3733,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2138346186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "HTTP",
@@ -3777,7 +3777,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "m4ESFAMB"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1F"
@@ -3805,7 +3805,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1356830984,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Settings\n• .env — API addresses, keys, models, folders,\n   language (MINT_LANG)\n• config.yaml — search and review parameters\n   (optional)\n• glossary.json — your own abbreviation expansions\n   (optional)\n• checklists.yaml — your own review checklists by\n   document type (example —\n   checklists.example.yaml; a file outside the\n   program folder — its path in MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — default prompt\n   texts; your own edits — prompts.yaml (the\n   “Prompts” page); the version of the set goes\n   into feedback, the review log and the quality\n   check\n• sidebar — changes for the current session\n• LOG_DIR — work log, user feedback\n   (feedback.jsonl), quality checks (eval/), saved\n   reviews with expert assessments (audits/)",
@@ -3849,7 +3849,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "VI6vaxks"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1H"
@@ -3877,7 +3877,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 494807491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Default sizes (MINT adapts them to the model\nlimits)\n• parent 2500 chars ≈ 1–1.5 pages — goes into the\n   LLM context\n• child 400 chars ≈ 2–3 sentences — the unit of\n   vector search\n• document section in review 4500 chars ≈ 3–4 pages\n• fragment for the reranker 800 chars",
@@ -3921,7 +3921,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "lTJ2LlMC"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1J"
@@ -3949,7 +3949,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Checks and quality evaluation\n• check_install.py — installation self-check:\n   packages, .docx and .pdf parsing, model\n   connections, the page\n• “Quality check” in the sidebar (from the console\n   — eval_search.py) — questions from the base run\n   through search in several variants (vector,\n   words, hybrid, hybrid + reranker): hit@k, MRR,\n   whether a difference is chance, the “low\n   confidence” threshold, recommendations;\n   optionally chat answers: a search or a model\n   error, compared by prompt version\n• expert assessments of findings (assessment files)\n   — tools/review_stats.py: the share of correct\n   findings by check kind, reasons for errors, what\n   MINT missed\n• tests/ — automated tests without network or\n   models, GitHub Actions",
@@ -3986,7 +3986,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Searching the base — how the right fragment is found",
@@ -4023,7 +4023,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Steps 1–5 are shared by chat, review and verification of fixes; steps 6–7 — the chat answer.",
@@ -4075,7 +4075,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1N"
@@ -4103,7 +4103,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "1. Question\n\nin chat a\nfollow-up is\nrewritten using\nthe conversation\nhistory",
@@ -4155,7 +4155,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "ink1rcEm"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1P"
@@ -4183,7 +4183,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "2a. Vector\n   (meaning)\n\nquestion embedding\n(with an\ninstruction if the\nmodel needs one) →\nFAISS → 50 nearest\nchildren → their\nparents",
@@ -4235,7 +4235,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1R"
@@ -4263,7 +4263,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "2b. Words (BM25)\n\nword stems\n(Russian and\nEnglish) +\nabbreviation\nexpansions → 20\nbest parents",
@@ -4319,7 +4319,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "QiDuXTvv"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1T"
@@ -4347,7 +4347,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "3. Rank fusion\n   (RRF)\n\n16 candidates;\n   those found by\n   both channels\n   rank higher",
@@ -4399,7 +4399,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1V"
@@ -4427,7 +4427,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "4. Reranker\n\noptional: scores\nall 16 by their\nmost relevant\nfragment (≤ 800\nchars); its vote\nis added to the\nfusion",
@@ -4479,7 +4479,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "6mtwEXMY"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1X"
@@ -4507,7 +4507,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "5. Select 4–5\n   fragments\n\nno duplicates, at\nmost 2 parts of\none table; the\n“low confidence”\nsignal — by the\nreranker score,\nwithout one — by\nthe question words",
@@ -4559,7 +4559,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1Z"
@@ -4587,7 +4587,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "6. Context for the\n   LLM\n\nparent fragments\nwith file and\nsections:\nneighbours as one\nblock, long ones\naround the match;\n+ abbreviation\nreference",
@@ -4635,7 +4635,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1b"
@@ -4663,7 +4663,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "7. Answer\n\nfrom the context\nonly, with [file,\nsection]\nreferences;\nreferences are\nchecked against\nthe context; no\nanswer in the base\n— it says so",
@@ -4702,7 +4702,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 160393074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -4766,7 +4766,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -4830,7 +4830,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1602413674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -4894,7 +4894,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -4958,7 +4958,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1163602303,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -5022,7 +5022,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -5086,7 +5086,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 574790563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -5150,7 +5150,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -5212,7 +5212,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 783411893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "If the embedding service is unavailable, only the “Words” channel works. The reranker with a dashed frame is optional: without it search runs through steps 1–3 and 5.",
@@ -5249,7 +5249,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1127199645,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Word drafting — a separate workflow from review and correction verification",
@@ -5286,7 +5286,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1841050973,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Source requirements are not automatically applicable: first confirm the target system, then classify each requirement by obligated actor.",
@@ -5323,7 +5323,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1963743434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Mint v21.4.1",
@@ -5371,7 +5371,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "oi99SUzt"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1p"
@@ -5399,7 +5399,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 2048913134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "1. Word template and sources\n\nThe user selects a DOCX template and\noriginal documents from the local\nknowledge base. Originals are never\nuploaded to GitHub.",
@@ -5451,7 +5451,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "z3x9ZzAb"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1r"
@@ -5479,7 +5479,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 677440757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "2. Infer context\n\nThe model proposes the target system,\nobjective, scope and participants\nfrom the template; sources can\ndescribe different systems.",
@@ -5531,7 +5531,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "pI5SbfaH"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1t"
@@ -5559,7 +5559,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1842945878,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "3. Human confirmation\n\nBefore drafting, the user verifies\nthe context. It guides search but is\nnot evidence of factual obligations.",
@@ -5611,7 +5611,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "dCsLXsLf"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1v"
@@ -5639,7 +5639,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1935139015,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "4. Extract requirements\n\nQuotes are checked against the\noriginal text; errors and uncertainty\nremain visible for expert review.",
@@ -5691,7 +5691,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "dCsLXsLf"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1x"
@@ -5719,7 +5719,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 851939754,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "5. Classify applicability by actor\n\nTarget / shared / external\ninteraction / another system /\nuncertain. Other systems' duties are\nnot assigned to the target.",
@@ -5771,7 +5771,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "D5eOHAZA"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b1z"
@@ -5799,7 +5799,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1489119380,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "6. Draft Word\n\nSection planning, filling fields and\ntables, source verification, and\npreservation of protected formatting.",
@@ -5851,7 +5851,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b21"
@@ -5879,7 +5879,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1847393126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "7. Two-way evidence links\n\nWord section → requirements; source →\nWord sections. A text match does not\nprove semantic completeness.",
@@ -5927,7 +5927,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "index": "b23"
@@ -5955,7 +5955,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1566900065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "8. Accepted chat edits\n\nExact requirement ID → proposal and\ndiff → accept, reject or undo.\nChanged evidence links require\nrevalidation.",
@@ -5994,7 +5994,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 218354747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6058,7 +6058,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1449011898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6122,7 +6122,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1556626306,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6186,7 +6186,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 613515443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6250,7 +6250,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 670435843,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6314,7 +6314,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1166402109,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6378,7 +6378,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 348668764,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "points": [
@@ -6448,7 +6448,7 @@ evaluated separately; user-approved edits do not rewrite the initial generation 
       "versionNonce": 1287752845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135009,
+      "updated": 1795462703639,
       "link": null,
       "locked": false,
       "text": "Traceability covers extracted requirements; it does not guarantee complete coverage of the source documents. The initial Word draft is\nevaluated separately; user-approved edits do not rewrite the initial generation result.",

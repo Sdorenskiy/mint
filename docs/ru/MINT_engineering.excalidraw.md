@@ -2405,7 +2405,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a0"
@@ -2435,7 +2435,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 318228129,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a1"
@@ -2465,7 +2465,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 421009957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a2"
@@ -2495,7 +2495,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1930857069,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a3"
@@ -2525,7 +2525,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1990962993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a4"
@@ -2555,7 +2555,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1044727257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a5"
@@ -2585,7 +2585,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1619057106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a6"
@@ -2615,7 +2615,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 66655498,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a7"
@@ -2645,7 +2645,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 247438911,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a8"
@@ -2675,7 +2675,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 966883474,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "a9"
@@ -2703,7 +2703,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "MINT — инженерная схема: устройство и настройка параметров",
@@ -2740,7 +2740,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "По коду MINT 20.1 и новее (пакет mint/) и eval_search.py. Для администратора: что задать при установке, что MINT рассчитает сам, что подобрать тестами на своих данных и от каких особенностей компании это зависит.\nКаждый факт указан в одном месте; «панель N» — где искать подробности.",
@@ -2784,7 +2784,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "CMIJ6m5h"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aC"
@@ -2812,7 +2812,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] ВРУЧНУЮ — задаёт администратор:\n.env, config.yaml, панель",
@@ -2856,7 +2856,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "O8slPZY2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aE"
@@ -2884,7 +2884,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] АВТО — MINT рассчитывает по\nмоделям и базе; трогать, если есть\nпредупреждение или так требуют\nтесты",
@@ -2928,7 +2928,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "uJcbtyhc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aG"
@@ -2956,7 +2956,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] ТЕСТ — подбирается проверкой\nкачества на своём наборе вопросов",
@@ -3000,7 +3000,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VYktHA1f"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aI"
@@ -3028,7 +3028,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] ПРОВЕРКА — подбирается вручную\nна живых примерах",
@@ -3072,7 +3072,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZDbBQfJM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aK"
@@ -3100,7 +3100,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] УМОЛЧАНИЕ — обычно не трогать",
@@ -3144,7 +3144,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9EeuGh20"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aM"
@@ -3172,7 +3172,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "♻ — действует на документы, загруженные\nпосле изменения; уже загруженные —\nпереиндексация",
@@ -3216,7 +3216,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rX2XoBEz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aO"
@@ -3244,7 +3244,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ ОПОРНЫЙ ПАРАМЕТР — от него MINT рассчитывает другие: лимиты моделей, chars_per_token, max_tokens, top_k и\nпромежуточные chat_budget / llm_budget. Меняете его — меняются зависимые.",
@@ -3288,7 +3288,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "x1vUqZsn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aQ"
@@ -3316,7 +3316,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ ВЛИЯЕТ НА СОСЕДНИЙ — от него зависят 1–2 параметра той же группы (parent_size → parent_overlap, audit_map_size →\naudit_context_max_chars …). Зависимые перечислены в колонке «Ограничения и зависимости».",
@@ -3360,7 +3360,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "nukixQmd"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aS"
@@ -3388,7 +3388,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ТОКЕНЫ И СИМВОЛЫ — две единицы длины текста на этой схеме\n• [ток.] токены — так длину считают модели: токен — кусок слова (часто 2–4 буквы). В токенах заданы лимиты моделей\n   (llm_context_tokens, embed_max_tokens, rerank_max_tokens) и длина ответа max_tokens.\n• [симв.] символы — так текст режет MINT (фрагменты, разделы документа, контекст). Все размеры фрагментов и объёмы\n   контекста — в символах.\n• Перевод: chars(t) = t × chars_per_token × 0.85, где 0.85 (LIMIT_SAFETY) — запас 15 % на неточность оценки. Пример:\n   1000 ток. × 2.5 × 0.85 = 2125 симв., которые MINT позволит себе отправить.",
@@ -3432,7 +3432,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aU"
@@ -3460,7 +3460,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "СКОЛЬКО СИМВОЛОВ В ТОКЕНЕ (chars_per_token)\n• русский текст: 2.3–3 на современных многоязычных токенизаторах (Qwen2.5 / Qwen3, Llama 3); 1.5–2 на старых,\n   «английских» (Llama 2, ранние Mistral)\n• английский текст: ≈ 4 (3.5–4.5);  таблицы, номера, коды: 1.5–2.5\n• 2.5 — НЕ вычисляется само: это типовое значение (FALLBACK_LIMITS), пока ничего не измерено. Вычисляется только по\n   кнопке «Определить у сервера»: measure_chars_per_token() отправляет LLM образец на языке базы (kb_language():\n   русская — русский, английская — английский, смешанная или пустая — оба, берётся меньшее) и он же × 4, cpt = разница\n   символов / разница prompt_tokens (служебные токены сокращаются). Результат живёт до перезапуска MINT — закрепить:\n   config.yaml → models: chars_per_token.\n• одно значение берётся и для эмбеддингов, и для реранкера, хотя токенизаторы у них свои — ещё одна причина для запаса\n   15 %.",
@@ -3497,7 +3497,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1. Как MINT устанавливает параметры при запуске",
@@ -3534,7 +3534,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Каждый перезапуск страницы: main() → _base_settings() → resolve_model_limits() → resolve_settings(). Слева — откуда берутся значения, в центре — функции, которые их соединяют, справа — что чего важнее.",
@@ -3582,7 +3582,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aY"
@@ -3610,7 +3610,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1587784481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Откуда берутся значения",
@@ -3654,7 +3654,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TN1jFYgS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aa"
@@ -3682,7 +3682,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1878699547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] .env → load_settings() → _load_env_files()\nкуда подключаться: адреса и ключи API, имена моделей, папки,\nсертификат. Полный список — панель 3, «Подключения».",
@@ -3726,7 +3726,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GtxUZ3NF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "ac"
@@ -3754,7 +3754,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 832090367,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] config.yaml → load_settings()\nкак работать: лимиты моделей, поиск, аудит. Указанные параметры\nзапоминаются (explicit_fields); подключения здесь игнорируются,\nнеизвестные параметры — предупреждение в панели.",
@@ -3798,7 +3798,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NxT10CQ0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "ae"
@@ -3826,7 +3826,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 544731864,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] Серверы моделей → detect_server_info()\nGET …/models → context_from_model_info(): окно LLM (max_model_len,\ncontext_length, n_ctx …), вход эмбеддингов и реранкера — если\nсервер сообщает; кэш 10 мин.",
@@ -3870,7 +3870,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "ag"
@@ -3898,7 +3898,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] Кнопка «Определить у сервера» → measure_chars_per_token()\nизмеряет «символов на токен» на языке базы (как — блок «Токены и\nсимволы» вверху).",
@@ -3942,7 +3942,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "ai"
@@ -3970,7 +3970,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] Боковая панель → st.session_state\n«Модели и лимиты», «Экспертные настройки»: изменения на время\nсеанса; «Сбросить изменения сеанса» возвращает как было.",
@@ -4014,7 +4014,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fSKUH9E4"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "ak"
@@ -4042,7 +4042,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1583187137,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] База знаний → kb_default_top_k()\nесли top_k не задан (0), предлагает его по числу фрагментов в базе\n— 4 или 5 (подробно — панель 3, top_k).",
@@ -4094,7 +4094,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "am"
@@ -4122,7 +4122,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "resolve_model_limits() ← лимиты из источников слева\nдля каждого из 4 лимитов моделей выбирает источник по приоритету (справа);\nничего нет — типовое значение (почему такие — панель 3).",
@@ -4174,7 +4174,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hMCVRlIk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "ao"
@@ -4202,7 +4202,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1777859923,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "embed_prefix_preset(EMBED_MODEL)\nподбирает префиксы запроса и документа по имени модели эмбеддингов (таблица\n— панель 3, embed_query_prefix).",
@@ -4258,7 +4258,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "aq"
@@ -4286,7 +4286,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2006891536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "resolve_settings() → _derive() ← параметры из источников слева\nрассчитывает 12 параметров по лимитам моделей. Правило: значение = меньшее\nиз умолчания и потолка модели. Большое окно не раздувает фрагменты (длинный\nконтекст добавляет шум), маленькое уменьшает их, чтобы ничего не обрезалось.\nФормулы — колонка «Ограничения» в панели 3, наглядно — панель 2. Итог: cfg\n(неизменяемый Settings) и info {value, auto, ceiling, source} → блок «MINT\nрассчитал».",
@@ -4338,7 +4338,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "as"
@@ -4366,7 +4366,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1679127538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "limits_warnings()\nпредупреждение в «Модели и лимиты», если значение больше потолка или модели\nне хватает места.",
@@ -4414,7 +4414,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "au"
@@ -4442,7 +4442,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 386724997,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ask_llm() при каждом вызове\nесли окно LLM известно (сервер, config.yaml или панель): оценивает запрос в\nтокенах; свободно < 256 ток. — ошибка «КОНТЕКСТ НЕ ПОМЕЩАЕТСЯ»; ответу мало\nместа — max_tokens уменьшается. При типовом окне запрос не проверяется.",
@@ -4481,7 +4481,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -4545,7 +4545,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 3324235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -4609,7 +4609,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -4673,7 +4673,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 22369781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -4737,7 +4737,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -4801,7 +4801,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 780732774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -4870,7 +4870,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3QZgUSQg"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b12"
@@ -4898,7 +4898,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1416799419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПРИОРИТЕТ ИСТОЧНИКОВ — один для всех параметров\n(его применяют resolve_model_limits() и resolve_settings())\n\n• подключения (адреса, ключи, модели, папки): переменные окружения\n   системы > .env\n• лимиты моделей: панель (сеанс) > config.yaml > сервер / измерение >\n   типовое значение\n• остальные параметры: панель (сеанс) > config.yaml > расчёт MINT (для\n   [А]) > умолчание в коде\n\nЯвно заданное значение (панель или config.yaml) всегда важнее найденного\nу сервера и рассчитанного. [А]-параметр, зафиксированный вручную, MINT\nне пересчитывает, но предупредит, если он больше потолка модели\n(limits_warnings).",
@@ -4935,7 +4935,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1913301777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2. Как делится окно модели: что занимает место и сколько остаётся тексту из базы",
@@ -4972,7 +4972,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Слева — общий вид (масштаб условный), справа — те же полосы на числах: окно LLM 32768 ток., max_tokens 1500, chars_per_token 2.5, top_k 5, вход эмбеддингов и реранкера 8192 ток., Qwen3-Embedding. Узкие части на правых полосах\nпоказаны шире, чем в масштабе. Формула каждой части — колонка «Ограничения» в панели 3.",
@@ -5009,7 +5009,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 590271204,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ОБЩИЙ ВИД",
@@ -5046,7 +5046,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПРИМЕР НА ЧИСЛАХ",
@@ -5083,7 +5083,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЧАТ — один вызов LLM на вопрос.  Вся полоса = llm_context_tokens [ток.]",
@@ -5120,7 +5120,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1275421862,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЧАТ, окно 32768 ток.",
@@ -5164,7 +5164,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lMqa6dyn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1A"
@@ -5192,7 +5192,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1668778927,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт, вопрос, история,\nсокращения\nCHAT_RESERVE 800 ток.",
@@ -5236,7 +5236,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0IIzxMCH"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1C"
@@ -5264,7 +5264,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 638186731,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\nmax_tokens [ток.]",
@@ -5308,7 +5308,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1E"
@@ -5336,7 +5336,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1575679632,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас 15 %\n(× 0.85)",
@@ -5380,7 +5380,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1G"
@@ -5408,7 +5408,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1117002960,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "chat_budget\nостаток → в символы",
@@ -5452,7 +5452,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "efio1e5v"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1I"
@@ -5480,7 +5480,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 621027637,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт и пр.\n800 ток.",
@@ -5524,7 +5524,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MN45msGt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1K"
@@ -5552,7 +5552,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 737651295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -5596,7 +5596,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "d9PJHN50"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1M"
@@ -5624,7 +5624,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1934321891,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас 15 %\n4 570 ток.",
@@ -5668,7 +5668,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JhZOGm7N"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1O"
@@ -5696,7 +5696,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1438249924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "chat_budget\n25 898 ток. × 2.5 = 64 744 симв.",
@@ -5733,7 +5733,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -5784,7 +5784,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "llm_context_tokens [ток.] — окно модели целиком",
@@ -5821,7 +5821,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -5872,7 +5872,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "32 768 ток. = 800 + 1 500 + 4 570 + 25 898",
@@ -5909,7 +5909,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 722724126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -5952,7 +5952,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -5995,7 +5995,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 584673810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -6038,7 +6038,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -6088,7 +6088,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NqXrwvw9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1Y"
@@ -6116,7 +6116,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "фрагмент 1\n≤ smart_truncate_chars",
@@ -6160,7 +6160,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bULLNvq3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1a"
@@ -6188,7 +6188,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "фрагмент 2",
@@ -6232,7 +6232,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hMgyc1Ik"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1c"
@@ -6260,7 +6260,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "…",
@@ -6304,7 +6304,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mavdOV9b"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1e"
@@ -6332,7 +6332,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "фрагмент top_k",
@@ -6376,7 +6376,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "noOzI47H"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1g"
@@ -6404,7 +6404,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно, если фрагменты короче",
@@ -6448,7 +6448,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "uX8z8N1E"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1i"
@@ -6476,7 +6476,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1\n2500",
@@ -6520,7 +6520,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1k"
@@ -6548,7 +6548,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2\n2500",
@@ -6592,7 +6592,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1m"
@@ -6620,7 +6620,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3\n2500",
@@ -6664,7 +6664,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1o"
@@ -6692,7 +6692,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4\n2500",
@@ -6736,7 +6736,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1q"
@@ -6764,7 +6764,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5\n2500",
@@ -6808,7 +6808,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JbOT9pPk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1s"
@@ -6836,7 +6836,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно 52 244 симв.\n(значения ограничены умолчаниями)",
@@ -6873,7 +6873,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1127199645,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -6924,7 +6924,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1841050973,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "chat_budget [симв.] = top_k фрагментов + свободное место",
@@ -6961,7 +6961,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1963743434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -7012,7 +7012,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 529228002,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "64 744 симв.: 5 × 2500 = 12 500 занято, 52 244 свободно",
@@ -7056,7 +7056,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WjKtxsaI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b1y"
@@ -7084,7 +7084,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2008305028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПОЧЕМУ 32768 ток. → ≈ 64 700 симв., А 4096 ток. → ЛИШЬ ≈ 3 800 симв.\nИз окна сначала вычитаются части фиксированного размера: ответ 1500 + промпт 800 = 2300 ток. Они одинаковы для\nлюбого окна:\n• 32768 − 2300 = 30 468 ток. × 2.5 × 0.85 = 64 744 симв.  — фиксированные части заняли 7 % окна\n• 4096 − 2300 = 1 796 ток. × 2.5 × 0.85 = 3 816 симв.  — фиксированные части заняли 56 % окна\nОкно меньше в 8 раз, а бюджет — в 17 раз.",
@@ -7121,7 +7121,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 677440757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЧАТ, окно 4096 ток. — то же самое на маленькой модели",
@@ -7165,7 +7165,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "leq8ut5p"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b21"
@@ -7193,7 +7193,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1842945878,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт и пр.\n800 ток.",
@@ -7237,7 +7237,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "loAcQiAx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b23"
@@ -7265,7 +7265,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1935139015,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -7309,7 +7309,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LwKD4Klc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b25"
@@ -7337,7 +7337,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 851939754,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n269 ток.",
@@ -7381,7 +7381,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bjxl3eOv"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b27"
@@ -7409,7 +7409,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1489119380,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "chat_budget\n1 527 ток. × 2.5 = 3 816 симв.",
@@ -7446,7 +7446,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1334356844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -7489,7 +7489,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1847393126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -7539,7 +7539,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "InVh793w"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2B"
@@ -7567,7 +7567,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1566900065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1\n763",
@@ -7611,7 +7611,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "z3x9ZzAb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2D"
@@ -7639,7 +7639,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1449011898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2\n763",
@@ -7683,7 +7683,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lvogpKBa"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2F"
@@ -7711,7 +7711,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 613515443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3\n763",
@@ -7755,7 +7755,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2H"
@@ -7783,7 +7783,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1166402109,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4\n763",
@@ -7827,7 +7827,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "pDc5xBAk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2J"
@@ -7855,7 +7855,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1287752845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5\n763",
@@ -7892,7 +7892,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2045375074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -7943,7 +7943,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 248780357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3 816 симв. / 5 = 763 симв. на фрагмент: MINT уменьшит parent_size и smart_truncate_chars до 763 и покажет это в «MINT\n   рассчитал»",
@@ -7980,7 +7980,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 666412184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА — один вызов LLM (проверка одного раздела).  Вся полоса = llm_context_tokens [ток.]",
@@ -8017,7 +8017,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 242970542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "АУДИТ, окно 32768 ток.: chars(32768 − 1500) = 66 444 симв.",
@@ -8061,7 +8061,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7rdFv432"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2P"
@@ -8089,7 +8089,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1102567897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\nmax_tokens [ток.]",
@@ -8133,7 +8133,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "t16gQ7r9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2R"
@@ -8161,7 +8161,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1848237837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -8205,7 +8205,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "v324B2u5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2T"
@@ -8233,7 +8233,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1380429683,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт с критериями\nAUDIT_RESERVE 3500 симв.",
@@ -8277,7 +8277,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Yw1heHdw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2V"
@@ -8305,7 +8305,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 623651357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "раздел документа\naudit_map_size",
@@ -8349,7 +8349,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MKAIv9RY"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2X"
@@ -8377,7 +8377,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 373411918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "нормы из базы —\nцелые parent\naudit_context_max_chars",
@@ -8421,7 +8421,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3oHHcuXC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2Z"
@@ -8449,7 +8449,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1194067783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -8493,7 +8493,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "UWYNgYTm"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2b"
@@ -8521,7 +8521,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2140098237,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -8565,7 +8565,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "5wetaWmd"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2d"
@@ -8593,7 +8593,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 977443932,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n4 690 ток.",
@@ -8637,7 +8637,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "nwBQd5Yt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2f"
@@ -8665,7 +8665,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 611520879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт\n3500 симв.",
@@ -8709,7 +8709,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KlWg4sOl"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2h"
@@ -8737,7 +8737,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1365719569,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "раздел\n4500 симв.",
@@ -8781,7 +8781,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SOxNTm64"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2j"
@@ -8809,7 +8809,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 811674068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "нормы ≤ 9000\nсимв.\n(≈ 3 целых\nparent)",
@@ -8853,7 +8853,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hv4VvuyZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2l"
@@ -8881,7 +8881,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1926862321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно\n49 444 симв.",
@@ -8918,7 +8918,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 832351319,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -8969,7 +8969,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1116584361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "llm_budget [симв.]",
@@ -9006,7 +9006,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 968813686,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -9057,7 +9057,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 257588578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "llm_budget = 66 444 − 3 500 = 62 944 симв.",
@@ -9094,7 +9094,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 748399043,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ — один вызов LLM на замечание.  Вся полоса = llm_context_tokens [ток.]",
@@ -9131,7 +9131,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1965113445,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ, окно 32768 ток.",
@@ -9175,7 +9175,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LajGgGfY"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2t"
@@ -9203,7 +9203,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2008784886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\nmax_tokens",
@@ -9247,7 +9247,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ShtISKym"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2v"
@@ -9275,7 +9275,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1784713809,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -9319,7 +9319,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZPO29Z85"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2x"
@@ -9347,7 +9347,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 49090000,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт\n3500 симв.",
@@ -9391,7 +9391,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Q8pcOgCV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b2z"
@@ -9419,7 +9419,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1700388050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "замечание\n≈ 1000 симв.",
@@ -9463,7 +9463,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KC1H2ntF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b31"
@@ -9491,7 +9491,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1377316762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "нормы —\nцелые parent\naudit_context_max_chars",
@@ -9535,7 +9535,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "meKGw7dv"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b33"
@@ -9563,7 +9563,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1800598225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "разделы новой редакции\nreview_context_max_chars",
@@ -9607,7 +9607,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "PAcdQHdw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b35"
@@ -9635,7 +9635,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 801671152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -9679,7 +9679,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Ev2N9r9I"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b37"
@@ -9707,7 +9707,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1993208942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответ\n1500 ток.",
@@ -9751,7 +9751,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hDqrCRD7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b39"
@@ -9779,7 +9779,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1356140762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n4 690 ток.",
@@ -9823,7 +9823,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fdMC3RjW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3B"
@@ -9851,7 +9851,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 837135875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "промпт\n3500",
@@ -9895,7 +9895,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "j5fgYzkQ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3D"
@@ -9923,7 +9923,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1296323541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "замечание\n1000",
@@ -9967,7 +9967,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "071tN1nF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3F"
@@ -9995,7 +9995,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1792505757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "нормы\n≤ 9000",
@@ -10039,7 +10039,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8ShPd4X4"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3H"
@@ -10067,7 +10067,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1354835712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "разделы\n12 000 симв.",
@@ -10111,7 +10111,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zPfZUBWj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3J"
@@ -10139,7 +10139,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 89975457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно\n40 944 симв.",
@@ -10176,7 +10176,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1393172046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЭМБЕДДИНГИ — один child при индексации.  Вся полоса = embed_max_tokens [ток.]",
@@ -10213,7 +10213,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 948614400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЭМБЕДДИНГИ, вход 8192 ток.: chars(8192) = 17 408 симв.",
@@ -10257,7 +10257,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "oqJGgArB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3N"
@@ -10285,7 +10285,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1428735309,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -10329,7 +10329,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Deoo4by7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3P"
@@ -10357,7 +10357,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1302404610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "путь заголовков\n250 симв.",
@@ -10401,7 +10401,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MBfCmbN6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3R"
@@ -10429,7 +10429,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2105701991,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "префикс\nдокумента",
@@ -10473,7 +10473,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hlFd0jRk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3T"
@@ -10501,7 +10501,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2052374652,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child_size [симв.]",
@@ -10545,7 +10545,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "5Tg8R9VK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3V"
@@ -10573,7 +10573,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 831166826,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -10617,7 +10617,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TD31j2ot"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3X"
@@ -10645,7 +10645,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 956259476,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n1 229 ток.",
@@ -10689,7 +10689,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3dSKBFot"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3Z"
@@ -10717,7 +10717,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 141713803,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "заголовки\n250",
@@ -10761,7 +10761,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "q7ybY5xb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3b"
@@ -10789,7 +10789,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 838572558,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "префикс\n0 (Qwen3)",
@@ -10833,7 +10833,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "1laxvKml"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3d"
@@ -10861,7 +10861,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 896537800,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child\n400",
@@ -10905,7 +10905,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rLchd2IL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3f"
@@ -10933,7 +10933,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1545726614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно 16 758 симв.",
@@ -10970,7 +10970,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1675313614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Такой же вход у раздела документа при подборе разделов (section_embed_chars) и у запроса аудита (audit_query_chars) — числа\nсправа.",
@@ -11007,7 +11007,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1217422132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Раздел: 0 + 4000 симв.; запрос аудита: префикс 171 симв. + 2000 — всё помещается в 17 408. Модель с входом 512 ток. → 1 088\nсимв.: child 400 ещё помещается, section_embed_chars уменьшится до 1 088.",
@@ -11044,7 +11044,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1789039515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "РЕРАНКЕР — одна пара «запрос + документ».  Вся полоса = rerank_max_tokens [ток.]",
@@ -11081,7 +11081,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 395955641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "РЕРАНКЕР, вход 8192 ток.: chars(8192) = 17 408 симв.",
@@ -11125,7 +11125,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XPIYe9qr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3l"
@@ -11153,7 +11153,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 967462205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n15 %",
@@ -11197,7 +11197,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9Q32E6aD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3n"
@@ -11225,7 +11225,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1012576463,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запрос + сокращения\nrerank_query_max_chars",
@@ -11269,7 +11269,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "q1MCxcQW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3p"
@@ -11297,7 +11297,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 574789849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "документ с именем файла и разделом\nrerank_doc_max_chars",
@@ -11341,7 +11341,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "K5P4QAaa"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3r"
@@ -11369,7 +11369,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 741104059,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно",
@@ -11413,7 +11413,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MoUIp0R3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3t"
@@ -11441,7 +11441,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 821999673,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запас\n1 229 ток.",
@@ -11485,7 +11485,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MGULSd3Y"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3v"
@@ -11513,7 +11513,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 791129361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запрос\n1500",
@@ -11557,7 +11557,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MKOGAK66"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3x"
@@ -11585,7 +11585,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 848094804,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "документ\n800",
@@ -11629,7 +11629,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4t3SVbse"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b3z"
@@ -11657,7 +11657,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 167843790,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "свободно 15 108 симв.",
@@ -11694,7 +11694,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1278540953,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Что получится при разных моделях (EMBED_MODEL = Qwen3-Embedding, top_k = 5); значения — [симв.]",
@@ -11733,7 +11733,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 102288853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b42"
@@ -11761,7 +11761,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 630593088,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Параметр",
@@ -11798,7 +11798,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1393229085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4k / 512 / 512",
@@ -11835,7 +11835,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 950927209,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "8k / 512 / 1k",
@@ -11872,7 +11872,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 121150401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "32k / 8k / 8k ★",
@@ -11909,7 +11909,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1260964420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "128k / 32k / 8k",
@@ -11946,7 +11946,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1066784076,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "smart_truncate_chars",
@@ -11983,7 +11983,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 466324693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "763",
@@ -12020,7 +12020,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1889062173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2504",
@@ -12057,7 +12057,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 460433098,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12094,7 +12094,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 599065165,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12131,7 +12131,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 700056294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "parent_size ♻",
@@ -12168,7 +12168,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 450904853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "763",
@@ -12205,7 +12205,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1836365578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12242,7 +12242,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2119690112,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12279,7 +12279,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1543977157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12316,7 +12316,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1202584896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "parent_overlap ♻",
@@ -12353,7 +12353,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 969616860,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "152",
@@ -12390,7 +12390,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1032254950,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12427,7 +12427,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 917325805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12464,7 +12464,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1227813481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12501,7 +12501,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1654205182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child_size ♻",
@@ -12538,7 +12538,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 680441240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12575,7 +12575,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1843089189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12612,7 +12612,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1964904436,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12649,7 +12649,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 636680058,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12686,7 +12686,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1680046293,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child_overlap ♻",
@@ -12723,7 +12723,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2138991201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12760,7 +12760,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 479869036,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12797,7 +12797,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 569567297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12834,7 +12834,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1437266301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12871,7 +12871,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 268176082,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "section_embed_chars",
@@ -12908,7 +12908,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 673049817,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12945,7 +12945,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2022736918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12982,7 +12982,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 395700189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -13019,7 +13019,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 828959356,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -13056,7 +13056,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 205894361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "audit_query_chars",
@@ -13093,7 +13093,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1013405264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13130,7 +13130,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 554681883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13167,7 +13167,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2130327751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13204,7 +13204,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1393923198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13241,7 +13241,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1869709538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "audit_map_size",
@@ -13278,7 +13278,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 163400435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13315,7 +13315,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 420086255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3216",
@@ -13352,7 +13352,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1897697012,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13389,7 +13389,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 858504554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13426,7 +13426,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 927587867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "audit_context_max_chars",
@@ -13463,7 +13463,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1964355952,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1016",
@@ -13500,7 +13500,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1184283972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "7504",
@@ -13537,7 +13537,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2014922567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13574,7 +13574,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1596915033,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13611,7 +13611,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 903994887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "review_context_max_chars",
@@ -13648,7 +13648,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 909678414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13685,7 +13685,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1481757579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2216 ▼",
@@ -13722,7 +13722,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1272213233,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13759,7 +13759,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1104820697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13796,7 +13796,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 988089562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "rerank_query_max_chars",
@@ -13833,7 +13833,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 636050863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "362",
@@ -13870,7 +13870,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1267914377,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "725",
@@ -13907,7 +13907,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1136933881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13944,7 +13944,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 896434533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13981,7 +13981,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1502561313,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "rerank_doc_max_chars",
@@ -14018,7 +14018,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 958219321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "726",
@@ -14055,7 +14055,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 381657276,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14092,7 +14092,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 536329791,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14129,7 +14129,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 666178832,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14166,7 +14166,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1238808030,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Столбцы: окно LLM / вход эмбеддингов / вход реранкера, [ток.]; символов на токен 2.5 (в последнем — 3.0). ★ — типовые лимиты:\nзначения совпадают с умолчаниями. ⚠ — модели не хватает места: MINT берёт минимум и показывает предупреждение. ▼ — сильно\nурезано: контроль исправлений видит малую часть новой редакции, вероятны ложные «не исправлено». 128k даёт те же значения, что\n32k: умолчания — потолок (правило — панель 1).",
@@ -14210,7 +14210,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9vQ3016Q"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b57"
@@ -14238,7 +14238,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 772674090,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "БОЛЬШОЕ ОКНО LLM (200k, 1M …) — ЧТО ТОГДА\nПредела окна в MINT нет (поле в панели принимает до 4 млн токенов). Большое окно поднимает потолки, но значения не\nвыше умолчаний: в чат уходит ≈ top_k × 2500 симв., в аудит — раздел 4500 и нормы до 9000 симв. (3–4 целых parent).\nТак задумано: лишний контекст добавляет шум, время и стоимость, а точность от него обычно не растёт.\n\nЧтобы использовать большое окно — поднять вручную в config.yaml:\n• больше фрагментов в чате: top_k 8–12 → [Т] прогоны --k 5 / 8 / 12 и [П] живая проверка ответов\n• больше норм в аудите: audit_context_max_chars 13 000 (5 целых parent) … 20 000+; крупнее разделы: audit_map_size\n   12 000–30 000 (меньше вызовов, модель видит больше документа сразу) → [П] на документах с известными замечаниями\n• контроль исправлений: review_top_sections 5–8, review_context_max_chars 30 000+; длинные ответы — max_tokens\n• parent_size ♻ обычно не трогать: больше контекста лучше набирать числом фрагментов (top_k)\n\nОкно LLM не влияет на эмбеддинги и реранкер — у них свои лимиты.",
@@ -14275,7 +14275,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 101331283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3. Справочник параметров: определения, значения, ограничения",
@@ -14312,7 +14312,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 490281628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Единицы: ток. — токены, симв. — символы. «В панели» — диапазон ползунка (если значение из config.yaml больше, ползунок расширяется). config.yaml проверяет только тип значения; защита от несовместимых значений — в коде (колонка\n«Ограничения»).",
@@ -14356,7 +14356,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "CLcF2KMf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5B"
@@ -14384,7 +14384,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 44620693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "КАК ЧИТАТЬ «0 = авто: ① сервер ② иначе 32768 ток.»\nЭто шаги по порядку: что стоит в коде → откуда MINT берёт значение.\n• 0 — значение в коде и в config.yaml по умолчанию: «не задано — определить автоматически». Ноль, а не число, нужен,\n   чтобы MINT отличал «администратор ничего не указал» от явного значения (приоритет — панель 1).\n• ① сервер — первый шаг: MINT спрашивает лимит у сервера модели (detect_server_info, панель 1). Ответил — берётся это\n   число; в «Модели и лимиты» видно «Сервер: …».\n• ② иначе 32768 — сервер не сообщил (часто у корпоративных шлюзов и облачных API): берётся типовое значение —\n   безопасная догадка (почему именно такое — справа).\nТиповое значение может не совпасть с вашей моделью: при нём MINT размер запроса не проверяет. Чем грозит ошибка —\nстрока llm_context_tokens; лимит лучше указать вручную (панель или config.yaml).",
@@ -14428,7 +14428,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "U4HzW8Hd"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5D"
@@ -14456,7 +14456,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1060881568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПОЧЕМУ ИМЕННО ЭТИ ТИПОВЫЕ ЗНАЧЕНИЯ (FALLBACK_LIMITS)\n• окно LLM 32768 ток. — обычное окно открытых моделей при развёртывании (Qwen2.5 / Qwen3, Llama 3.x, Mistral на vLLM);\n   почти все современные модели не меньше.\n• вход эмбеддингов 8192 ток. — Qwen3-Embedding, bge-m3, gte-Qwen; модели на 512 ток. — см. embed_max_tokens.\n• вход реранкера 8192 ток. — bge-reranker-v2-m3.\n• 2.5 симв./ток. — см. блок «Токены и символы» вверху.\n\nЧИСЛО У [А]-ПАРАМЕТРА (например, 3500 симв.)\nЭто умолчание. Расчёт может только уменьшить его под маленькую модель (формула — колонка «Ограничения»), но не\nувеличивает.",
@@ -14500,7 +14500,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2YQ5MS7L"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5F"
@@ -14528,7 +14528,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1032825751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Параметр",
@@ -14572,7 +14572,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9KNAbksk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5H"
@@ -14600,7 +14600,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 361100277,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Что это",
@@ -14644,7 +14644,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "puwzidOM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5J"
@@ -14672,7 +14672,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1814733556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "По умолчанию",
@@ -14716,7 +14716,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VGbp4dm8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5L"
@@ -14744,7 +14744,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1086220258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "В панели",
@@ -14788,7 +14788,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wsDhi5dq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5N"
@@ -14816,7 +14816,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 133979656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ограничения и зависимости",
@@ -14860,7 +14860,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0KKnZWXi"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5P"
@@ -14888,7 +14888,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1464481216,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПОДКЛЮЧЕНИЯ — .env",
@@ -14932,7 +14932,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yggj69o9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5R"
@@ -14960,7 +14960,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2142958805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] LLM_API_URL",
@@ -15004,7 +15004,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ESOuFabo"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5T"
@@ -15032,7 +15032,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1012750916,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Базовый адрес OpenAI-совместимого API языковой модели (…/v1); к нему добавляются\n/chat/completions и /models.",
@@ -15076,7 +15076,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "77bb0qUc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5V"
@@ -15104,7 +15104,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1315767751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "— (обязательно)",
@@ -15148,7 +15148,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Ht61a5na"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5X"
@@ -15176,7 +15176,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1722526171,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15220,7 +15220,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "32RI4Vax"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5Z"
@@ -15248,7 +15248,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1488369257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Пусто — ошибка в панели: чат, аудит и контроль не работают.",
@@ -15292,7 +15292,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KTEWklEb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5b"
@@ -15320,7 +15320,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 877373401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] EMBED_API_URL",
@@ -15364,7 +15364,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MclAyQ4e"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5d"
@@ -15392,7 +15392,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1480905548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Полный адрес эндпоинта эмбеддингов (…/v1/embeddings).",
@@ -15436,7 +15436,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZcjfMvsO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5f"
@@ -15464,7 +15464,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 559213718,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "— (обязательно)",
@@ -15508,7 +15508,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "htbKFycS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5h"
@@ -15536,7 +15536,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1496972470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15580,7 +15580,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "m9R4H4ku"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5j"
@@ -15608,7 +15608,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 55367169,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Пусто — загрузка документов невозможна, поиск только по словам (BM25).",
@@ -15652,7 +15652,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xJ8zGawf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5l"
@@ -15680,7 +15680,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 181990875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] RERANK_API_URL",
@@ -15724,7 +15724,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cbO9Y31d"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5n"
@@ -15752,7 +15752,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 949336474,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Полный адрес реранкера (…/v1/rerank).",
@@ -15796,7 +15796,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yRhgnasM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5p"
@@ -15824,7 +15824,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 581769304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "пусто — без реранкера",
@@ -15868,7 +15868,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3Zc9FmxD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5r"
@@ -15896,7 +15896,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 929912376,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15940,7 +15940,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "DKTOy7v0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5t"
@@ -15968,7 +15968,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1127614340,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Необязателен: без него порядок задают векторный поиск и BM25.",
@@ -16012,7 +16012,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JemVd0g8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5v"
@@ -16040,7 +16040,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1511252339,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] LLM_API_KEY, EMBED_API_KEY,\nRERANK_API_KEY",
@@ -16084,7 +16084,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZE1GDn3r"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5x"
@@ -16112,7 +16112,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1813782780,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ключи доступа (Bearer).",
@@ -16156,7 +16156,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tr3oPwIk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b5z"
@@ -16184,7 +16184,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 308331613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "пусто",
@@ -16228,7 +16228,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "RW6sIRIG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b61"
@@ -16256,7 +16256,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1232645777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -16300,7 +16300,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7G3o96NV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b63"
@@ -16328,7 +16328,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1955071434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Пустые EMBED_ / RERANK_ — берётся LLM_API_KEY; пустой LLM_API_KEY — запросы без\nавторизации.",
@@ -16372,7 +16372,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2tgq89z2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b65"
@@ -16400,7 +16400,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1952950688,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] LLM_MODEL",
@@ -16444,7 +16444,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mRPMzkCp"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b67"
@@ -16472,7 +16472,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 744333812,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Модель по умолчанию в списке «Модель ИИ» (старое имя — DEFAULT_LLM_MODEL).",
@@ -16516,7 +16516,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "K5dA1G96"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b69"
@@ -16544,7 +16544,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 981406186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "первая из списка сервера",
@@ -16588,7 +16588,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "emH7nN39"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6B"
@@ -16616,7 +16616,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1795396205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "список моделей",
@@ -16660,7 +16660,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "AStw5ic1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6D"
@@ -16688,7 +16688,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1464035852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Список запрашивается у сервера; модель из .env добавляется в список, даже если сервер\nеё не вернул.",
@@ -16732,7 +16732,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XKXJAvUN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6F"
@@ -16760,7 +16760,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2005035337,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] EMBED_MODEL ♻",
@@ -16804,7 +16804,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "f33ycfJe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6H"
@@ -16832,7 +16832,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 647636602,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Модель эмбеддингов; записывается в manifest каждого документа.",
@@ -16876,7 +16876,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "IqsZLI99"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6J"
@@ -16904,7 +16904,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1300755931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "qwen3-embedding-4b",
@@ -16948,7 +16948,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BAx6HfQF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6L"
@@ -16976,7 +16976,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 703525944,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17020,7 +17020,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "h6aJNanA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6N"
@@ -17048,7 +17048,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 186779429,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Смена — переиндексация; другая размерность векторов — векторный поиск выключается до\nпереиндексации.",
@@ -17092,7 +17092,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0SZyn6i8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6P"
@@ -17120,7 +17120,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 447267511,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] RERANK_MODEL",
@@ -17164,7 +17164,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "dTHkDFbI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6R"
@@ -17192,7 +17192,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1205814253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Модель реранкера.",
@@ -17236,7 +17236,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WqUMpLwW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6T"
@@ -17264,7 +17264,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1267512368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "bge-reranker-v2-m3",
@@ -17308,7 +17308,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yyIG25jv"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6V"
@@ -17336,7 +17336,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 469094310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17380,7 +17380,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MUB5C9Wl"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6X"
@@ -17408,7 +17408,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 367170949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17452,7 +17452,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GxKMyF0K"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6Z"
@@ -17480,7 +17480,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1436421028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] CA_BUNDLE_PATH, SSL_INSECURE",
@@ -17524,7 +17524,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "q5RvEk1j"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6b"
@@ -17552,7 +17552,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1582016170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сертификат для TLS; SSL_INSECURE = 1 отключает проверку.",
@@ -17596,7 +17596,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BMfh4W2E"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6d"
@@ -17624,7 +17624,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 95466538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "системный файл сертификатов\n(Windows — хранилище Windows);\nвыкл.",
@@ -17668,7 +17668,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GLTaFNm6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6f"
@@ -17696,7 +17696,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1264503417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17740,7 +17740,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "PGbfPC1N"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6h"
@@ -17768,7 +17768,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1869244182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Файла нет — системные сертификаты; на Windows — через truststore. SSL_INSECURE —\nтолько во внутренней сети.",
@@ -17812,7 +17812,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yVqN2Tnj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6j"
@@ -17840,7 +17840,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2123426261,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] KB_DIR, LOG_DIR,\nGLOSSARY_PATH, MINT_CONFIG",
@@ -17884,7 +17884,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "1OYpN5Qt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6l"
@@ -17912,7 +17912,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 574710040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Папка базы, папка логов и отзывов, путь к glossary.json и к config.yaml.",
@@ -17956,7 +17956,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "oouQcXeR"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6n"
@@ -17984,7 +17984,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 78474149,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "~/knowledge_base; ~/mint_logs;\nрядом с программой",
@@ -18028,7 +18028,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HPeu2WZ2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6p"
@@ -18056,7 +18056,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 676437166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -18100,7 +18100,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "URKjBaOM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6r"
@@ -18128,7 +18128,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 273261022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Лог — mint_system.log с ротацией 10 МБ × 5; отзывы пользователей — feedback.jsonl.",
@@ -18172,7 +18172,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3rITogdG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6t"
@@ -18200,7 +18200,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1942424467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] MINT_LANG",
@@ -18244,7 +18244,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0UWnNv8Z"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6v"
@@ -18272,7 +18272,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1656278656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Язык интерфейса, промптов и отчётов: ru или en.",
@@ -18316,7 +18316,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "F8QpDSIv"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6x"
@@ -18344,7 +18344,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 409918936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "язык ОС (ru → ru, иначе en)",
@@ -18388,7 +18388,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "te5PjqQt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b6z"
@@ -18416,7 +18416,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1755316998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "переключатель в\nпанели",
@@ -18460,7 +18460,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "T4V1fqRU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b71"
@@ -18488,7 +18488,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 101711426,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Переключатель меняет язык на сеанс; check_install.py тоже пишет на этом языке.",
@@ -18532,7 +18532,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "sxHaOQ3S"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b73"
@@ -18560,7 +18560,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 977189084,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЛИМИТЫ МОДЕЛЕЙ — config.yaml, раздел models",
@@ -18604,7 +18604,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2RK8kfoY"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b75"
@@ -18632,7 +18632,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2123128102,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [А] llm_context_tokens",
@@ -18676,7 +18676,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NrYlESGT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b77"
@@ -18704,7 +18704,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1840043612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Окно контекста LLM, токенов: всё, что модель принимает за один вызов — промпт +\nнайденные фрагменты + история + ответ.",
@@ -18748,7 +18748,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HK25jv5j"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b79"
@@ -18776,7 +18776,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 970812766,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① сервер (/models)\n② иначе 32768 ток.",
@@ -18820,7 +18820,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "U1TSLbQx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7B"
@@ -18848,7 +18848,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 260939886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "128 … 4 млн",
@@ -18892,7 +18892,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jlswWGu6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7D"
@@ -18920,7 +18920,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 565545273,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Предела сверху нет. От него: chat_budget, llm_budget — а через них потолки\nsmart_truncate_chars, parent_size, audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
@@ -18964,7 +18964,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6BJh4DHO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7F"
@@ -18992,7 +18992,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1373321844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: главный лимит MINT. Указывайте то, что реально пропускает сервер: если шлюз режет запросы раньше окна модели — предел шлюза. Ошибка в бо́льшую сторону опаснее: MINT посчитает, что всё помещается, а сервер\nвернёт «ОШИБКА ШЛЮЗА: код 400» (vLLM) или молча обрежет начало промпта (Ollama). Ошибка в меньшую — только фрагменты короче, чем можно.",
@@ -19036,7 +19036,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "D2gVABen"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7H"
@@ -19064,7 +19064,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 934582497,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [А] embed_max_tokens",
@@ -19108,7 +19108,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GaldY6FJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7J"
@@ -19136,7 +19136,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1672635998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Максимальная длина входа модели эмбеддингов, токенов.",
@@ -19180,7 +19180,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "UVAOK3Ed"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7L"
@@ -19208,7 +19208,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1992030496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① сервер (/models)\n② иначе 8192 ток.",
@@ -19252,7 +19252,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WRbuAtf7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7N"
@@ -19280,7 +19280,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1620026778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "128 … 4 млн",
@@ -19324,7 +19324,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "PLu3b4Ri"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7P"
@@ -19352,7 +19352,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1096561344,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "От него: child_size ♻, section_embed_chars, audit_query_chars, embed_input_max_chars.",
@@ -19396,7 +19396,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "R1VaztrS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7R"
@@ -19424,7 +19424,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1208516040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: для моделей с входом 512 токенов (e5, ruBERT и другие BERT-подобные) обязательно указать 512, если сервер не сообщает: иначе MINT будет считать, что вход 8192, и отправлять разделы по 4000 симв. (≈ 1600\nтокенов) — сервер их обрежет или вернёт ошибку. Смена значения меняет child_size — нужна переиндексация ♻.",
@@ -19468,7 +19468,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZQ9G7OhT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7T"
@@ -19496,7 +19496,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1587147883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [А] rerank_max_tokens",
@@ -19540,7 +19540,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "c0YlFrZ1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7V"
@@ -19568,7 +19568,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 106716420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Максимальная длина пары «запрос + документ» у реранкера, токенов.",
@@ -19612,7 +19612,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "UtHp1h8Q"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7X"
@@ -19640,7 +19640,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 777172821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① сервер (/models)\n② иначе 8192 ток.",
@@ -19684,7 +19684,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qch1xBp5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7Z"
@@ -19712,7 +19712,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1173804549,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "128 … 4 млн",
@@ -19756,7 +19756,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "74CJP4MZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7b"
@@ -19784,7 +19784,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1809129674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "От него: rerank_query_max_chars, rerank_doc_max_chars.",
@@ -19828,7 +19828,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hFMugV1w"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7d"
@@ -19856,7 +19856,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 868100489,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [А] chars_per_token",
@@ -19900,7 +19900,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OLLWyLz8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7f"
@@ -19928,7 +19928,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2080517786,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько символов текста приходится на один токен; переводит лимиты моделей из\nтокенов в символы.",
@@ -19972,7 +19972,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "DPoaTctN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7h"
@@ -20000,7 +20000,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1569553532,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n① измерение кнопкой\n② иначе 2.5 симв./ток.",
@@ -20044,7 +20044,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lqRVNdkw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7j"
@@ -20072,7 +20072,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1629028389,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1.0 … 8.0",
@@ -20116,7 +20116,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HYiFhGsw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7l"
@@ -20144,7 +20144,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1795378404,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Измерение принимается в пределах 1 … 8. Как измеряется и какие значения обычны — блок\n«Токены и символы» вверху.",
@@ -20188,7 +20188,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yDcEyhDr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7n"
@@ -20216,7 +20216,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 225296398,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: участвует во всех формулах, где лимит модели переводится в символы. Меньше реального — MINT перестраховывается (фрагменты короче, чем можно). Больше реального — запросы могут не поместиться в модель.",
@@ -20260,7 +20260,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HSjPlUzV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7p"
@@ -20288,7 +20288,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1231921184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] embed_query_prefix",
@@ -20332,7 +20332,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fQGMeKu5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7r"
@@ -20360,7 +20360,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 147998566,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Инструкция перед текстом запроса для моделей эмбеддингов с инструкцией.",
@@ -20404,7 +20404,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cRZae0ap"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7t"
@@ -20432,7 +20432,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1630425493,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "по имени модели",
@@ -20476,7 +20476,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MqaRRet2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7v"
@@ -20504,7 +20504,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1085597234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -20548,7 +20548,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "q1CplQku"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7x"
@@ -20576,7 +20576,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1795380914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Уменьшает audit_query_chars на свою длину. Смена переиндексации не требует.",
@@ -20620,7 +20620,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "AOCl6ED2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b7z"
@@ -20648,7 +20648,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 885066649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: что это: многие модели эмбеддингов обучены на парах «вопрос — документ», где вопрос помечен особой фразой. Без пометки такая модель ищет заметно хуже (вопрос и документ «звучат» для неё одинаково). Откуда\nберётся: embed_prefix_preset() сравнивает имя EMBED_MODEL с таблицей EMBED_PREFIX_PRESETS — Qwen3-Embedding, gte-Qwen, e5-instruct → «Instruct: <задача поиска>\\nQuery:» (171 симв.; задача — константа EMBED_TASK: «найти\nфрагменты регламентов и архитектурных документов, относящиеся к вопросу или фрагменту проверяемого документа»); e5 → «query: »; nomic-embed, FRIDA, ru-en-RoSBERTa → «search_query: »; bge-m3 и все остальные → без\nпрефикса. Значение из config.yaml важнее таблицы. Где применяется: вопрос чата, начало раздела документа при поиске норм (аудит), замечание при подборе разделов (контроль). Что выбрано — видно в «Модели и лимиты»:\n«Префикс запроса для модели эмбеддингов (…)».",
@@ -20692,7 +20692,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "vfmIQ5DO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b81"
@@ -20720,7 +20720,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 553004478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] embed_doc_prefix ♻",
@@ -20764,7 +20764,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "95JUzx5W"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b83"
@@ -20792,7 +20792,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 724499649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Префикс перед текстом документа (e5, nomic, FRIDA).",
@@ -20836,7 +20836,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "RVv24QcT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b85"
@@ -20864,7 +20864,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1992257830,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "по имени модели",
@@ -20908,7 +20908,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TLlcos7T"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b87"
@@ -20936,7 +20936,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 193557779,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -20980,7 +20980,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Cz02NF26"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b89"
@@ -21008,7 +21008,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1073934881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Смена — переиндексация (сравнивается с manifest). Уменьшает child_size и\nsection_embed_chars.",
@@ -21052,7 +21052,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "UW4UMKMT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8B"
@@ -21080,7 +21080,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1605045284,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: пара к префиксу запроса — пометка текста документа: e5 → «passage: », nomic, FRIDA, RoSBERTa → «search_document: »; Qwen3-Embedding и bge-m3 — без префикса (у Qwen3 инструкция только у запроса). Добавляется к\nкаждому child при индексации и к разделам новой редакции на вкладке контроля. Если модель на шлюзе названа по-своему (например, «emb-prod») и не распознана — оба префикса пустые: задайте их в config.yaml по документации\nмодели и сравните проверкой качества до и после.",
@@ -21124,7 +21124,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Dg8JUkmk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8D"
@@ -21152,7 +21152,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 135781157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПРОМЕЖУТОЧНЫЕ ВЕЛИЧИНЫ — рассчитываются в _derive(), не задаются: меняются через лимиты моделей и max_tokens",
@@ -21196,7 +21196,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "himPpGc3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8F"
@@ -21224,7 +21224,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1375635301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [А] chat_budget",
@@ -21268,7 +21268,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "54VNtikx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8H"
@@ -21296,7 +21296,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 350814852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Бюджет контекста чата: сколько символов найденных фрагментов помещается в окно\nLLM при ответе в чате — после того как из окна вычтено место под ответ и под\nпромпт, вопрос и историю.",
@@ -21340,7 +21340,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tN6V0zqv"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8J"
@@ -21368,7 +21368,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1332392301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 64 700 симв.\n(окно 32768, ответ 1500)",
@@ -21412,7 +21412,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "II8Ns4pz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8L"
@@ -21440,7 +21440,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1405749183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "не задаётся",
@@ -21484,7 +21484,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lymZvK5z"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8N"
@@ -21512,7 +21512,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 538768156,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens − 800); 800 ток. — CHAT_RESERVE_TOKENS\n(промпт, вопрос, история). От него: smart_truncate_chars, parent_size.",
@@ -21556,7 +21556,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iAfH9byQ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8P"
@@ -21584,7 +21584,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1610322258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: увеличить бюджет можно бо́льшим окном (если модель позволяет) или меньшим max_tokens. Почему окно 4096 даёт бюджет в 17 раз меньше, чем 32768, — разбор на числах в панели 2.",
@@ -21628,7 +21628,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "vZjlZ4ea"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8R"
@@ -21656,7 +21656,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 882252771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [А] llm_budget",
@@ -21700,7 +21700,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "sm6EvWbR"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8T"
@@ -21728,7 +21728,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 493078871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Бюджет контекста аудита и контроля исправлений: сколько символов (раздел\nдокумента + нормы из базы + разделы новой редакции) помещается в окно LLM.",
@@ -21772,7 +21772,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "g6QyYmfL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8V"
@@ -21800,7 +21800,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1585837053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 62 900 симв.\n(окно 32768, ответ 1500)",
@@ -21844,7 +21844,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VeJBFlAD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8X"
@@ -21872,7 +21872,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 781495067,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "не задаётся",
@@ -21916,7 +21916,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KVshIk7E"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8Z"
@@ -21944,7 +21944,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 164434957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens) − 3500; 3500 симв. — AUDIT_RESERVE_CHARS\n(промпт с критериями). От него: audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
@@ -21988,7 +21988,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NNTlhvIG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8b"
@@ -22016,7 +22016,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 843716051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] embed_input_max_chars",
@@ -22060,7 +22060,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "AxyJxng3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8d"
@@ -22088,7 +22088,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1987308604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Предельная длина текста, отправляемого в модель эмбеддингов; длиннее — обрезается\nперед отправкой (_embed_input).",
@@ -22132,7 +22132,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "m9PrWQw5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8f"
@@ -22160,7 +22160,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 6991822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 17 400 симв.\n(вход 8192)",
@@ -22204,7 +22204,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "81oPE1bs"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8h"
@@ -22232,7 +22232,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 687035628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "не задаётся",
@@ -22276,7 +22276,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4oxQdtM9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8j"
@@ -22304,7 +22304,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2065424422,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "= chars(embed_max_tokens). Страховка: ни один запрос к эмбеддингам не превысит вход\nмодели.",
@@ -22348,7 +22348,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JolIvO6B"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8l"
@@ -22376,7 +22376,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 34079664,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЯЗЫКОВАЯ МОДЕЛЬ",
@@ -22420,7 +22420,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LdT1rwS8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8n"
@@ -22448,7 +22448,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 418965385,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] temperature",
@@ -22492,7 +22492,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "sRJYQM5D"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8p"
@@ -22520,7 +22520,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 414097207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Случайность ответа LLM.",
@@ -22564,7 +22564,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tlWCqnrT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8r"
@@ -22592,7 +22592,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1686832598,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.1",
@@ -22636,7 +22636,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yrMkZMCP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8t"
@@ -22664,7 +22664,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1176029364,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.0 … 1.0",
@@ -22708,7 +22708,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9NOTJDXJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8v"
@@ -22736,7 +22736,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 563665863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Действует на ответы чата, аудит, самокритику аудита и контроль исправлений.\nИсключение — служебный шаг чата condense_question(): уточняющий вопрос («а для\nвторого контура?») переписывается в самостоятельный всегда с temperature 0, чтобы\nпоиск получал одну и ту же формулировку. К самокритике это не относится.",
@@ -22780,7 +22780,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WgbNYoYF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8x"
@@ -22808,7 +22808,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 46654347,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [П] max_tokens",
@@ -22852,7 +22852,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "EV9HMxPc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b8z"
@@ -22880,7 +22880,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1538000357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Максимальная длина ответа модели, токенов.",
@@ -22924,7 +22924,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aNL9mWhI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b91"
@@ -22952,7 +22952,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1159348457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1500 ток.",
@@ -22996,7 +22996,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FM1u4tZ2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b93"
@@ -23024,7 +23024,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 250078666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "256 … 8000",
@@ -23068,7 +23068,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "z9L9ZHcI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b95"
@@ -23096,7 +23096,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1129957131,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "От него: chat_budget, llm_budget.",
@@ -23140,7 +23140,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HlFnvawl"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b97"
@@ -23168,7 +23168,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 25234788,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: место под ответ резервируется в окне заранее, даже если ответ окажется коротким: каждые +1000 ток. ответа отнимают ≈ 2 100 симв. у chat_budget и llm_budget. На окне 32k это незаметно, на 4–8k — существенно.\nМодели с рассуждениями — панель 4.",
@@ -23212,7 +23212,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZLk9v5UP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b99"
@@ -23240,7 +23240,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 365693240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] llm_timeout",
@@ -23284,7 +23284,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "X2N33JGe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9B"
@@ -23312,7 +23312,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1517064354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ожидание ответа LLM на одну попытку, сек.",
@@ -23356,7 +23356,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LaTgdZOT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9D"
@@ -23384,7 +23384,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 420629132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "90",
@@ -23428,7 +23428,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "06PEziuw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9F"
@@ -23456,7 +23456,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1847041914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "30 … 300",
@@ -23500,7 +23500,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "si4s3Jib"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9H"
@@ -23528,7 +23528,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 773012138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Истёк — следующая попытка (llm_retries).",
@@ -23572,7 +23572,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0poqev9l"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9J"
@@ -23600,7 +23600,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 307768080,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] llm_retries",
@@ -23644,7 +23644,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "EHPDAX2N"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9L"
@@ -23672,7 +23672,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 195675575,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Число попыток при таймауте и 502 / 503 / 504; на 429 — не меньше 4, с общей\nпаузой.",
@@ -23716,7 +23716,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "000HmX7c"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9N"
@@ -23744,7 +23744,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1498851070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2",
@@ -23788,7 +23788,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xgP8dwB7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9P"
@@ -23816,7 +23816,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 829894513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 … 5",
@@ -23860,7 +23860,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tgHldk8A"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9R"
@@ -23888,7 +23888,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1738486712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Пауза растёт: ≈ 2 с, 4 с … (+ случайная); 401 / 403 — сразу ошибка.",
@@ -23932,7 +23932,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OMWw4xpz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9T"
@@ -23960,7 +23960,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 134755326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] request_timeout",
@@ -24004,7 +24004,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6CmTuZgj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9V"
@@ -24032,7 +24032,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 266171333,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ожидание ответа реранкера, сек.",
@@ -24076,7 +24076,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qf7vv8ha"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9X"
@@ -24104,7 +24104,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 139910239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "120",
@@ -24148,7 +24148,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "puPOymQn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9Z"
@@ -24176,7 +24176,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1840327698,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -24220,7 +24220,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jnBwc1i7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9b"
@@ -24248,7 +24248,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 426607353,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -24292,7 +24292,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "A4JyTH9F"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9d"
@@ -24320,7 +24320,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1946661933,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ИНДЕКСАЦИЯ ♻",
@@ -24364,7 +24364,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yPzi4fdo"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9f"
@@ -24392,7 +24392,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 239055789,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] parent_size ♻",
@@ -24436,7 +24436,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iTsB05Ut"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9h"
@@ -24464,7 +24464,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 214810541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Длина parent-фрагмента: его читает LLM.",
@@ -24508,7 +24508,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6U5U3EYe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9j"
@@ -24536,7 +24536,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 611575325,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2500 симв.",
@@ -24580,7 +24580,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "PwUPs7km"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9l"
@@ -24608,7 +24608,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 862580752,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -24652,7 +24652,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "t50zd2E2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9n"
@@ -24680,7 +24680,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1140711641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ chat_budget / 5 (минимум 300). В коде не меньше 200. От него: parent_overlap.",
@@ -24724,7 +24724,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3peWeGGx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9p"
@@ -24752,7 +24752,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1817413225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: parent — «единица чтения»: поиск находит маленький child, а модели отдаётся весь parent вокруг него, чтобы был контекст. Почему зависит от chat_budget: parent целиком идёт в контекст; длиннее своей доли\nбюджета — smart_truncate_chars обрежет его вокруг найденного места, и окружающий текст пропадёт. Делится на 5, а не на top_k: нарезка делается один раз при загрузке, а top_k меняется в каждом сеансе — 5 это типичный\ntop_k. На окне 32k ограничение не срабатывает (64 744 / 5 = 12 949 > 2500), на 4k срабатывает (→ 763). Больше parent — меньше разрывов смысла, но больше шума и меньше разных мест в том же бюджете. Режется по тексту —\nсначала по границе абзаца, затем строки, предложения и слова; заголовок не отрывается от своего текста. Один parent может захватить конец одного раздела и начало другого.",
@@ -24796,7 +24796,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jYt5vo4T"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9r"
@@ -24824,7 +24824,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1562899068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] parent_overlap ♻",
@@ -24868,7 +24868,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qgvuvZt6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9t"
@@ -24896,7 +24896,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 627008874,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Перекрытие соседних parent.",
@@ -24940,7 +24940,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "88ZyP745"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9v"
@@ -24968,7 +24968,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 471041157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300 симв.",
@@ -25012,7 +25012,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "raPHDvZO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9x"
@@ -25040,7 +25040,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1088769402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 1000",
@@ -25084,7 +25084,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4VLkDRIe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "b9z"
@@ -25112,7 +25112,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2072011106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ parent_size / 5; в коде меньше parent_size.",
@@ -25156,7 +25156,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "dBvDcyLG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bA1"
@@ -25184,7 +25184,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 232401949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] child_size ♻",
@@ -25228,7 +25228,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LSJDt32C"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bA3"
@@ -25256,7 +25256,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1847832412,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Длина child-фрагмента — единицы векторного поиска.",
@@ -25300,7 +25300,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9Bb4Manq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bA5"
@@ -25328,7 +25328,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1065547229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "400 симв.",
@@ -25372,7 +25372,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BgNVyth5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bA7"
@@ -25400,7 +25400,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2132508470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "100 … 2000",
@@ -25444,7 +25444,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NZa414TA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bA9"
@@ -25472,7 +25472,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1021168636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход эмбеддингов − 250 − префикс документа (минимум 100); 250 — путь\nзаголовков (HEADING_RESERVE_CHARS); в коде от 50 до parent_size. От него:\nchild_overlap.",
@@ -25516,7 +25516,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gN6GS3rF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAB"
@@ -25544,7 +25544,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 951998924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: child — «единица поиска»: по нему считается вектор. Короткий child точнее совпадает с вопросом, длинный — размывается. 400 симв. (≈ 2–4 предложения) — компромисс для регламентов.",
@@ -25588,7 +25588,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "5lxOkXDH"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAD"
@@ -25616,7 +25616,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1172250614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] child_overlap ♻",
@@ -25660,7 +25660,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NN7DKujP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAF"
@@ -25688,7 +25688,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2086858777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Перекрытие соседних child.",
@@ -25732,7 +25732,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "EjmhfXQ1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAH"
@@ -25760,7 +25760,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 136431113,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "150 симв.",
@@ -25804,7 +25804,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jBhx8Gbb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAJ"
@@ -25832,7 +25832,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1810711877,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 500",
@@ -25876,7 +25876,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Sr9o1bP5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAL"
@@ -25904,7 +25904,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1661393883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ child_size / 2; в коде меньше child_size.",
@@ -25948,7 +25948,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "RDn5p0oM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAN"
@@ -25976,7 +25976,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1979534607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] embed_batch_size",
@@ -26020,7 +26020,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Rk1dzgkd"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAP"
@@ -26048,7 +26048,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1935024994,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Текстов в одном запросе эмбеддингов при индексации.",
@@ -26092,7 +26092,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WZBGAImS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAR"
@@ -26120,7 +26120,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 252322485,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "32",
@@ -26164,7 +26164,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aQ14QhtO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAT"
@@ -26192,7 +26192,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1481868590,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -26236,7 +26236,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "N6YDl6lU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAV"
@@ -26264,7 +26264,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1377016232,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Не меньше 1; предел — сервер эмбеддингов. Сбой пачки — по одному.",
@@ -26308,7 +26308,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "h2quvqAU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAX"
@@ -26336,7 +26336,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1544551388,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ПОИСК",
@@ -26380,7 +26380,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qhyS55kj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAZ"
@@ -26408,7 +26408,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 331411183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◆ [Т] top_k",
@@ -26452,7 +26452,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "vDq2wQkm"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAb"
@@ -26480,7 +26480,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1999428029,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько найденных фрагментов (parent) MINT кладёт в контекст LLM при ответе в\nчате. Тот же top_k берут аудит документа (нормы из базы) и контроль исправлений.",
@@ -26524,7 +26524,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6GmcPHnk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAd"
@@ -26552,7 +26552,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1274996269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 = авто:\n4, если в базе ≤ 300 child\n5, если больше",
@@ -26596,7 +26596,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Sdqmb0to"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAf"
@@ -26624,7 +26624,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1232470040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2 … 8",
@@ -26668,7 +26668,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GO0OlIlE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAh"
@@ -26696,7 +26696,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 823897368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Не больше rerank_top_k (отбор идёт из этих кандидатов). Сверху в коде не ограничен:\nбольше 8 — через config.yaml. От него: smart_truncate_chars.",
@@ -26740,7 +26740,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "m3fDHb4L"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAj"
@@ -26768,7 +26768,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 542109081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: в коде top_k = 0, то есть «выбрать автоматически»: MINT считает child-фрагменты в базе (kb_default_top_k). ≤ 300 (≈ 10–15 регламентов) → 4: пятый фрагмент обычно повтор или шум; больше → 5: ответ чаще\nразбросан по нескольким местам. Ползунок «Глубина поиска (Top-K)» стоит на авто-значении и меняет его на сеанс; config.yaml (search: top_k: 6) отключает автоматику.\nСвязь с лимитами: фрагменты делят бюджет окна — каждый обрезается до smart_truncate_chars ≈ (окно − ответ − резерв) / top_k. Больше top_k — модель видит больше разных мест, но каждое короче. На маленьком окне top_k 8\nдаст обрывки (под ползунком: «Контекст чата: до ≈ N симв. (Top-K × фрагмент)»); на большом фрагменты остаются полными. В аудите действует ещё и audit_context_max_chars.\nКак подбирать: начать с авто. Часто «информация отсутствует», а ответ в базе есть → смотреть hit@3 и hit@K в report.md: правильный фрагмент на 5–8 месте → поднять top_k до 6–8. Нет его и в первой десятке → top_k не\nпоможет: проблема в поиске или нарезке.",
@@ -26812,7 +26812,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "UrPJBo2I"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAl"
@@ -26840,7 +26840,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1276112853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] initial_k",
@@ -26884,7 +26884,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MbhQsFw2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAn"
@@ -26912,7 +26912,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2005436629,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько ближайших child берёт векторный поиск.",
@@ -26956,7 +26956,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XOg0Pir0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAp"
@@ -26984,7 +26984,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1193430822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "50",
@@ -27028,7 +27028,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "n8Ct939d"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAr"
@@ -27056,7 +27056,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1016851116,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "10 … 200",
@@ -27100,7 +27100,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iMJ8IOlK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAt"
@@ -27128,7 +27128,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1649910430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Не больше числа векторов в базе; несколько child одного parent дают одного кандидата.",
@@ -27172,7 +27172,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2iqO0LBA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAv"
@@ -27200,7 +27200,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 634411900,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] bm25_top_k",
@@ -27244,7 +27244,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aUhH9T2l"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAx"
@@ -27272,7 +27272,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 380320554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько parent берёт поиск по словам.",
@@ -27316,7 +27316,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Vm34PIIi"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bAz"
@@ -27344,7 +27344,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1365825083,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "20",
@@ -27388,7 +27388,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mWYDR7ka"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bB1"
@@ -27416,7 +27416,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2064859778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5 … 100",
@@ -27460,7 +27460,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "AyKkUekT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bB3"
@@ -27488,7 +27488,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1444307314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Берутся только фрагменты с баллом > 0.",
@@ -27532,7 +27532,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MUJSe1fu"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bB5"
@@ -27560,7 +27560,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 641060697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [Т] rerank_top_k",
@@ -27604,7 +27604,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6TPaLQwQ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bB7"
@@ -27632,7 +27632,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1827669685,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Кандидатов после слияния: идут на реранк и в отбор top_k.",
@@ -27676,7 +27676,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tWQlDM6p"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bB9"
@@ -27704,7 +27704,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 851156310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "16",
@@ -27748,7 +27748,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Ddki79Id"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBB"
@@ -27776,7 +27776,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2071937153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4 … 40",
@@ -27820,7 +27820,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7avbvYGJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBD"
@@ -27848,7 +27848,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 474051466,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ограничивает top_k сверху. Больше — больше запросов к реранкеру.",
@@ -27892,7 +27892,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "S1xsiIVt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBF"
@@ -27920,7 +27920,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1253936659,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] rrf_constant",
@@ -27964,7 +27964,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ORSsqFXe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBH"
@@ -27992,7 +27992,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 484419719,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Константа сглаживания слияния RRF (формула — панель 7).",
@@ -28036,7 +28036,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bwK2mK3U"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBJ"
@@ -28064,7 +28064,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1674499110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "60",
@@ -28108,7 +28108,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "RkkXukzB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBL"
@@ -28136,7 +28136,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 800063630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "10 … 120",
@@ -28180,7 +28180,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "nadhX2TG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBN"
@@ -28208,7 +28208,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1165863358,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Меньше — сильнее разница между первыми местами списков.",
@@ -28252,7 +28252,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "oZpOmCV0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBP"
@@ -28280,7 +28280,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2088345562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] weight_dense",
@@ -28324,7 +28324,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "a7xnLRhF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBR"
@@ -28352,7 +28352,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1351918146,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вес векторного поиска в слиянии.",
@@ -28396,7 +28396,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "noA5bPxt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBT"
@@ -28424,7 +28424,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 454621305,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28468,7 +28468,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rdVn5UYf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBV"
@@ -28496,7 +28496,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1120431559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28540,7 +28540,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "r5mgqQjn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBX"
@@ -28568,7 +28568,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 8506312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 — канал отключён.",
@@ -28612,7 +28612,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "V1lp9Lrg"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBZ"
@@ -28640,7 +28640,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 846842930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] weight_bm25",
@@ -28684,7 +28684,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rR5T5YEO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBb"
@@ -28712,7 +28712,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1724480507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вес поиска по словам в слиянии.",
@@ -28756,7 +28756,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gL8wkJTW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBd"
@@ -28784,7 +28784,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1836973738,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28828,7 +28828,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "c7g6vR9n"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBf"
@@ -28856,7 +28856,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 394337601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28900,7 +28900,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VGVsdIby"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBh"
@@ -28928,7 +28928,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1926032956,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 — канал отключён.",
@@ -28972,7 +28972,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QYF6j2H2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBj"
@@ -29000,7 +29000,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1966334157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] weight_rerank",
@@ -29044,7 +29044,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "h96CclaH"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBl"
@@ -29072,7 +29072,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1311860275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вес голоса реранкера в слиянии.",
@@ -29116,7 +29116,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cLZLw1ow"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBn"
@@ -29144,7 +29144,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1030008845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.7",
@@ -29188,7 +29188,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "N9yWMNWz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBp"
@@ -29216,7 +29216,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 355004110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -29260,7 +29260,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LV2EXof3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBr"
@@ -29288,7 +29288,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 980790806,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Только с реранкером. 0 — порядок без реранкера, его баллы остаются для «уверенность\nнизкая».",
@@ -29332,7 +29332,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cbF0Mdgf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBt"
@@ -29360,7 +29360,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1556644430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: реранкер не заменяет порядок, а голосует в слиянии наравне с векторным поиском и BM25. 0.7 — реранкер чуть слабее каждого из двух поисков; 1.5–3 — его мнение решающее.",
@@ -29404,7 +29404,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "a1Q0M1ot"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBv"
@@ -29432,7 +29432,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 214740451,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] smart_truncate_chars",
@@ -29476,7 +29476,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "pCGDd8tf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBx"
@@ -29504,7 +29504,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1143341541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Максимальная длина одного фрагмента в контексте LLM.",
@@ -29548,7 +29548,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tgyGwy0D"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bBz"
@@ -29576,7 +29576,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1717692357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3500 симв. — или меньше,\nесли не помещается",
@@ -29620,7 +29620,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FEqfyq8J"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bC1"
@@ -29648,7 +29648,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1404583304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "500 … 10000",
@@ -29692,7 +29692,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KZ4FCEc5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bC3"
@@ -29720,7 +29720,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 771846374,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ chat_budget / top_k (минимум 500). Длиннее — фрагмент обрезается вокруг\nнайденного места (focus_passage); ближайший заголовок выше сохраняется, у таблицы —\nзаголовок и шапка.",
@@ -29764,7 +29764,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aArGEXhe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bC5"
@@ -29792,7 +29792,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 548993954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: при умолчаниях (parent 2500 < 3500) ничего не обрезается — лимит срабатывает только на маленьком окне или большом top_k. Обрезается вокруг найденного места: child из векторного поиска или окно, где больше\nвсего слов вопроса. Соседние фрагменты одного документа склеиваются в один блок (merge_adjacent) без повтора перекрытия; его лимит — smart_truncate_chars × число склеенных.",
@@ -29836,7 +29836,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "N09JjNDX"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bC7"
@@ -29864,7 +29864,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 80705691,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] max_table_parts",
@@ -29908,7 +29908,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Qusp8itJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bC9"
@@ -29936,7 +29936,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 525768354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько частей одной таблицы может попасть в контекст.",
@@ -29980,7 +29980,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Wv8weQnk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCB"
@@ -30008,7 +30008,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 907414041,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2",
@@ -30052,7 +30052,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "irSnrMCa"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCD"
@@ -30080,7 +30080,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 999512133,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -30124,7 +30124,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JxKvUeoS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCF"
@@ -30152,7 +30152,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 492453229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 — без ограничения. Лимит мягкий: свободные места добираются частями.",
@@ -30196,7 +30196,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JSZaSneX"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCH"
@@ -30224,7 +30224,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2010318907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] use_multi_query",
@@ -30268,7 +30268,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cq3Le41V"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCJ"
@@ -30296,7 +30296,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 194094055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вторая формулировка вопроса от LLM; кандидаты ищутся по обеим.",
@@ -30340,7 +30340,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZahazBl9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCL"
@@ -30368,7 +30368,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1911966443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "выкл.",
@@ -30412,7 +30412,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XzrTFHKP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCN"
@@ -30440,7 +30440,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1456427275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -30484,7 +30484,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7NbX6LOI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCP"
@@ -30512,7 +30512,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 354713556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вопросы длиннее 1200 симв. не перефразируются.",
@@ -30556,7 +30556,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jsFtANYn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCR"
@@ -30584,7 +30584,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 521842887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] multi_query_alt_weight",
@@ -30628,7 +30628,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "I5NSU8kH"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCT"
@@ -30656,7 +30656,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1685954646,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вес результатов по второй формулировке.",
@@ -30700,7 +30700,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ips6vUKY"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCV"
@@ -30728,7 +30728,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1663812954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.85",
@@ -30772,7 +30772,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "IUb0rYMK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCX"
@@ -30800,7 +30800,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 874755181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -30844,7 +30844,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FJxrZ9A0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCZ"
@@ -30872,7 +30872,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2122502909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -30916,7 +30916,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6X47paLs"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCb"
@@ -30944,7 +30944,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 73039095,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] max_query_chars",
@@ -30988,7 +30988,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XXCdMupI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCd"
@@ -31016,7 +31016,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1745724202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Максимальная длина запроса к поиску; длиннее — обрезается.",
@@ -31060,7 +31060,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qHqTszNN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCf"
@@ -31088,7 +31088,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1569199042,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "24000 симв.",
@@ -31132,7 +31132,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BboBPRt1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCh"
@@ -31160,7 +31160,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2074488271,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -31204,7 +31204,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "P5Lw2HGK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCj"
@@ -31232,7 +31232,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 878427207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -31276,7 +31276,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MIJpzCrn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCl"
@@ -31304,7 +31304,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1812677870,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] cascade_split_chars",
@@ -31348,7 +31348,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QX7L9Ks6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCn"
@@ -31376,7 +31376,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 813387628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Запрос длиннее делится пополам и ищется частями.",
@@ -31420,7 +31420,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wIPblXXD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCp"
@@ -31448,7 +31448,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1164531974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "20000 симв.",
@@ -31492,7 +31492,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XSa5QLFb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCr"
@@ -31520,7 +31520,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 177253050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -31564,7 +31564,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "C5uPmO3E"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCt"
@@ -31592,7 +31592,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 52014419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Глубина деления — не больше 3.",
@@ -31636,7 +31636,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "g9Bu07MV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCv"
@@ -31664,7 +31664,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1676185245,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "РЕРАНКЕР — используются, только если задан RERANK_API_URL",
@@ -31708,7 +31708,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6U3h5qGW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCx"
@@ -31736,7 +31736,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 866677630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] rerank_max_docs",
@@ -31780,7 +31780,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "N7uFyEAr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bCz"
@@ -31808,7 +31808,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 904781665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Документов в одном запросе к реранкеру.",
@@ -31852,7 +31852,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gIoU2zYu"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bD1"
@@ -31880,7 +31880,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1461941051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "10",
@@ -31924,7 +31924,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MozZGAOC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bD3"
@@ -31952,7 +31952,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1204815292,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3 … 30",
@@ -31996,7 +31996,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iQvZy7DU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bD5"
@@ -32024,7 +32024,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 627218922,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ограничение шлюза; остальные кандидаты — следующими запросами.",
@@ -32068,7 +32068,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lTszA1S5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bD7"
@@ -32096,7 +32096,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1610829386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] rerank_char_budget",
@@ -32140,7 +32140,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mijEeau7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bD9"
@@ -32168,7 +32168,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1341445620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Символов в одном запросе к реранкеру.",
@@ -32212,7 +32212,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iqbo4Gc9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDB"
@@ -32240,7 +32240,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 775511850,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "9000 симв.",
@@ -32284,7 +32284,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Jacs9NJD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDD"
@@ -32312,7 +32312,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 932387223,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3000 … 60000",
@@ -32356,7 +32356,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "a6AC5f2o"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDF"
@@ -32384,7 +32384,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 458854630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ограничение шлюза; один документ уходит всегда, даже если длиннее.",
@@ -32428,7 +32428,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Z71aWLEK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDH"
@@ -32456,7 +32456,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 155608427,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] rerank_query_max_chars",
@@ -32500,7 +32500,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mqoC7i5e"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDJ"
@@ -32528,7 +32528,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 547547720,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Длина запроса (с расшифровками сокращений) для реранкера.",
@@ -32572,7 +32572,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "k1aXF4VF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDL"
@@ -32600,7 +32600,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1450256052,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1500 симв.",
@@ -32644,7 +32644,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Vsmcxsr0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDN"
@@ -32672,7 +32672,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 375766132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "200 … 4000",
@@ -32716,7 +32716,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4X4peVzG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDP"
@@ -32744,7 +32744,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 730764475,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход реранкера / 3 (минимум 200). От него: rerank_doc_max_chars.",
@@ -32788,7 +32788,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4qoxGy7W"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDR"
@@ -32816,7 +32816,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 513501684,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] rerank_doc_max_chars",
@@ -32860,7 +32860,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "INdUbnCu"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDT"
@@ -32888,7 +32888,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 512983989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Длина фрагмента документа для реранкера вместе с именем файла и разделом.",
@@ -32932,7 +32932,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Sy5ZC8tC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDV"
@@ -32960,7 +32960,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1067808700,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "800 симв.",
@@ -33004,7 +33004,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9jACZCFx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDX"
@@ -33032,7 +33032,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 821085603,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "200 … 6000",
@@ -33076,7 +33076,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HxrSiSUs"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDZ"
@@ -33104,7 +33104,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2038585930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход реранкера − длина запроса (минимум 200); сам фрагмент не короче 150 симв.",
@@ -33148,7 +33148,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mNIHqE1g"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDb"
@@ -33176,7 +33176,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1894318756,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] rerank_with_meta",
@@ -33220,7 +33220,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "V3U1PIJj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDd"
@@ -33248,7 +33248,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 298691446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Добавлять имя файла, раздел и таблицу в начало текста для реранкера.",
@@ -33292,7 +33292,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xsa8pbmz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDf"
@@ -33320,7 +33320,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1515200814,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -33364,7 +33364,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "RJWLpgff"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDh"
@@ -33392,7 +33392,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1496251421,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -33436,7 +33436,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SEcymgpK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDj"
@@ -33464,7 +33464,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 422124871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -33508,7 +33508,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TJdmNAMe"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDl"
@@ -33536,7 +33536,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 191817896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] min_rerank_score",
@@ -33580,7 +33580,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "L7htKRrT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDn"
@@ -33608,7 +33608,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 684930038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Минимальный балл, при котором голос реранкера учитывается.",
@@ -33652,7 +33652,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ofiWJOXX"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDp"
@@ -33680,7 +33680,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 3194214,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.15",
@@ -33724,7 +33724,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "1yanl4zy"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDr"
@@ -33752,7 +33752,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1233626925,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -33796,7 +33796,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ngr5b7jc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDt"
@@ -33824,7 +33824,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 166250213,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Рассчитан на шкалу 0 … 1; у реранкера с другой шкалой — задать вручную.",
@@ -33868,7 +33868,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KEVNl4ei"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDv"
@@ -33896,7 +33896,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 152577046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "СИГНАЛ «УВЕРЕННОСТЬ НИЗКАЯ» — как срабатывает, см. панель 7",
@@ -33940,7 +33940,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "k27exYRU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDx"
@@ -33968,7 +33968,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1222981514,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] low_conf_rerank",
@@ -34012,7 +34012,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7KbGX2hP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bDz"
@@ -34040,7 +34040,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1552195540,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Порог лучшего балла реранкера.",
@@ -34084,7 +34084,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "kJZWPlbf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bE1"
@@ -34112,7 +34112,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 974641568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.30",
@@ -34156,7 +34156,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fcG42yGo"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bE3"
@@ -34184,7 +34184,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1391928747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34228,7 +34228,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Nm8RBnbX"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bE5"
@@ -34256,7 +34256,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 370486613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "С реранкером сигнал зависит только от него.",
@@ -34300,7 +34300,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MWpApVnV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bE7"
@@ -34328,7 +34328,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1204987714,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] low_conf_lexical",
@@ -34372,7 +34372,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ACarWAad"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bE9"
@@ -34400,7 +34400,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2045651288,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Только без реранкера: порог доли слов вопроса в контексте.",
@@ -34444,7 +34444,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fc1JUIaG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEB"
@@ -34472,7 +34472,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 80691010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0.50",
@@ -34516,7 +34516,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "p9oWISmG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bED"
@@ -34544,7 +34544,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 711609765,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34588,7 +34588,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "1Qlfo2XL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEF"
@@ -34616,7 +34616,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 760757472,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Слова сравниваются по основам; вопросительные слова не считаются.",
@@ -34660,7 +34660,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iT9QEihJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEH"
@@ -34688,7 +34688,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 685294118,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] low_conf_agree_top",
@@ -34732,7 +34732,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "kyC0WRMs"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEJ"
@@ -34760,7 +34760,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 579166038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Только без реранкера: глубина совпадения векторного поиска и BM25.",
@@ -34804,7 +34804,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6YTV1x7X"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEL"
@@ -34832,7 +34832,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1064378993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5",
@@ -34876,7 +34876,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "c0QGMwZi"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEN"
@@ -34904,7 +34904,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1789911899,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 … 20",
@@ -34948,7 +34948,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LVL8K8aB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEP"
@@ -34976,7 +34976,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1034546173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -35020,7 +35020,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aKdribJq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bER"
@@ -35048,7 +35048,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 238385884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] show_source_details",
@@ -35092,7 +35092,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fqAeFdJa"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bET"
@@ -35120,7 +35120,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2030131176,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Показывать баллы и позиции рядом с источниками в чате.",
@@ -35164,7 +35164,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WPah7gt8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEV"
@@ -35192,7 +35192,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 22784989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -35236,7 +35236,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "R6bYN10b"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEX"
@@ -35264,7 +35264,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 415630397,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -35308,7 +35308,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mOz0rVBd"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEZ"
@@ -35336,7 +35336,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1690344630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -35380,7 +35380,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NSo3kyF9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEb"
@@ -35408,7 +35408,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1705104604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЧАТ И ГЛОССАРИЙ",
@@ -35452,7 +35452,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZpOylhSE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEd"
@@ -35480,7 +35480,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1358943467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] chat_history_turns",
@@ -35524,7 +35524,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hRM3b1AN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEf"
@@ -35552,7 +35552,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 696858975,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько прошлых пар «вопрос — ответ» учитывать для уточняющих вопросов.",
@@ -35596,7 +35596,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YzlhjTln"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEh"
@@ -35624,7 +35624,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1082927071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2",
@@ -35668,7 +35668,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "55rx0YRk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEj"
@@ -35696,7 +35696,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 121100775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -35740,7 +35740,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "arKlEaeh"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEl"
@@ -35768,7 +35768,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 230615823,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 — без истории; ответ ассистента в истории обрезается до 1200 симв.",
@@ -35812,7 +35812,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OspZwsrZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEn"
@@ -35840,7 +35840,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 290205931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] glossary_auto",
@@ -35884,7 +35884,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9MLAZphD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEp"
@@ -35912,7 +35912,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1652058783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Собирать сокращения из загруженных документов.",
@@ -35956,7 +35956,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9rmSqMSK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEr"
@@ -35984,7 +35984,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1615930585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -36028,7 +36028,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3PxH4tUg"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEt"
@@ -36056,7 +36056,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 388414857,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -36100,7 +36100,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8cTqlhHk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEv"
@@ -36128,7 +36128,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1934436383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -36172,7 +36172,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "uUKzWGzl"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEx"
@@ -36200,7 +36200,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 961364065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] glossary_in_context",
@@ -36244,7 +36244,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yupn1JC3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bEz"
@@ -36272,7 +36272,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 117939210,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Передавать модели справочник найденных сокращений.",
@@ -36316,7 +36316,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hfQOxHTX"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bF1"
@@ -36344,7 +36344,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 521029987,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -36388,7 +36388,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "3nCp0vyA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bF3"
@@ -36416,7 +36416,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 715682022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -36460,7 +36460,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "RStxU2hC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bF5"
@@ -36488,7 +36488,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1152890893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Выключить, если автоглоссарий даёт ошибочные расшифровки.",
@@ -36532,7 +36532,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "EBKDzld7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bF7"
@@ -36560,7 +36560,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1193726760,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] glossary_max_entries",
@@ -36604,7 +36604,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VP3WRsUB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bF9"
@@ -36632,7 +36632,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 921704075,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сокращений в справочнике для модели, не больше.",
@@ -36676,7 +36676,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mSIRcqSU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFB"
@@ -36704,7 +36704,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2057702627,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "20",
@@ -36748,7 +36748,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "axzjxIxL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFD"
@@ -36776,7 +36776,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 799336186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5 … 60",
@@ -36820,7 +36820,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "DZoUZatD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFF"
@@ -36848,7 +36848,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1034791827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сначала сокращения из вопроса, затем из найденных фрагментов.",
@@ -36892,7 +36892,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "5r6OBGig"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFH"
@@ -36920,7 +36920,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 328757559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА И КОНТРОЛЬ ИСПРАВЛЕНИЙ",
@@ -36964,7 +36964,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "puycRmjw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFJ"
@@ -36992,7 +36992,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1897840640,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] audit_map_size",
@@ -37036,7 +37036,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ExxOXSCA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFL"
@@ -37064,7 +37064,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 799903258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Размер раздела документа на одну проверку; тот же размер — у разделов на вкладке\nконтроля.",
@@ -37108,7 +37108,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "fXsqkpL9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFN"
@@ -37136,7 +37136,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 464157402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4500 симв.",
@@ -37180,7 +37180,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8R7STJuE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFP"
@@ -37208,7 +37208,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 280071929,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1000 … 12000",
@@ -37252,7 +37252,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bBGM7IeG"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFR"
@@ -37280,7 +37280,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2031956423,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ 0.3 × llm_budget (минимум 1000). Меньше — детальнее, но больше вызовов LLM. От\nнего: audit_context_max_chars.",
@@ -37324,7 +37324,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mwtxUCsB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFT"
@@ -37352,7 +37352,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 488934201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: Документ режется на части по разделам до этого размера (раздел до 1,5 размера — целым), каждая проверяется отдельным вызовом LLM. Чтобы модель не писала «не указано X», когда X есть в другом разделе, к части\nприлагается документ целиком (audit_full_document) или оглавление.",
@@ -37396,7 +37396,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SxRrVdq0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFV"
@@ -37424,7 +37424,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 303228371,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] use_self_critique",
@@ -37468,7 +37468,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LHuPpQ2M"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFX"
@@ -37496,7 +37496,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 215411871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Второй проход «контролёр» по черновику замечаний.",
@@ -37540,7 +37540,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bzybp2u4"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFZ"
@@ -37568,7 +37568,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1703500431,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -37612,7 +37612,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "dNd1EuUW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFb"
@@ -37640,7 +37640,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1449583895,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -37684,7 +37684,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "v3oETJ1H"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFd"
@@ -37712,7 +37712,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 507549522,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Отсеивает надуманные замечания; без него быстрее.",
@@ -37756,7 +37756,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "oIxX952b"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFf"
@@ -37784,7 +37784,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 78982661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_full_document",
@@ -37828,7 +37828,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "O3jzEUVm"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFh"
@@ -37856,7 +37856,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1876429488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Документ целиком в каждой проверке раздела и самокритике.",
@@ -37900,7 +37900,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NBcqQzar"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFj"
@@ -37928,7 +37928,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2006537615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -37972,7 +37972,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hzOQceql"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFl"
@@ -38000,7 +38000,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 71901712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -38044,7 +38044,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "csQrLVhM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFn"
@@ -38072,7 +38072,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1416839545,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Только если документ помещается в окно модели; иначе — оглавление и сверка «не\nописано» с другими разделами.",
@@ -38116,7 +38116,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Uvv4TY9D"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFp"
@@ -38144,7 +38144,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1666465480,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_merge_duplicates",
@@ -38188,7 +38188,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XT5W09d1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFr"
@@ -38216,7 +38216,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 87471442,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сведение повторов замечаний моделью в конце аудита.",
@@ -38260,7 +38260,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GNMYG98R"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFt"
@@ -38288,7 +38288,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 648609525,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -38332,7 +38332,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8NmfW8ww"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFv"
@@ -38360,7 +38360,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 567406071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -38404,7 +38404,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WiOttyoJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFx"
@@ -38432,7 +38432,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 502296104,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "+1 вызов LLM; выключено — повторы склеиваются только по совпадению слов.",
@@ -38476,7 +38476,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7vb6W4QR"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bFz"
@@ -38504,7 +38504,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 696585202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_passes",
@@ -38548,7 +38548,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "q0Fvr6vc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bG1"
@@ -38576,7 +38576,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1540471178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Проходов проверки разделов и вопросов глубокой проверки о процессе и цифрах.",
@@ -38620,7 +38620,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GMaaH8pC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bG3"
@@ -38648,7 +38648,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 424717483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1",
@@ -38692,7 +38692,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YN8UOHtr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bG5"
@@ -38720,7 +38720,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 923127099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 … 3",
@@ -38764,7 +38764,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "o3h1jtSz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bG7"
@@ -38792,7 +38792,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 683798192,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2–3 — с температурой ≥ 0,4; замечания проходов сводятся, найденное несколько раз —\n   выше.",
@@ -38836,7 +38836,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "IZWuJx8y"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bG9"
@@ -38864,7 +38864,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1163966941,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_summary_max",
@@ -38908,7 +38908,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bP9t1fBV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGB"
@@ -38936,7 +38936,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1424975636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "«Главное» в начале заключения: самые важные замечания указателями на номера.",
@@ -38980,7 +38980,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yzjcr1Oq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGD"
@@ -39008,7 +39008,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 105177086,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "12",
@@ -39052,7 +39052,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jKWBedUO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGF"
@@ -39080,7 +39080,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2078789198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 30",
@@ -39124,7 +39124,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NsT4YebW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGH"
@@ -39152,7 +39152,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 731820361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "+1 вызов LLM (модель-редактор); 0 — без блока.",
@@ -39196,7 +39196,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6kb05fRc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGJ"
@@ -39224,7 +39224,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1326775936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_reasoning",
@@ -39268,7 +39268,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "drHyzW3l"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGL"
@@ -39296,7 +39296,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 528140515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Аудит с рассуждениями модели (поверх llm_no_reasoning).",
@@ -39340,7 +39340,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FFLhQxly"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGN"
@@ -39368,7 +39368,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 319369939,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "выкл.",
@@ -39412,7 +39412,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "uHwqYG3Z"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGP"
@@ -39440,7 +39440,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1525803776,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -39484,7 +39484,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "N86bJEJm"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGR"
@@ -39512,7 +39512,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 857880810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ответ +6000 токенов на рассуждения, таймаут ≥ 300 с; в чате рассуждения как\nнастроено.",
@@ -39556,7 +39556,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qfvEGSvn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGT"
@@ -39584,7 +39584,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1465649990,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[У] audit_known_abbreviations",
@@ -39628,7 +39628,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "R9Yh5aWS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGV"
@@ -39656,7 +39656,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 654366624,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Общеизвестные сокращения, которые проверка сокращений не отмечает.",
@@ -39700,7 +39700,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8ShEW9l6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGX"
@@ -39728,7 +39728,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 224194665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -39772,7 +39772,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "PYm0tFiL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGZ"
@@ -39800,7 +39800,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1019147097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "только\nconfig.yaml",
@@ -39844,7 +39844,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JSqjkd7L"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGb"
@@ -39872,7 +39872,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1622513533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Через запятую; ГОСТ, РФ, API и подобные уже учтены.",
@@ -39916,7 +39916,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xvhpdVme"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGd"
@@ -39944,7 +39944,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1673976711,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_deep",
@@ -39988,7 +39988,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ru9kMveP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGf"
@@ -40016,7 +40016,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 146673239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Глубокая проверка: узкие вопросы модели по процессу, противоречиям, цифрам,\nопечаткам.",
@@ -40060,7 +40060,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rKCBoQSK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGh"
@@ -40088,7 +40088,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1940254612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -40132,7 +40132,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "pt9Y0PFi"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGj"
@@ -40160,7 +40160,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1648595060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -40204,7 +40204,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Sr0wUi9u"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGl"
@@ -40232,7 +40232,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 396108871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Десятки коротких вызовов LLM; модель среднего размера справляется с узким вопросом\nнадёжнее, чем с аудитом главы.",
@@ -40276,7 +40276,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lb8kzI9r"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGn"
@@ -40304,7 +40304,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 375390170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_deep_max_calls",
@@ -40348,7 +40348,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aE6zRqY5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGp"
@@ -40376,7 +40376,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1041959316,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Не больше стольких вопросов глубокой проверки.",
@@ -40420,7 +40420,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "USjt9iID"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGr"
@@ -40448,7 +40448,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1371556573,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "60",
@@ -40492,7 +40492,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ExzzamR2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGt"
@@ -40520,7 +40520,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 691387152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 300",
@@ -40564,7 +40564,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xQ4LhHRb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGv"
@@ -40592,7 +40592,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1638094993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 — без лимита; первыми — процесс и цифры.",
@@ -40636,7 +40636,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OdI1WnBy"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGx"
@@ -40664,7 +40664,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1538985619,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_parallel",
@@ -40708,7 +40708,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8QiNKB8L"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bGz"
@@ -40736,7 +40736,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 367628576,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Запросов аудита одновременно: разделы, вопросы глубокой проверки, пункты.",
@@ -40780,7 +40780,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "W1JCnT3V"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bH1"
@@ -40808,7 +40808,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2025769206,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3",
@@ -40852,7 +40852,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "J2tota14"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bH3"
@@ -40880,7 +40880,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1513837548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -40924,7 +40924,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "b0g39P2E"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bH5"
@@ -40952,7 +40952,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2061583063,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Больше — быстрее; при ответах 429 и таймаутах — уменьшить.",
@@ -40996,7 +40996,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mVqN8MMK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bH7"
@@ -41024,7 +41024,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1739737787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_pinned_max_chars",
@@ -41068,7 +41068,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TMYZXv0w"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bH9"
@@ -41096,7 +41096,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1640355855,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Правила экспертов и карточки систем на один запрос аудита (сверх норм).",
@@ -41140,7 +41140,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XRvWx1Ir"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHB"
@@ -41168,7 +41168,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 252620028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "20000 симв.",
@@ -41212,7 +41212,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "etELLugb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHD"
@@ -41240,7 +41240,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 44613008,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 60000",
@@ -41284,7 +41284,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "pjWCOq5H"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHF"
@@ -41312,7 +41312,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 315685461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Помещаются — целиком, иначе — ближайшие к тексту фрагменты; 0 — не передавать.",
@@ -41356,7 +41356,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mfmZKqb6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHH"
@@ -41384,7 +41384,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1067042240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_systems",
@@ -41428,7 +41428,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GvJL314v"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHJ"
@@ -41456,7 +41456,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 750979183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Что документ требует от каждой упомянутой системы — по её карточке.",
@@ -41500,7 +41500,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "a1ydRCmy"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHL"
@@ -41528,7 +41528,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 558326594,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -41572,7 +41572,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "u5PVHw7P"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHN"
@@ -41600,7 +41600,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1411776787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -41644,7 +41644,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HCP8pSA6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHP"
@@ -41672,7 +41672,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1753654173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "+1 вызов LLM на систему, упомянутую в документе не меньше двух раз (до 5 систем).",
@@ -41716,7 +41716,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mrJSeoUM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHR"
@@ -41744,7 +41744,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 961363775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_basis_docs",
@@ -41788,7 +41788,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "EAmhDJga"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHT"
@@ -41816,7 +41816,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 416336481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Документы-основания: документы базы по ссылкам на титуле и в «Ссылочных\nдокументах» — в каждой проверке раздела.",
@@ -41860,7 +41860,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cCpOv9EU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHV"
@@ -41888,7 +41888,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1163794768,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "вкл.",
@@ -41932,7 +41932,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ogAIkhRR"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHX"
@@ -41960,7 +41960,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 605109372,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "флажок",
@@ -42004,7 +42004,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "b7sq22Ni"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHZ"
@@ -42032,7 +42032,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 760685218,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Без вызовов LLM; что найдено — блок «📎 Документы-основания» на вкладке и лог; снять\nили добавить — там же.",
@@ -42076,7 +42076,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jIogvcro"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHb"
@@ -42104,7 +42104,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 325770346,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] audit_basis_max_chars",
@@ -42148,7 +42148,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4HBQuTfw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHd"
@@ -42176,7 +42176,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 836442519,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Фрагменты документов-оснований на один запрос аудита (сверх норм поиска).",
@@ -42220,7 +42220,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QwJjBK4k"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHf"
@@ -42248,7 +42248,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1485312612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "8000",
@@ -42292,7 +42292,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QqyY0Plt"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHh"
@@ -42320,7 +42320,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 169573945,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "0 … 40000",
@@ -42364,7 +42364,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "WwMI9DeE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHj"
@@ -42392,7 +42392,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1742221889,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ближайшие к разделу фрагменты; 0 — не передавать.",
@@ -42436,7 +42436,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SCAqkh9h"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHl"
@@ -42464,7 +42464,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1368400772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] audit_query_chars",
@@ -42508,7 +42508,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NnGZHfY7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHn"
@@ -42536,7 +42536,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1277480848,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько символов начала раздела уходит в поиск норм.",
@@ -42580,7 +42580,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xp4dg1h5"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHp"
@@ -42608,7 +42608,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 300888124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2000 симв.",
@@ -42652,7 +42652,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JDk1QkvO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHr"
@@ -42680,7 +42680,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1840864094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -42724,7 +42724,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8GrhfB92"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHt"
@@ -42752,7 +42752,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 469941871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход эмбеддингов − префикс запроса (минимум 300).",
@@ -42796,7 +42796,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JWqdf0ot"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHv"
@@ -42824,7 +42824,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1580207623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "◇ [А] audit_context_max_chars",
@@ -42868,7 +42868,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SReMEifI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHx"
@@ -42896,7 +42896,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1348476919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько текста норм из базы (parent целиком, суммарно) попадает в проверку одного\nраздела документа.",
@@ -42940,7 +42940,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YSYBy8uu"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bHz"
@@ -42968,7 +42968,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 602107349,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "9000 симв.",
@@ -43012,7 +43012,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mXMevDpb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bI1"
@@ -43040,7 +43040,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 59527035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1000 … 40000",
@@ -43084,7 +43084,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aR5t6Fnn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bI3"
@@ -43112,7 +43112,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1041012736,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ llm_budget − audit_map_size (минимум 1000). Parent берутся целиком в порядке\nрелевантности, пока сумма помещается, — остальные отбрасываются (первый — всегда); не\nбольше top_k. От него: review_context_max_chars.",
@@ -43156,7 +43156,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SVr4i5r2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bI5"
@@ -43184,7 +43184,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 370245411,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Подробнее: пять parent по ≈ 2500 симв. с заголовками — это ≈ 13 000 > 9000: в аудит попадают 3 самых релевантных, 4-й и 5-й отбрасываются и не попадают в «Использованные источники». Набор останавливается на первом\nнепоместившемся, даже если следующий короче. Поэтому поднимать top_k ради аудита бессмысленно, пока не поднят этот лимит: для 5 целых parent нужно ≈ 13 000–13 500. Тот же лимит — у норм на вкладке контроля исправлений.",
@@ -43228,7 +43228,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GlY0wrjw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bI7"
@@ -43256,7 +43256,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 827778871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] review_top_sections",
@@ -43300,7 +43300,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "IHLsaklC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bI9"
@@ -43328,7 +43328,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 400341366,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько разделов новой редакции получает модель на одно замечание.",
@@ -43372,7 +43372,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JXmJzNQS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIB"
@@ -43400,7 +43400,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 134739126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3",
@@ -43444,7 +43444,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "msMvYdHU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bID"
@@ -43472,7 +43472,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1123713241,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -43516,7 +43516,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FhhcChDM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIF"
@@ -43544,7 +43544,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 132355727,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ограничены review_context_max_chars.",
@@ -43588,7 +43588,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Qj2uDhw6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIH"
@@ -43616,7 +43616,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2110166949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] review_context_max_chars",
@@ -43660,7 +43660,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Pqjokhc9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIJ"
@@ -43688,7 +43688,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2044644468,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Объём этих разделов на одно замечание.",
@@ -43732,7 +43732,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gXjxFvBf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIL"
@@ -43760,7 +43760,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2097371417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "12000 симв.",
@@ -43804,7 +43804,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "svnHjSE3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIN"
@@ -43832,7 +43832,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1277731879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1000 … 50000",
@@ -43876,7 +43876,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mXIQ6Rj1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIP"
@@ -43904,7 +43904,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 654381728,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ llm_budget − audit_context_max_chars − 1000 (минимум 1000); первый раздел\nпередаётся всегда.",
@@ -43948,7 +43948,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xLcUBYDV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIR"
@@ -43976,7 +43976,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 342830070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[А] section_embed_chars",
@@ -44020,7 +44020,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "R6F1O5eL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIT"
@@ -44048,7 +44048,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1424728446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сколько символов раздела уходит в эмбеддинг при подборе разделов.",
@@ -44092,7 +44092,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MyoPiyip"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIV"
@@ -44120,7 +44120,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1471377781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4000 симв.",
@@ -44164,7 +44164,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "9JrjHEnS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIX"
@@ -44192,7 +44192,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1561846094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "300 … 8000",
@@ -44236,7 +44236,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "CnsqA2aw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIZ"
@@ -44264,7 +44264,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 903472236,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Авто ≤ вход эмбеддингов − префикс документа (минимум 300).",
@@ -44308,7 +44308,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "eGjl2REF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIb"
@@ -44336,7 +44336,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 799508704,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Прочие константы кода (меняются только в коде mint/): сокращение — от 2 до 12 символов, не меньше 2 заглавных; переписанный уточняющий вопрос — до 300 токенов. Остальные константы указаны там, где действуют: запас и резервы окна — в строках\nпараметров выше и в блоке «Токены и символы», алгоритм поиска (BM25, расширение запроса, дедупликация) — в панели 7.",
@@ -44373,7 +44373,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 616547026,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4. Особенности компании → на что влияют и как настраивать",
@@ -44410,7 +44410,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1962821609,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Что из исходных условий меняет настройки MINT. Пункты с [Т] сравниваются проверкой качества до и после изменения.",
@@ -44454,7 +44454,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "dVf9kB9k"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIf"
@@ -44482,7 +44482,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2088773317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Особенность компании",
@@ -44526,7 +44526,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "XzQLc990"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIh"
@@ -44554,7 +44554,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 371430628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "На что влияет в MINT",
@@ -44598,7 +44598,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "szri6thD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIj"
@@ -44626,7 +44626,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1551022416,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Как настраивать",
@@ -44670,7 +44670,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "m4QFihY8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIl"
@@ -44698,7 +44698,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1559944672,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Размер базы: сколько документов и\nфрагментов",
@@ -44742,7 +44742,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QetrEesZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIn"
@@ -44770,7 +44770,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1353698785,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "НЕ влияет на размеры фрагментов, пороги реранкера, промпты. ВЛИЯЕТ на: авто-top_k (панель\n3); глубину кандидатов initial_k / bm25_top_k / rerank_top_k (похожих документов больше —\nправильный дальше в списке); пороги «уверенность низкая»; память и время (панель 9).",
@@ -44814,7 +44814,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZvpPM0sN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIp"
@@ -44842,7 +44842,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 264935164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] если правильный фрагмент всё чаще «> 10» — initial_k 80–100, bm25_top_k 30, rerank_top_k 24;\nперекалибровать low_conf_rerank / low_conf_lexical. [Р] top_k задать явно, если авто-выбор не\nустраивает.",
@@ -44886,7 +44886,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rK3SCZeN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIr"
@@ -44914,7 +44914,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 615367536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Структура документов: стили заголовков Word",
@@ -44958,7 +44958,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BEPHz0sR"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIt"
@@ -44986,7 +44986,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1078770124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Без стилей «Заголовок 1–3» Docling не находит разделы (collect_structure): в ссылках только\nимя файла, раздел в контексте и в оценке не виден.",
@@ -45030,7 +45030,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4hQ7EOs1"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIv"
@@ -45058,7 +45058,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 534052678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Проставить стили в исходниках и переиндексировать ♻. Нумерованные заголовки обычным стилем MINT\nпока не распознаёт.",
@@ -45102,7 +45102,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "uYakcDKS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIx"
@@ -45130,7 +45130,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 627211998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Длина разделов: короткие пункты регламентов\nили длинные описания",
@@ -45174,7 +45174,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4epp27sJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bIz"
@@ -45202,7 +45202,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 14662260,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "parent охватывает несколько коротких пунктов — точные вопросы «тонут» в соседнем тексте;\nдлинным связным описаниям, наоборот, не хватает контекста.",
@@ -45246,7 +45246,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cjtPzMIw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJ1"
@@ -45274,7 +45274,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1968254771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] на копии базы ♻: короткие пункты и точные вопросы — parent_size 1500–2000; длинные описания —\n3000–3500 (если окно LLM позволяет: MINT не даст выйти за потолок). Сравнить --compare.",
@@ -45318,7 +45318,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ZPqaoaaq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJ3"
@@ -45346,7 +45346,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 654915491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Много таблиц: матрицы требований, SLA,\nперечни",
@@ -45390,7 +45390,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mtXAzR0l"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJ5"
@@ -45418,7 +45418,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1089077115,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Большая таблица делится на части с повтором шапки; часть из них может не попасть в контекст\n(max_table_parts).",
@@ -45462,7 +45462,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "CiVk46lr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJ7"
@@ -45490,7 +45490,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1602556528,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] max_table_parts 3–4, если вопросы часто про таблицы; [Т] добавить такие вопросы в набор eval и\nсмотреть hit@K.",
@@ -45534,7 +45534,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "JJXTLsbm"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJ9"
@@ -45562,7 +45562,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 783425099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Много сокращений и внутренних названий\nсистем",
@@ -45606,7 +45606,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0bcpbK9F"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJB"
@@ -45634,7 +45634,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 95246893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Эмбеддинги не знают внутренних названий — их находят BM25 и глоссарий.",
@@ -45678,7 +45678,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "nFpFRJZL"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJD"
@@ -45706,7 +45706,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 972256512,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] glossary.json для сокращений, которых нет в документах (шаг 4, панель 5); [Т] если «только\nBM25» заметно лучше «только dense» — weight_bm25 1.3–1.5.",
@@ -45750,7 +45750,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "aPcPZ3ZV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJF"
@@ -45778,7 +45778,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1625194138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Несколько редакций одного документа в базе",
@@ -45822,7 +45822,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "rke4V9Z2"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJH"
@@ -45850,7 +45850,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1520934252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Дубли занимают места в top_k; дедупликация убирает только совпадающие фрагменты; модель\nможет сослаться на устаревшую редакцию.",
@@ -45894,7 +45894,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2Huprek4"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJJ"
@@ -45922,7 +45922,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1540048065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] держать в базе только действующие редакции (старые удалять); в именах файлов — номер редакции;\nиначе [Т] top_k выше.",
@@ -45966,7 +45966,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "mr2hhwza"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJL"
@@ -45994,7 +45994,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 510192253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Как спрашивают пользователи: термины,\nдлинные ситуации, диалог",
@@ -46038,7 +46038,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6yCpVX8X"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJN"
@@ -46066,7 +46066,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1606133978,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Короткие термины и коды лучше ищет BM25; длинные «своими словами» — вектор; уточнения «а\nдля второго контура?» требуют истории.",
@@ -46110,7 +46110,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xaqkwxoU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJP"
@@ -46138,7 +46138,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 530676326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Т] веса weight_dense / weight_bm25, use_multi_query для расплывчатых вопросов; [П]\nchat_history_turns 0 / 2 / 3. Набор вопросов для eval — из реальных обращений.",
@@ -46182,7 +46182,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NvU91P3P"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJR"
@@ -46210,7 +46210,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 487607499,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Язык документов: русский, английский,\nсмешанные",
@@ -46254,7 +46254,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wHJUEh9T"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJT"
@@ -46282,7 +46282,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 280621587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "BM25 приводит слова к основам русским (Snowball) или английским (Porter2) стеммером — по\nкаждому слову; коды ищутся точно; смысловой поиск зависит от модели эмбеддингов.",
@@ -46326,7 +46326,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YGNPJZLK"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJV"
@@ -46354,7 +46354,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1446958055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] многоязычная модель эмбеддингов (Qwen3-Embedding, bge-m3, multilingual-e5) ♻ — смена модели\nтребует переиндексации; MINT_LANG — язык интерфейса, промптов и отчётов; «Определить у сервера» —\nпосле загрузки документов на другом языке.",
@@ -46398,7 +46398,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "A3VbvHOr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJX"
@@ -46426,7 +46426,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 790586243,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Требования к ответам: строгость, длина,\nссылки",
@@ -46470,7 +46470,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "olOEEW57"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJZ"
@@ -46498,7 +46498,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 678611114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Строгость — temperature; длина — max_tokens (место под ответ отнимается у контекста, панель\n2).",
@@ -46542,7 +46542,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "nif5GKNP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJb"
@@ -46570,7 +46570,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1773312818,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] temperature 0–0.2; max_tokens — по длине типичного ответа; ссылки [файл, раздел] — в\nCHAT_SYSTEM_PROMPT / CHAT_SYSTEM_PROMPT_EN; ссылки мимо контекста check_citations() помечает ⚠.",
@@ -46614,7 +46614,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "f6ZSVG0d"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJd"
@@ -46642,7 +46642,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2053407093,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Модели компании: окно LLM, входы\nэмбеддингов и реранкера, рассуждения",
@@ -46686,7 +46686,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "nKirlDDF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJf"
@@ -46714,7 +46714,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2046886815,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Определяют все [А]-параметры через потолки (панели 1–2); модели с рассуждениями тратят\nmax_tokens и на <think> (strip_reasoning убирает рассуждения из ответа).",
@@ -46758,7 +46758,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6quyBIpz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJh"
@@ -46786,7 +46786,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 493637255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[П] модели с рассуждениями: max_tokens 3000–4000 (иначе ответ обрывается — «Ответ модели\nобрезан»), llm_timeout 150–180; новая модель эмбеддингов ♻ — переиндексация (kb_document_status\nпокажет).",
@@ -46830,7 +46830,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Whg2uJVz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJj"
@@ -46858,7 +46858,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 735517270,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Корпоративный шлюз: лимиты запросов,\nтаймауты, TLS",
@@ -46902,7 +46902,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "MT9HwudP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJl"
@@ -46930,7 +46930,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 110204035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "HTTP 400 от реранкера при больших пачках, 429 / 504 при нагрузке, собственный сертификат.",
@@ -46974,7 +46974,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wHB1bvqa"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJn"
@@ -47002,7 +47002,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1084664135,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] rerank_max_docs, rerank_char_budget; llm_timeout, llm_retries; CA_BUNDLE_PATH.",
@@ -47046,7 +47046,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "8U1HALtx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJp"
@@ -47074,7 +47074,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 309098810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Справка о системах: что умеют, планы,\nограничения",
@@ -47118,7 +47118,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "6oJOpN2T"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJr"
@@ -47146,7 +47146,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 395073400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Без карточек систем аудит не знает их возможностей и не может проверить, что документ\nтребует от системы (answer_system) и не противоречит ли её ограничениям.",
@@ -47190,7 +47190,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "x8oE9iDW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJt"
@@ -47218,7 +47218,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 773450909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] черновик карточки по базе — кнопка «Собрать черновик карточки системы по базе»\n(draft_system_card): эксперт проверяет, дописывает пробелы и загружает в базу с отметкой «Карточки\nсистем»; [П] audit_pinned_max_chars, если карточек много.",
@@ -47262,7 +47262,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xK80JN1q"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJv"
@@ -47290,7 +47290,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1392233615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Регламент проверки документов: критерии,\nчек-листы, объём документа",
@@ -47334,7 +47334,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "czYavJG7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJx"
@@ -47362,7 +47362,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1695888370,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Критерии и чек-листы задают, что ищет аудит; размер раздела — детальность и число вызовов\nLLM.",
@@ -47406,7 +47406,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "7aF5lt8T"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bJz"
@@ -47434,7 +47434,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 46699943,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] общие критерии — поле на вкладке «Аудит документа» (по умолчанию DEFAULT_AUDIT_FOCUS),\nчек-листы по типам документов — checklists.yaml (файл вне папки программы — путь в\nMINT_CHECKLISTS); пункты, важные для конкретного документа, — в поле «Особое внимание»; [П]\naudit_map_size и use_self_critique — на живой проверке (шаг 9, панель 5).",
@@ -47478,7 +47478,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "E2wkCdTi"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bK1"
@@ -47506,7 +47506,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 617919983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Нагрузка: число одновременных пользователей",
@@ -47550,7 +47550,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wPF47zXy"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bK3"
@@ -47578,7 +47578,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1019183681,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Все сеансы делят шлюз LLM; разбор документов и запись в базу идут по очереди (панель 6).",
@@ -47622,7 +47622,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "sUCfOE72"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bK5"
@@ -47650,7 +47650,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2071282458,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "[Р] лимиты шлюза и llm_retries; загрузку больших пакетов документов — вне часов пик.",
@@ -47687,7 +47687,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1910823580,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5. Порядок настройки у себя",
@@ -47724,7 +47724,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1773778854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Шаги 6–8 повторяются: база выросла в 2 раза, новый тип документов, другая модель эмбеддингов или реранкера, изменены parent_size / child_size.",
@@ -47772,7 +47772,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OHqPyssy"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bK9"
@@ -47800,7 +47800,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 388444572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1. Подключения\n.env: адреса, ключи,\nмодели, KB_DIR,\nсертификат.\ncheck_install.py без\nошибок; в панели нет\nкрасных ошибок,\nреранкер «доступен» или\n«не подключён».",
@@ -47852,7 +47852,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "K4oBG4pf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKB"
@@ -47880,7 +47880,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1483643020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2. Лимиты моделей\n«Модели и лимиты» →\n«Определить у сервера».\nЧего сервер не сообщает\n— в config.yaml\n(models). Проверить\n«MINT рассчитал» и\nпредупреждения.",
@@ -47932,7 +47932,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BdlWkpK7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKD"
@@ -47960,7 +47960,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2081139234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "3. Документы\nЗагрузить. Сообщения\nзагрузки: «Распознано\nзаголовков: N» (0 — нет\nстилей, панель 4),\n«Пропущено … чанков» —\nсбой эмбеддингов.",
@@ -48012,7 +48012,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "eYBYdufU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKF"
@@ -48040,7 +48040,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1730295219,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "4. Сокращения\nСписок «Сокращения» в\nпанели: неточные\nрасшифровки и\nнедостающие сокращения\n— в glossary.json.",
@@ -48092,7 +48092,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Qrgoxrr6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKH"
@@ -48120,7 +48120,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 238394071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "5. Набор вопросов\nКнопка «Проверка\nкачества» на боковой\nпанели: MINT составит\nчерновик — переписать\nсвоими словами,\nдобавить реальные\nвопросы и 5–10 без\nответа в базе. Всего\n40–60.",
@@ -48172,7 +48172,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HnAaJNzj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKJ"
@@ -48200,7 +48200,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1481069539,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "6. Точка отсчёта\n«Запустить проверку» →\nитоги на странице;\nreport.md, details.csv,\nsummary.json — в\nLOG_DIR/eval (в консоли\n— eval_search.py\nquestions.csv).",
@@ -48252,7 +48252,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hcvo70Qf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKL"
@@ -48280,7 +48280,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 677932053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "7. Настройка по отчёту\n«Что поменять» →\n«Применить в этой\nсессии»; закрепить в\nconfig.yaml:\nweight_rerank, веса\ndense / BM25, пороги\nlow_conf, top_k,\nmulti-query.",
@@ -48332,7 +48332,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKN"
@@ -48360,7 +48360,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1748425513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "8. Проверка\nСледующая проверка\nсравнивается с прошлой\n(▲▼; в консоли —\n--compare): MRR и hit@K\nвыросли, ложные тревоги\nне выросли; разница не\nслучайна (p < 0.05).",
@@ -48408,7 +48408,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKP"
@@ -48436,7 +48436,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1073950771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "9. Живая проверка\n15–20 ответов в чате;\n   аудит 3–5 документов\n   с известными\n   замечаниями;\n   контроль — пары\n   редакций. Подстроить\n   [П]-параметры.",
@@ -48475,7 +48475,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1415909849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48539,7 +48539,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1884439373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48603,7 +48603,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 280981308,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48667,7 +48667,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 599665469,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48731,7 +48731,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1718604913,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48795,7 +48795,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 517582091,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48859,7 +48859,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 67617651,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48923,7 +48923,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 912674016,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -48992,7 +48992,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "kTEV6qmE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKZ"
@@ -49020,7 +49020,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1004023954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Как работает проверка качества — mint/evaluation.py: кнопка «Проверка качества» на боковой панели и eval_search.py в консоли (тот же код поиска, что в чате; база и сервисы — настоящие; LLM — только для черновика вопросов, ответов чата и\nmulti-query)\ngenerate_questions(): по фрагменту — вопрос на языке фрагмента и дословная цитата → таблица вопросов: правка, свои вопросы; rows_to_questions() и markup_problems() — разметка, которая никогда не засчитается → request_cache() (каждый запрос к\nсервисам — один раз на все варианты) → build_configs(): только dense, только BM25, гибрид, гибрид + реранкер 0.35 / 0.7 / 1 / 1.5 / 3 → run_question(): search_parent_child() на глубину 10 + diagnostics при top_k → is_relevant(): файл +\nраздел (в пути или заголовком внутри фрагмента) + фраза → metrics(): hit@1, hit@3, hit@K, MRR, ложные тревоги → paired() + sign_test_p(): на скольких вопросах конфигурации расходятся и случайна ли разница (критерий знаков) → calibrate():\nпорог по тому же правилу, что в поиске (is_low_confidence) → check_answers() по желанию (1–3 раза): ответ чата (answer_question), ссылка на нужный документ, ссылки мимо найденного, ложное и честное «информации нет» (chat_no_info), ошибка\nпоиска или модели; compare_answers() — с прошлой проверкой ответов по вопросам и версии промптов → recommendations(): что поменять → save_run(): report.md, details.csv без пустых ячеек, summary.json, questions.csv — в LOG_DIR/eval.",
@@ -49057,7 +49057,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 762279921,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "6. Устройство: добавление документов в базу",
@@ -49094,7 +49094,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1393306350,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Боковая панель «Добавить документы в базу» → process_and_add_to_kb() для каждого файла. Эмбеддинги считаются без блокировки базы, слияние и запись — под kb_write_lock().",
@@ -49142,7 +49142,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YFFEv8aP"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKd"
@@ -49170,7 +49170,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 490539631,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "parse_document()\nпо расширению: .docx — docling_convert()\n(один DocumentConverter на процесс, по\nочереди); .pdf — parse_pdf() без моделей;\n.md, .txt — parse_markdown(),\nparse_plain_text().",
@@ -49222,7 +49222,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YGSyNfpa"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKf"
@@ -49250,7 +49250,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 850818247,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "collect_structure()\nобход iterate_items(): section_header /\ntitle → стек заголовков,\nheading_path_str(); table → markdown и\nподпись; колонтитулы и рисунки\nпропускаются. Сбой →\ncollect_structure_flat() без заголовков.",
@@ -49302,7 +49302,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "85LG5t8G"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKh"
@@ -49330,7 +49330,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 528676536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "build_parent_chunks()\nтекст одним потоком с «## заголовками» →\nsplit_with_overlap_pos(parent_size ♻,\nparent_overlap ♻; разрез по абзацу,\nстроке, предложению, слову; заголовок — со\nсвоим текстом) → в каждом parent child\n(child_size ♻, child_overlap ♻); путь\nзаголовков child — по его позиции\n(bisect). Таблицы: clean_table_markdown()\n→ split_table_markdown() по строкам с\nповтором шапки.",
@@ -49382,7 +49382,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xCWMjzd9"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKj"
@@ -49410,7 +49410,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 799495283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "index_parsed_document()\nвход эмбеддинга = embed_doc_prefix ♻ +\nпуть заголовков + child →\nget_query_embeddings_batch() (пачками по\nembed_batch_size; _embed_input() обрезает\nдо embed_input_max_chars) →\nl2_normalize().",
@@ -49462,7 +49462,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKl"
@@ -49490,7 +49490,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1059699661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Запись под kb_write_lock()\nперечитать базу, убрать прежнюю версию\nфайла, проверить размерность векторов →\nIndexFlatL2 → _commit_kb(): временная\nпапка + os.replace → save_bm25_index() →\nrebuild_auto_glossary()\n(extract_abbreviations →\nbuild_auto_glossary).",
@@ -49529,7 +49529,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1810995622,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -49593,7 +49593,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1844155297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -49657,7 +49657,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 700700824,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -49721,7 +49721,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1502999695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -49790,7 +49790,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKr"
@@ -49825,7 +49825,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TtHTZQoz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKs"
@@ -49853,7 +49853,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 445824178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child_index.faiss\nвекторы child, нормированы\n(поиск по косинусу)",
@@ -49897,7 +49897,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GpCYCPYT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKu"
@@ -49925,7 +49925,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1185537876,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child_metadata.pkl\nparent_id, source, page, text\nchild",
@@ -49969,7 +49969,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "enmiaBPB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKw"
@@ -49997,7 +49997,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1964228610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "parent_store.json\nтекст parent, heading_path,\ntype, section, page",
@@ -50041,7 +50041,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HiSCTsUS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bKy"
@@ -50069,7 +50069,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2709796,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl\nосновы слов, позиции; подпись\nформата (иначе пересборка)",
@@ -50113,7 +50113,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KsyqIjrE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bL0"
@@ -50141,7 +50141,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 55632841,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json\nсокращения из документов",
@@ -50185,7 +50185,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "S5yCJ6Rf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bL2"
@@ -50213,7 +50213,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 641056343,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "manifest.json\nembed_model, embed_dim, префикс,\nparent / child для каждого\nдокумента",
@@ -50257,7 +50257,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "pI8keL7f"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bL4"
@@ -50285,7 +50285,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 429688919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "sources/\nоригиналы документов для\nпереиндексации",
@@ -50322,7 +50322,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 736231461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Хранилище — папка KB_DIR",
@@ -50366,7 +50366,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "KDfcYhTI"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -50428,7 +50428,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 990097690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "запись",
@@ -50472,7 +50472,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jksG97Di"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bL9"
@@ -50500,7 +50500,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1090333905,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Обслуживание и чтение базы\n• kb_document_status(): сравнивает manifest с текущими настройками — «другая модель эмбеддингов» (векторный поиск по документу не работает) или «другая нарезка / загружен до v18».\n• reindex_documents(): по sources/; если сменилась размерность векторов — _clear_kb_index() и сборка заново. delete_document_from_kb() — удаление с оригиналом.\n• load_kb_snapshot(): кэш по времени изменения файлов, короткая блокировка на чтение; normalized_index() нормирует старую базу в памяти. load_bm25_for(): пересборка при смене формата или набора фрагментов. load_glossary(): glossary.json\n   важнее автоглоссария, старый формат v17 понимается.",
@@ -50537,7 +50537,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1574166414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "7. Устройство: поиск search_parent_child() и ответ в чате",
@@ -50574,7 +50574,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1825086887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Шаги общие для чата, аудита (build_norms_context) и контроля исправлений; ответ LLM — только в чате. Параметры названы по имени — значения и категории в справочнике (панель 3).",
@@ -50622,7 +50622,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "LFZ5YJTJ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLD"
@@ -50650,7 +50650,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1139278013,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вопрос пользователя",
@@ -50702,7 +50702,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0Wz9qm3a"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLF"
@@ -50730,7 +50730,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 745856269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "chat_history() + condense_question()\nтолько в чате: последние\nchat_history_turns пар «вопрос — ответ»;\nуточнение → самостоятельный вопрос\n(CONDENSE_SYSTEM).",
@@ -50786,7 +50786,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "EIeLaNmx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLH"
@@ -50814,7 +50814,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1920183696,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "analyze_query()\nвопросы «что такое X», «состав X», «what is\nX», «components of X» (до 300 симв.): предмет\nX → буст точной фразы; слова расширения ×0.3,\nслова предмета +0.5 — только в BM25.\nexpand_query_multi() — если use_multi_query.",
@@ -50866,7 +50866,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "dkubhVHg"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLJ"
@@ -50894,7 +50894,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1432856654,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вектор: _query_vector()\nembed_query_prefix + вопрос → эмбеддинг → l2_normalize() →\nFAISS search: initial_k child → их parent; best_child — текст\nдля реранкера. Нет эмбеддинга или другая размерность — канал\nвыключается, работает BM25.",
@@ -50946,7 +50946,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "5t357I7T"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLL"
@@ -50974,7 +50974,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1506396127,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Слова: LightweightBM25.get_scores()\nосновы слов (russian_stem — кириллица от 5 букв, english_stem\n— латиница от 4 букв), без стоп- и вопросительных слов (RU и\nEN); + Glossary.bm25_terms() ×0.5; k1 1.5, b 0.75, IDF ≥ 0.25;\nточная фраза +10 (до 8 слов); соседние слова вопроса рядом (≤\n3, до 12 значимых слов) +2 → bm25_top_k.",
@@ -51030,7 +51030,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "SQkMkF4W"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLN"
@@ -51058,7 +51058,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 283789755,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Слияние RRF\nвклад списка = вес / (rrf_constant +\nместо): weight_dense, weight_bm25 →\nrerank_top_k кандидатов.",
@@ -51097,7 +51097,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1541396449,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51161,7 +51161,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 62209716,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51225,7 +51225,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 788600749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51289,7 +51289,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 478970563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51353,7 +51353,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1416376628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51417,7 +51417,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 397319003,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51494,7 +51494,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "D8WukJ2o"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLV"
@@ -51522,7 +51522,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 424299482,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Реранкер (если задан RERANK_API_URL)\nGlossary.enrich_query(); rerank_document(): имя файла и раздел + child с\nокружением (passage_around) или окно с наибольшей плотностью слов\n(best_window), до rerank_doc_max_chars → rerank_scores(): все кандидаты\nпачками (rerank_max_docs, rerank_char_budget); сбой части пачек — баллы\nне учитываются. Голос: балл ≥ min_rerank_score → + weight_rerank /\n(rrf_constant + место).",
@@ -51578,7 +51578,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "cFQB4gvA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLX"
@@ -51606,7 +51606,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 229726974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Отбор top_k\nбез повторов (файл + первые 80\nсимв.); не больше max_table_parts\nчастей одной таблицы.",
@@ -51658,7 +51658,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "xqa2LSkF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLZ"
@@ -51686,7 +51686,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1518067034,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Контекст\nmerge_adjacent(): соседние фрагменты одного документа — один\nблок в порядке текста; _source_header(): файл | раздел в\nначале фрагмента | далее во фрагменте (inner_headings, до 8) |\nтаблица | стр.; focus_passage(): длиннее smart_truncate_chars\n— вокруг найденного места. В списке источников — раздел, где\nнайдено место (section_at).",
@@ -51738,7 +51738,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLb"
@@ -51766,7 +51766,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 263487114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сигнал «уверенность низкая»\nis_low_confidence(): с реранкером — его лучший балл <\nlow_conf_rerank; без реранкера — доля слов вопроса в контексте\n< low_conf_lexical и dense с BM25 не совпали в\nтоп-low_conf_agree_top → LOW_CONFIDENCE_NOTE в начале\nконтекста.",
@@ -51818,7 +51818,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLd"
@@ -51846,7 +51846,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1704890157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ответ (чат)\nGlossary.reference_block() до\nglossary_max_entries; chat_user_content();\nask_llm(chat_system_prompt() — RU / EN, история):\ntemperature, max_tokens; strip_reasoning()\nубирает <think>; finish_reason = length → пометка\n«ответ обрезан»; check_citations(): ссылки [файл,\nраздел] сверяются с контекстом, неверные — ⚠ и\nпредупреждение под ответом.",
@@ -51885,7 +51885,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 278693230,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -51957,7 +51957,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1580135453,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -52021,7 +52021,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 619172898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -52085,7 +52085,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 532260690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -52149,7 +52149,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 319777839,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -52213,7 +52213,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1021795599,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -52275,7 +52275,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 295458663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Реранкер с пунктирной рамкой — необязательный: без него порядок задают шаги «Вектор», «Слова» и «Слияние RRF». Нормализация слов (normalize_token: russian_stem / english_stem) общая для индекса BM25, запроса и глоссария.",
@@ -52312,7 +52312,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 559478248,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "8. Устройство: аудит документа, контроль исправлений и черновик карточки системы",
@@ -52349,7 +52349,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1151731663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вкладки «Аудит документа» и «Контроль исправлений», кнопка черновика карточки на боковой панели. Сколько вызовов сервисов уходит на раздел, замечание и карточку — панель 9.",
@@ -52386,7 +52386,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1558299979,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА — вкладка «Аудит документа», настройки — блок «⚙️ Настройки аудита» на ней",
@@ -52434,7 +52434,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gP899Gls"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLp"
@@ -52462,7 +52462,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1830369373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "run_audit()\naudit_cfg():\naudit_reasoning — без\nвыключателя рассуждений,\nmax_tokens + 6000, таймаут\n≥ 300 с; reasoning_on() —\nвключатель в запросе.\nrecord_answers(): каждый\nзапрос и ответ модели\nслово в слово.",
@@ -52514,7 +52514,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OVU8BgUp"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLr"
@@ -52542,7 +52542,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1575129948,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "document_to_markdown()\n.docx — Docling →\nexport_to_markdown() →\nclean_docling_markdown()\n(повторы объединённых\nячеек) →\ncompact_markdown_tables()\n(без выравнивания); .pdf —\nparse_pdf() →\nblocks_to_markdown().",
@@ -52594,7 +52594,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yySnDpUF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLt"
@@ -52622,7 +52622,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1190851160,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "split_document_parts()\nпо разделам: заголовок с\nтекстом и таблицами;\nмелкие — вместе до\naudit_map_size, раздел до\n1,5 лимита — целым;\nбольшая таблица — по\nстрокам с шапкой.\ndocument_mode(): документ\nцеликом, если помещается в\nокно, иначе\ndocument_outline(). «Весь\nдокумент одним запросом» —\nwhole_document_part().",
@@ -52674,7 +52674,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zrMh2SeF"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLv"
@@ -52702,7 +52702,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1906022995,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Нормы\n«особое внимание» →\nspecial_focus_norms():\nодин поиск на аудит, до 2\nparent (низкая уверенность\n— нет). Для раздела\nbuild_norms_context():\nsmart_truncate(раздел,\naudit_query_chars) →\nsearch_parent_child() →\nсначала нормы по особому\nвниманию, затем раздела;\nцелые parent до\naudit_context_max_chars;\nнет — NO_NORMS_NOTE.\nselect_pinned(): правила\nэкспертов и карточки — до\naudit_pinned_max_chars.\nbasis_references() →\nfind_basis_documents():\nдокументы-основания по\nшифру и названию — их\nближайшие к разделу\nфрагменты до\naudit_basis_max_chars.",
@@ -52754,7 +52754,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "kafNxSVO"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLx"
@@ -52782,7 +52782,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2141418060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "MAP\naudit_section(): документ\nцеликом или оглавление +\nlocation_line() + часть →\nask_llm() →\nparse_findings()\n(подпункты — к своему\nзамечанию) →\nfinding_from_line(); с\nоглавлением —\nverify_absence(). Разделы\n— параллельно\n(audit_parallel).",
@@ -52834,7 +52834,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "j12eG9nh"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bLz"
@@ -52862,7 +52862,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1909089081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Самокритика\nuse_self_critique:\ncritique_findings() —\nCRITIQUE_SYSTEM, документ\nцеликом + «особое\nвнимание» (такие замечания\nудаляются только при\nопровержении) → JSON\n{verdict, severity,\ncategory, quote}; цитата\nсверяется quote_in_text().",
@@ -52914,7 +52914,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "GJ96ZiuZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bM1"
@@ -52942,7 +52942,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 458806166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Глубокая проверка\n_run_deep():\nfind_processes() — шаги из\nтаблицы операций, списка\nшагов или подразделов «Шаг\nN» → build_deep_tasks() →\nlimit_tasks(): не больше\naudit_deep_max_calls →\nrun_tasks(): пары шагов,\nтребования, границы,\nутверждения частей →\nconflict_tasks():\nпротиворечия; цифры —\nquantity_calculations();\nопечатки.",
@@ -52994,7 +52994,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bM3"
@@ -53022,7 +53022,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1967309312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Проходы 2–3\n_run_passes()\n(audit_passes): разделы и\nвопросы PASS_DEEP_KINDS\nещё раз с температурой ≥\nPASS_TEMPERATURE (0,4); в\norigins — «#p2», «#p3»:\nнайденное несколькими\nпроходами считается\nподтверждённым.",
@@ -53061,7 +53061,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1302374772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53125,7 +53125,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 989291074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53189,7 +53189,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2123838774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53253,7 +53253,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1271288365,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53317,7 +53317,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1487354759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53381,7 +53381,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 900965996,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53445,7 +53445,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 442574064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -53522,7 +53522,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMC"
@@ -53550,7 +53550,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1738418226,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Пункты\nfound_so_far_block():\nзамечания других проверок\n(до 12 000 симв.) →\nanswer_focus_point():\n«особое внимание» и\nчек-лист — ответ по\nдокументу, новые\nзамечания, «из документа\nне ясно»; answer_system():\nчто документ требует от\nсистемы с карточкой\n(audit_systems).",
@@ -53602,7 +53602,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tX38AYgs"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bME"
@@ -53630,7 +53630,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1466250251,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Повтор и проверки без\nмодели\n_recheck(): разделы, где\nмодель не ответила, — ещё\nраз с retry_timeout().\ncheck_abbreviations(),\ncheck_formatting() — ещё\nдо проверки разделов;\nunverified_refs() и\ncheck_citations(): ссылки\nи цифры замечаний — в\nдокументе и нормах.",
@@ -53682,7 +53682,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "wnbtzw0P"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMG"
@@ -53710,7 +53710,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1611850607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "REDUCE: повторы\nmodel_findings() →\ncollect_unique_findings()\n(основы ≥ 80 %, в кусках\nодного раздела —\nsection_runs() — ≥ 40 %;\nsteps_conflict() — разные\nшаги не склеиваются) →\nclean_typos() (без модели)\n→\nmerge_duplicate_findings()\n(audit_merge_duplicates,\n+1 вызов): замечания\nодного ответа и о разных\nшагах не сливаются.",
@@ -53762,7 +53762,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Ejv9n8MW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMI"
@@ -53790,7 +53790,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 333788272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Разделы\nsplit_minor_findings():\nглавное, мелкие, опечатки\n→ group_by_section(): по\nразделам документа, в его\nпорядке; corroboration() —\nсколько проверок нашли\nзамечание.",
@@ -53842,7 +53842,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "16VaL3EV"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMK"
@@ -53870,7 +53870,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1210471730,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "«Главное»\nsummary_candidates() →\nselect_summary()\n(audit_summary_max, +1\nвызов): модель-редактор\nвыбирает важное и пишет\nсуть строкой со ссылкой на\nномер; не ответила —\n_summary_fallback(): по\nподтверждению и\nкритичности.",
@@ -53922,7 +53922,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "emnEvmko"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMM"
@@ -53950,7 +53950,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2128766942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Заключение и лог\nbuild_final_report():\n«Главное», замечания по\nразделам, ответы на\nпункты, системы;\naudit_log_markdown(): лог\nс настройками прогона;\nraw_answers_markdown():\nсырые ответы модели .md.",
@@ -54002,7 +54002,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMO"
@@ -54030,7 +54030,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1345748601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Документ с замечаниями\nannotate_docx_with_findings():\n_locate_by_quote() →\n_isolate_range() →\nadd_comment(); без цитаты\n— _locate_by_words() (≥ 2\nслов и ≥ 30 %,\nоднозначно); иначе —\nсписок в начале документа.",
@@ -54078,7 +54078,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMQ"
@@ -54106,7 +54106,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 919886983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сверка с эталоном\ncompare_with_reference():\nмодель сверяет каждый\nпункт эталона с\nзамечаниями аудита — то же\nместо и суть: найдено,\nчастично, пропущено;\nпачками, пропущенное\nпереспрашивается →\nreference_markdown().",
@@ -54145,7 +54145,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1976364314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54209,7 +54209,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2103868351,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54273,7 +54273,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1437884666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54337,7 +54337,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1495516759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54401,7 +54401,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 573772488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54465,7 +54465,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2132548085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54529,7 +54529,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1205195099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54593,7 +54593,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2099732778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -54663,7 +54663,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 91742678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ — вкладка «Контроль исправлений»",
@@ -54711,7 +54711,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Zar9Y3LN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMb"
@@ -54739,7 +54739,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 804496879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "document_to_markdown() →\nsplit_into_sections()\nновая редакция документа, разделы до\naudit_map_size.",
@@ -54791,7 +54791,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2Yvbu1dU"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMd"
@@ -54819,7 +54819,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 419436533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "build_section_index()\nэмбеддинги разделов (до\nsection_embed_chars) +\nLightweightBM25 по разделам; один раз\nна документ.",
@@ -54871,7 +54871,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "p2ERzJbS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMf"
@@ -54899,7 +54899,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 762571332,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "verify_remark(): подбор\nнормы — build_norms_context()\n(галочка «база знаний»);\npick_sections_for_remark(): косинус +\nBM25 + реранкер (best_window), RRF →\nreview_top_sections разделов до\nreview_context_max_chars.",
@@ -54951,7 +54951,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4iAX8TvS"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMh"
@@ -54979,7 +54979,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1433573942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "review_prompt() → ask_llm()\nJSON {status, quote, comment}.",
@@ -55031,7 +55031,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMj"
@@ -55059,7 +55059,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 285805235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "parse_verification()\n«исправлено» и «частично»\nзасчитываются, только если\nquote_in_text() нашла цитату в\nразделах; иначе «не удалось\nпроверить».",
@@ -55107,7 +55107,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMl"
@@ -55135,7 +55135,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 49769556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "build_matrix_markdown() /\ngenerate_word_matrix()\nматрица контроля .md и .docx.",
@@ -55174,7 +55174,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1192375867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -55238,7 +55238,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1912741177,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -55302,7 +55302,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1753808393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -55366,7 +55366,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1209698496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -55430,7 +55430,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 649390567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -55492,7 +55492,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 769097572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ошибки сервисов не превращаются в «чисто»: is_llm_error() — раздел попадает в «не удалось проверить», заключение помечается «проверено не полностью». Заключение и лог разделов хранятся в сеансе и не пропадают после скачивания.",
@@ -55529,7 +55529,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 139838873,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ЧЕРНОВИК КАРТОЧКИ СИСТЕМЫ — кнопка «Собрать черновик карточки системы по базе» в блоке «Для аудита» боковой панели (mint/cards.py)",
@@ -55577,7 +55577,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "i74dH3Hk"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMu"
@@ -55605,7 +55605,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 539470164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "draft_system_card()\nразделы карточки CARD_SECTIONS (10:\nназвания, назначение, сервисы,\nлимиты, защита и хранение данных,\nпланы, ограничения, подключение,\nтребования) — параллельно, не больше\nCARD_PARALLEL и audit_parallel.",
@@ -55657,7 +55657,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jJ9GWsBf"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMw"
@@ -55685,7 +55685,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 912697281,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ask_section()\nсвой запрос к поиску на раздел →\nsearch_parent_child(): CARD_TOP_K\nфрагментов, без multi-query; ничего\nне найдено — раздел пустой, без\nвызова LLM.",
@@ -55737,7 +55737,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "vy0q1Yfx"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bMy"
@@ -55765,7 +55765,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 667925749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ask_llm()\ncard_section_system: только по\nфрагментам, у каждого факта —\n[Источник: файл, раздел]; сведений\nнет — «НЕТ В БАЗЕ».",
@@ -55817,7 +55817,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gnjGhy5q"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bN0"
@@ -55845,7 +55845,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 897888917,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "check_citations()\nфакт без ссылки или со ссылкой мимо\nнайденных фрагментов — пометка «⚠️\nпроверьте».",
@@ -55897,7 +55897,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bN2"
@@ -55925,7 +55925,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 854319438,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "card_markdown()\nкарточка по шаблону: «Названия:» (по\nним аудит узнаёт систему в\nдокументе), пометка «черновик»,\nразделы CARD_LAYOUT, пробелы «нет в\nбазе», источники — source_name() без\nбаллов поиска → скачать .md.",
@@ -55973,7 +55973,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bN4"
@@ -56001,7 +56001,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 505414483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Эксперт\nпроверяет факты по источникам,\nдописывает пробелы (ограничения,\nпланы со сроками), убирает пометку →\nзагружает карточку в базу → отмечает\nв «Карточки систем»: аудит берёт её в\nкаждую проверку.",
@@ -56040,7 +56040,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1045373394,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -56104,7 +56104,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 787637507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -56168,7 +56168,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 675627666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -56232,7 +56232,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1128558142,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -56296,7 +56296,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1337792537,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -56358,7 +56358,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1511860888,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "9. Обращения к сервисам и нагрузка",
@@ -56395,7 +56395,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1742391837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Для оценки мощностей шлюза под своё число пользователей и объём документов. Все сервисы — OpenAI-совместимый HTTP API.",
@@ -56439,7 +56439,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "zrn6omfM"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bND"
@@ -56467,7 +56467,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1445141011,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "LLM — POST {LLM_API_URL}/chat/completions\n• ask_llm(): ответ в чате, condense_question(); в аудите — MAP,\n   critique_findings(), глубокая проверка, пункты,\n   merge_duplicate_findings(), select_summary(), compare_with_reference();\n   verify_remark() в контроле; draft_system_card() — вызов на раздел\n   карточки; --generate в eval\n• expand_query_multi() — если use_multi_query\n• _llm_prompt_tokens() — измерение «символов на токен» (max_tokens = 1)\n• GET {LLM_API_URL}/models — detect_server_info(): список моделей и окна\n   (панель 1)\nПовторы — llm_retries (панель 3); HTTP 429 — общая пауза всех потоков\n(_note_rate_limit(), Retry-After), _wait_rate_limit() перед каждым запросом.",
@@ -56511,7 +56511,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ITaNoM1N"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNF"
@@ -56539,7 +56539,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 886368424,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Эмбеддинги — POST {EMBED_API_URL}\n• get_query_embedding(): вопрос, раздел документа в аудите, замечание в\n   контроле\n• get_query_embeddings_batch(): индексация (пачками по embed_batch_size) и\n   build_section_index()\n• в поиске до 3 попыток с паузой 2 с\n• GET …/models рядом с EMBED_API_URL — вход модели (панель 1)",
@@ -56583,7 +56583,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "pBGwmcpp"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNH"
@@ -56611,7 +56611,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1849075733,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Реранкер — POST {RERANK_API_URL} (необязательно)\n• _rerank_request() через rerank_scores(): поиск и pick_sections_for_remark()\n• пачками (rerank_max_docs, rerank_char_budget)\n• повторов нет: ошибка → поиск без реранкера (в логе — HTTP-код и размер\n   пачки)\n• probe_reranker() — проверка связи в панели (кэш 5 мин)\nОтвет: {results: [{index, relevance_score}]} или [{index, score}].",
@@ -56655,7 +56655,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "lUPSXlwW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNJ"
@@ -56683,7 +56683,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 263174842,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Операция",
@@ -56727,7 +56727,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bLWf2x3k"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNL"
@@ -56755,7 +56755,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 867626584,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "LLM",
@@ -56799,7 +56799,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "0u9rPgsT"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNN"
@@ -56827,7 +56827,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 607210338,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Эмбеддинги",
@@ -56871,7 +56871,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "VD7ZOtdC"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNP"
@@ -56899,7 +56899,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1335103564,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Реранкер",
@@ -56943,7 +56943,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "G5yPNdK8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNR"
@@ -56971,7 +56971,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 506630157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Что растёт с бизнес-объёмом",
@@ -57015,7 +57015,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "IloYhSbH"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNT"
@@ -57043,7 +57043,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 894803547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Вопрос в чате",
@@ -57087,7 +57087,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2TaCVR3j"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNV"
@@ -57115,7 +57115,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 311891354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 (+1 уточнение при истории, +1\n   multi-query)",
@@ -57159,7 +57159,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "bX18GIPp"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNX"
@@ -57187,7 +57187,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2123077737,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 (+1 multi-query)",
@@ -57231,7 +57231,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "tyR4QZRj"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNZ"
@@ -57259,7 +57259,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 305959585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 2 запроса (16 кандидатов\nпачками)",
@@ -57303,7 +57303,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HWSkPDLW"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNb"
@@ -57331,7 +57331,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1387135285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "число пользователей × вопросов в день",
@@ -57375,7 +57375,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "oJdTV4GZ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNd"
@@ -57403,7 +57403,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 320229884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Аудит документа, на раздел",
@@ -57447,7 +57447,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "UolJPPIB"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNf"
@@ -57475,7 +57475,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1050657136,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "2 (MAP + самокритика) или 1; на аудит: +1\n   на пункт «особого внимания» и\n   чек-листа, +1 на систему с карточкой,\n   +1 сведение повторов, +1 «Главное», с\n   оглавлением — сверка «не описано» (до\n   15); глубокая проверка — до\n   audit_deep_max_calls; проходы 2–3\n   (audit_passes) повторяют разделы и\n   вопросы о процессе и цифрах",
@@ -57519,7 +57519,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "TNY2gnV7"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNh"
@@ -57547,7 +57547,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 14525363,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 (+1 на аудит и +1 на пункт\n   при «особом внимании»)",
@@ -57591,7 +57591,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "YzIGSqVE"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNj"
@@ -57619,7 +57619,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1228853070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 2",
@@ -57663,7 +57663,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "DyMYLFzN"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNl"
@@ -57691,7 +57691,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1565992457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "частей ≈ объём документа / audit_map_size: ФТ на 20 тыс. симв. ≈ 6 частей ≈ 12 вызовов LLM\n+ ≈ 35 коротких вопросов глубокой проверки (шагов процесса, требований и частей); документ\nцеликом добавляет свой объём во вход каждой проверки раздела",
@@ -57735,7 +57735,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "D9tJ3Tow"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNn"
@@ -57763,7 +57763,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2121712154,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Контроль исправлений, на замечание",
@@ -57807,7 +57807,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "4Aq3UXiQ"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNp"
@@ -57835,7 +57835,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1023123295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1",
@@ -57879,7 +57879,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "G4Em2JVD"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNr"
@@ -57907,7 +57907,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 95312819,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 (+1 с нормами)",
@@ -57951,7 +57951,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FCY02wkH"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNt"
@@ -57979,7 +57979,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1205086542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 1–2 (+2 с нормами)",
@@ -58023,7 +58023,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BhI01aLi"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNv"
@@ -58051,7 +58051,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1757123440,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "число замечаний; плюс эмбеддинги всех разделов новой редакции один раз",
@@ -58095,7 +58095,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "d47Qi4c8"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNx"
@@ -58123,7 +58123,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 516467266,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Черновик карточки системы",
@@ -58167,7 +58167,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "OVpBqpyA"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bNz"
@@ -58195,7 +58195,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 548421217,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "до 10 (раздел, по которому в базе ничего\nне нашлось, — без вызова)",
@@ -58239,7 +58239,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ap4rJbup"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bO1"
@@ -58267,7 +58267,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 184907741,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "до 10 (поиск на раздел)",
@@ -58311,7 +58311,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "BoKptbKz"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bO3"
@@ -58339,7 +58339,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 419990020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 2 на раздел",
@@ -58383,7 +58383,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "Mnh4KAXc"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bO5"
@@ -58411,7 +58411,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 698831687,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "число систем; разделы — параллельно, не больше 3",
@@ -58455,7 +58455,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "T23DUfNr"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bO7"
@@ -58483,7 +58483,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1944348611,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Загрузка документа",
@@ -58527,7 +58527,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "PwGoZtx6"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bO9"
@@ -58555,7 +58555,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1534635193,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58599,7 +58599,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "ajBgJD8y"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOB"
@@ -58627,7 +58627,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1750748887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "child / embed_batch_size\nзапросов",
@@ -58671,7 +58671,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "DGFEz4o3"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOD"
@@ -58699,7 +58699,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1638919536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58743,7 +58743,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "2X8dGEvm"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOF"
@@ -58771,7 +58771,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 794423897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 1 child на 250 симв. (400 − перекрытие 150): 250 тыс. симв. ≈ 1000 child ≈ 32 запроса",
@@ -58815,7 +58815,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "qvHktf6X"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOH"
@@ -58843,7 +58843,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 32723047,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Проверка качества (и eval_search.py)",
@@ -58887,7 +58887,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "hrw0lZir"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOJ"
@@ -58915,7 +58915,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2002138294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 на вопрос при составлении вопросов; +1 с\n   ответами чата или multi-query",
@@ -58959,7 +58959,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "O4xjcVYw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOL"
@@ -58987,7 +58987,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 715066907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "1 на вопрос",
@@ -59031,7 +59031,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QvJQiejl"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bON"
@@ -59059,7 +59059,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 644553354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "≈ 2 на вопрос",
@@ -59103,7 +59103,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "jFJb5Ccw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOP"
@@ -59131,7 +59131,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1674963114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "ответы кэшируются на все варианты настроек",
@@ -59168,7 +59168,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1727908868,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Память и диск (один процесс Streamlit на всех пользователей): FAISS IndexFlatL2 в памяти — child × размерность × 4 байта (Qwen3-Embedding-4B, 2560: ≈ 10 КБ на child, 10 000 child ≈ 100 МБ); BM25 — позиции слов всех parent; кэш _process_cache()\nдержит базу одним экземпляром. Диск KB_DIR: индексы + оригиналы sources/. LOG_DIR: mint_system.log (до 60 МБ с ротацией) и feedback.jsonl — растёт с числом отзывов.",
@@ -59205,7 +59205,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 460084027,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Mint v21.4.1",
@@ -59242,7 +59242,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1145825540,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "10. Формирование Word: основания, применимость и правки",
@@ -59279,7 +59279,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 875329573,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Отдельный поток от аудита: шаблон и выбранные основания → контекст и применимость → Word → проверяемые связи.",
@@ -59327,7 +59327,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "iliqImhw"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOV"
@@ -59355,7 +59355,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1237715787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Задание из Word\ntab_template_draft.py: шаблон или пример и\nвыбранные исходные документы. Данные\nостаются в локальной базе знаний.",
@@ -59407,7 +59407,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "NzINpFEo"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOX"
@@ -59435,7 +59435,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 671709622,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Контекст\ndocument_context.py: infer_context()\nпредлагает target, objective, scope,\nparticipants по заголовкам шаблона.\nconfirm_context() требует подтверждения\nчеловеком.",
@@ -59487,7 +59487,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "gihbWK2h"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOZ"
@@ -59515,7 +59515,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 232900639,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Извлечение\ntemplate_draft.py: create_draft() обходит\nшаблон, извлекает точные цитаты оснований;\nкэш и параллельный разбор не меняют порядок\nтребований.",
@@ -59567,7 +59567,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FZ7RYD2I"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOb"
@@ -59595,7 +59595,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2088710681,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Применимость\nrequirement_scope.py: classify() отделяет\ntarget/shared от\ninteraction/other/uncertain; без исполнителя\nнельзя уверенно назначить обязанность.",
@@ -59643,7 +59643,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "FZ7RYD2I"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOd"
@@ -59671,7 +59671,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1425371644,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Сборка Word\ntemplate_draft.py: разделы, абзацы и таблицы\nзаполняются доказуемым содержанием;\nформатирование и защищённые поля\nсохраняются.",
@@ -59710,7 +59710,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1638003102,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -59774,7 +59774,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1208816828,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -59838,7 +59838,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 459787257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -59902,7 +59902,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1722869346,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -59975,7 +59975,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "QAbGQTYv"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOj"
@@ -60003,7 +60003,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 110758404,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Двусторонние связи\ndraft_traceability.py: build_traceability() сопоставляет\nизвлечённые требования с разделами и цитатами. От Word к\nоснованию и от основания к Word.",
@@ -60055,7 +60055,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "vaMlW5Vb"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOl"
@@ -60083,7 +60083,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 507668719,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "От основания в чат\ndraft_traceability_ui.py передаёт точный ID требования;\ndocument_edit.py сохраняет применимость: внешние\nобязанности не становятся обязательствами цели.",
@@ -60135,7 +60135,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HoI8Omwn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOn"
@@ -60163,7 +60163,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 600225567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Правка с решением человека\ndocument_edit_chat.py: propose_edit() → сравнение →\nподтверждение, отклонение или undo_accepted_version().\nВесь документ заново не генерируется.",
@@ -60211,7 +60211,7 @@ mark_stale_after_edits() помечает прежние связи
           "id": "HoI8Omwn"
         }
       ],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "index": "bOp"
@@ -60239,7 +60239,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 2004613835,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Изменённые связи\nmark_stale_after_edits() помечает прежние связи\nустаревшими. История изменённых разделов полная;\nпоследние 10 DOCX-снимков нужны только для отмены.",
@@ -60278,7 +60278,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1974913608,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -60342,7 +60342,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 1006881587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -60406,7 +60406,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 699083238,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "points": [
@@ -60468,7 +60468,7 @@ mark_stale_after_edits() помечает прежние связи
       "versionNonce": 296372588,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135046,
+      "updated": 1795462703691,
       "link": null,
       "locked": false,
       "text": "Ограничение: связи не доказывают, что извлечены ВСЕ требования широкого основания. Экспертная оценка после генерации остаётся необходимой; зелёные CI-тесты на синтетических документах не означают качество на реальном шаблоне.",

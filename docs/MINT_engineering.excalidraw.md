@@ -2451,7 +2451,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a0"
@@ -2481,7 +2481,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 318228129,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a1"
@@ -2511,7 +2511,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 421009957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a2"
@@ -2541,7 +2541,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1930857069,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a3"
@@ -2571,7 +2571,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1990962993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a4"
@@ -2601,7 +2601,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1044727257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a5"
@@ -2631,7 +2631,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1619057106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a6"
@@ -2661,7 +2661,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 66655498,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a7"
@@ -2691,7 +2691,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 247438911,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a8"
@@ -2721,7 +2721,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 966883474,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "a9"
@@ -2749,7 +2749,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "MINT — engineering diagram: how it works and how to tune parameters",
@@ -2786,7 +2786,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Based on the code of MINT 20.1 and later (the mint/ package) and eval_search.py. For the administrator: what to set at installation, what MINT computes itself, what to tune with tests on your own data, and which\nfeatures of your organisation it depends on. Every fact appears in one place; “panel N” tells where to find details.",
@@ -2830,7 +2830,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "CMIJ6m5h"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aC"
@@ -2858,7 +2858,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] MANUAL — set by the\nadministrator: .env, config.yaml,\nsidebar",
@@ -2902,7 +2902,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "O8slPZY2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aE"
@@ -2930,7 +2930,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] AUTO — MINT computes it from\nthe models and the base; touch it\nonly if there is a warning or tests\ncall for it",
@@ -2974,7 +2974,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "uJcbtyhc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aG"
@@ -3002,7 +3002,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] TEST — tuned with the quality\ncheck on your own question set",
@@ -3046,7 +3046,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VYktHA1f"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aI"
@@ -3074,7 +3074,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] CHECK — tuned by hand on live\nexamples",
@@ -3118,7 +3118,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZDbBQfJM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aK"
@@ -3146,7 +3146,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] DEFAULT — usually leave as is",
@@ -3190,7 +3190,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9EeuGh20"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aM"
@@ -3218,7 +3218,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "♻ — applies to documents uploaded after\nthe change; documents already uploaded\nneed re-indexing",
@@ -3262,7 +3262,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rX2XoBEz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aO"
@@ -3290,7 +3290,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ KEY PARAMETER — MINT derives others from it: model limits, chars_per_token, max_tokens, top_k and the intermediate\nchat_budget / llm_budget. Change it — the dependent ones change.",
@@ -3334,7 +3334,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "x1vUqZsn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aQ"
@@ -3362,7 +3362,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ AFFECTS A NEIGHBOUR — 1–2 parameters of the same group depend on it (parent_size → parent_overlap, audit_map_size →\naudit_context_max_chars …). Dependants are listed in the “Constraints and dependencies” column.",
@@ -3406,7 +3406,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "nukixQmd"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aS"
@@ -3434,7 +3434,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "TOKENS AND CHARACTERS — two units of text length on this diagram\n• [tok.] tokens — how models count length: a token is a piece of a word (often 2–4 letters). Model limits\n   (llm_context_tokens, embed_max_tokens, rerank_max_tokens) and the answer length max_tokens are in tokens.\n• [chars] characters — how MINT cuts text (fragments, document sections, context). All fragment sizes and context\n   budgets are in characters.\n• Conversion: chars(t) = t × chars_per_token × 0.85, where 0.85 (LIMIT_SAFETY) is a 15 % margin for estimation error.\n   Example: 1000 tok. × 2.5 × 0.85 = 2125 chars that MINT will allow itself to send.",
@@ -3478,7 +3478,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aU"
@@ -3506,7 +3506,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "HOW MANY CHARACTERS PER TOKEN (chars_per_token)\n• Russian text: 2.3–3 on modern multilingual tokenizers (Qwen2.5 / Qwen3, Llama 3); 1.5–2 on older “English” ones\n   (Llama 2, early Mistral)\n• English text: ≈ 4 (3.5–4.5);  tables, numbers, codes: 1.5–2.5\n• 2.5 is NOT computed by itself: it is the typical value (FALLBACK_LIMITS) until something is measured. It is measured\n   only by the “Detect from server” button: measure_chars_per_token() sends the LLM a sample in the language of the\n   base (kb_language(): Russian base — Russian, English — English, mixed or empty — both, the lower value is used) and\n   the same sample × 4; cpt = difference in characters / difference in prompt_tokens (service tokens cancel out). The\n   result lives until MINT restarts — to pin it: config.yaml → models: chars_per_token.\n• one value is used for embeddings and the reranker too, although their tokenizers differ — one more reason for the 15\n   % margin.",
@@ -3543,7 +3543,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1. How MINT sets parameters at startup",
@@ -3580,7 +3580,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "On every page rerun: main() → _base_settings() → resolve_model_limits() → resolve_settings(). Left — where values come from, centre — the functions that combine them, right — what takes precedence.",
@@ -3628,7 +3628,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aY"
@@ -3656,7 +3656,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1587784481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Where values come from",
@@ -3700,7 +3700,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TN1jFYgS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aa"
@@ -3728,7 +3728,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1878699547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] .env → load_settings() → _load_env_files()\nwhere to connect: API addresses and keys, model names, folders,\ncertificate. Full list — panel 3, “Connections”.",
@@ -3772,7 +3772,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GtxUZ3NF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "ac"
@@ -3800,7 +3800,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 832090367,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] config.yaml → load_settings()\nhow to work: model limits, search, review. Parameters set here are\nremembered (explicit_fields); connections here are ignored, unknown\nparameters give a warning in the sidebar.",
@@ -3844,7 +3844,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NxT10CQ0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "ae"
@@ -3872,7 +3872,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 544731864,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] Model servers → detect_server_info()\nGET …/models → context_from_model_info(): LLM window\n(max_model_len, context_length, n_ctx …), embedding and reranker\ninput — if the server reports them; cached for 10 min.",
@@ -3916,7 +3916,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "ag"
@@ -3944,7 +3944,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] “Detect from server” button → measure_chars_per_token()\nmeasures “characters per token” in the language of the base (how —\nthe “Tokens and characters” block at the top).",
@@ -3988,7 +3988,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "ai"
@@ -4016,7 +4016,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] Sidebar → st.session_state\n“Models and limits”, “Expert settings”: changes for the session;\n“Reset session changes” restores everything.",
@@ -4060,7 +4060,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fSKUH9E4"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "ak"
@@ -4088,7 +4088,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1583187137,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] Knowledge base → kb_default_top_k()\nif top_k is not set (0), suggests it from the number of fragments\nin the base — 4 or 5 (details — panel 3, top_k).",
@@ -4140,7 +4140,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "am"
@@ -4168,7 +4168,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "resolve_model_limits() ← limits from the sources on the left\nfor each of the 4 model limits picks the source by precedence (right);\nnothing found — the typical value (why these — panel 3).",
@@ -4220,7 +4220,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hMCVRlIk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "ao"
@@ -4248,7 +4248,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1777859923,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "embed_prefix_preset(EMBED_MODEL)\npicks the query and document prefixes by the embedding model name (table —\npanel 3, embed_query_prefix).",
@@ -4304,7 +4304,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GUq1zeZx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "aq"
@@ -4332,7 +4332,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2006891536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "resolve_settings() → _derive() ← parameters from the sources on the left\ncomputes 12 parameters from the model limits. Rule: value = the smaller of\nthe default and the model's ceiling. A large window does not inflate\nfragments (long context adds noise), a small one shrinks them so nothing is\ncut off. Formulas — the “Constraints” column in panel 3, visually — panel 2.\nResult: cfg (immutable Settings) and info {value, auto, ceiling, source} →\nthe “Computed by MINT” block.",
@@ -4384,7 +4384,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "as"
@@ -4412,7 +4412,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1679127538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "limits_warnings()\na warning in “Models and limits” if a value is above the ceiling or the\nmodel lacks room.",
@@ -4460,7 +4460,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zJXSKFhC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "au"
@@ -4488,7 +4488,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 386724997,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "ask_llm() on every call\nif the LLM window is known (server, config.yaml or sidebar): estimates the\nrequest in tokens; free < 256 tok. — error “CONTEXT DOES NOT FIT”; little\nroom for the answer — max_tokens is reduced. With the typical window the\nrequest is not checked.",
@@ -4527,7 +4527,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4591,7 +4591,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 3324235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4655,7 +4655,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4719,7 +4719,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 22369781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4783,7 +4783,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4847,7 +4847,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 780732774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -4916,7 +4916,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3QZgUSQg"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b12"
@@ -4944,7 +4944,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1416799419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "SOURCE PRECEDENCE — the same for all parameters\n(applied by resolve_model_limits() and resolve_settings())\n\n• connections (addresses, keys, models, folders): system environment\n   variables > .env\n• model limits: sidebar (session) > config.yaml > server / measurement >\n   typical value\n• other parameters: sidebar (session) > config.yaml > MINT's calculation\n   (for [A]) > default in code\n\nAn explicitly set value (sidebar or config.yaml) always wins over what\nthe server reports and what is computed. An [A] parameter pinned by hand\nis not recomputed, but MINT warns if it is above the model's ceiling\n(limits_warnings).",
@@ -4981,7 +4981,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1913301777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2. How the model window is divided: what takes room and how much is left for text from the base",
@@ -5018,7 +5018,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Left — the general view (not to scale), right — the same bars with numbers: LLM window 32768 tok., max_tokens 1500, chars_per_token 2.5, top_k 5, embedding and reranker input 8192 tok., Qwen3-Embedding. Narrow parts on the right\nbars are drawn wider than to scale. The formula of each part — the “Constraints” column in panel 3.",
@@ -5055,7 +5055,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 590271204,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "GENERAL VIEW",
@@ -5092,7 +5092,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "EXAMPLE WITH NUMBERS",
@@ -5129,7 +5129,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT — one LLM call per question.  The whole bar = llm_context_tokens [tok.]",
@@ -5166,7 +5166,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1275421862,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT, window 32768 tok.",
@@ -5210,7 +5210,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lMqa6dyn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1A"
@@ -5238,7 +5238,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1668778927,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt, question, history,\nabbreviations\nCHAT_RESERVE 800 tok.",
@@ -5282,7 +5282,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0IIzxMCH"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1C"
@@ -5310,7 +5310,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 638186731,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\nmax_tokens [tok.]",
@@ -5354,7 +5354,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1E"
@@ -5382,7 +5382,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1575679632,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin 15 %\n(× 0.85)",
@@ -5426,7 +5426,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1G"
@@ -5454,7 +5454,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1117002960,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget\nthe rest → into characters",
@@ -5498,7 +5498,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "efio1e5v"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1I"
@@ -5526,7 +5526,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 621027637,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt etc.\n800 tok.",
@@ -5570,7 +5570,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MN45msGt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1K"
@@ -5598,7 +5598,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 737651295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -5642,7 +5642,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "d9PJHN50"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1M"
@@ -5670,7 +5670,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1934321891,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin 15 %\n4,570 tok.",
@@ -5714,7 +5714,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JhZOGm7N"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1O"
@@ -5742,7 +5742,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1438249924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget\n25,898 tok. × 2.5 = 64,744 chars",
@@ -5779,7 +5779,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5830,7 +5830,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "llm_context_tokens [tok.] — the whole model window",
@@ -5867,7 +5867,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5918,7 +5918,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "32,768 tok. = 800 + 1,500 + 4,570 + 25,898",
@@ -5955,7 +5955,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 722724126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -5998,7 +5998,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6041,7 +6041,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 584673810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6084,7 +6084,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6134,7 +6134,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NqXrwvw9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1Y"
@@ -6162,7 +6162,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "fragment 1\n≤ smart_truncate_chars",
@@ -6206,7 +6206,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bULLNvq3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1a"
@@ -6234,7 +6234,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "fragment 2",
@@ -6278,7 +6278,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hMgyc1Ik"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1c"
@@ -6306,7 +6306,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "…",
@@ -6350,7 +6350,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mavdOV9b"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1e"
@@ -6378,7 +6378,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "fragment top_k",
@@ -6422,7 +6422,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "noOzI47H"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1g"
@@ -6450,7 +6450,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free if fragments are shorter",
@@ -6494,7 +6494,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "uX8z8N1E"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1i"
@@ -6522,7 +6522,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1\n2500",
@@ -6566,7 +6566,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1k"
@@ -6594,7 +6594,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2\n2500",
@@ -6638,7 +6638,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1m"
@@ -6666,7 +6666,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3\n2500",
@@ -6710,7 +6710,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1o"
@@ -6738,7 +6738,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4\n2500",
@@ -6782,7 +6782,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1q"
@@ -6810,7 +6810,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5\n2500",
@@ -6854,7 +6854,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JbOT9pPk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1s"
@@ -6882,7 +6882,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free 52,244 chars\n(values capped by the defaults)",
@@ -6919,7 +6919,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1127199645,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -6970,7 +6970,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1841050973,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget [chars] = top_k fragments + free space",
@@ -7007,7 +7007,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1963743434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7058,7 +7058,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 529228002,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "64,744 chars: 5 × 2500 = 12,500 used, 52,244 free",
@@ -7102,7 +7102,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WjKtxsaI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b1y"
@@ -7130,7 +7130,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2008305028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "WHY 32768 tok. → ≈ 64,700 chars, BUT 4096 tok. → ONLY ≈ 3,800 chars\nParts of fixed size are subtracted from the window first: answer 1500 + prompt 800 = 2300 tok. They are the same for\nany window:\n• 32768 − 2300 = 30,468 tok. × 2.5 × 0.85 = 64,744 chars  — fixed parts took 7 % of the window\n• 4096 − 2300 = 1,796 tok. × 2.5 × 0.85 = 3,816 chars  — fixed parts took 56 % of the window\nThe window is 8 times smaller, the budget 17 times.",
@@ -7167,7 +7167,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 677440757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT, window 4096 tok. — the same on a small model",
@@ -7211,7 +7211,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "leq8ut5p"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b21"
@@ -7239,7 +7239,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1842945878,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt etc.\n800 tok.",
@@ -7283,7 +7283,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "loAcQiAx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b23"
@@ -7311,7 +7311,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1935139015,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -7355,7 +7355,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LwKD4Klc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b25"
@@ -7383,7 +7383,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 851939754,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n269 tok.",
@@ -7427,7 +7427,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bjxl3eOv"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b27"
@@ -7455,7 +7455,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1489119380,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_budget\n1,527 tok. × 2.5 = 3,816 chars",
@@ -7492,7 +7492,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1334356844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7535,7 +7535,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1847393126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7585,7 +7585,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "InVh793w"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2B"
@@ -7613,7 +7613,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1566900065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1\n763",
@@ -7657,7 +7657,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "z3x9ZzAb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2D"
@@ -7685,7 +7685,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1449011898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2\n763",
@@ -7729,7 +7729,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lvogpKBa"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2F"
@@ -7757,7 +7757,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 613515443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3\n763",
@@ -7801,7 +7801,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2H"
@@ -7829,7 +7829,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1166402109,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4\n763",
@@ -7873,7 +7873,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "pDc5xBAk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2J"
@@ -7901,7 +7901,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1287752845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5\n763",
@@ -7938,7 +7938,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2045375074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -7989,7 +7989,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 248780357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3,816 chars / 5 = 763 chars per fragment: MINT reduces parent_size and smart_truncate_chars to 763 and shows it in “Computed\n   by MINT”",
@@ -8026,7 +8026,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 666412184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW — one LLM call (review of one section).  The whole bar = llm_context_tokens [tok.]",
@@ -8063,7 +8063,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 242970542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "REVIEW, window 32768 tok.: chars(32768 − 1500) = 66,444 chars",
@@ -8107,7 +8107,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7rdFv432"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2P"
@@ -8135,7 +8135,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1102567897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\nmax_tokens [tok.]",
@@ -8179,7 +8179,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "t16gQ7r9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2R"
@@ -8207,7 +8207,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1848237837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -8251,7 +8251,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "v324B2u5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2T"
@@ -8279,7 +8279,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1380429683,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt with criteria\nAUDIT_RESERVE 3500 chars",
@@ -8323,7 +8323,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Yw1heHdw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2V"
@@ -8351,7 +8351,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 623651357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document section\naudit_map_size",
@@ -8395,7 +8395,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MKAIv9RY"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2X"
@@ -8423,7 +8423,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 373411918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms from the base —\nwhole parents\naudit_context_max_chars",
@@ -8467,7 +8467,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3oHHcuXC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2Z"
@@ -8495,7 +8495,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1194067783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -8539,7 +8539,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "UWYNgYTm"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2b"
@@ -8567,7 +8567,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2140098237,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -8611,7 +8611,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "5wetaWmd"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2d"
@@ -8639,7 +8639,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 977443932,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n4,690 tok.",
@@ -8683,7 +8683,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "nwBQd5Yt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2f"
@@ -8711,7 +8711,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 611520879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt\n3500 chars",
@@ -8755,7 +8755,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KlWg4sOl"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2h"
@@ -8783,7 +8783,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1365719569,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "section\n4500 chars",
@@ -8827,7 +8827,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SOxNTm64"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2j"
@@ -8855,7 +8855,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 811674068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms ≤ 9000\nchars\n(≈ 3 whole\nparents)",
@@ -8899,7 +8899,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hv4VvuyZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2l"
@@ -8927,7 +8927,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1926862321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free\n49,444 chars",
@@ -8964,7 +8964,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 832351319,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -9015,7 +9015,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1116584361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "llm_budget [chars]",
@@ -9052,7 +9052,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 968813686,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -9103,7 +9103,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 257588578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "llm_budget = 66,444 − 3,500 = 62,944 chars",
@@ -9140,7 +9140,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 748399043,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "VERIFICATION OF FIXES — one LLM call per comment.  The whole bar = llm_context_tokens [tok.]",
@@ -9177,7 +9177,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1965113445,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "VERIFICATION, window 32768 tok.",
@@ -9221,7 +9221,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LajGgGfY"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2t"
@@ -9249,7 +9249,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2008784886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\nmax_tokens",
@@ -9293,7 +9293,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ShtISKym"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2v"
@@ -9321,7 +9321,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1784713809,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -9365,7 +9365,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZPO29Z85"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2x"
@@ -9393,7 +9393,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 49090000,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt\n3500 chars",
@@ -9437,7 +9437,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Q8pcOgCV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b2z"
@@ -9465,7 +9465,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1700388050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "comment\n≈ 1000 chars",
@@ -9509,7 +9509,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KC1H2ntF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b31"
@@ -9537,7 +9537,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1377316762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms —\nwhole parents\naudit_context_max_chars",
@@ -9581,7 +9581,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "meKGw7dv"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b33"
@@ -9609,7 +9609,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1800598225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "sections of the new\nrevision\nreview_context_max_chars",
@@ -9653,7 +9653,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "PAcdQHdw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b35"
@@ -9681,7 +9681,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 801671152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -9725,7 +9725,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Ev2N9r9I"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b37"
@@ -9753,7 +9753,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1993208942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answer\n1500 tok.",
@@ -9797,7 +9797,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hDqrCRD7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b39"
@@ -9825,7 +9825,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1356140762,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n4,690 tok.",
@@ -9869,7 +9869,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fdMC3RjW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3B"
@@ -9897,7 +9897,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 837135875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prompt\n3500",
@@ -9941,7 +9941,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "j5fgYzkQ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3D"
@@ -9969,7 +9969,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1296323541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "comment\n1000",
@@ -10013,7 +10013,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "071tN1nF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3F"
@@ -10041,7 +10041,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1792505757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "norms\n≤ 9000",
@@ -10085,7 +10085,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8ShPd4X4"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3H"
@@ -10113,7 +10113,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1354835712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "sections\n12,000 chars",
@@ -10157,7 +10157,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zPfZUBWj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3J"
@@ -10185,7 +10185,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 89975457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free\n40,944 chars",
@@ -10222,7 +10222,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1393172046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "EMBEDDINGS — one child at indexing.  The whole bar = embed_max_tokens [tok.]",
@@ -10259,7 +10259,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 948614400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "EMBEDDINGS, input 8192 tok.: chars(8192) = 17,408 chars",
@@ -10303,7 +10303,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "oqJGgArB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3N"
@@ -10331,7 +10331,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1428735309,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -10375,7 +10375,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Deoo4by7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3P"
@@ -10403,7 +10403,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1302404610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "heading path\n250 chars",
@@ -10447,7 +10447,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MBfCmbN6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3R"
@@ -10475,7 +10475,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2105701991,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document\nprefix",
@@ -10519,7 +10519,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hlFd0jRk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3T"
@@ -10547,7 +10547,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2052374652,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_size [chars]",
@@ -10591,7 +10591,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "5Tg8R9VK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3V"
@@ -10619,7 +10619,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 831166826,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -10663,7 +10663,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TD31j2ot"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3X"
@@ -10691,7 +10691,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 956259476,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n1,229 tok.",
@@ -10735,7 +10735,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3dSKBFot"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3Z"
@@ -10763,7 +10763,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 141713803,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "headings\n250",
@@ -10807,7 +10807,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "q7ybY5xb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3b"
@@ -10835,7 +10835,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 838572558,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "prefix\n0 (Qwen3)",
@@ -10879,7 +10879,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "1laxvKml"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3d"
@@ -10907,7 +10907,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 896537800,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child\n400",
@@ -10951,7 +10951,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rLchd2IL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3f"
@@ -10979,7 +10979,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1545726614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free 16,758 chars",
@@ -11016,7 +11016,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1675313614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A document section when matching sections (section_embed_chars) and a review query (audit_query_chars) have the same input —\nnumbers on the right.",
@@ -11053,7 +11053,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1217422132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Section: 0 + 4000 chars; review query: prefix 171 chars + 2000 — everything fits into 17,408. A model with a 512-tok. input →\n1,088 chars: child 400 still fits, section_embed_chars drops to 1,088.",
@@ -11090,7 +11090,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1789039515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RERANKER — one “query + document” pair.  The whole bar = rerank_max_tokens [tok.]",
@@ -11127,7 +11127,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 395955641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RERANKER, input 8192 tok.: chars(8192) = 17,408 chars",
@@ -11171,7 +11171,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XPIYe9qr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3l"
@@ -11199,7 +11199,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 967462205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n15 %",
@@ -11243,7 +11243,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9Q32E6aD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3n"
@@ -11271,7 +11271,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1012576463,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "query + abbreviations\nrerank_query_max_chars",
@@ -11315,7 +11315,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "q1MCxcQW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3p"
@@ -11343,7 +11343,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 574789849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document with file name and section\nrerank_doc_max_chars",
@@ -11387,7 +11387,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "K5P4QAaa"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3r"
@@ -11415,7 +11415,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 741104059,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free",
@@ -11459,7 +11459,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MoUIp0R3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3t"
@@ -11487,7 +11487,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 821999673,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "margin\n1,229 tok.",
@@ -11531,7 +11531,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MGULSd3Y"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3v"
@@ -11559,7 +11559,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 791129361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "query\n1500",
@@ -11603,7 +11603,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MKOGAK66"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3x"
@@ -11631,7 +11631,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 848094804,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document\n800",
@@ -11675,7 +11675,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4t3SVbse"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b3z"
@@ -11703,7 +11703,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 167843790,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "free 15,108 chars",
@@ -11740,7 +11740,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1278540953,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What you get with different models (EMBED_MODEL = Qwen3-Embedding, top_k = 5); values in [chars]",
@@ -11779,7 +11779,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 102288853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b42"
@@ -11807,7 +11807,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 630593088,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Parameter",
@@ -11844,7 +11844,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1393229085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4k / 512 / 512",
@@ -11881,7 +11881,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 950927209,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8k / 512 / 1k",
@@ -11918,7 +11918,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 121150401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "32k / 8k / 8k ★",
@@ -11955,7 +11955,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1260964420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128k / 32k / 8k",
@@ -11992,7 +11992,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1066784076,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "smart_truncate_chars",
@@ -12029,7 +12029,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 466324693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "763",
@@ -12066,7 +12066,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1889062173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2504",
@@ -12103,7 +12103,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 460433098,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12140,7 +12140,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 599065165,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3500",
@@ -12177,7 +12177,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 700056294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parent_size ♻",
@@ -12214,7 +12214,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 450904853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "763",
@@ -12251,7 +12251,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1836365578,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12288,7 +12288,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2119690112,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12325,7 +12325,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1543977157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500",
@@ -12362,7 +12362,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1202584896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parent_overlap ♻",
@@ -12399,7 +12399,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 969616860,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "152",
@@ -12436,7 +12436,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1032254950,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12473,7 +12473,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 917325805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12510,7 +12510,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1227813481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300",
@@ -12547,7 +12547,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1654205182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_size ♻",
@@ -12584,7 +12584,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 680441240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12621,7 +12621,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1843089189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12658,7 +12658,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1964904436,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12695,7 +12695,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 636680058,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400",
@@ -12732,7 +12732,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1680046293,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_overlap ♻",
@@ -12769,7 +12769,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2138991201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12806,7 +12806,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 479869036,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12843,7 +12843,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 569567297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12880,7 +12880,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1437266301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150",
@@ -12917,7 +12917,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 268176082,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "section_embed_chars",
@@ -12954,7 +12954,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 673049817,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -12991,7 +12991,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2022736918,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1088",
@@ -13028,7 +13028,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 395700189,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -13065,7 +13065,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 828959356,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4000",
@@ -13102,7 +13102,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 205894361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "audit_query_chars",
@@ -13139,7 +13139,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1013405264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13176,7 +13176,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 554681883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "917",
@@ -13213,7 +13213,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2130327751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13250,7 +13250,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1393923198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2000",
@@ -13287,7 +13287,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1869709538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "audit_map_size",
@@ -13324,7 +13324,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 163400435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13361,7 +13361,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 420086255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3216",
@@ -13398,7 +13398,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1897697012,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13435,7 +13435,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 858504554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4500",
@@ -13472,7 +13472,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 927587867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "audit_context_max_chars",
@@ -13509,7 +13509,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1964355952,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1016",
@@ -13546,7 +13546,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1184283972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "7504",
@@ -13583,7 +13583,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2014922567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13620,7 +13620,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1596915033,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000",
@@ -13657,7 +13657,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 903994887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "review_context_max_chars",
@@ -13694,7 +13694,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 909678414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 ⚠",
@@ -13731,7 +13731,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1481757579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2216 ▼",
@@ -13768,7 +13768,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1272213233,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13805,7 +13805,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1104820697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12000",
@@ -13842,7 +13842,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 988089562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "rerank_query_max_chars",
@@ -13879,7 +13879,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 636050863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "362",
@@ -13916,7 +13916,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1267914377,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "725",
@@ -13953,7 +13953,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1136933881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -13990,7 +13990,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 896434533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500",
@@ -14027,7 +14027,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1502561313,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "rerank_doc_max_chars",
@@ -14064,7 +14064,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 958219321,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "726",
@@ -14101,7 +14101,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 381657276,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14138,7 +14138,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 536329791,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14175,7 +14175,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 666178832,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800",
@@ -14212,7 +14212,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1238808030,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Columns: LLM window / embedding input / reranker input, [tok.]; characters per token 2.5 (in the last one 3.0). ★ — typical\nlimits: the values equal the defaults. ⚠ — the model lacks room: MINT takes the minimum and shows a warning. ▼ — heavily cut:\nverification of fixes sees a small part of the new revision, false “not fixed” are likely. 128k gives the same values as 32k:\nthe defaults are the ceiling (rule — panel 1).",
@@ -14256,7 +14256,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9vQ3016Q"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b57"
@@ -14284,7 +14284,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 772674090,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A LARGE LLM WINDOW (200k, 1M …) — WHAT THEN\nMINT has no window limit (the sidebar field accepts up to 4 million tokens). A large window raises the ceilings, but\nvalues stay at the defaults: chat gets ≈ top_k × 2500 chars, review — a 4500-char section and norms up to 9000 chars\n(3–4 whole parents). This is intended: extra context adds noise, time and cost, and accuracy usually does not grow.\n\nTo use a large window, raise values by hand in config.yaml:\n• more fragments in chat: top_k 8–12 → [T] runs with --k 5 / 8 / 12 and [C] a live check of answers\n• more norms in review: audit_context_max_chars 13,000 (5 whole parents) … 20,000+; larger sections: audit_map_size\n   12,000–30,000 (fewer calls, the model sees more of the document at once) → [C] on documents with known findings\n• verification of fixes: review_top_sections 5–8, review_context_max_chars 30,000+; long answers — max_tokens\n• parent_size ♻ usually leave as is: more context is better gained through the number of fragments (top_k)\n\nThe LLM window does not affect embeddings and the reranker — they have their own limits.",
@@ -14321,7 +14321,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 101331283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3. Parameter reference: definitions, values, constraints",
@@ -14358,7 +14358,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 490281628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Units: tok. — tokens, chars — characters. “Sidebar” — the slider range (if the value from config.yaml is larger, the slider widens). config.yaml checks only the value type; protection against incompatible values is in the code\n(the “Constraints” column).",
@@ -14402,7 +14402,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "CLcF2KMf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5B"
@@ -14430,7 +14430,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 44620693,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "HOW TO READ “0 = auto: ① server ② otherwise 32768 tok.”\nThese are steps in order: what is in the code → where MINT takes the value from.\n• 0 — the value in the code and in config.yaml by default: “not set — detect automatically”. Zero rather than a number\n   lets MINT tell “the administrator set nothing” from an explicit value (precedence — panel 1).\n• ① server — the first step: MINT asks the model server for the limit (detect_server_info, panel 1). If it answers,\n   that number is used; “Models and limits” shows “Server: …”.\n• ② otherwise 32768 — the server did not report it (common for corporate gateways and cloud APIs): the typical value\n   is used — a safe guess (why exactly this one — on the right).\nThe typical value may not match your model: with it MINT does not check the request size. What an error leads to — the\nllm_context_tokens row; better set the limit by hand (sidebar or config.yaml).",
@@ -14474,7 +14474,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "U4HzW8Hd"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5D"
@@ -14502,7 +14502,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1060881568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "WHY THESE TYPICAL VALUES (FALLBACK_LIMITS)\n• LLM window 32768 tok. — the usual window of open models when deployed (Qwen2.5 / Qwen3, Llama 3.x, Mistral on vLLM);\n   almost all modern models have at least this.\n• embedding input 8192 tok. — Qwen3-Embedding, bge-m3, gte-Qwen; 512-tok. models — see embed_max_tokens.\n• reranker input 8192 tok. — bge-reranker-v2-m3.\n• 2.5 chars/tok. — see the “Tokens and characters” block at the top.\n\nTHE NUMBER OF AN [A] PARAMETER (for example, 3500 chars)\nThis is the default. The calculation can only reduce it for a small model (formula — the “Constraints” column), never\nincrease it.",
@@ -14546,7 +14546,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2YQ5MS7L"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5F"
@@ -14574,7 +14574,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1032825751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Parameter",
@@ -14618,7 +14618,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9KNAbksk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5H"
@@ -14646,7 +14646,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 361100277,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What it is",
@@ -14690,7 +14690,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "puwzidOM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5J"
@@ -14718,7 +14718,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1814733556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Default",
@@ -14762,7 +14762,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VGbp4dm8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5L"
@@ -14790,7 +14790,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1086220258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Sidebar",
@@ -14834,7 +14834,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wsDhi5dq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5N"
@@ -14862,7 +14862,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 133979656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Constraints and dependencies",
@@ -14906,7 +14906,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0KKnZWXi"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5P"
@@ -14934,7 +14934,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1464481216,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CONNECTIONS — .env",
@@ -14978,7 +14978,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yggj69o9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5R"
@@ -15006,7 +15006,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2142958805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] LLM_API_URL",
@@ -15050,7 +15050,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ESOuFabo"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5T"
@@ -15078,7 +15078,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1012750916,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Base address of the OpenAI-compatible API of the language model (…/v1);\n/chat/completions and /models are appended to it.",
@@ -15122,7 +15122,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "77bb0qUc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5V"
@@ -15150,7 +15150,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1315767751,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "— (required)",
@@ -15194,7 +15194,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Ht61a5na"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5X"
@@ -15222,7 +15222,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1722526171,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15266,7 +15266,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "32RI4Vax"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5Z"
@@ -15294,7 +15294,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1488369257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Empty — an error in the sidebar: chat, review and verification do not work.",
@@ -15338,7 +15338,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KTEWklEb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5b"
@@ -15366,7 +15366,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 877373401,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] EMBED_API_URL",
@@ -15410,7 +15410,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MclAyQ4e"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5d"
@@ -15438,7 +15438,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1480905548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Full address of the embeddings endpoint (…/v1/embeddings).",
@@ -15482,7 +15482,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZcjfMvsO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5f"
@@ -15510,7 +15510,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 559213718,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "— (required)",
@@ -15554,7 +15554,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "htbKFycS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5h"
@@ -15582,7 +15582,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1496972470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15626,7 +15626,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "m9R4H4ku"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5j"
@@ -15654,7 +15654,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 55367169,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Empty — documents cannot be uploaded, search uses words only (BM25).",
@@ -15698,7 +15698,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xJ8zGawf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5l"
@@ -15726,7 +15726,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 181990875,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] RERANK_API_URL",
@@ -15770,7 +15770,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cbO9Y31d"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5n"
@@ -15798,7 +15798,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 949336474,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Full address of the reranker (…/v1/rerank).",
@@ -15842,7 +15842,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yRhgnasM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5p"
@@ -15870,7 +15870,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 581769304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "empty — no reranker",
@@ -15914,7 +15914,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3Zc9FmxD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5r"
@@ -15942,7 +15942,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 929912376,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -15986,7 +15986,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "DKTOy7v0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5t"
@@ -16014,7 +16014,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1127614340,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Optional: without it the order is set by vector search and BM25.",
@@ -16058,7 +16058,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JemVd0g8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5v"
@@ -16086,7 +16086,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1511252339,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] LLM_API_KEY, EMBED_API_KEY,\nRERANK_API_KEY",
@@ -16130,7 +16130,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZE1GDn3r"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5x"
@@ -16158,7 +16158,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1813782780,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Access keys (Bearer).",
@@ -16202,7 +16202,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tr3oPwIk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b5z"
@@ -16230,7 +16230,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 308331613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "empty",
@@ -16274,7 +16274,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "RW6sIRIG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b61"
@@ -16302,7 +16302,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1232645777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -16346,7 +16346,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7G3o96NV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b63"
@@ -16374,7 +16374,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1955071434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Empty EMBED_ / RERANK_ — LLM_API_KEY is used; empty LLM_API_KEY — requests without\nauthorisation.",
@@ -16418,7 +16418,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2tgq89z2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b65"
@@ -16446,7 +16446,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1952950688,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] LLM_MODEL",
@@ -16490,7 +16490,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mRPMzkCp"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b67"
@@ -16518,7 +16518,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 744333812,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Default model in the “AI model” list (old name — DEFAULT_LLM_MODEL).",
@@ -16562,7 +16562,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "K5dA1G96"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b69"
@@ -16590,7 +16590,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 981406186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "the first one listed by the\nserver",
@@ -16634,7 +16634,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "emH7nN39"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6B"
@@ -16662,7 +16662,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1795396205,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "model list",
@@ -16706,7 +16706,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "AStw5ic1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6D"
@@ -16734,7 +16734,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1464035852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The list is requested from the server; the model from .env is added to it even if the\nserver did not return it.",
@@ -16778,7 +16778,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XKXJAvUN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6F"
@@ -16806,7 +16806,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2005035337,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] EMBED_MODEL ♻",
@@ -16850,7 +16850,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "f33ycfJe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6H"
@@ -16878,7 +16878,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 647636602,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embedding model; recorded in the manifest of every document.",
@@ -16922,7 +16922,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "IqsZLI99"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6J"
@@ -16950,7 +16950,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1300755931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "qwen3-embedding-4b",
@@ -16994,7 +16994,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BAx6HfQF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6L"
@@ -17022,7 +17022,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 703525944,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17066,7 +17066,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "h6aJNanA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6N"
@@ -17094,7 +17094,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 186779429,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Changing it — re-indexing; a different vector dimension — vector search is off until\nre-indexing.",
@@ -17138,7 +17138,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0SZyn6i8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6P"
@@ -17166,7 +17166,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 447267511,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] RERANK_MODEL",
@@ -17210,7 +17210,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "dTHkDFbI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6R"
@@ -17238,7 +17238,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1205814253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker model.",
@@ -17282,7 +17282,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WqUMpLwW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6T"
@@ -17310,7 +17310,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1267512368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "bge-reranker-v2-m3",
@@ -17354,7 +17354,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yyIG25jv"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6V"
@@ -17382,7 +17382,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 469094310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17426,7 +17426,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MUB5C9Wl"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6X"
@@ -17454,7 +17454,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 367170949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17498,7 +17498,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GxKMyF0K"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6Z"
@@ -17526,7 +17526,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1436421028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] CA_BUNDLE_PATH, SSL_INSECURE",
@@ -17570,7 +17570,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "q5RvEk1j"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6b"
@@ -17598,7 +17598,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1582016170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "TLS certificate; SSL_INSECURE = 1 turns verification off.",
@@ -17642,7 +17642,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BMfh4W2E"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6d"
@@ -17670,7 +17670,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 95466538,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "system certificate file\n(Windows — the Windows store);\noff",
@@ -17714,7 +17714,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GLTaFNm6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6f"
@@ -17742,7 +17742,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1264503417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -17786,7 +17786,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "PGbfPC1N"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6h"
@@ -17814,7 +17814,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1869244182,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "No file — system certificates; on Windows via truststore. SSL_INSECURE — only in an\ninternal network.",
@@ -17858,7 +17858,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yVqN2Tnj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6j"
@@ -17886,7 +17886,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2123426261,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] KB_DIR, LOG_DIR,\nGLOSSARY_PATH, MINT_CONFIG",
@@ -17930,7 +17930,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "1OYpN5Qt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6l"
@@ -17958,7 +17958,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 574710040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Knowledge base folder, folder for logs and feedback, paths to glossary.json and\nconfig.yaml.",
@@ -18002,7 +18002,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "oouQcXeR"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6n"
@@ -18030,7 +18030,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 78474149,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "~/knowledge_base; ~/mint_logs;\nnext to the program",
@@ -18074,7 +18074,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HPeu2WZ2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6p"
@@ -18102,7 +18102,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 676437166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -18146,7 +18146,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "URKjBaOM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6r"
@@ -18174,7 +18174,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 273261022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Log — mint_system.log rotated at 10 MB × 5; user feedback — feedback.jsonl.",
@@ -18218,7 +18218,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3rITogdG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6t"
@@ -18246,7 +18246,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1942424467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] MINT_LANG",
@@ -18290,7 +18290,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0UWnNv8Z"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6v"
@@ -18318,7 +18318,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1656278656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Language of the interface, prompts and reports: en or ru.",
@@ -18362,7 +18362,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "F8QpDSIv"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6x"
@@ -18390,7 +18390,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 409918936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "OS language (ru → ru,\notherwise en)",
@@ -18434,7 +18434,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "te5PjqQt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b6z"
@@ -18462,7 +18462,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1755316998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "switch in the\nsidebar",
@@ -18506,7 +18506,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "T4V1fqRU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b71"
@@ -18534,7 +18534,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 101711426,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The switch changes the language for the session; check_install.py writes in this\nlanguage too.",
@@ -18578,7 +18578,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "sxHaOQ3S"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b73"
@@ -18606,7 +18606,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 977189084,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "MODEL LIMITS — config.yaml, the models section",
@@ -18650,7 +18650,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2RK8kfoY"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b75"
@@ -18678,7 +18678,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2123128102,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] llm_context_tokens",
@@ -18722,7 +18722,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NrYlESGT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b77"
@@ -18750,7 +18750,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1840043612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LLM context window, tokens: everything the model takes in one call — prompt +\nretrieved fragments + history + answer.",
@@ -18794,7 +18794,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HK25jv5j"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b79"
@@ -18822,7 +18822,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 970812766,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① server (/models)\n② otherwise 32768 tok.",
@@ -18866,7 +18866,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "U1TSLbQx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7B"
@@ -18894,7 +18894,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 260939886,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128 … 4 million",
@@ -18938,7 +18938,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jlswWGu6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7D"
@@ -18966,7 +18966,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 565545273,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "No upper limit. Depending on it: chat_budget, llm_budget — and through them the\nceilings of smart_truncate_chars, parent_size, audit_map_size,\naudit_context_max_chars, review_context_max_chars.",
@@ -19010,7 +19010,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6BJh4DHO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7F"
@@ -19038,7 +19038,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1373321844,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: MINT's main limit. Set what the server actually accepts: if the gateway cuts requests before the model window — the gateway's limit. An error upwards is more dangerous: MINT assumes everything fits, and the\nserver returns “GATEWAY ERROR: code 400” (vLLM) or silently cuts the start of the prompt (Ollama). An error downwards only makes fragments shorter than they could be.",
@@ -19082,7 +19082,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "D2gVABen"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7H"
@@ -19110,7 +19110,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 934582497,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] embed_max_tokens",
@@ -19154,7 +19154,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GaldY6FJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7J"
@@ -19182,7 +19182,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1672635998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum input length of the embedding model, tokens.",
@@ -19226,7 +19226,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "UVAOK3Ed"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7L"
@@ -19254,7 +19254,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1992030496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① server (/models)\n② otherwise 8192 tok.",
@@ -19298,7 +19298,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WRbuAtf7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7N"
@@ -19326,7 +19326,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1620026778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128 … 4 million",
@@ -19370,7 +19370,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "PLu3b4Ri"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7P"
@@ -19398,7 +19398,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1096561344,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Depending on it: child_size ♻, section_embed_chars, audit_query_chars,\nembed_input_max_chars.",
@@ -19442,7 +19442,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "R1VaztrS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7R"
@@ -19470,7 +19470,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1208516040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: for models with a 512-token input (e5, ruBERT and other BERT-like ones) be sure to set 512 if the server does not report it: otherwise MINT assumes an 8192 input and sends 4000-char sections (≈ 1600 tokens) —\nthe server cuts them or returns an error. Changing the value changes child_size — re-indexing is needed ♻.",
@@ -19514,7 +19514,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZQ9G7OhT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7T"
@@ -19542,7 +19542,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1587147883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] rerank_max_tokens",
@@ -19586,7 +19586,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "c0YlFrZ1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7V"
@@ -19614,7 +19614,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 106716420,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of a “query + document” pair for the reranker, tokens.",
@@ -19658,7 +19658,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "UtHp1h8Q"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7X"
@@ -19686,7 +19686,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 777172821,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① server (/models)\n② otherwise 8192 tok.",
@@ -19730,7 +19730,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qch1xBp5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7Z"
@@ -19758,7 +19758,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1173804549,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "128 … 4 million",
@@ -19802,7 +19802,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "74CJP4MZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7b"
@@ -19830,7 +19830,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1809129674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Depending on it: rerank_query_max_chars, rerank_doc_max_chars.",
@@ -19874,7 +19874,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hFMugV1w"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7d"
@@ -19902,7 +19902,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 868100489,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] chars_per_token",
@@ -19946,7 +19946,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OLLWyLz8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7f"
@@ -19974,7 +19974,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2080517786,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many characters of text make one token; converts model limits from tokens to\ncharacters.",
@@ -20018,7 +20018,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "DPoaTctN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7h"
@@ -20046,7 +20046,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1569553532,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n① measured by the button\n② otherwise 2.5 chars/tok.",
@@ -20090,7 +20090,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lqRVNdkw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7j"
@@ -20118,7 +20118,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1629028389,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1.0 … 8.0",
@@ -20162,7 +20162,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HYiFhGsw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7l"
@@ -20190,7 +20190,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1795378404,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A measurement is accepted within 1 … 8. How it is measured and which values are\ntypical — the “Tokens and characters” block at the top.",
@@ -20234,7 +20234,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yDcEyhDr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7n"
@@ -20262,7 +20262,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 225296398,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: used in every formula where a model limit is converted to characters. Lower than real — MINT plays safe (fragments shorter than they could be). Higher than real — requests may not fit into the model.",
@@ -20306,7 +20306,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HSjPlUzV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7p"
@@ -20334,7 +20334,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1231921184,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] embed_query_prefix",
@@ -20378,7 +20378,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fQGMeKu5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7r"
@@ -20406,7 +20406,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 147998566,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Instruction before the query text for embedding models trained with instructions.",
@@ -20450,7 +20450,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cRZae0ap"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7t"
@@ -20478,7 +20478,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1630425493,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "by model name",
@@ -20522,7 +20522,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MqaRRet2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7v"
@@ -20550,7 +20550,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1085597234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -20594,7 +20594,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "q1CplQku"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7x"
@@ -20622,7 +20622,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1795380914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reduces audit_query_chars by its length. Changing it does not require re-indexing.",
@@ -20666,7 +20666,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "AOCl6ED2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b7z"
@@ -20694,7 +20694,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 885066649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: what it is: many embedding models are trained on “question — document” pairs where the question is marked with a special phrase. Without the mark such a model searches noticeably worse (question and document\n“sound” the same to it). Where it comes from: embed_prefix_preset() matches the EMBED_MODEL name against the EMBED_PREFIX_PRESETS table — Qwen3-Embedding, gte-Qwen, e5-instruct → “Instruct: <search task>\\nQuery:” (171\nchars; the task is the EMBED_TASK constant: “Given a question or a fragment of a document under review, retrieve passages from corporate regulations and architecture documents that are relevant to it”); e5 → “query: ”;\nnomic-embed, FRIDA, ru-en-RoSBERTa → “search_query: ”; bge-m3 and all others → no prefix. A value from config.yaml wins over the table. Where it is used: the chat question, the start of a document section when searching\nfor norms (review), a comment when matching sections (verification). What was chosen is shown in “Models and limits”: “Query prefix for the embedding model (…)”.",
@@ -20738,7 +20738,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "vfmIQ5DO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b81"
@@ -20766,7 +20766,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 553004478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] embed_doc_prefix ♻",
@@ -20810,7 +20810,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "95JUzx5W"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b83"
@@ -20838,7 +20838,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 724499649,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Prefix before the document text (e5, nomic, FRIDA).",
@@ -20882,7 +20882,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "RVv24QcT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b85"
@@ -20910,7 +20910,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1992257830,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "by model name",
@@ -20954,7 +20954,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TLlcos7T"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b87"
@@ -20982,7 +20982,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 193557779,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -21026,7 +21026,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Cz02NF26"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b89"
@@ -21054,7 +21054,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1073934881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Changing it — re-indexing (compared with the manifest). Reduces child_size and\nsection_embed_chars.",
@@ -21098,7 +21098,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "UW4UMKMT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8B"
@@ -21126,7 +21126,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1605045284,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: the pair of the query prefix — a mark for document text: e5 → “passage: ”, nomic, FRIDA, RoSBERTa → “search_document: ”; Qwen3-Embedding and bge-m3 — no prefix (Qwen3 has an instruction only for the query).\nAdded to every child at indexing and to the sections of the new revision on the verification tab. If the model on the gateway has its own name (for example, “emb-prod”) and is not recognised, both prefixes are empty: set\nthem in config.yaml from the model's documentation and compare with a quality check before and after.",
@@ -21170,7 +21170,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Dg8JUkmk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8D"
@@ -21198,7 +21198,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 135781157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "INTERMEDIATE VALUES — computed in _derive(), not set: changed through model limits and max_tokens",
@@ -21242,7 +21242,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "himPpGc3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8F"
@@ -21270,7 +21270,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1375635301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] chat_budget",
@@ -21314,7 +21314,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "54VNtikx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8H"
@@ -21342,7 +21342,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 350814852,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Chat context budget: how many characters of retrieved fragments fit into the LLM\nwindow for a chat answer — after room for the answer, the prompt, the question\nand the history is subtracted from the window.",
@@ -21386,7 +21386,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tN6V0zqv"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8J"
@@ -21414,7 +21414,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1332392301,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 64,700 chars\n(window 32768, answer 1500)",
@@ -21458,7 +21458,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "II8Ns4pz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8L"
@@ -21486,7 +21486,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1405749183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "not set",
@@ -21530,7 +21530,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lymZvK5z"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8N"
@@ -21558,7 +21558,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 538768156,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens − 800); 800 tok. — CHAT_RESERVE_TOKENS\n(prompt, question, history). Depending on it: smart_truncate_chars, parent_size.",
@@ -21602,7 +21602,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iAfH9byQ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8P"
@@ -21630,7 +21630,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1610322258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: the budget can be increased with a larger window (if the model allows) or a smaller max_tokens. Why a 4096 window gives a budget 17 times smaller than 32768 — worked through with numbers in panel 2.",
@@ -21674,7 +21674,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "vZjlZ4ea"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8R"
@@ -21702,7 +21702,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 882252771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [A] llm_budget",
@@ -21746,7 +21746,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "sm6EvWbR"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8T"
@@ -21774,7 +21774,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 493078871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Context budget of review and verification of fixes: how many characters (document\nsection + norms from the base + sections of the new revision) fit into the LLM\nwindow.",
@@ -21818,7 +21818,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "g6QyYmfL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8V"
@@ -21846,7 +21846,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1585837053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 62,900 chars\n(window 32768, answer 1500)",
@@ -21890,7 +21890,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VeJBFlAD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8X"
@@ -21918,7 +21918,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 781495067,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "not set",
@@ -21962,7 +21962,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KVshIk7E"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8Z"
@@ -21990,7 +21990,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 164434957,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "= chars(llm_context_tokens − max_tokens) − 3500; 3500 chars — AUDIT_RESERVE_CHARS\n(prompt with criteria). Depending on it: audit_map_size, audit_context_max_chars,\nreview_context_max_chars.",
@@ -22034,7 +22034,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NNTlhvIG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8b"
@@ -22062,7 +22062,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 843716051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] embed_input_max_chars",
@@ -22106,7 +22106,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "AxyJxng3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8d"
@@ -22134,7 +22134,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1987308604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of text sent to the embedding model; longer text is cut before\nsending (_embed_input).",
@@ -22178,7 +22178,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "m9PrWQw5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8f"
@@ -22206,7 +22206,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 6991822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 17,400 chars\n(input 8192)",
@@ -22250,7 +22250,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "81oPE1bs"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8h"
@@ -22278,7 +22278,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 687035628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "not set",
@@ -22322,7 +22322,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4oxQdtM9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8j"
@@ -22350,7 +22350,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2065424422,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "= chars(embed_max_tokens). A safeguard: no embedding request exceeds the model input.",
@@ -22394,7 +22394,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JolIvO6B"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8l"
@@ -22422,7 +22422,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 34079664,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LANGUAGE MODEL",
@@ -22466,7 +22466,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LdT1rwS8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8n"
@@ -22494,7 +22494,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 418965385,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] temperature",
@@ -22538,7 +22538,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "sRJYQM5D"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8p"
@@ -22566,7 +22566,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 414097207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Randomness of the LLM answer.",
@@ -22610,7 +22610,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tlWCqnrT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8r"
@@ -22638,7 +22638,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1686832598,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.1",
@@ -22682,7 +22682,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yrMkZMCP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8t"
@@ -22710,7 +22710,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1176029364,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.0 … 1.0",
@@ -22754,7 +22754,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9NOTJDXJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8v"
@@ -22782,7 +22782,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 563665863,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Applies to chat answers, review, review self-critique and verification of fixes. The\nexception is the chat's service step condense_question(): a follow-up question (“and\nfor the second circuit?”) is always rewritten into a self-contained one with\ntemperature 0, so that search gets the same wording. Self-critique is not affected by\nthis.",
@@ -22826,7 +22826,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WgbNYoYF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8x"
@@ -22854,7 +22854,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 46654347,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [C] max_tokens",
@@ -22898,7 +22898,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "EV9HMxPc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b8z"
@@ -22926,7 +22926,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1538000357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of the model answer, tokens.",
@@ -22970,7 +22970,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aNL9mWhI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b91"
@@ -22998,7 +22998,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1159348457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500 tok.",
@@ -23042,7 +23042,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FM1u4tZ2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b93"
@@ -23070,7 +23070,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 250078666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "256 … 8000",
@@ -23114,7 +23114,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "z9L9ZHcI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b95"
@@ -23142,7 +23142,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1129957131,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Depending on it: chat_budget, llm_budget.",
@@ -23186,7 +23186,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HlFnvawl"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b97"
@@ -23214,7 +23214,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 25234788,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: room for the answer is reserved in the window in advance, even if the answer turns out short: every +1000 tok. of answer take ≈ 2,100 chars from chat_budget and llm_budget. On a 32k window this is unnoticeable,\non 4–8k it matters. Reasoning models — panel 4.",
@@ -23258,7 +23258,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZLk9v5UP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b99"
@@ -23286,7 +23286,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 365693240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] llm_timeout",
@@ -23330,7 +23330,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "X2N33JGe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9B"
@@ -23358,7 +23358,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1517064354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Wait for an LLM answer per attempt, s.",
@@ -23402,7 +23402,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LaTgdZOT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9D"
@@ -23430,7 +23430,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 420629132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "90",
@@ -23474,7 +23474,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "06PEziuw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9F"
@@ -23502,7 +23502,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1847041914,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "30 … 300",
@@ -23546,7 +23546,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "si4s3Jib"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9H"
@@ -23574,7 +23574,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 773012138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "On timeout — the next attempt (llm_retries).",
@@ -23618,7 +23618,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0poqev9l"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9J"
@@ -23646,7 +23646,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 307768080,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] llm_retries",
@@ -23690,7 +23690,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "EHPDAX2N"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9L"
@@ -23718,7 +23718,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 195675575,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Number of attempts on timeout and 502 / 503 / 504; on 429 at least 4, with a\nshared pause.",
@@ -23762,7 +23762,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "000HmX7c"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9N"
@@ -23790,7 +23790,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1498851070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2",
@@ -23834,7 +23834,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xgP8dwB7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9P"
@@ -23862,7 +23862,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 829894513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 5",
@@ -23906,7 +23906,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tgHldk8A"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9R"
@@ -23934,7 +23934,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1738486712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The pause grows: ≈ 2 s, 4 s … (+ random); 401 / 403 — an error at once.",
@@ -23978,7 +23978,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OMWw4xpz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9T"
@@ -24006,7 +24006,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 134755326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] request_timeout",
@@ -24050,7 +24050,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6CmTuZgj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9V"
@@ -24078,7 +24078,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 266171333,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Wait for a reranker answer, s.",
@@ -24122,7 +24122,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qf7vv8ha"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9X"
@@ -24150,7 +24150,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 139910239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "120",
@@ -24194,7 +24194,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "puPOymQn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9Z"
@@ -24222,7 +24222,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1840327698,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -24266,7 +24266,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jnBwc1i7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9b"
@@ -24294,7 +24294,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 426607353,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -24338,7 +24338,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "A4JyTH9F"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9d"
@@ -24366,7 +24366,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1946661933,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "INDEXING ♻",
@@ -24410,7 +24410,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yPzi4fdo"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9f"
@@ -24438,7 +24438,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 239055789,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] parent_size ♻",
@@ -24482,7 +24482,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iTsB05Ut"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9h"
@@ -24510,7 +24510,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 214810541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Length of a parent fragment: the LLM reads it.",
@@ -24554,7 +24554,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6U5U3EYe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9j"
@@ -24582,7 +24582,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 611575325,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2500 chars",
@@ -24626,7 +24626,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "PwUPs7km"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9l"
@@ -24654,7 +24654,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 862580752,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -24698,7 +24698,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "t50zd2E2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9n"
@@ -24726,7 +24726,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1140711641,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ chat_budget / 5 (minimum 300). In the code at least 200. Depending on it:\nparent_overlap.",
@@ -24770,7 +24770,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3peWeGGx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9p"
@@ -24798,7 +24798,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1817413225,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: a parent is the “unit of reading”: search finds a small child, and the model gets the whole parent around it for context. Why it depends on chat_budget: the whole parent goes into the context; if it is longer\nthan its share of the budget, smart_truncate_chars cuts it around the match and the surrounding text is lost. Divided by 5, not by top_k: chunking happens once at upload, while top_k changes in every session — 5 is the\ntypical top_k. On a 32k window the limit does not apply (64,744 / 5 = 12,949 > 2500), on 4k it does (→ 763). A larger parent — fewer breaks in meaning, but more noise and fewer different places in the same budget. Cut\nalong the text — first at a paragraph break, then at a line, a sentence and a word; a heading is not separated from its text. One parent can take the end of one section and the start of the next.",
@@ -24842,7 +24842,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jYt5vo4T"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9r"
@@ -24870,7 +24870,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1562899068,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] parent_overlap ♻",
@@ -24914,7 +24914,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qgvuvZt6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9t"
@@ -24942,7 +24942,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 627008874,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Overlap of neighbouring parents.",
@@ -24986,7 +24986,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "88ZyP745"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9v"
@@ -25014,7 +25014,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 471041157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 chars",
@@ -25058,7 +25058,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "raPHDvZO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9x"
@@ -25086,7 +25086,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1088769402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1000",
@@ -25130,7 +25130,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4VLkDRIe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "b9z"
@@ -25158,7 +25158,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2072011106,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ parent_size / 5; in the code less than parent_size.",
@@ -25202,7 +25202,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "dBvDcyLG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bA1"
@@ -25230,7 +25230,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 232401949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] child_size ♻",
@@ -25274,7 +25274,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LSJDt32C"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bA3"
@@ -25302,7 +25302,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1847832412,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Length of a child fragment — the unit of vector search.",
@@ -25346,7 +25346,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9Bb4Manq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bA5"
@@ -25374,7 +25374,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1065547229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "400 chars",
@@ -25418,7 +25418,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BgNVyth5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bA7"
@@ -25446,7 +25446,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2132508470,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "100 … 2000",
@@ -25490,7 +25490,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NZa414TA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bA9"
@@ -25518,7 +25518,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1021168636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ embedding input − 250 − document prefix (minimum 100); 250 — the heading path\n(HEADING_RESERVE_CHARS); in the code from 50 to parent_size. Depending on it:\nchild_overlap.",
@@ -25562,7 +25562,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gN6GS3rF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAB"
@@ -25590,7 +25590,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 951998924,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: a child is the “unit of search”: the vector is computed from it. A short child matches a question more precisely, a long one gets blurred. 400 chars (≈ 2–4 sentences) is a compromise for regulations.",
@@ -25634,7 +25634,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "5lxOkXDH"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAD"
@@ -25662,7 +25662,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1172250614,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] child_overlap ♻",
@@ -25706,7 +25706,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NN7DKujP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAF"
@@ -25734,7 +25734,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2086858777,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Overlap of neighbouring children.",
@@ -25778,7 +25778,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "EjmhfXQ1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAH"
@@ -25806,7 +25806,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 136431113,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "150 chars",
@@ -25850,7 +25850,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jBhx8Gbb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAJ"
@@ -25878,7 +25878,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1810711877,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 500",
@@ -25922,7 +25922,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Sr9o1bP5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAL"
@@ -25950,7 +25950,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1661393883,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ child_size / 2; in the code less than child_size.",
@@ -25994,7 +25994,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "RDn5p0oM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAN"
@@ -26022,7 +26022,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1979534607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] embed_batch_size",
@@ -26066,7 +26066,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Rk1dzgkd"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAP"
@@ -26094,7 +26094,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1935024994,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Texts per embedding request at indexing.",
@@ -26138,7 +26138,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WZBGAImS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAR"
@@ -26166,7 +26166,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 252322485,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "32",
@@ -26210,7 +26210,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aQ14QhtO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAT"
@@ -26238,7 +26238,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1481868590,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -26282,7 +26282,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "N6YDl6lU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAV"
@@ -26310,7 +26310,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1377016232,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At least 1; the limit is the embedding server. A failed batch — one by one.",
@@ -26354,7 +26354,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "h2quvqAU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAX"
@@ -26382,7 +26382,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1544551388,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "SEARCH",
@@ -26426,7 +26426,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qhyS55kj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAZ"
@@ -26454,7 +26454,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 331411183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◆ [T] top_k",
@@ -26498,7 +26498,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "vDq2wQkm"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAb"
@@ -26526,7 +26526,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1999428029,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many retrieved fragments (parents) MINT puts into the LLM context for a chat\nanswer. Document review (norms from the base) and verification of fixes use the\nsame top_k.",
@@ -26570,7 +26570,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6GmcPHnk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAd"
@@ -26598,7 +26598,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1274996269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 = auto:\n4 if the base has ≤ 300\n   children\n5 if more",
@@ -26642,7 +26642,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Sdqmb0to"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAf"
@@ -26670,7 +26670,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1232470040,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2 … 8",
@@ -26714,7 +26714,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GO0OlIlE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAh"
@@ -26742,7 +26742,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 823897368,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At most rerank_top_k (selection is made from these candidates). No upper limit in the\ncode: above 8 — through config.yaml. Depending on it: smart_truncate_chars.",
@@ -26786,7 +26786,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "m3fDHb4L"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAj"
@@ -26814,7 +26814,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 542109081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: in the code top_k = 0, i.e. “choose automatically”: MINT counts child fragments in the base (kb_default_top_k). ≤ 300 (≈ 10–15 regulations) → 4: a fifth fragment is usually a repeat or noise; more → 5: the\nanswer is more often spread over several places. The “Search depth (Top-K)” slider starts at the auto value and changes it for the session; config.yaml (search: top_k: 6) turns the automation off.\nLink to the limits: fragments share the window budget — each is cut to smart_truncate_chars ≈ (window − answer − reserve) / top_k. A larger top_k — the model sees more different places, but each is shorter. On a small\nwindow top_k 8 gives scraps (under the slider: “Chat context: up to ≈ N chars (Top-K × fragment)”); on a large one fragments stay whole. In review audit_context_max_chars applies as well.\nHow to tune: start with auto. Often “the information is not available” although the answer is in the base → look at hit@3 and hit@K in report.md: the correct fragment at place 5–8 → raise top_k to 6–8. Not even in the\ntop ten → top_k will not help: the problem is in search or chunking.",
@@ -26858,7 +26858,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "UrPJBo2I"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAl"
@@ -26886,7 +26886,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1276112853,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] initial_k",
@@ -26930,7 +26930,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MbhQsFw2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAn"
@@ -26958,7 +26958,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2005436629,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many nearest children vector search takes.",
@@ -27002,7 +27002,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XOg0Pir0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAp"
@@ -27030,7 +27030,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1193430822,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "50",
@@ -27074,7 +27074,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "n8Ct939d"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAr"
@@ -27102,7 +27102,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1016851116,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10 … 200",
@@ -27146,7 +27146,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iMJ8IOlK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAt"
@@ -27174,7 +27174,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1649910430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At most the number of vectors in the base; several children of one parent give one\ncandidate.",
@@ -27218,7 +27218,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2iqO0LBA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAv"
@@ -27246,7 +27246,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 634411900,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] bm25_top_k",
@@ -27290,7 +27290,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aUhH9T2l"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAx"
@@ -27318,7 +27318,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 380320554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many parents word search takes.",
@@ -27362,7 +27362,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Vm34PIIi"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bAz"
@@ -27390,7 +27390,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1365825083,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20",
@@ -27434,7 +27434,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mWYDR7ka"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bB1"
@@ -27462,7 +27462,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2064859778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5 … 100",
@@ -27506,7 +27506,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "AyKkUekT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bB3"
@@ -27534,7 +27534,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1444307314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only fragments with a score > 0 are taken.",
@@ -27578,7 +27578,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MUJSe1fu"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bB5"
@@ -27606,7 +27606,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 641060697,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [T] rerank_top_k",
@@ -27650,7 +27650,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6TPaLQwQ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bB7"
@@ -27678,7 +27678,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1827669685,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Candidates after fusion: they go to reranking and to the top_k selection.",
@@ -27722,7 +27722,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tWQlDM6p"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bB9"
@@ -27750,7 +27750,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 851156310,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "16",
@@ -27794,7 +27794,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Ddki79Id"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBB"
@@ -27822,7 +27822,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2071937153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4 … 40",
@@ -27866,7 +27866,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7avbvYGJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBD"
@@ -27894,7 +27894,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 474051466,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Caps top_k. More — more requests to the reranker.",
@@ -27938,7 +27938,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "S1xsiIVt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBF"
@@ -27966,7 +27966,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1253936659,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] rrf_constant",
@@ -28010,7 +28010,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ORSsqFXe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBH"
@@ -28038,7 +28038,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 484419719,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Smoothing constant of RRF fusion (formula — panel 7).",
@@ -28082,7 +28082,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bwK2mK3U"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBJ"
@@ -28110,7 +28110,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1674499110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "60",
@@ -28154,7 +28154,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "RkkXukzB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBL"
@@ -28182,7 +28182,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 800063630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10 … 120",
@@ -28226,7 +28226,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "nadhX2TG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBN"
@@ -28254,7 +28254,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1165863358,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Smaller — a stronger difference between the first places of the lists.",
@@ -28298,7 +28298,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "oZpOmCV0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBP"
@@ -28326,7 +28326,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2088345562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weight_dense",
@@ -28370,7 +28370,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "a7xnLRhF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBR"
@@ -28398,7 +28398,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1351918146,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of vector search in the fusion.",
@@ -28442,7 +28442,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "noA5bPxt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBT"
@@ -28470,7 +28470,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 454621305,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28514,7 +28514,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rdVn5UYf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBV"
@@ -28542,7 +28542,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1120431559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28586,7 +28586,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "r5mgqQjn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBX"
@@ -28614,7 +28614,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 8506312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — the channel is off.",
@@ -28658,7 +28658,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "V1lp9Lrg"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBZ"
@@ -28686,7 +28686,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 846842930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weight_bm25",
@@ -28730,7 +28730,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rR5T5YEO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBb"
@@ -28758,7 +28758,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1724480507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of word search in the fusion.",
@@ -28802,7 +28802,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gL8wkJTW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBd"
@@ -28830,7 +28830,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1836973738,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1.0",
@@ -28874,7 +28874,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "c7g6vR9n"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBf"
@@ -28902,7 +28902,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 394337601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -28946,7 +28946,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VGVsdIby"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBh"
@@ -28974,7 +28974,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1926032956,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — the channel is off.",
@@ -29018,7 +29018,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QYF6j2H2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBj"
@@ -29046,7 +29046,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1966334157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weight_rerank",
@@ -29090,7 +29090,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "h96CclaH"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBl"
@@ -29118,7 +29118,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1311860275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of the reranker's vote in the fusion.",
@@ -29162,7 +29162,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cLZLw1ow"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBn"
@@ -29190,7 +29190,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1030008845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.7",
@@ -29234,7 +29234,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "N9yWMNWz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBp"
@@ -29262,7 +29262,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 355004110,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 3",
@@ -29306,7 +29306,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LV2EXof3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBr"
@@ -29334,7 +29334,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 980790806,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only with a reranker. 0 — the order without the reranker, its scores still decide on\n“low confidence”.",
@@ -29378,7 +29378,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cbF0Mdgf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBt"
@@ -29406,7 +29406,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1556644430,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: the reranker does not replace the order but votes in the fusion alongside vector search and BM25. 0.7 — the reranker is slightly weaker than each of the two searches; 1.5–3 — its opinion decides.",
@@ -29450,7 +29450,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "a1Q0M1ot"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBv"
@@ -29478,7 +29478,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 214740451,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] smart_truncate_chars",
@@ -29522,7 +29522,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "pCGDd8tf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBx"
@@ -29550,7 +29550,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1143341541,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of one fragment in the LLM context.",
@@ -29594,7 +29594,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tgyGwy0D"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bBz"
@@ -29622,7 +29622,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1717692357,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3500 chars — or less\nif it does not fit",
@@ -29666,7 +29666,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FEqfyq8J"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bC1"
@@ -29694,7 +29694,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1404583304,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "500 … 10000",
@@ -29738,7 +29738,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KZ4FCEc5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bC3"
@@ -29766,7 +29766,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 771846374,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ chat_budget / top_k (minimum 500). Longer — the fragment is cut around the\nmatch (focus_passage); the nearest heading above is kept, a table keeps its title and\nheader.",
@@ -29810,7 +29810,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aArGEXhe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bC5"
@@ -29838,7 +29838,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 548993954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: with the defaults (parent 2500 < 3500) nothing is cut — the limit applies only with a small window or a large top_k. Cut around the match: the child from vector search or the window with the most question words.\nNeighbouring fragments of one document are joined into one block (merge_adjacent) without repeating the overlap; its limit is smart_truncate_chars × the number joined.",
@@ -29882,7 +29882,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "N09JjNDX"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bC7"
@@ -29910,7 +29910,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 80705691,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] max_table_parts",
@@ -29954,7 +29954,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Qusp8itJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bC9"
@@ -29982,7 +29982,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 525768354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many parts of one table can get into the context.",
@@ -30026,7 +30026,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Wv8weQnk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCB"
@@ -30054,7 +30054,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 907414041,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2",
@@ -30098,7 +30098,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "irSnrMCa"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCD"
@@ -30126,7 +30126,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 999512133,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -30170,7 +30170,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JxKvUeoS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCF"
@@ -30198,7 +30198,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 492453229,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — no limit. A soft limit: free places are filled with parts.",
@@ -30242,7 +30242,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JSZaSneX"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCH"
@@ -30270,7 +30270,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2010318907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] use_multi_query",
@@ -30314,7 +30314,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cq3Le41V"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCJ"
@@ -30342,7 +30342,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 194094055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A second wording of the question from the LLM; candidates are searched for both.",
@@ -30386,7 +30386,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZahazBl9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCL"
@@ -30414,7 +30414,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1911966443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "off",
@@ -30458,7 +30458,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XzrTFHKP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCN"
@@ -30486,7 +30486,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1456427275,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -30530,7 +30530,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7NbX6LOI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCP"
@@ -30558,7 +30558,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 354713556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Questions longer than 1200 chars are not paraphrased.",
@@ -30602,7 +30602,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jsFtANYn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCR"
@@ -30630,7 +30630,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 521842887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] multi_query_alt_weight",
@@ -30674,7 +30674,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "I5NSU8kH"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCT"
@@ -30702,7 +30702,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1685954646,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Weight of the results for the second wording.",
@@ -30746,7 +30746,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ips6vUKY"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCV"
@@ -30774,7 +30774,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1663812954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.85",
@@ -30818,7 +30818,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "IUb0rYMK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCX"
@@ -30846,7 +30846,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 874755181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -30890,7 +30890,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FJxrZ9A0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCZ"
@@ -30918,7 +30918,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2122502909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -30962,7 +30962,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6X47paLs"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCb"
@@ -30990,7 +30990,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 73039095,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] max_query_chars",
@@ -31034,7 +31034,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XXCdMupI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCd"
@@ -31062,7 +31062,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1745724202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maximum length of a search query; longer is cut.",
@@ -31106,7 +31106,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qHqTszNN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCf"
@@ -31134,7 +31134,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1569199042,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "24000 chars",
@@ -31178,7 +31178,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BboBPRt1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCh"
@@ -31206,7 +31206,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2074488271,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -31250,7 +31250,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "P5Lw2HGK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCj"
@@ -31278,7 +31278,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 878427207,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -31322,7 +31322,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MIJpzCrn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCl"
@@ -31350,7 +31350,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1812677870,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] cascade_split_chars",
@@ -31394,7 +31394,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QX7L9Ks6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCn"
@@ -31422,7 +31422,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 813387628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A longer query is split in half and searched in parts.",
@@ -31466,7 +31466,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wIPblXXD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCp"
@@ -31494,7 +31494,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1164531974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20,000 chars",
@@ -31538,7 +31538,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XSa5QLFb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCr"
@@ -31566,7 +31566,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 177253050,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -31610,7 +31610,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "C5uPmO3E"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCt"
@@ -31638,7 +31638,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 52014419,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Split depth — at most 3.",
@@ -31682,7 +31682,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "g9Bu07MV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCv"
@@ -31710,7 +31710,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1676185245,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RERANKER — used only if RERANK_API_URL is set",
@@ -31754,7 +31754,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6U3h5qGW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCx"
@@ -31782,7 +31782,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 866677630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] rerank_max_docs",
@@ -31826,7 +31826,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "N7uFyEAr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bCz"
@@ -31854,7 +31854,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 904781665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Documents per reranker request.",
@@ -31898,7 +31898,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gIoU2zYu"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bD1"
@@ -31926,7 +31926,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1461941051,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10",
@@ -31970,7 +31970,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MozZGAOC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bD3"
@@ -31998,7 +31998,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1204815292,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3 … 30",
@@ -32042,7 +32042,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iQvZy7DU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bD5"
@@ -32070,7 +32070,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 627218922,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A gateway limit; the remaining candidates go in the next requests.",
@@ -32114,7 +32114,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lTszA1S5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bD7"
@@ -32142,7 +32142,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1610829386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] rerank_char_budget",
@@ -32186,7 +32186,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mijEeau7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bD9"
@@ -32214,7 +32214,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1341445620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Characters per reranker request.",
@@ -32258,7 +32258,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iqbo4Gc9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDB"
@@ -32286,7 +32286,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 775511850,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000 chars",
@@ -32330,7 +32330,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Jacs9NJD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDD"
@@ -32358,7 +32358,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 932387223,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3000 … 60000",
@@ -32402,7 +32402,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "a6AC5f2o"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDF"
@@ -32430,7 +32430,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 458854630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A gateway limit; one document is always sent, even if longer.",
@@ -32474,7 +32474,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Z71aWLEK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDH"
@@ -32502,7 +32502,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 155608427,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] rerank_query_max_chars",
@@ -32546,7 +32546,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mqoC7i5e"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDJ"
@@ -32574,7 +32574,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 547547720,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Query length (with abbreviation expansions) for the reranker.",
@@ -32618,7 +32618,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "k1aXF4VF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDL"
@@ -32646,7 +32646,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1450256052,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1500 chars",
@@ -32690,7 +32690,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Vsmcxsr0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDN"
@@ -32718,7 +32718,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 375766132,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "200 … 4000",
@@ -32762,7 +32762,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4X4peVzG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDP"
@@ -32790,7 +32790,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 730764475,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ reranker input / 3 (minimum 200). Depending on it: rerank_doc_max_chars.",
@@ -32834,7 +32834,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4qoxGy7W"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDR"
@@ -32862,7 +32862,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 513501684,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] rerank_doc_max_chars",
@@ -32906,7 +32906,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "INdUbnCu"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDT"
@@ -32934,7 +32934,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 512983989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Length of a document fragment for the reranker, including file name and section.",
@@ -32978,7 +32978,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Sy5ZC8tC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDV"
@@ -33006,7 +33006,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1067808700,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "800 chars",
@@ -33050,7 +33050,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9jACZCFx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDX"
@@ -33078,7 +33078,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 821085603,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "200 … 6000",
@@ -33122,7 +33122,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HxrSiSUs"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDZ"
@@ -33150,7 +33150,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2038585930,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ reranker input − query length (minimum 200); the fragment itself at least 150\nchars.",
@@ -33194,7 +33194,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mNIHqE1g"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDb"
@@ -33222,7 +33222,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1894318756,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] rerank_with_meta",
@@ -33266,7 +33266,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "V3U1PIJj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDd"
@@ -33294,7 +33294,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 298691446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Add the file name, section and table to the start of the text for the reranker.",
@@ -33338,7 +33338,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xsa8pbmz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDf"
@@ -33366,7 +33366,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1515200814,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -33410,7 +33410,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "RJWLpgff"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDh"
@@ -33438,7 +33438,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1496251421,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -33482,7 +33482,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SEcymgpK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDj"
@@ -33510,7 +33510,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 422124871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -33554,7 +33554,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TJdmNAMe"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDl"
@@ -33582,7 +33582,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 191817896,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] min_rerank_score",
@@ -33626,7 +33626,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "L7htKRrT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDn"
@@ -33654,7 +33654,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 684930038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Minimum score at which the reranker's vote counts.",
@@ -33698,7 +33698,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ofiWJOXX"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDp"
@@ -33726,7 +33726,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 3194214,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.15",
@@ -33770,7 +33770,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "1yanl4zy"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDr"
@@ -33798,7 +33798,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1233626925,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -33842,7 +33842,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ngr5b7jc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDt"
@@ -33870,7 +33870,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 166250213,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Designed for a 0 … 1 scale; for a reranker with a different scale set it by hand.",
@@ -33914,7 +33914,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KEVNl4ei"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDv"
@@ -33942,7 +33942,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 152577046,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "THE “LOW CONFIDENCE” SIGNAL — how it fires, see panel 7",
@@ -33986,7 +33986,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "k27exYRU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDx"
@@ -34014,7 +34014,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1222981514,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] low_conf_rerank",
@@ -34058,7 +34058,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7KbGX2hP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bDz"
@@ -34086,7 +34086,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1552195540,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Threshold for the best reranker score.",
@@ -34130,7 +34130,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "kJZWPlbf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bE1"
@@ -34158,7 +34158,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 974641568,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.30",
@@ -34202,7 +34202,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fcG42yGo"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bE3"
@@ -34230,7 +34230,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1391928747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34274,7 +34274,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Nm8RBnbX"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bE5"
@@ -34302,7 +34302,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 370486613,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "With a reranker the signal depends only on it.",
@@ -34346,7 +34346,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MWpApVnV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bE7"
@@ -34374,7 +34374,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1204987714,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] low_conf_lexical",
@@ -34418,7 +34418,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ACarWAad"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bE9"
@@ -34446,7 +34446,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2045651288,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only without a reranker: threshold for the share of question words in the\ncontext.",
@@ -34490,7 +34490,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fc1JUIaG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEB"
@@ -34518,7 +34518,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 80691010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0.50",
@@ -34562,7 +34562,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "p9oWISmG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bED"
@@ -34590,7 +34590,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 711609765,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 1",
@@ -34634,7 +34634,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "1Qlfo2XL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEF"
@@ -34662,7 +34662,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 760757472,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Words are compared by stems; question words are not counted.",
@@ -34706,7 +34706,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iT9QEihJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEH"
@@ -34734,7 +34734,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 685294118,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] low_conf_agree_top",
@@ -34778,7 +34778,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "kyC0WRMs"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEJ"
@@ -34806,7 +34806,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 579166038,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only without a reranker: depth at which vector search and BM25 must agree.",
@@ -34850,7 +34850,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6YTV1x7X"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEL"
@@ -34878,7 +34878,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1064378993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5",
@@ -34922,7 +34922,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "c0QGMwZi"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEN"
@@ -34950,7 +34950,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1789911899,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 20",
@@ -34994,7 +34994,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LVL8K8aB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEP"
@@ -35022,7 +35022,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1034546173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -35066,7 +35066,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aKdribJq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bER"
@@ -35094,7 +35094,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 238385884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] show_source_details",
@@ -35138,7 +35138,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fqAeFdJa"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bET"
@@ -35166,7 +35166,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2030131176,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Show scores and positions next to sources in chat.",
@@ -35210,7 +35210,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WPah7gt8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEV"
@@ -35238,7 +35238,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 22784989,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -35282,7 +35282,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "R6bYN10b"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEX"
@@ -35310,7 +35310,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 415630397,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -35354,7 +35354,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mOz0rVBd"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEZ"
@@ -35382,7 +35382,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1690344630,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -35426,7 +35426,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NSo3kyF9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEb"
@@ -35454,7 +35454,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1705104604,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "CHAT AND GLOSSARY",
@@ -35498,7 +35498,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZpOylhSE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEd"
@@ -35526,7 +35526,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1358943467,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] chat_history_turns",
@@ -35570,7 +35570,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hRM3b1AN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEf"
@@ -35598,7 +35598,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 696858975,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many past “question — answer” pairs to use for follow-up questions.",
@@ -35642,7 +35642,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YzlhjTln"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEh"
@@ -35670,7 +35670,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1082927071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2",
@@ -35714,7 +35714,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "55rx0YRk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEj"
@@ -35742,7 +35742,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 121100775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 6",
@@ -35786,7 +35786,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "arKlEaeh"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEl"
@@ -35814,7 +35814,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 230615823,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — no history; the assistant's answer in the history is cut to 1200 chars.",
@@ -35858,7 +35858,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OspZwsrZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEn"
@@ -35886,7 +35886,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 290205931,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] glossary_auto",
@@ -35930,7 +35930,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9MLAZphD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEp"
@@ -35958,7 +35958,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1652058783,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Collect abbreviations from uploaded documents.",
@@ -36002,7 +36002,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9rmSqMSK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEr"
@@ -36030,7 +36030,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1615930585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -36074,7 +36074,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3PxH4tUg"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEt"
@@ -36102,7 +36102,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 388414857,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -36146,7 +36146,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8cTqlhHk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEv"
@@ -36174,7 +36174,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1934436383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -36218,7 +36218,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "uUKzWGzl"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEx"
@@ -36246,7 +36246,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 961364065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] glossary_in_context",
@@ -36290,7 +36290,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yupn1JC3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bEz"
@@ -36318,7 +36318,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 117939210,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Give the model a reference of the abbreviations found.",
@@ -36362,7 +36362,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hfQOxHTX"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bF1"
@@ -36390,7 +36390,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 521029987,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -36434,7 +36434,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "3nCp0vyA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bF3"
@@ -36462,7 +36462,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 715682022,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -36506,7 +36506,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "RStxU2hC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bF5"
@@ -36534,7 +36534,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1152890893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Turn off if the auto-glossary gives wrong expansions.",
@@ -36578,7 +36578,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "EBKDzld7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bF7"
@@ -36606,7 +36606,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1193726760,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] glossary_max_entries",
@@ -36650,7 +36650,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VP3WRsUB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bF9"
@@ -36678,7 +36678,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 921704075,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Abbreviations in the model's reference, at most.",
@@ -36722,7 +36722,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mSIRcqSU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFB"
@@ -36750,7 +36750,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2057702627,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20",
@@ -36794,7 +36794,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "axzjxIxL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFD"
@@ -36822,7 +36822,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 799336186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5 … 60",
@@ -36866,7 +36866,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "DZoUZatD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFF"
@@ -36894,7 +36894,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1034791827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "First abbreviations from the question, then from the retrieved fragments.",
@@ -36938,7 +36938,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "5r6OBGig"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFH"
@@ -36966,7 +36966,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 328757559,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW AND VERIFICATION OF FIXES",
@@ -37010,7 +37010,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "puycRmjw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFJ"
@@ -37038,7 +37038,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1897840640,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] audit_map_size",
@@ -37082,7 +37082,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ExxOXSCA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFL"
@@ -37110,7 +37110,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 799903258,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Size of a document section per review call; sections on the verification tab have\nthe same size.",
@@ -37154,7 +37154,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "fXsqkpL9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFN"
@@ -37182,7 +37182,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 464157402,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4500 chars",
@@ -37226,7 +37226,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8R7STJuE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFP"
@@ -37254,7 +37254,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 280071929,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 … 12000",
@@ -37298,7 +37298,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bBGM7IeG"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFR"
@@ -37326,7 +37326,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2031956423,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ 0.3 × llm_budget (minimum 1000). Smaller — more detailed, but more LLM calls.\nDepending on it: audit_context_max_chars.",
@@ -37370,7 +37370,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mwtxUCsB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFT"
@@ -37398,7 +37398,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 488934201,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: The document is split into parts by section up to this size (a section up to 1.5 sizes stays whole), each checked by a separate LLM call. So that the model does not write “X is not specified” when X is in\nanother section, the part comes with the whole document (audit_full_document) or the outline.",
@@ -37442,7 +37442,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SxRrVdq0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFV"
@@ -37470,7 +37470,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 303228371,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] use_self_critique",
@@ -37514,7 +37514,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LHuPpQ2M"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFX"
@@ -37542,7 +37542,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 215411871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A second “controller” pass over the draft findings.",
@@ -37586,7 +37586,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bzybp2u4"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFZ"
@@ -37614,7 +37614,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1703500431,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -37658,7 +37658,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "dNd1EuUW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFb"
@@ -37686,7 +37686,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1449583895,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -37730,7 +37730,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "v3oETJ1H"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFd"
@@ -37758,7 +37758,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 507549522,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Filters out far-fetched findings; faster without it.",
@@ -37802,7 +37802,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "oIxX952b"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFf"
@@ -37830,7 +37830,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 78982661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_full_document",
@@ -37874,7 +37874,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "O3jzEUVm"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFh"
@@ -37902,7 +37902,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1876429488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The whole document in every section review and self-critique.",
@@ -37946,7 +37946,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NBcqQzar"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFj"
@@ -37974,7 +37974,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2006537615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -38018,7 +38018,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hzOQceql"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFl"
@@ -38046,7 +38046,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 71901712,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -38090,7 +38090,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "csQrLVhM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFn"
@@ -38118,7 +38118,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1416839545,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Only if the document fits into the model's window; otherwise the outline and checking\n“not described” against other sections.",
@@ -38162,7 +38162,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Uvv4TY9D"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFp"
@@ -38190,7 +38190,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1666465480,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_merge_duplicates",
@@ -38234,7 +38234,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XT5W09d1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFr"
@@ -38262,7 +38262,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 87471442,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Merging duplicate findings with the model at the end of the review.",
@@ -38306,7 +38306,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GNMYG98R"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFt"
@@ -38334,7 +38334,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 648609525,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -38378,7 +38378,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8NmfW8ww"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFv"
@@ -38406,7 +38406,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 567406071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -38450,7 +38450,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WiOttyoJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFx"
@@ -38478,7 +38478,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 502296104,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "+1 LLM call; when off, duplicates are merged only when their words match.",
@@ -38522,7 +38522,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7vb6W4QR"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bFz"
@@ -38550,7 +38550,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 696585202,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_passes",
@@ -38594,7 +38594,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "q0Fvr6vc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bG1"
@@ -38622,7 +38622,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1540471178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Passes of the section review and of the deep review questions about the process\nand figures.",
@@ -38666,7 +38666,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GMaaH8pC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bG3"
@@ -38694,7 +38694,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 424717483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1",
@@ -38738,7 +38738,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YN8UOHtr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bG5"
@@ -38766,7 +38766,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 923127099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 3",
@@ -38810,7 +38810,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "o3h1jtSz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bG7"
@@ -38838,7 +38838,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 683798192,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2–3 — with temperature ≥ 0.4; the findings of the passes are merged, what is found\n   several times ranks higher.",
@@ -38882,7 +38882,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "IZWuJx8y"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bG9"
@@ -38910,7 +38910,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1163966941,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_summary_max",
@@ -38954,7 +38954,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bP9t1fBV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGB"
@@ -38982,7 +38982,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1424975636,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "“Key points” at the top of the report: the most important findings as pointers to\ntheir numbers.",
@@ -39026,7 +39026,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yzjcr1Oq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGD"
@@ -39054,7 +39054,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 105177086,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12",
@@ -39098,7 +39098,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jKWBedUO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGF"
@@ -39126,7 +39126,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2078789198,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 30",
@@ -39170,7 +39170,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NsT4YebW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGH"
@@ -39198,7 +39198,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 731820361,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "+1 LLM call (editor model); 0 — no block.",
@@ -39242,7 +39242,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6kb05fRc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGJ"
@@ -39270,7 +39270,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1326775936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_reasoning",
@@ -39314,7 +39314,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "drHyzW3l"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGL"
@@ -39342,7 +39342,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 528140515,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Review with model reasoning (overrides llm_no_reasoning).",
@@ -39386,7 +39386,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FFLhQxly"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGN"
@@ -39414,7 +39414,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 319369939,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "off",
@@ -39458,7 +39458,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "uHwqYG3Z"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGP"
@@ -39486,7 +39486,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1525803776,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -39530,7 +39530,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "N86bJEJm"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGR"
@@ -39558,7 +39558,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 857880810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Answer +6000 tokens for reasoning, timeout ≥ 300 s; in the chat reasoning stays as\nconfigured.",
@@ -39602,7 +39602,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qfvEGSvn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGT"
@@ -39630,7 +39630,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1465649990,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[D] audit_known_abbreviations",
@@ -39674,7 +39674,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "R9Yh5aWS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGV"
@@ -39702,7 +39702,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 654366624,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Well-known abbreviations the abbreviation check does not flag.",
@@ -39746,7 +39746,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8ShEW9l6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGX"
@@ -39774,7 +39774,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 224194665,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -39818,7 +39818,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "PYm0tFiL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGZ"
@@ -39846,7 +39846,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1019147097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "config.yaml\nonly",
@@ -39890,7 +39890,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JSqjkd7L"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGb"
@@ -39918,7 +39918,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1622513533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Comma-separated; GOST, RF, API and the like are already included.",
@@ -39962,7 +39962,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xvhpdVme"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGd"
@@ -39990,7 +39990,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1673976711,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_deep",
@@ -40034,7 +40034,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ru9kMveP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGf"
@@ -40062,7 +40062,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 146673239,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Deep review: narrow questions to the model on the process, contradictions,\nfigures, typos.",
@@ -40106,7 +40106,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rKCBoQSK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGh"
@@ -40134,7 +40134,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1940254612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -40178,7 +40178,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "pt9Y0PFi"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGj"
@@ -40206,7 +40206,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1648595060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -40250,7 +40250,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Sr0wUi9u"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGl"
@@ -40278,7 +40278,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 396108871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Dozens of short LLM calls; a medium-sized model handles a narrow question more\nreliably than a review of a whole section.",
@@ -40322,7 +40322,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lb8kzI9r"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGn"
@@ -40350,7 +40350,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 375390170,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_deep_max_calls",
@@ -40394,7 +40394,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aE6zRqY5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGp"
@@ -40422,7 +40422,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1041959316,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "At most this many deep review questions.",
@@ -40466,7 +40466,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "USjt9iID"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGr"
@@ -40494,7 +40494,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1371556573,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "60",
@@ -40538,7 +40538,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ExzzamR2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGt"
@@ -40566,7 +40566,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 691387152,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 300",
@@ -40610,7 +40610,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xQ4LhHRb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGv"
@@ -40638,7 +40638,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1638094993,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 — no limit; the process and figures first.",
@@ -40682,7 +40682,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OdI1WnBy"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGx"
@@ -40710,7 +40710,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1538985619,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_parallel",
@@ -40754,7 +40754,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8QiNKB8L"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bGz"
@@ -40782,7 +40782,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 367628576,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Review requests at the same time: sections, deep review questions, items.",
@@ -40826,7 +40826,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "W1JCnT3V"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bH1"
@@ -40854,7 +40854,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2025769206,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3",
@@ -40898,7 +40898,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "J2tota14"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bH3"
@@ -40926,7 +40926,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1513837548,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -40970,7 +40970,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "b0g39P2E"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bH5"
@@ -40998,7 +40998,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2061583063,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "More is faster; reduce it on 429 answers and timeouts.",
@@ -41042,7 +41042,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mVqN8MMK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bH7"
@@ -41070,7 +41070,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1739737787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_pinned_max_chars",
@@ -41114,7 +41114,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TMYZXv0w"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bH9"
@@ -41142,7 +41142,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1640355855,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Expert rules and system cards per review request (on top of the norms).",
@@ -41186,7 +41186,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XRvWx1Ir"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHB"
@@ -41214,7 +41214,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 252620028,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "20,000 chars",
@@ -41258,7 +41258,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "etELLugb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHD"
@@ -41286,7 +41286,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 44613008,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 60000",
@@ -41330,7 +41330,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "pjWCOq5H"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHF"
@@ -41358,7 +41358,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 315685461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "If they fit — in full, otherwise the fragments closest to the text; 0 — do not pass\nthem.",
@@ -41402,7 +41402,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mfmZKqb6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHH"
@@ -41430,7 +41430,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1067042240,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_systems",
@@ -41474,7 +41474,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GvJL314v"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHJ"
@@ -41502,7 +41502,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 750979183,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What the document requires from each mentioned system — by its card.",
@@ -41546,7 +41546,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "a1ydRCmy"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHL"
@@ -41574,7 +41574,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 558326594,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -41618,7 +41618,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "u5PVHw7P"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHN"
@@ -41646,7 +41646,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1411776787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -41690,7 +41690,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HCP8pSA6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHP"
@@ -41718,7 +41718,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1753654173,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "+1 LLM call per system mentioned in the document at least twice (up to 5 systems).",
@@ -41762,7 +41762,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mrJSeoUM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHR"
@@ -41790,7 +41790,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 961363775,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_basis_docs",
@@ -41834,7 +41834,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "EAmhDJga"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHT"
@@ -41862,7 +41862,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 416336481,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Basis documents: base documents by the references on the title page and in\n“Referenced documents” — in every section check.",
@@ -41906,7 +41906,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cCpOv9EU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHV"
@@ -41934,7 +41934,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1163794768,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "on",
@@ -41978,7 +41978,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ogAIkhRR"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHX"
@@ -42006,7 +42006,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 605109372,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "checkbox",
@@ -42050,7 +42050,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "b7sq22Ni"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHZ"
@@ -42078,7 +42078,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 760685218,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "No LLM calls; what was found — the “📎 Basis documents” block on the tab and the log;\nremove or add there.",
@@ -42122,7 +42122,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jIogvcro"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHb"
@@ -42150,7 +42150,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 325770346,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] audit_basis_max_chars",
@@ -42194,7 +42194,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4HBQuTfw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHd"
@@ -42222,7 +42222,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 836442519,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Fragments of basis documents per review request (on top of the search norms).",
@@ -42266,7 +42266,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QwJjBK4k"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHf"
@@ -42294,7 +42294,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1485312612,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8000",
@@ -42338,7 +42338,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QqyY0Plt"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHh"
@@ -42366,7 +42366,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 169573945,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "0 … 40000",
@@ -42410,7 +42410,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "WwMI9DeE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHj"
@@ -42438,7 +42438,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1742221889,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The fragments closest to the section; 0 — do not pass.",
@@ -42482,7 +42482,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SCAqkh9h"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHl"
@@ -42510,7 +42510,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1368400772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] audit_query_chars",
@@ -42554,7 +42554,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NnGZHfY7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHn"
@@ -42582,7 +42582,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1277480848,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many characters from the start of a section go into the search for norms.",
@@ -42626,7 +42626,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xp4dg1h5"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHp"
@@ -42654,7 +42654,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 300888124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2000 chars",
@@ -42698,7 +42698,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JDk1QkvO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHr"
@@ -42726,7 +42726,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1840864094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 … 6000",
@@ -42770,7 +42770,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8GrhfB92"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHt"
@@ -42798,7 +42798,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 469941871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ embedding input − query prefix (minimum 300).",
@@ -42842,7 +42842,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JWqdf0ot"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHv"
@@ -42870,7 +42870,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1580207623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "◇ [A] audit_context_max_chars",
@@ -42914,7 +42914,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SReMEifI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHx"
@@ -42942,7 +42942,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1348476919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How much norm text from the base (whole parents, in total) goes into the review\nof one document section.",
@@ -42986,7 +42986,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YSYBy8uu"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bHz"
@@ -43014,7 +43014,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 602107349,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9000 chars",
@@ -43058,7 +43058,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mXMevDpb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bI1"
@@ -43086,7 +43086,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 59527035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 … 40000",
@@ -43130,7 +43130,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aR5t6Fnn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bI3"
@@ -43158,7 +43158,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1041012736,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ llm_budget − audit_map_size (minimum 1000). Parents are taken whole in order\nof relevance while the total fits — the rest are dropped (the first one always goes);\nat most top_k. Depending on it: review_context_max_chars.",
@@ -43202,7 +43202,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SVr4i5r2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bI5"
@@ -43230,7 +43230,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 370245411,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Details: five parents of ≈ 2500 chars with headings are ≈ 13,000 > 9000: review gets the 3 most relevant, the 4th and 5th are dropped and do not appear in “Sources used”. Collection stops at the first one that does not\nfit, even if the next is shorter. So raising top_k for review is pointless until this limit is raised: 5 whole parents need ≈ 13,000–13,500. Norms on the verification tab have the same limit.",
@@ -43274,7 +43274,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GlY0wrjw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bI7"
@@ -43302,7 +43302,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 827778871,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] review_top_sections",
@@ -43346,7 +43346,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "IHLsaklC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bI9"
@@ -43374,7 +43374,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 400341366,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many sections of the new revision the model gets per comment.",
@@ -43418,7 +43418,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JXmJzNQS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIB"
@@ -43446,7 +43446,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 134739126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3",
@@ -43490,7 +43490,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "msMvYdHU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bID"
@@ -43518,7 +43518,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1123713241,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 … 8",
@@ -43562,7 +43562,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FhhcChDM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIF"
@@ -43590,7 +43590,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 132355727,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Capped by review_context_max_chars.",
@@ -43634,7 +43634,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Qj2uDhw6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIH"
@@ -43662,7 +43662,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2110166949,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] review_context_max_chars",
@@ -43706,7 +43706,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Pqjokhc9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIJ"
@@ -43734,7 +43734,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2044644468,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Volume of these sections per comment.",
@@ -43778,7 +43778,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gXjxFvBf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIL"
@@ -43806,7 +43806,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2097371417,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "12000 chars",
@@ -43850,7 +43850,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "svnHjSE3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIN"
@@ -43878,7 +43878,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1277731879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1000 … 50000",
@@ -43922,7 +43922,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mXIQ6Rj1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIP"
@@ -43950,7 +43950,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 654381728,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ llm_budget − audit_context_max_chars − 1000 (minimum 1000); the first section\nis always passed.",
@@ -43994,7 +43994,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xLcUBYDV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIR"
@@ -44022,7 +44022,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 342830070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[A] section_embed_chars",
@@ -44066,7 +44066,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "R6F1O5eL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIT"
@@ -44094,7 +44094,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1424728446,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How many characters of a section go into the embedding when matching sections.",
@@ -44138,7 +44138,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MyoPiyip"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIV"
@@ -44166,7 +44166,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1471377781,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4000 chars",
@@ -44210,7 +44210,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "9JrjHEnS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIX"
@@ -44238,7 +44238,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1561846094,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "300 … 8000",
@@ -44282,7 +44282,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "CnsqA2aw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIZ"
@@ -44310,7 +44310,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 903472236,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Auto ≤ embedding input − document prefix (minimum 300).",
@@ -44354,7 +44354,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "eGjl2REF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIb"
@@ -44382,7 +44382,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 799508704,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Other code constants (changed only in the mint/ code): an abbreviation is 2 to 12 characters with at least 2 capitals; a rewritten follow-up question is up to 300 tokens. Other constants are given where they act: the margin and window\nreserves — in the parameter rows above and in the “Tokens and characters” block, the search algorithm (BM25, query expansion, deduplication) — in panel 7.",
@@ -44419,7 +44419,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 616547026,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4. Features of your organisation → what they affect and how to tune",
@@ -44456,7 +44456,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1962821609,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Which starting conditions change MINT's settings. Items marked [T] are compared with a quality check before and after the change.",
@@ -44500,7 +44500,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "dVf9kB9k"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIf"
@@ -44528,7 +44528,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2088773317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Feature of the organisation",
@@ -44572,7 +44572,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "XzQLc990"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIh"
@@ -44600,7 +44600,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 371430628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What it affects in MINT",
@@ -44644,7 +44644,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "szri6thD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIj"
@@ -44672,7 +44672,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1551022416,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How to tune",
@@ -44716,7 +44716,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "m4QFihY8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIl"
@@ -44744,7 +44744,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1559944672,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Size of the base: how many documents and\nfragments",
@@ -44788,7 +44788,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QetrEesZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIn"
@@ -44816,7 +44816,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1353698785,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Does NOT affect fragment sizes, reranker thresholds, prompts. DOES affect: auto top_k\n(panel 3); candidate depth initial_k / bm25_top_k / rerank_top_k (more similar documents —\nthe correct one lower in the list); the “low confidence” thresholds; memory and time (panel\n9).",
@@ -44860,7 +44860,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZvpPM0sN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIp"
@@ -44888,7 +44888,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 264935164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] if the correct fragment is more and more often “> 10” — initial_k 80–100, bm25_top_k 30,\nrerank_top_k 24; recalibrate low_conf_rerank / low_conf_lexical. [M] set top_k explicitly if the\nautomatic choice does not suit you.",
@@ -44932,7 +44932,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rK3SCZeN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIr"
@@ -44960,7 +44960,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 615367536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document structure: Word heading styles",
@@ -45004,7 +45004,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BEPHz0sR"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIt"
@@ -45032,7 +45032,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1078770124,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Without the “Heading 1–3” styles Docling finds no sections (collect_structure): references\ncontain only the file name, the section is not visible in the context or in evaluation.",
@@ -45076,7 +45076,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4hQ7EOs1"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIv"
@@ -45104,7 +45104,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 534052678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Apply the styles in the source files and re-index ♻. MINT does not yet recognise numbered headings\nin the normal style.",
@@ -45148,7 +45148,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "uYakcDKS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIx"
@@ -45176,7 +45176,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 627211998,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Section length: short clauses of\nregulations or long descriptions",
@@ -45220,7 +45220,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4epp27sJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bIz"
@@ -45248,7 +45248,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 14662260,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A parent covers several short clauses — precise questions “drown” in the neighbouring text;\nlong coherent descriptions, on the contrary, lack context.",
@@ -45292,7 +45292,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cjtPzMIw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJ1"
@@ -45320,7 +45320,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1968254771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] on a copy of the base ♻: short clauses and precise questions — parent_size 1500–2000; long\ndescriptions — 3000–3500 (if the LLM window allows: MINT will not go above the ceiling). Compare\nwith --compare.",
@@ -45364,7 +45364,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ZPqaoaaq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJ3"
@@ -45392,7 +45392,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 654915491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Many tables: requirement matrices, SLAs,\nlists",
@@ -45436,7 +45436,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mtXAzR0l"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJ5"
@@ -45464,7 +45464,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1089077115,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "A large table is split into parts with the header repeated; some of them may not get into\nthe context (max_table_parts).",
@@ -45508,7 +45508,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "CiVk46lr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJ7"
@@ -45536,7 +45536,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1602556528,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] max_table_parts 3–4 if questions are often about tables; [T] add such questions to the eval\nset and watch hit@K.",
@@ -45580,7 +45580,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "JJXTLsbm"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJ9"
@@ -45608,7 +45608,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 783425099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Many abbreviations and internal system\nnames",
@@ -45652,7 +45652,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0bcpbK9F"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJB"
@@ -45680,7 +45680,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 95246893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embeddings do not know internal names — BM25 and the glossary find them.",
@@ -45724,7 +45724,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "nFpFRJZL"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJD"
@@ -45752,7 +45752,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 972256512,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] glossary.json for abbreviations that are not in the documents (step 4, panel 5); [T] if “BM25\nonly” is clearly better than “dense only” — weight_bm25 1.3–1.5.",
@@ -45796,7 +45796,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "aPcPZ3ZV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJF"
@@ -45824,7 +45824,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1625194138,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Several revisions of one document in the\nbase",
@@ -45868,7 +45868,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "rke4V9Z2"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJH"
@@ -45896,7 +45896,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1520934252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Duplicates take places in top_k; deduplication removes only identical fragments; the model\nmay cite an outdated revision.",
@@ -45940,7 +45940,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2Huprek4"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJJ"
@@ -45968,7 +45968,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1540048065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] keep only current revisions in the base (delete old ones); put the revision number into file\nnames; otherwise [T] a higher top_k.",
@@ -46012,7 +46012,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "mr2hhwza"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJL"
@@ -46040,7 +46040,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 510192253,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How users ask: terms, long situations,\ndialogue",
@@ -46084,7 +46084,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6yCpVX8X"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJN"
@@ -46112,7 +46112,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1606133978,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Short terms and codes are better found by BM25; long “in my own words” questions — by\nvector; follow-ups like “and for the second circuit?” need the history.",
@@ -46156,7 +46156,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xaqkwxoU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJP"
@@ -46184,7 +46184,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 530676326,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[T] weights weight_dense / weight_bm25, use_multi_query for vague questions; [C]\nchat_history_turns 0 / 2 / 3. The eval question set — from real requests.",
@@ -46228,7 +46228,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NvU91P3P"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJR"
@@ -46256,7 +46256,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 487607499,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Language of documents: Russian, English,\nmixed",
@@ -46300,7 +46300,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wHJUEh9T"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJT"
@@ -46328,7 +46328,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 280621587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "BM25 reduces words to stems with a Russian (Snowball) or English (Porter2) stemmer — word\nby word; codes are matched exactly; semantic search depends on the embedding model.",
@@ -46372,7 +46372,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YGNPJZLK"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJV"
@@ -46400,7 +46400,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1446958055,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] a multilingual embedding model (Qwen3-Embedding, bge-m3, multilingual-e5) ♻ — changing the\nmodel requires re-indexing; MINT_LANG — language of the interface, prompts and reports; “Detect\nfrom server” — after uploading documents in another language.",
@@ -46444,7 +46444,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "A3VbvHOr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJX"
@@ -46472,7 +46472,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 790586243,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Requirements for answers: strictness,\nlength, references",
@@ -46516,7 +46516,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "olOEEW57"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJZ"
@@ -46544,7 +46544,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 678611114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Strictness — temperature; length — max_tokens (room for the answer is taken from the\ncontext, panel 2).",
@@ -46588,7 +46588,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "nif5GKNP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJb"
@@ -46616,7 +46616,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1773312818,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] temperature 0–0.2; max_tokens — by the length of a typical answer; [file, section] references\n— in CHAT_SYSTEM_PROMPT / CHAT_SYSTEM_PROMPT_EN; check_citations() marks references outside the\ncontext with ⚠.",
@@ -46660,7 +46660,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "f6ZSVG0d"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJd"
@@ -46688,7 +46688,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2053407093,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Your models: LLM window, embedding and\nreranker inputs, reasoning",
@@ -46732,7 +46732,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "nKirlDDF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJf"
@@ -46760,7 +46760,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2046886815,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "They determine all [A] parameters through the ceilings (panels 1–2); reasoning models also\nspend max_tokens on <think> (strip_reasoning removes the reasoning from the answer).",
@@ -46804,7 +46804,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6quyBIpz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJh"
@@ -46832,7 +46832,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 493637255,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[C] reasoning models: max_tokens 3000–4000 (otherwise the answer breaks off — “Answer truncated”),\nllm_timeout 150–180; a new embedding model ♻ — re-indexing (kb_document_status shows it).",
@@ -46876,7 +46876,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Whg2uJVz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJj"
@@ -46904,7 +46904,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 735517270,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Corporate gateway: request limits,\ntimeouts, TLS",
@@ -46948,7 +46948,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "MT9HwudP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJl"
@@ -46976,7 +46976,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 110204035,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "HTTP 400 from the reranker on large batches, 429 / 504 under load, an own certificate.",
@@ -47020,7 +47020,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wHB1bvqa"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJn"
@@ -47048,7 +47048,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1084664135,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] rerank_max_docs, rerank_char_budget; llm_timeout, llm_retries; CA_BUNDLE_PATH.",
@@ -47092,7 +47092,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "8U1HALtx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJp"
@@ -47120,7 +47120,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 309098810,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "System reference: what they can do, plans,\nlimitations",
@@ -47164,7 +47164,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "6oJOpN2T"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJr"
@@ -47192,7 +47192,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 395073400,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Without system cards the review does not know what the systems can do and cannot check what\nthe document requires from a system (answer_system) or whether it contradicts the system's\nlimitations.",
@@ -47236,7 +47236,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "x8oE9iDW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJt"
@@ -47264,7 +47264,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 773450909,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] a card draft from the base — the “Draft a system card from the base” button\n(draft_system_card): the expert checks it, fills the gaps and loads it into the base marked\n“System cards”; [C] audit_pinned_max_chars if there are many cards.",
@@ -47308,7 +47308,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xK80JN1q"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJv"
@@ -47336,7 +47336,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1392233615,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document review rules: criteria,\nchecklists, document size",
@@ -47380,7 +47380,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "czYavJG7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJx"
@@ -47408,7 +47408,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1695888370,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Criteria and checklists define what review looks for; the section size — the level of\ndetail and the number of LLM calls.",
@@ -47452,7 +47452,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "7aF5lt8T"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bJz"
@@ -47480,7 +47480,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 46699943,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] general criteria — the field on the “Document review” tab (default DEFAULT_AUDIT_FOCUS /\nDEFAULT_AUDIT_FOCUS_EN), checklists by document type — checklists.yaml (a file outside the program\nfolder — its path in MINT_CHECKLISTS); points that matter for a particular document — in the\n“Special attention” field; [C] audit_map_size and use_self_critique — on a live check (step 9,\npanel 5).",
@@ -47524,7 +47524,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "E2wkCdTi"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bK1"
@@ -47552,7 +47552,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 617919983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Load: number of simultaneous users",
@@ -47596,7 +47596,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wPF47zXy"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bK3"
@@ -47624,7 +47624,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1019183681,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "All sessions share the LLM gateway; document parsing and writes to the base run one at a\ntime (panel 6).",
@@ -47668,7 +47668,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "sUCfOE72"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bK5"
@@ -47696,7 +47696,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2071282458,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "[M] gateway limits and llm_retries; upload large batches of documents outside peak hours.",
@@ -47733,7 +47733,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1910823580,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5. Setting it up at your place",
@@ -47770,7 +47770,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1773778854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Steps 6–8 are repeated when: the base has doubled, a new type of documents, another embedding model or reranker, parent_size / child_size changed.",
@@ -47818,7 +47818,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OHqPyssy"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bK9"
@@ -47846,7 +47846,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 388444572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1. Connections\n.env: addresses, keys,\nmodels, KB_DIR,\ncertificate.\ncheck_install.py\nwithout errors; no red\nerrors in the sidebar,\nthe reranker is\n“available” or “not\nconnected”.",
@@ -47898,7 +47898,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "K4oBG4pf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKB"
@@ -47926,7 +47926,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1483643020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2. Model limits\n“Models and limits” →\n“Detect from server”.\nWhat the server does\nnot report — into\nconfig.yaml (models).\nCheck “Computed by\nMINT” and the warnings.",
@@ -47978,7 +47978,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BdlWkpK7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKD"
@@ -48006,7 +48006,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2081139234,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "3. Documents\nUpload. Upload\nmessages: “Headings\nrecognised: N” (0 — no\nstyles, panel 4),\n“Skipped … chunks” — an\nembedding failure.",
@@ -48058,7 +48058,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "eYBYdufU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKF"
@@ -48086,7 +48086,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1730295219,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "4. Abbreviations\nThe “Abbreviations”\nlist in the sidebar:\ninaccurate expansions\nand missing\nabbreviations — into\nglossary.json.",
@@ -48138,7 +48138,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Qrgoxrr6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKH"
@@ -48166,7 +48166,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 238394071,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "5. Question set\nThe “Quality check”\nbutton in the sidebar:\nMINT writes a draft —\nreword it, add real\nquestions and 5–10\nwithout an answer in\nthe base. 40–60 in\ntotal.",
@@ -48218,7 +48218,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HnAaJNzj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKJ"
@@ -48246,7 +48246,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1481069539,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "6. Baseline\n“Run the check” →\nresults on the page;\nreport.md, details.csv,\nsummary.json — in\nLOG_DIR/eval (from the\nconsole —\neval_search.py\nquestions.csv).",
@@ -48298,7 +48298,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hcvo70Qf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKL"
@@ -48326,7 +48326,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 677932053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "7. Tuning from the\n   report\n“What to change” →\n“Apply to this\nsession”; keep it in\nconfig.yaml:\nweight_rerank, dense /\nBM25 weights, low_conf\nthresholds, top_k,\nmulti-query.",
@@ -48378,7 +48378,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKN"
@@ -48406,7 +48406,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1748425513,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8. Check\nThe next check is\ncompared with the last\none (▲▼; from the\nconsole — --compare):\nMRR and hit@K went up,\nfalse alarms did not;\nthe difference is not\nchance (p < 0.05).",
@@ -48454,7 +48454,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VcFofqcU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKP"
@@ -48482,7 +48482,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1073950771,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9. Live check\n15–20 chat answers;\n   review of 3–5\n   documents with known\n   findings;\n   verification — pairs\n   of revisions. Adjust\n   the [C] parameters.",
@@ -48521,7 +48521,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1415909849,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48585,7 +48585,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1884439373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48649,7 +48649,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 280981308,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48713,7 +48713,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 599665469,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48777,7 +48777,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1718604913,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48841,7 +48841,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 517582091,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48905,7 +48905,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 67617651,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -48969,7 +48969,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 912674016,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49038,7 +49038,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "kTEV6qmE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKZ"
@@ -49066,7 +49066,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1004023954,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "How the quality check works — mint/evaluation.py: the “Quality check” button in the sidebar and eval_search.py from the console (the same search code as in chat; the base and services are real; the LLM only writes the draft questions, chat\nanswers and multi-query)\ngenerate_questions(): per fragment — a question in the fragment's language and a verbatim quote → the question table: edits, your own questions; rows_to_questions() and markup_problems() — labels that can never be counted → request_cache()\n(each service request once for all variants) → build_configs(): dense only, BM25 only, hybrid, hybrid + reranker 0.35 / 0.7 / 1 / 1.5 / 3 → run_question(): search_parent_child() to depth 10 + diagnostics at top_k → is_relevant(): file +\nsection (in the path or as a heading inside the fragment) + phrase → metrics(): hit@1, hit@3, hit@K, MRR, false alarms → paired() + sign_test_p(): on how many questions configurations differ and whether the difference is chance (sign test) →\ncalibrate(): the threshold by the same rule as in search (is_low_confidence) → check_answers() optionally (1–3 times): the chat answer (answer_question), a reference to the right document, references outside the fragments found, false and\nhonest “no information” (chat_no_info), a search or a model error; compare_answers() — with the previous answer check, question by question and by prompt version → recommendations(): what to change → save_run(): report.md, details.csv\nwithout empty cells, summary.json, questions.csv — in LOG_DIR/eval.",
@@ -49103,7 +49103,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 762279921,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "6. Internals: adding documents to the base",
@@ -49140,7 +49140,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1393306350,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The sidebar's document upload → process_and_add_to_kb() for each file. Embeddings are computed without locking the base; merging and writing — under kb_write_lock().",
@@ -49188,7 +49188,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YFFEv8aP"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKd"
@@ -49216,7 +49216,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 490539631,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parse_document()\nby extension: .docx — docling_convert()\n(one DocumentConverter per process, one at\na time); .pdf — parse_pdf() without\nmodels; .md, .txt — parse_markdown(),\nparse_plain_text().",
@@ -49268,7 +49268,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YGSyNfpa"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKf"
@@ -49296,7 +49296,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 850818247,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "collect_structure()\nwalks iterate_items(): section_header /\ntitle → heading stack, heading_path_str();\ntable → markdown and caption; headers,\nfooters and pictures are skipped. On\nfailure → collect_structure_flat() without\nheadings.",
@@ -49348,7 +49348,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "85LG5t8G"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKh"
@@ -49376,7 +49376,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 528676536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "build_parent_chunks()\ntext as one stream with “## headings” →\nsplit_with_overlap_pos(parent_size ♻,\nparent_overlap ♻; cuts at a paragraph,\nline, sentence, word; a heading stays with\nits text) → children in each parent\n(child_size ♻, child_overlap ♻); a child's\nheading path — by its position (bisect).\nTables: clean_table_markdown() →\nsplit_table_markdown() by rows with the\nheader repeated.",
@@ -49428,7 +49428,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xCWMjzd9"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKj"
@@ -49456,7 +49456,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 799495283,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "index_parsed_document()\nembedding input = embed_doc_prefix ♻ +\nheading path + child →\nget_query_embeddings_batch() (in batches\nof embed_batch_size; _embed_input() cuts\nto embed_input_max_chars) →\nl2_normalize().",
@@ -49508,7 +49508,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKl"
@@ -49536,7 +49536,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1059699661,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Write under kb_write_lock()\nre-read the base, remove the previous\nversion of the file, check the vector\ndimension → IndexFlatL2 → _commit_kb():\ntemporary folder + os.replace →\nsave_bm25_index() →\nrebuild_auto_glossary()\n(extract_abbreviations →\nbuild_auto_glossary).",
@@ -49575,7 +49575,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1810995622,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49639,7 +49639,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1844155297,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49703,7 +49703,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 700700824,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49767,7 +49767,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1502999695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -49836,7 +49836,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bLsTZZL7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKr"
@@ -49871,7 +49871,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TtHTZQoz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKs"
@@ -49899,7 +49899,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 445824178,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_index.faiss\nchild vectors, normalised\n(cosine search)",
@@ -49943,7 +49943,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GpCYCPYT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKu"
@@ -49971,7 +49971,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1185537876,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child_metadata.pkl\nparent_id, source, page, text\nchild",
@@ -50015,7 +50015,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "enmiaBPB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKw"
@@ -50043,7 +50043,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1964228610,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parent_store.json\nparent text, heading_path, type,\nsection, page",
@@ -50087,7 +50087,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HiSCTsUS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bKy"
@@ -50115,7 +50115,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2709796,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl\nword stems, positions; format\nsignature (otherwise rebuilt)",
@@ -50159,7 +50159,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KsyqIjrE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bL0"
@@ -50187,7 +50187,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 55632841,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json\nabbreviations from documents",
@@ -50231,7 +50231,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "S5yCJ6Rf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bL2"
@@ -50259,7 +50259,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 641056343,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "manifest.json\nembed_model, embed_dim, prefix,\nparent / child for each document",
@@ -50303,7 +50303,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "pI8keL7f"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bL4"
@@ -50331,7 +50331,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 429688919,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "sources/\noriginal documents for\nre-indexing",
@@ -50368,7 +50368,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 736231461,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Store — the KB_DIR folder",
@@ -50412,7 +50412,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "KDfcYhTI"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -50474,7 +50474,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 990097690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "write",
@@ -50518,7 +50518,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jksG97Di"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bL9"
@@ -50546,7 +50546,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1090333905,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Maintaining and reading the base\n• kb_document_status(): compares the manifest with the current settings — “another embedding model” (vector search over the document does not work) or “other chunking / uploaded before v18”.\n• reindex_documents(): from sources/; if the vector dimension changed — _clear_kb_index() and a full rebuild. delete_document_from_kb() — removal together with the original.\n• load_kb_snapshot(): cache by file modification time, a short read lock; normalized_index() normalises an old base in memory. load_bm25_for(): rebuild when the format or the set of fragments changes. load_glossary(): glossary.json wins over\n   the auto-glossary, the old v17 format is understood.",
@@ -50583,7 +50583,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1574166414,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "7. Internals: search_parent_child() and the chat answer",
@@ -50620,7 +50620,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1825086887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The steps are shared by chat, review (build_norms_context) and verification of fixes; the LLM answer — only in chat. Parameters are named — values and categories are in the reference (panel 3).",
@@ -50668,7 +50668,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "LFZ5YJTJ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLD"
@@ -50696,7 +50696,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1139278013,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "User question",
@@ -50748,7 +50748,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0Wz9qm3a"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLF"
@@ -50776,7 +50776,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 745856269,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "chat_history() + condense_question()\nchat only: the last chat_history_turns\n“question — answer” pairs; a follow-up → a\nself-contained question (CONDENSE_SYSTEM).",
@@ -50832,7 +50832,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "EIeLaNmx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLH"
@@ -50860,7 +50860,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1920183696,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "analyze_query()\nquestions “what is X”, “components of X” and\ntheir Russian forms (up to 300 chars): subject\nX → exact-phrase boost; expansion words ×0.3,\nsubject words +0.5 — in BM25 only.\nexpand_query_multi() — if use_multi_query.",
@@ -50912,7 +50912,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "dkubhVHg"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLJ"
@@ -50940,7 +50940,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1432856654,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Vector: _query_vector()\nembed_query_prefix + question → embedding → l2_normalize() →\nFAISS search: initial_k children → their parents; best_child —\nthe text for the reranker. No embedding or another dimension —\nthe channel is off, BM25 works.",
@@ -50992,7 +50992,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "5t357I7T"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLL"
@@ -51020,7 +51020,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1506396127,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Words: LightweightBM25.get_scores()\nword stems (russian_stem — Cyrillic words from 5 letters,\nenglish_stem — Latin words from 4 letters), without stop and\nquestion words (EN and RU); + Glossary.bm25_terms() ×0.5; k1\n1.5, b 0.75, IDF ≥ 0.25; exact phrase +10 (up to 8 words);\nquestion words close together (≤ 3, up to 12 significant\nwords) +2 → bm25_top_k.",
@@ -51076,7 +51076,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "SQkMkF4W"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLN"
@@ -51104,7 +51104,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 283789755,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "RRF fusion\ncontribution of a list = weight /\n(rrf_constant + place): weight_dense,\nweight_bm25 → rerank_top_k candidates.",
@@ -51143,7 +51143,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1541396449,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51207,7 +51207,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 62209716,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51271,7 +51271,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 788600749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51335,7 +51335,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 478970563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51399,7 +51399,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1416376628,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51463,7 +51463,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 397319003,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -51540,7 +51540,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "D8WukJ2o"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLV"
@@ -51568,7 +51568,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 424299482,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker (if RERANK_API_URL is set)\nGlossary.enrich_query(); rerank_document(): file name and section + the\nchild with its surroundings (passage_around) or the window densest in\nquestion words (best_window), up to rerank_doc_max_chars →\nrerank_scores(): all candidates in batches (rerank_max_docs,\nrerank_char_budget); if some batches fail, no scores are used. Vote:\nscore ≥ min_rerank_score → + weight_rerank / (rrf_constant + place).",
@@ -51624,7 +51624,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "cFQB4gvA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLX"
@@ -51652,7 +51652,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 229726974,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Select top_k\nno duplicates (file + first 80\nchars); at most max_table_parts parts\nof one table.",
@@ -51704,7 +51704,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "xqa2LSkF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLZ"
@@ -51732,7 +51732,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1518067034,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Context\nmerge_adjacent(): neighbouring fragments of one document — one\nblock in text order; _source_header(): file | section at the\nstart of the fragment | further in the fragment\n(inner_headings, up to 8) | table | page; focus_passage():\nlonger than smart_truncate_chars — around the match. The\nsource list shows the section where the match is (section_at).",
@@ -51784,7 +51784,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLb"
@@ -51812,7 +51812,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 263487114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The “low confidence” signal\nis_low_confidence(): with a reranker — its best score <\nlow_conf_rerank; without one — share of question words in the\ncontext < low_conf_lexical and dense and BM25 did not agree in\nthe top low_conf_agree_top → LOW_CONFIDENCE_NOTE at the start\nof the context.",
@@ -51864,7 +51864,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "CsHZMLD0"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLd"
@@ -51892,7 +51892,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1704890157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Answer (chat)\nGlossary.reference_block() up to\nglossary_max_entries; chat_user_content();\nask_llm(chat_system_prompt() — EN / RU, history):\ntemperature, max_tokens; strip_reasoning()\nremoves <think>; finish_reason = length → “answer\ntruncated” mark; check_citations(): [file,\nsection] references are checked against the\ncontext, wrong ones — ⚠ and a warning under the\nanswer.",
@@ -51931,7 +51931,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 278693230,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52003,7 +52003,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1580135453,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52067,7 +52067,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 619172898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52131,7 +52131,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 532260690,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52195,7 +52195,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 319777839,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52259,7 +52259,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1021795599,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -52321,7 +52321,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 295458663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The reranker with a dashed frame is optional: without it the order is set by the “Vector”, “Words” and “RRF fusion” steps. Word normalisation (normalize_token: russian_stem / english_stem) is shared by the BM25 index, the query and the glossary.",
@@ -52358,7 +52358,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 559478248,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "8. Internals: document review, verification of fixes and the system card draft",
@@ -52395,7 +52395,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1151731663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "The “Document review” and “Verification of fixes” tabs, the card draft button on the sidebar. How many service calls go into a section, a comment and a card — panel 9.",
@@ -52432,7 +52432,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1558299979,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "DOCUMENT REVIEW — the “Document review” tab, settings — the “⚙️ Review settings” block on it",
@@ -52480,7 +52480,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gP899Gls"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLp"
@@ -52508,7 +52508,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1830369373,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "run_audit()\naudit_cfg():\naudit_reasoning — without\nthe reasoning switch-off,\nmax_tokens + 6000, timeout\n≥ 300 s; reasoning_on() —\nthe switch-on in the\nrequest. record_answers():\nevery model request and\nanswer word for word.",
@@ -52560,7 +52560,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OVU8BgUp"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLr"
@@ -52588,7 +52588,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1575129948,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document_to_markdown()\n.docx — Docling →\nexport_to_markdown() →\nclean_docling_markdown()\n(duplicates of merged\ncells) →\ncompact_markdown_tables()\n(no padding); .pdf —\nparse_pdf() →\nblocks_to_markdown().",
@@ -52640,7 +52640,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yySnDpUF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLt"
@@ -52668,7 +52668,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1190851160,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "split_document_parts()\nby section: a heading with\nits text and tables; small\nones together up to\naudit_map_size, a section\nup to 1.5 limits — whole;\na large table — by rows\nwith the header.\ndocument_mode(): the whole\ndocument if it fits into\nthe window, otherwise\ndocument_outline(). “The\nwhole document in one\nrequest” —\nwhole_document_part().",
@@ -52720,7 +52720,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zrMh2SeF"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLv"
@@ -52748,7 +52748,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1906022995,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Norms\n“special attention” →\nspecial_focus_norms(): one\nsearch per review, up to 2\nparents (low confidence —\nnone). For a section\nbuild_norms_context():\nsmart_truncate(section,\naudit_query_chars) →\nsearch_parent_child() →\nnorms for special\nattention first, then for\nthe section; whole parents\nup to\naudit_context_max_chars;\nnone — NO_NORMS_NOTE.\nselect_pinned(): expert\nrules and cards — up to\naudit_pinned_max_chars.\nbasis_references() →\nfind_basis_documents():\nbasis documents by code\nand title — their\nfragments closest to the\nsection up to\naudit_basis_max_chars.",
@@ -52800,7 +52800,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "kafNxSVO"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLx"
@@ -52828,7 +52828,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2141418060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "MAP\naudit_section(): the whole\ndocument or the outline +\nlocation_line() + the part\n→ ask_llm() →\nparse_findings()\n(sub-items stay in their\nfinding) →\nfinding_from_line(); with\nthe outline —\nverify_absence(). Sections\n— in parallel\n(audit_parallel).",
@@ -52880,7 +52880,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "j12eG9nh"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bLz"
@@ -52908,7 +52908,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1909089081,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Self-critique\nuse_self_critique:\ncritique_findings() —\nCRITIQUE_SYSTEM, the whole\ndocument + “special\nattention” (such findings\nare dropped only when\nrefuted) → JSON {verdict,\nseverity, category,\nquote}; the quote is\nchecked by\nquote_in_text().",
@@ -52960,7 +52960,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "GJ96ZiuZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bM1"
@@ -52988,7 +52988,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 458806166,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Deep review\n_run_deep():\nfind_processes() — steps\nfrom a table of\noperations, a list of\nsteps or “Step N”\nsubsections →\nbuild_deep_tasks() →\nlimit_tasks(): at most\naudit_deep_max_calls →\nrun_tasks(): pairs of\nsteps, requirements,\nboundaries, claims of\nparts → conflict_tasks():\ncontradictions; figures —\nquantity_calculations();\ntypos.",
@@ -53040,7 +53040,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bM3"
@@ -53068,7 +53068,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1967309312,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Passes 2–3\n_run_passes()\n(audit_passes): the\nsections and the\nPASS_DEEP_KINDS questions\nonce more at temperature ≥\nPASS_TEMPERATURE (0.4);\norigins get “#p2”, “#p3”:\nwhat several passes found\ncounts as corroborated.",
@@ -53107,7 +53107,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1302374772,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53171,7 +53171,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 989291074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53235,7 +53235,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2123838774,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53299,7 +53299,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1271288365,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53363,7 +53363,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1487354759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53427,7 +53427,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 900965996,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53491,7 +53491,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 442574064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -53568,7 +53568,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "yKseTRwq"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMC"
@@ -53596,7 +53596,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1738418226,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Items\nfound_so_far_block():\nfindings of the other\nchecks (up to 12 000\nchars) →\nanswer_focus_point():\n“special attention” and\nthe checklist — an answer\nfrom the document, new\nfindings, “unclear from\nthe document”;\nanswer_system(): what the\ndocument requires from a\nsystem with a card\n(audit_systems).",
@@ -53648,7 +53648,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tX38AYgs"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bME"
@@ -53676,7 +53676,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1466250251,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Retry and checks without\nthe model\n_recheck(): sections the\nmodel did not answer —\nonce more with\nretry_timeout().\ncheck_abbreviations(),\ncheck_formatting() —\nbefore the section checks;\nunverified_refs() and\ncheck_citations():\nreferences and figures of\nfindings — in the document\nand the norms.",
@@ -53728,7 +53728,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "wnbtzw0P"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMG"
@@ -53756,7 +53756,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1611850607,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "REDUCE: duplicates\nmodel_findings() →\ncollect_unique_findings()\n(stems ≥ 80 %, in the\npieces of one section —\nsection_runs() — ≥ 40 %;\nsteps_conflict() —\ndifferent steps are not\njoined) → clean_typos()\n(without the model) →\nmerge_duplicate_findings()\n(audit_merge_duplicates,\n+1 call): findings of one\nanswer and about different\nsteps are not merged.",
@@ -53808,7 +53808,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Ejv9n8MW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMI"
@@ -53836,7 +53836,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 333788272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Sections\nsplit_minor_findings():\nmain, minor, typos →\ngroup_by_section(): by\ndocument section, in\ndocument order;\ncorroboration() — how many\nchecks found the finding.",
@@ -53888,7 +53888,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "16VaL3EV"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMK"
@@ -53916,7 +53916,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1210471730,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "“Key points”\nsummary_candidates() →\nselect_summary()\n(audit_summary_max, +1\ncall): an editor model\npicks what matters and\nwrites the gist in a line\nwith a pointer to the\nnumber; no answer —\n_summary_fallback(): by\ncorroboration and\nseverity.",
@@ -53968,7 +53968,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "emnEvmko"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMM"
@@ -53996,7 +53996,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2128766942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Report and log\nbuild_final_report(): “Key\npoints”, findings by\nsection, answers to items,\nsystems;\naudit_log_markdown(): the\nlog with the run settings;\nraw_answers_markdown():\nraw model answers .md.",
@@ -54048,7 +54048,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMO"
@@ -54076,7 +54076,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1345748601,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document with findings\nannotate_docx_with_findings():\n_locate_by_quote() →\n_isolate_range() →\nadd_comment(); without a\nquote — _locate_by_words()\n(≥ 2 words and ≥ 30 %,\nunambiguous); otherwise —\na list at the start of the\ndocument.",
@@ -54124,7 +54124,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TZYNSf5h"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMQ"
@@ -54152,7 +54152,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 919886983,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Comparison with a\nreference\ncompare_with_reference():\nthe model matches each\nreference item against the\nreview findings — the same\nplace and substance:\nfound, partial, missed; in\nbatches, missing ones are\nasked again →\nreference_markdown().",
@@ -54191,7 +54191,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1976364314,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54255,7 +54255,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2103868351,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54319,7 +54319,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1437884666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54383,7 +54383,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1495516759,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54447,7 +54447,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 573772488,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54511,7 +54511,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2132548085,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54575,7 +54575,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1205195099,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54639,7 +54639,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2099732778,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -54709,7 +54709,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 91742678,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "VERIFICATION OF FIXES — the “Verification of fixes” tab",
@@ -54757,7 +54757,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Zar9Y3LN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMb"
@@ -54785,7 +54785,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 804496879,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "document_to_markdown() →\nsplit_into_sections()\nthe new revision of the document,\nsections up to audit_map_size.",
@@ -54837,7 +54837,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2Yvbu1dU"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMd"
@@ -54865,7 +54865,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 419436533,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "build_section_index()\nsection embeddings (up to\nsection_embed_chars) +\nLightweightBM25 over sections; once\nper document.",
@@ -54917,7 +54917,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "p2ERzJbS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMf"
@@ -54945,7 +54945,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 762571332,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "verify_remark(): matching\nnorms — build_norms_context() (the\n“knowledge base” checkbox);\npick_sections_for_remark(): cosine +\nBM25 + reranker (best_window), RRF →\nreview_top_sections sections up to\nreview_context_max_chars.",
@@ -54997,7 +54997,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4iAX8TvS"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMh"
@@ -55025,7 +55025,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1433573942,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "review_prompt() → ask_llm()\nJSON {status, quote, comment}.",
@@ -55077,7 +55077,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMj"
@@ -55105,7 +55105,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 285805235,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parse_verification()\n“fixed” and “partially” count only if\nquote_in_text() found the quote in\nthe sections; otherwise “could not be\nverified”.",
@@ -55153,7 +55153,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "79AfqqOw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMl"
@@ -55181,7 +55181,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 49769556,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "build_matrix_markdown() /\ngenerate_word_matrix()\nverification matrix .md and .docx.",
@@ -55220,7 +55220,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1192375867,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55284,7 +55284,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1912741177,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55348,7 +55348,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1753808393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55412,7 +55412,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1209698496,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55476,7 +55476,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 649390567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -55538,7 +55538,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 769097572,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Service errors do not turn into “clean”: is_llm_error() — the section goes to “could not be reviewed”, the report is marked “review incomplete”. The report and the section log are kept in the session and survive downloads.",
@@ -55575,7 +55575,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 139838873,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "SYSTEM CARD DRAFT — the “Draft a system card from the base” button in the “For the review” block of the sidebar (mint/cards.py)",
@@ -55623,7 +55623,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "i74dH3Hk"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMu"
@@ -55651,7 +55651,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 539470164,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "draft_system_card()\nthe card sections CARD_SECTIONS (10:\nnames, purpose, services, limits,\ndata protection and storage, plans,\nlimitations, connection,\nrequirements) — in parallel, at most\nCARD_PARALLEL and audit_parallel.",
@@ -55703,7 +55703,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jJ9GWsBf"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMw"
@@ -55731,7 +55731,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 912697281,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "ask_section()\nits own search query per section →\nsearch_parent_child(): CARD_TOP_K\nfragments, without multi-query;\nnothing found — the section is empty,\nno LLM call.",
@@ -55783,7 +55783,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "vy0q1Yfx"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bMy"
@@ -55811,7 +55811,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 667925749,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "ask_llm()\ncard_section_system: only from the\nfragments, every fact with [Source:\nfile, section]; no information — “NOT\nIN THE BASE”.",
@@ -55863,7 +55863,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gnjGhy5q"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bN0"
@@ -55891,7 +55891,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 897888917,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "check_citations()\na fact without a reference or with a\nreference outside the found fragments\n— marked “⚠️ check”.",
@@ -55943,7 +55943,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bN2"
@@ -55971,7 +55971,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 854319438,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "card_markdown()\nthe card from the template: “Names:”\n(the review recognizes the system in\na document by them), a “draft” mark,\nthe CARD_LAYOUT sections, gaps “not\nin the base”, sources — source_name()\nwithout search scores → download .md.",
@@ -56019,7 +56019,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zp8qPU8V"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bN4"
@@ -56047,7 +56047,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 505414483,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Expert\nchecks the facts against the sources,\nfills the gaps (limitations, plans\nwith dates), removes the mark → loads\nthe card into the base → marks it in\n“System cards”: the review takes it\ninto every check.",
@@ -56086,7 +56086,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1045373394,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56150,7 +56150,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 787637507,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56214,7 +56214,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 675627666,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56278,7 +56278,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1128558142,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56342,7 +56342,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1337792537,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -56404,7 +56404,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1511860888,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "9. Service calls and load",
@@ -56441,7 +56441,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1742391837,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "For sizing the gateway for your number of users and document volume. All services are an OpenAI-compatible HTTP API.",
@@ -56485,7 +56485,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "zrn6omfM"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bND"
@@ -56513,7 +56513,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1445141011,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LLM — POST {LLM_API_URL}/chat/completions\n• ask_llm(): chat answer, condense_question(); in review — MAP,\n   critique_findings(), the deep review, items, merge_duplicate_findings(),\n   select_summary(), compare_with_reference(); verify_remark() in\n   verification; draft_system_card() — a call per card section; --generate in\n   eval\n• expand_query_multi() — if use_multi_query\n• _llm_prompt_tokens() — measuring “characters per token” (max_tokens = 1)\n• GET {LLM_API_URL}/models — detect_server_info(): model list and windows\n   (panel 1)\nRetries — llm_retries (panel 3); HTTP 429 — a shared pause for all threads\n(_note_rate_limit(), Retry-After), _wait_rate_limit() before every request.",
@@ -56557,7 +56557,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ITaNoM1N"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNF"
@@ -56585,7 +56585,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 886368424,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embeddings — POST {EMBED_API_URL}\n• get_query_embedding(): the question, a document section in review, a\n   comment in verification\n• get_query_embeddings_batch(): indexing (in batches of embed_batch_size) and\n   build_section_index()\n• in search up to 3 attempts with a 2 s pause\n• GET …/models next to EMBED_API_URL — the model input (panel 1)",
@@ -56629,7 +56629,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "pBGwmcpp"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNH"
@@ -56657,7 +56657,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1849075733,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker — POST {RERANK_API_URL} (optional)\n• _rerank_request() via rerank_scores(): search and\n   pick_sections_for_remark()\n• in batches (rerank_max_docs, rerank_char_budget)\n• no retries: an error → search without the reranker (the log shows the HTTP\n   code and the batch size)\n• probe_reranker() — connection check in the sidebar (cached for 5 min)\nResponse: {results: [{index, relevance_score}]} or [{index, score}].",
@@ -56701,7 +56701,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "lUPSXlwW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNJ"
@@ -56729,7 +56729,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 263174842,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Operation",
@@ -56773,7 +56773,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bLWf2x3k"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNL"
@@ -56801,7 +56801,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 867626584,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "LLM",
@@ -56845,7 +56845,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "0u9rPgsT"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNN"
@@ -56873,7 +56873,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 607210338,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Embeddings",
@@ -56917,7 +56917,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "VD7ZOtdC"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNP"
@@ -56945,7 +56945,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1335103564,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Reranker",
@@ -56989,7 +56989,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "G5yPNdK8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNR"
@@ -57017,7 +57017,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 506630157,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "What grows with business volume",
@@ -57061,7 +57061,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "IloYhSbH"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNT"
@@ -57089,7 +57089,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 894803547,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Chat question",
@@ -57133,7 +57133,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2TaCVR3j"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNV"
@@ -57161,7 +57161,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 311891354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 rewrite with history, +1\n   multi-query)",
@@ -57205,7 +57205,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "bX18GIPp"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNX"
@@ -57233,7 +57233,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2123077737,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 multi-query)",
@@ -57277,7 +57277,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "tyR4QZRj"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNZ"
@@ -57305,7 +57305,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 305959585,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2 requests (16 candidates in\nbatches)",
@@ -57349,7 +57349,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HWSkPDLW"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNb"
@@ -57377,7 +57377,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1387135285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "number of users × questions per day",
@@ -57421,7 +57421,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "oJdTV4GZ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNd"
@@ -57449,7 +57449,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 320229884,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document review, per section",
@@ -57493,7 +57493,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "UolJPPIB"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNf"
@@ -57521,7 +57521,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1050657136,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "2 (MAP + self-critique) or 1; per review:\n   +1 per “special attention” and\n   checklist item, +1 per system with a\n   card, +1 merging duplicates, +1 “Key\n   points”, with the outline — checking\n   “not described” (up to 15); the deep\n   review — up to audit_deep_max_calls;\n   passes 2–3 (audit_passes) repeat the\n   sections and the process and figures\n   questions",
@@ -57565,7 +57565,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "TNY2gnV7"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNh"
@@ -57593,7 +57593,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 14525363,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 per review and +1 per\n   point with “special\n   attention”)",
@@ -57637,7 +57637,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "YzIGSqVE"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNj"
@@ -57665,7 +57665,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1228853070,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2",
@@ -57709,7 +57709,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "DyMYLFzN"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNl"
@@ -57737,7 +57737,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1565992457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "parts ≈ document size / audit_map_size: 20,000-char requirements ≈ 6 parts ≈ 12 LLM calls +\n≈ 35 short deep review questions (process steps, requirements and parts); the whole\ndocument adds its size to the input of every section review",
@@ -57781,7 +57781,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "D9tJ3Tow"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNn"
@@ -57809,7 +57809,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2121712154,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Verification of fixes, per comment",
@@ -57853,7 +57853,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "4Aq3UXiQ"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNp"
@@ -57881,7 +57881,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1023123295,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1",
@@ -57925,7 +57925,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "G4Em2JVD"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNr"
@@ -57953,7 +57953,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 95312819,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 (+1 with norms)",
@@ -57997,7 +57997,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FCY02wkH"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNt"
@@ -58025,7 +58025,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1205086542,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 1–2 (+2 with norms)",
@@ -58069,7 +58069,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BhI01aLi"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNv"
@@ -58097,7 +58097,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1757123440,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "number of comments; plus embeddings of all sections of the new revision once",
@@ -58141,7 +58141,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "d47Qi4c8"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNx"
@@ -58169,7 +58169,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 516467266,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "System card draft",
@@ -58213,7 +58213,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "OVpBqpyA"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bNz"
@@ -58241,7 +58241,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 548421217,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "up to 10 (a section with nothing found in\nthe base — no call)",
@@ -58285,7 +58285,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ap4rJbup"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bO1"
@@ -58313,7 +58313,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 184907741,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "up to 10 (a search per\nsection)",
@@ -58357,7 +58357,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "BoKptbKz"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bO3"
@@ -58385,7 +58385,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 419990020,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2 per section",
@@ -58429,7 +58429,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "Mnh4KAXc"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bO5"
@@ -58457,7 +58457,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 698831687,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "number of systems; sections — in parallel, at most 3",
@@ -58501,7 +58501,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "T23DUfNr"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bO7"
@@ -58529,7 +58529,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1944348611,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Document upload",
@@ -58573,7 +58573,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "PwGoZtx6"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bO9"
@@ -58601,7 +58601,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1534635193,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58645,7 +58645,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "ajBgJD8y"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOB"
@@ -58673,7 +58673,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1750748887,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "child / embed_batch_size\nrequests",
@@ -58717,7 +58717,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "DGFEz4o3"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOD"
@@ -58745,7 +58745,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1638919536,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "—",
@@ -58789,7 +58789,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "2X8dGEvm"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOF"
@@ -58817,7 +58817,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 794423897,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 1 child per 250 chars (400 − overlap 150): 250,000 chars ≈ 1000 children ≈ 32 requests",
@@ -58861,7 +58861,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "qvHktf6X"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOH"
@@ -58889,7 +58889,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 32723047,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Quality check (and eval_search.py)",
@@ -58933,7 +58933,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "hrw0lZir"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOJ"
@@ -58961,7 +58961,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2002138294,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 per question when writing questions; +1\n   with chat answers or multi-query",
@@ -59005,7 +59005,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "O4xjcVYw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOL"
@@ -59033,7 +59033,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 715066907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "1 per question",
@@ -59077,7 +59077,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QvJQiejl"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bON"
@@ -59105,7 +59105,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 644553354,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "≈ 2 per question",
@@ -59149,7 +59149,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "jFJb5Ccw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOP"
@@ -59177,7 +59177,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1674963114,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "answers are cached for all setting variants",
@@ -59214,7 +59214,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1727908868,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Memory and disk (one Streamlit process for all users): FAISS IndexFlatL2 in memory — children × dimension × 4 bytes (Qwen3-Embedding-4B, 2560: ≈ 10 KB per child, 10,000 children ≈ 100 MB); BM25 — word positions of all parents; the\n_process_cache() cache keeps one copy of the base. Disk KB_DIR: indexes + the sources/ originals. LOG_DIR: mint_system.log (up to 60 MB with rotation) and feedback.jsonl — grows with the number of feedback entries.",
@@ -59251,7 +59251,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 460084027,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Mint v21.4.1",
@@ -59288,7 +59288,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1145825540,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "10. Word drafting: sources, applicability and editing",
@@ -59325,7 +59325,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 875329573,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Separate from review: template and selected sources → confirmed context and applicability → Word → inspectable evidence links.",
@@ -59373,7 +59373,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "iliqImhw"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOV"
@@ -59401,7 +59401,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1237715787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Word drafting setup\ntab_template_draft.py: template or completed\nexample, and selected original documents.\nData stays in the local knowledge base.",
@@ -59453,7 +59453,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "NzINpFEo"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOX"
@@ -59481,7 +59481,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 671709622,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Context\ndocument_context.py: infer_context()\nproposes target, objective, scope and\nparticipants from the template headings.\nconfirm_context() requires human\nconfirmation.",
@@ -59533,7 +59533,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "gihbWK2h"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOZ"
@@ -59561,7 +59561,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 232900639,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Extraction\ntemplate_draft.py: create_draft() processes\nthe template and exact source quotations;\ncaching and parallel extraction preserve\nrequirement ordering.",
@@ -59613,7 +59613,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FZ7RYD2I"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOb"
@@ -59641,7 +59641,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2088710681,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Applicability\nrequirement_scope.py: classify() separates\ntarget/shared from\ninteraction/other/uncertain; an actor is\nrequired for confident obligation\nassignment.",
@@ -59689,7 +59689,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "FZ7RYD2I"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOd"
@@ -59717,7 +59717,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1425371644,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Draft Word\ntemplate_draft.py: sections, paragraphs and\ntables are filled with source-supported\ncontent; formatting and protected fields are\npreserved.",
@@ -59756,7 +59756,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1638003102,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -59820,7 +59820,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1208816828,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -59884,7 +59884,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 459787257,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -59948,7 +59948,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1722869346,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -60021,7 +60021,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "QAbGQTYv"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOj"
@@ -60049,7 +60049,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 110758404,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Two-way evidence links\ndraft_traceability.py: build_traceability() links\nextracted requirements to Word sections and quotations\nin both directions.",
@@ -60101,7 +60101,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "vaMlW5Vb"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOl"
@@ -60129,7 +60129,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 507668719,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Source to edit chat\ndraft_traceability_ui.py passes the exact requirement\nID; document_edit.py preserves applicability so external\nduties cannot become target obligations.",
@@ -60181,7 +60181,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HoI8Omwn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOn"
@@ -60209,7 +60209,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 600225567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Human-approved change\ndocument_edit_chat.py: propose_edit() → diff → accept,\nreject or undo_accepted_version(). The full document is\nnot regenerated.",
@@ -60257,7 +60257,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
           "id": "HoI8Omwn"
         }
       ],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "index": "bOp"
@@ -60285,7 +60285,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 2004613835,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Changed evidence links\nmark_stale_after_edits() marks previous links as stale.\nChanged sections remain tracked; the latest 10 DOCX\nsnapshots are only for undo.",
@@ -60324,7 +60324,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1974913608,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -60388,7 +60388,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 1006881587,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -60452,7 +60452,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 699083238,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "points": [
@@ -60514,7 +60514,7 @@ Limit: evidence links do not prove that ALL requirements have been extracted fro
       "versionNonce": 296372588,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462135153,
+      "updated": 1795462703848,
       "link": null,
       "locked": false,
       "text": "Limit: evidence links do not prove that ALL requirements have been extracted from broad sources. Expert review remains necessary; green CI based on synthetic documents does not prove quality for a real template.",

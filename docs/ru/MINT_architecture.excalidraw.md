@@ -459,7 +459,7 @@ diff → принять, отклонить или
       "versionNonce": 2045375074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a0"
@@ -489,7 +489,7 @@ diff → принять, отклонить или
       "versionNonce": 59582695,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a1"
@@ -519,7 +519,7 @@ diff → принять, отклонить или
       "versionNonce": 378956231,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a2"
@@ -549,7 +549,7 @@ diff → принять, отклонить или
       "versionNonce": 573793694,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a3"
@@ -584,7 +584,7 @@ diff → принять, отклонить или
           "id": "efio1e5v"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a4"
@@ -612,7 +612,7 @@ diff → принять, отклонить или
       "versionNonce": 862003252,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "MINT — архитектура решения",
@@ -649,7 +649,7 @@ diff → принять, отклонить или
       "versionNonce": 973195259,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Локальная RAG-система: чат, аудит, контроль исправлений и формирование Word с прослеживаемостью. Python + Streamlit, пакет mint/; русский и английский",
@@ -697,7 +697,7 @@ diff → принять, отклонить или
           "id": "cacUobET"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a7"
@@ -725,7 +725,7 @@ diff → принять, отклонить или
       "versionNonce": 182831392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Документы для базы (.docx, .pdf,\n.md, .txt): регламенты,\nстандарты",
@@ -773,7 +773,7 @@ diff → принять, отклонить или
           "id": "WM7zl9XZ"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "a9"
@@ -801,7 +801,7 @@ diff → принять, отклонить или
       "versionNonce": 899428383,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вопрос пользователя",
@@ -849,7 +849,7 @@ diff → принять, отклонить или
           "id": "yjVfkkvt"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aB"
@@ -877,7 +877,7 @@ diff → принять, отклонить или
       "versionNonce": 1117265392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Документ на согласование (.docx,\n.pdf, .md, .txt), критерии и\n«особое внимание»",
@@ -925,7 +925,7 @@ diff → принять, отклонить или
           "id": "lCjxa3JM"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aD"
@@ -953,7 +953,7 @@ diff → принять, отклонить или
       "versionNonce": 1137609740,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Выданные замечания и новая\nредакция документа (.docx, .pdf,\n.md, .txt)",
@@ -990,7 +990,7 @@ diff → принять, отклонить или
       "versionNonce": 165560180,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Интерфейс — Streamlit",
@@ -1042,7 +1042,7 @@ diff → принять, отклонить или
           "id": "dwllkuSp"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aG"
@@ -1070,7 +1070,7 @@ diff → принять, отклонить или
       "versionNonce": 311891264,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Боковая панель: документы базы,\nнастройки, модели и лимиты,\nсокращения, правила экспертов и\nкарточки систем (черновик карточки\n— по базе), проверка качества,\nпромпты, язык RU / EN, отзывы",
@@ -1122,7 +1122,7 @@ diff → принять, отклонить или
           "id": "fz2Zr53c"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aI"
@@ -1150,7 +1150,7 @@ diff → принять, отклонить или
       "versionNonce": 284584656,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вкладка «Чат»",
@@ -1202,7 +1202,7 @@ diff → принять, отклонить или
           "id": "0azVOzgo"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aK"
@@ -1230,7 +1230,7 @@ diff → принять, отклонить или
       "versionNonce": 859571403,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вкладка «Аудит документа»:\nдокумент, критерии, «особое\nвнимание», ⚙️ настройки аудита в\nодном блоке, «Мои аудиты»",
@@ -1282,7 +1282,7 @@ diff → принять, отклонить или
           "id": "MO75qxS5"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aM"
@@ -1310,7 +1310,7 @@ diff → принять, отклонить или
       "versionNonce": 1949106478,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Вкладка «Контроль исправлений»",
@@ -1349,7 +1349,7 @@ diff → принять, отклонить или
       "versionNonce": 962771986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1413,7 +1413,7 @@ diff → принять, отклонить или
       "versionNonce": 1503242053,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1477,7 +1477,7 @@ diff → принять, отклонить или
       "versionNonce": 870835190,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1541,7 +1541,7 @@ diff → принять, отклонить или
       "versionNonce": 2133732663,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1622,7 +1622,7 @@ diff → принять, отклонить или
           "id": "wIPjVgMP"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aS"
@@ -1650,7 +1650,7 @@ diff → принять, отклонить или
       "versionNonce": 397301692,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "ДОБАВЛЕНИЕ ДОКУМЕНТОВ В БАЗУ\n\n1. Разбор: .docx — Docling; .pdf —\n   без моделей (заголовки из\n   закладок, оглавления, по\n   шрифту); .md, .txt → текст,\n   заголовки, таблицы\n2. Нарезка по границам абзацев и\n   предложений: parent 2500 симв.\n   для LLM, child 400 симв. для\n   поиска; таблицы — по строкам\n3. Эмбеддинги child (вместе с\n   путём заголовков)\n4. Запись в хранилище: векторы,\n   фрагменты, индекс слов\n5. Автосбор сокращений из\n   документов; в манифест — модель\n   и параметры нарезки\n6. Черновик карточки системы (по\n   кнопке на боковой панели): по\n   каждому разделу карточки —\n   поиск по базе и ответ LLM\n   только по найденному, у каждого\n   факта — источник, чего нет —\n   «нет в базе»; эксперт\n   проверяет, дописывает и\n   загружает карточку в базу",
@@ -1702,7 +1702,7 @@ diff → принять, отклонить или
           "id": "ixFn3XEj"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aU"
@@ -1730,7 +1730,7 @@ diff → принять, отклонить или
       "versionNonce": 723834894,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "ЧАТ ПО БАЗЕ ЗНАНИЙ\n\n1. Уточняющий вопрос\n   переписывается в\n   самостоятельный по истории\n   диалога\n2. Поиск по базе → 4–5 лучших\n   фрагментов\n3. Контекст: фрагменты с файлом и\n   разделами (соседние — одним\n   блоком, длинные — вокруг\n   найденного места) + справочник\n   сокращений\n4. LLM отвечает только по\n   контексту\n5. Ответ со ссылками [файл,\n   раздел] и списком источников;\n   ссылки сверяются с найденными\n   фрагментами, неверные помечены\n   ⚠; отзыв: оценка и комментарий",
@@ -1782,7 +1782,7 @@ diff → принять, отклонить или
           "id": "XCyBVpqO"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aW"
@@ -1810,7 +1810,7 @@ diff → принять, отклонить или
       "versionNonce": 1240655623,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "АУДИТ ДОКУМЕНТА (MAP → REDUCE)\n\n1. Разбор документа → .md → части\n   по разделам до 4500 симв.\n   (раздел с таблицей — целиком);\n   для сравнения — весь документ\n   одним запросом\n2. MAP: каждая часть — с нормами\n   из базы,\n   документами-основаниями (по\n   ссылкам документа на них),\n   правилами экспертов, карточками\n   упомянутых систем и документом\n   целиком для справки (не\n   помещается в окно — с\n   оглавлением) → LLM пишет\n   замечания; описанный процесс —\n   по шагам; по желанию — с\n   рассуждениями модели\n3. Самокритика (можно выключить):\n   оставить или удалить,\n   критичность, дословная цитата;\n   замечание о пункте другой части\n   отсеивается\n4. Глубокая проверка: узкие\n   вопросы — каждая пара шагов\n   процесса, каждое требование,\n   границы; противоречия между\n   разделами; цифры (считает\n   программа); опечатки\n5. Проходы 2–3 (по желанию):\n   разделы и вопросы о процессе и\n   цифрах — ещё раз с температурой\n   ≥ 0,4; найденное несколькими\n   проходами — выше\n6. «Особое внимание» и чек-лист по\n   типу документа — ответ на\n   каждый пункт по всему документу\n   вместе с замечаниями, уже\n   найденными другими проверками;\n   что документ требует от каждой\n   упомянутой системы\n7. Без модели: сокращения,\n   оформление; ссылки и цифры из\n   замечаний сверяются с\n   документом и нормами\n8. REDUCE: повторы — по словам (в\n   кусках одной длинной таблицы —\n   мягче) и моделью (замечания о\n   разных шагах процесса не\n   сливаются); замечания — по\n   разделам документа, в его\n   порядке; «Главное» —\n   модель-редактор выбирает самые\n   важные\n9. Заключение .md, документ с\n   примечаниями Word, лог проверки\n   и сырые ответы модели .md;\n   сверка с эталоном; отзыв:\n   оценка и комментарий\n10. Аудит сохраняется\n   (LOG_DIR/audits) и открывается\n   позже; эксперт размечает\n   замечания («беру» / «мелочь» /\n   «неверно» с причиной) и\n   дописывает свои → «Мои\n   замечания» Word / .md и файл\n   разбора для улучшения MINT",
@@ -1862,7 +1862,7 @@ diff → принять, отклонить или
           "id": "hD5ZeGLD"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aY"
@@ -1890,7 +1890,7 @@ diff → принять, отклонить или
       "versionNonce": 1773752865,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "КОНТРОЛЬ ИСПРАВЛЕНИЙ\n\n1. Новая редакция документа →\n   разделы\n2. Для каждого замечания —\n   подходящие разделы (вектор +\n   слова + реранкер) и, по\n   желанию, нормы из базы\n3. LLM: статус «исправлено /\n   частично / нет» и дословная\n   цитата\n4. Цитата сверяется с текстом\n   редакции\n5. Матрица контроля .md / .docx;\n   отзыв: оценка и комментарий",
@@ -1929,7 +1929,7 @@ diff → принять, отклонить или
       "versionNonce": 246127506,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -1993,7 +1993,7 @@ diff → принять, отклонить или
       "versionNonce": 1747155805,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2057,7 +2057,7 @@ diff → принять, отклонить или
       "versionNonce": 1836313671,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2121,7 +2121,7 @@ diff → принять, отклонить или
       "versionNonce": 331251064,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2210,7 +2210,7 @@ diff → принять, отклонить или
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "ae"
@@ -2238,7 +2238,7 @@ diff → принять, отклонить или
       "versionNonce": 234782881,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Поисковый движок (общий для чата, аудита и контроля исправлений)\nвектор (FAISS, смысл) + слова (BM25: основы русских и английских слов, расшифровки сокращений) → слияние\nрангов (RRF) → реранкер (необязательно) → лучшие фрагменты + сигнал «уверенность низкая». Подробно — на\nсхеме ниже.",
@@ -2277,7 +2277,7 @@ diff → принять, отклонить или
       "versionNonce": 1562140317,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2341,7 +2341,7 @@ diff → принять, отклонить или
       "versionNonce": 1674699393,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2405,7 +2405,7 @@ diff → принять, отклонить или
       "versionNonce": 1713103680,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2474,7 +2474,7 @@ diff → принять, отклонить или
           "id": "tmov1cS1"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -2540,7 +2540,7 @@ diff → принять, отклонить или
       "versionNonce": 1139303386,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "черновик карточки",
@@ -2577,7 +2577,7 @@ diff → принять, отклонить или
       "versionNonce": 493025635,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Ядро MINT — Python",
@@ -2625,7 +2625,7 @@ diff → принять, отклонить или
           "id": "wZnhXokE"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "am"
@@ -2653,7 +2653,7 @@ diff → принять, отклонить или
       "versionNonce": 942050464,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Хранилище базы знаний — папка KB_DIR на машине",
@@ -2697,7 +2697,7 @@ diff → принять, отклонить или
           "id": "KKTFtVje"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "ao"
@@ -2725,7 +2725,7 @@ diff → принять, отклонить или
       "versionNonce": 322588907,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "FAISS — векторы child (по ним ищет\n«вектор»)",
@@ -2769,7 +2769,7 @@ diff → принять, отклонить или
           "id": "bzt8ESso"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aq"
@@ -2797,7 +2797,7 @@ diff → принять, отклонить или
       "versionNonce": 1432782097,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "parent_store.json — фрагменты parent\n(их читает LLM)",
@@ -2841,7 +2841,7 @@ diff → принять, отклонить или
           "id": "KyOaS2OB"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "as"
@@ -2869,7 +2869,7 @@ diff → принять, отклонить или
       "versionNonce": 358646567,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "bm25_index.pkl — индекс слов по\nосновам",
@@ -2913,7 +2913,7 @@ diff → принять, отклонить или
           "id": "p0abAhKA"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "au"
@@ -2941,7 +2941,7 @@ diff → принять, отклонить или
       "versionNonce": 2048044620,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "auto_glossary.json — сокращения из\nдокументов",
@@ -2985,7 +2985,7 @@ diff → принять, отклонить или
           "id": "jXvBssE7"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "aw"
@@ -3013,7 +3013,7 @@ diff → принять, отклонить или
       "versionNonce": 252752010,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "manifest.json — модель эмбеддингов и\nнарезка каждого документа;\naudit_roles.json — правила экспертов\nи карточки систем для аудита",
@@ -3057,7 +3057,7 @@ diff → принять, отклонить или
           "id": "p07PEz84"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "ay"
@@ -3085,7 +3085,7 @@ diff → принять, отклонить или
       "versionNonce": 1738487285,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "sources/ — оригиналы документов для\nпереиндексации",
@@ -3129,7 +3129,7 @@ diff → принять, отклонить или
           "id": "efio1e5v"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b10"
@@ -3157,7 +3157,7 @@ diff → принять, отклонить или
       "versionNonce": 1293218056,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Внешние сервисы",
@@ -3194,7 +3194,7 @@ diff → принять, отклонить или
       "versionNonce": 1889167392,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "любой OpenAI-совместимый API",
@@ -3238,7 +3238,7 @@ diff → принять, отклонить или
           "id": "nBcm18E7"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b13"
@@ -3266,7 +3266,7 @@ diff → принять, отклонить или
       "versionNonce": 1076978060,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "LLM — ответы, замечания,\nсамокритика, «Главное», черновики\nкарточек",
@@ -3310,7 +3310,7 @@ diff → принять, отклонить или
           "id": "zDX0XsOI"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b15"
@@ -3338,7 +3338,7 @@ diff → принять, отклонить или
       "versionNonce": 1231588435,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Модель эмбеддингов — векторы",
@@ -3382,7 +3382,7 @@ diff → принять, отклонить или
           "id": "L0k8cF7P"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b17"
@@ -3410,7 +3410,7 @@ diff → принять, отклонить или
       "versionNonce": 224550167,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Реранкер — оценка релевантности\n(необязательно)",
@@ -3454,7 +3454,7 @@ diff → принять, отклонить или
           "id": "zAZSSevu"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -3516,7 +3516,7 @@ diff → принять, отклонить или
       "versionNonce": 130875986,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "запись",
@@ -3560,7 +3560,7 @@ diff → принять, отклонить или
           "id": "vwSuw7eL"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -3622,7 +3622,7 @@ diff → принять, отклонить или
       "versionNonce": 634279936,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "чтение",
@@ -3666,7 +3666,7 @@ diff → принять, отклонить или
           "id": "zufR1oa1"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -3728,7 +3728,7 @@ diff → принять, отклонить или
       "versionNonce": 2138346186,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "HTTP",
@@ -3772,7 +3772,7 @@ diff → принять, отклонить или
           "id": "m4ESFAMB"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1F"
@@ -3800,7 +3800,7 @@ diff → принять, отклонить или
       "versionNonce": 1356830984,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Настройки\n• .env — адреса API, ключи, модели, папки, язык\n   (MINT_LANG)\n• config.yaml — параметры поиска и аудита\n   (необязательно)\n• glossary.json — свои расшифровки сокращений\n   (необязательно)\n• checklists.yaml — свои чек-листы аудита по типам\n   документов (образец — checklists.example.yaml;\n   файл вне папки программы — путь в\n   MINT_CHECKLISTS)\n• mint/prompts/ru.yaml, en.yaml — тексты промптов\n   по умолчанию; свои правки — prompts.yaml\n   (страница «Промпты»); версия набора пишется в\n   отзывы, лог аудита и проверку качества\n• боковая панель — изменения на время сеанса\n• LOG_DIR — журнал работы, отзывы пользователей\n   (feedback.jsonl), проверки качества (eval/),\n   сохранённые аудиты с разбором экспертов\n   (audits/)",
@@ -3844,7 +3844,7 @@ diff → принять, отклонить или
           "id": "VI6vaxks"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1H"
@@ -3872,7 +3872,7 @@ diff → принять, отклонить или
       "versionNonce": 494807491,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Размеры по умолчанию (MINT подстраивает их под\nлимиты моделей)\n• parent 2500 симв. ≈ 1–1,5 страницы — уходит в\n   контекст LLM\n• child 400 симв. ≈ 2–3 предложения — единица\n   векторного поиска\n• раздел документа в аудите 4500 симв. ≈ 3–4\n   страницы\n• фрагмент для реранкера 800 симв.",
@@ -3916,7 +3916,7 @@ diff → принять, отклонить или
           "id": "lTJ2LlMC"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1J"
@@ -3944,7 +3944,7 @@ diff → принять, отклонить или
       "versionNonce": 418262272,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Проверка и оценка качества\n• check_install.py — самопроверка установки:\n   пакеты, разбор .docx и .pdf, подключения к\n   моделям, страница\n• «Проверка качества» на боковой панели (в консоли\n   — eval_search.py) — вопросы по базе через поиск\n   в нескольких вариантах (вектор, слова, гибрид,\n   гибрид + реранкер): hit@k, MRR, случайна ли\n   разница, порог «уверенность низкая»,\n   рекомендации; по желанию — ответы чата: ошибка\n   поиска или модели, сравнение по версии промптов\n• разборы замечаний экспертами (файлы разбора) —\n   tools/review_stats.py: доля верных замечаний по\n   видам проверок, причины ошибок, что MINT\n   пропустил\n• tests/ — автотесты без сети и моделей, GitHub\n   Actions",
@@ -3981,7 +3981,7 @@ diff → принять, отклонить или
       "versionNonce": 2067789181,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Поиск по базе — как находится нужный фрагмент",
@@ -4018,7 +4018,7 @@ diff → принять, отклонить или
       "versionNonce": 307679153,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Шаги 1–5 общие для чата, аудита и контроля исправлений; шаги 6–7 — ответ в чате.",
@@ -4070,7 +4070,7 @@ diff → принять, отклонить или
           "id": "wFtpo5SN"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1N"
@@ -4098,7 +4098,7 @@ diff → принять, отклонить или
       "versionNonce": 2020315457,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "1. Вопрос\n\nв чате уточнение\nпереписывается по\nистории диалога",
@@ -4150,7 +4150,7 @@ diff → принять, отклонить или
           "id": "ink1rcEm"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1P"
@@ -4178,7 +4178,7 @@ diff → принять, отклонить или
       "versionNonce": 1000544937,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "2а. Вектор (смысл)\n\nэмбеддинг вопроса\n(с инструкцией,\nесли её требует\nмодель) → FAISS →\n50 ближайших child\n→ их parent",
@@ -4230,7 +4230,7 @@ diff → принять, отклонить или
           "id": "7xQsVvsf"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1R"
@@ -4258,7 +4258,7 @@ diff → принять, отклонить или
       "versionNonce": 2137083554,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "2б. Слова (BM25)\n\nосновы слов\n(русских и\nанглийских) +\nрасшифровки\nсокращений → 20\nлучших parent",
@@ -4314,7 +4314,7 @@ diff → принять, отклонить или
           "id": "QiDuXTvv"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1T"
@@ -4342,7 +4342,7 @@ diff → принять, отклонить или
       "versionNonce": 1922798787,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "3. Слияние рангов\n   (RRF)\n\n16 кандидатов;\n   найденные\n   обоими каналами\n   — выше",
@@ -4394,7 +4394,7 @@ diff → принять, отклонить или
           "id": "4dLMpfoB"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1V"
@@ -4422,7 +4422,7 @@ diff → принять, отклонить или
       "versionNonce": 1619028827,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "4. Реранкер\n\nнеобязательно:\nоценивает все 16\nпо самому\nрелевантному\nфрагменту (≤ 800\nсимв.); его голос\nдобавляется к\nслиянию",
@@ -4474,7 +4474,7 @@ diff → принять, отклонить или
           "id": "6mtwEXMY"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1X"
@@ -4502,7 +4502,7 @@ diff → принять, отклонить или
       "versionNonce": 1396715579,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "5. Отбор 4–5\n   фрагментов\n\nбез повторов, не\nбольше 2 частей\nодной таблицы;\nсигнал\n«уверенность\nнизкая» — по баллу\nреранкера, без\nнего — по словам\nвопроса",
@@ -4554,7 +4554,7 @@ diff → принять, отклонить или
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1Z"
@@ -4582,7 +4582,7 @@ diff → принять, отклонить или
       "versionNonce": 2011711854,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "6. Контекст для\n   LLM\n\nфрагменты parent с\nфайлом и\nразделами:\nсоседние — одним\nблоком, длинные —\nвокруг найденного\nместа; +\nсправочник\nсокращений",
@@ -4630,7 +4630,7 @@ diff → принять, отклонить или
           "id": "Stk5L1Iq"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1b"
@@ -4658,7 +4658,7 @@ diff → принять, отклонить или
       "versionNonce": 163620562,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "7. Ответ\n\nтолько по\nконтексту, со\nссылками [файл,\nраздел]; ссылки\nсверяются с\nконтекстом; нет\nответа в базе —\nтак и говорит",
@@ -4697,7 +4697,7 @@ diff → принять, отклонить или
       "versionNonce": 160393074,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4761,7 +4761,7 @@ diff → принять, отклонить или
       "versionNonce": 1810238586,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4825,7 +4825,7 @@ diff → принять, отклонить или
       "versionNonce": 1602413674,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4889,7 +4889,7 @@ diff → принять, отклонить или
       "versionNonce": 737633972,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -4953,7 +4953,7 @@ diff → принять, отклонить или
       "versionNonce": 1163602303,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -5017,7 +5017,7 @@ diff → принять, отклонить или
       "versionNonce": 868049134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -5081,7 +5081,7 @@ diff → принять, отклонить или
       "versionNonce": 574790563,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -5145,7 +5145,7 @@ diff → принять, отклонить или
       "versionNonce": 194641959,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -5207,7 +5207,7 @@ diff → принять, отклонить или
       "versionNonce": 783411893,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Если сервис эмбеддингов недоступен, работает только канал «Слова». Реранкер с пунктирной рамкой — необязательный: без него поиск идёт по шагам 1–3 и 5.",
@@ -5244,7 +5244,7 @@ diff → принять, отклонить или
       "versionNonce": 1127199645,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Формирование Word — отдельный поток от аудита и контроля замечаний",
@@ -5281,7 +5281,7 @@ diff → принять, отклонить или
       "versionNonce": 1841050973,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Основания не являются автоматически применимыми: сначала определяем целевую систему, затем учитываем субъект каждого требования.",
@@ -5318,7 +5318,7 @@ diff → принять, отклонить или
       "versionNonce": 1963743434,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Mint v21.4.1",
@@ -5366,7 +5366,7 @@ diff → принять, отклонить или
           "id": "oi99SUzt"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1p"
@@ -5394,7 +5394,7 @@ diff → принять, отклонить или
       "versionNonce": 2048913134,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "1. Шаблон Word и основания\n\nПользователь выбирает DOCX и исходные\nдокументы из локальной базы знаний.\nОригиналы не отправляются в GitHub.",
@@ -5446,7 +5446,7 @@ diff → принять, отклонить или
           "id": "z3x9ZzAb"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1r"
@@ -5474,7 +5474,7 @@ diff → принять, отклонить или
       "versionNonce": 677440757,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "2. Определение контекста\n\nМодель предлагает целевую систему,\nцель, границы и участников по\nшаблону; основания могут относиться к\nразным системам.",
@@ -5526,7 +5526,7 @@ diff → принять, отклонить или
           "id": "pI5SbfaH"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1t"
@@ -5554,7 +5554,7 @@ diff → принять, отклонить или
       "versionNonce": 1842945878,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "3. Подтверждение человеком\n\nПеред сборкой пользователь проверяет\nконтекст. Он задаёт направление\nпоиска, но не доказывает факты.",
@@ -5606,7 +5606,7 @@ diff → принять, отклонить или
           "id": "dCsLXsLf"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1v"
@@ -5634,7 +5634,7 @@ diff → принять, отклонить или
       "versionNonce": 1935139015,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "4. Извлечение требований\n\nЦитаты сверяются с исходным текстом;\nсбои и неопределённость остаются\nвидимыми для эксперта.",
@@ -5686,7 +5686,7 @@ diff → принять, отклонить или
           "id": "dCsLXsLf"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1x"
@@ -5714,7 +5714,7 @@ diff → принять, отклонить или
       "versionNonce": 851939754,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "5. Применимость по исполнителю\n\nЦелевая / общая / внешнее\nвзаимодействие / другая система /\nнеясно. Чужие обязанности не\nприписываются цели.",
@@ -5766,7 +5766,7 @@ diff → принять, отклонить или
           "id": "D5eOHAZA"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b1z"
@@ -5794,7 +5794,7 @@ diff → принять, отклонить или
       "versionNonce": 1489119380,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "6. Формирование Word\n\nПлан по разделам, заполнение полей и\nтаблиц, проверка источников и\nсохранение защищённого оформления.",
@@ -5846,7 +5846,7 @@ diff → принять, отклонить или
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b21"
@@ -5874,7 +5874,7 @@ diff → принять, отклонить или
       "versionNonce": 1847393126,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "7. Два направления связей\n\nРаздел Word → требования; основание →\nразделы Word. Найденный фрагмент\nтекста не доказывает смысловую\nполноту.",
@@ -5922,7 +5922,7 @@ diff → принять, отклонить или
           "id": "FHj0cwfr"
         }
       ],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "index": "b23"
@@ -5950,7 +5950,7 @@ diff → принять, отклонить или
       "versionNonce": 1566900065,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "8. Чат правок с подтверждением\n\nТочный ID требования → предложение и\ndiff → принять, отклонить или\nотменить. Изменённые связи требуют\nновой проверки.",
@@ -5989,7 +5989,7 @@ diff → принять, отклонить или
       "versionNonce": 218354747,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6053,7 +6053,7 @@ diff → принять, отклонить или
       "versionNonce": 1449011898,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6117,7 +6117,7 @@ diff → принять, отклонить или
       "versionNonce": 1556626306,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6181,7 +6181,7 @@ diff → принять, отклонить или
       "versionNonce": 613515443,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6245,7 +6245,7 @@ diff → принять, отклонить или
       "versionNonce": 670435843,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6309,7 +6309,7 @@ diff → принять, отклонить или
       "versionNonce": 1166402109,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6373,7 +6373,7 @@ diff → принять, отклонить или
       "versionNonce": 348668764,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "points": [
@@ -6443,7 +6443,7 @@ diff → принять, отклонить или
       "versionNonce": 1287752845,
       "isDeleted": false,
       "boundElements": [],
-      "updated": 1795462134981,
+      "updated": 1795462703602,
       "link": null,
       "locked": false,
       "text": "Прослеживаемость охватывает извлечённые требования, а не гарантирует полноту всех оснований. Экспертная оценка первоначального Word —\nотдельно; принятые пользователем правки не переписывают первоначальный результат генерации.",
