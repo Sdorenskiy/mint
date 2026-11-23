@@ -26,7 +26,14 @@ SECTION_PLAN_LIMIT = 24000
 _DRAFT_METRICS = contextvars.ContextVar('mint_draft_metrics', default=None)
 _DRAFT_METRICS_LOCK = contextvars.ContextVar('mint_draft_metrics_lock', default=None)
 _NUMBER = re.compile(r"\d+(?:[.,]\d+)?")
-_EXAMPLE = re.compile(r"^\s*(?:пример|example|sample)\s*[:：]", re.I)
+_EXAMPLE = re.compile(r"^\s*\[?\s*(?:пример|example|sample)(?:\s+(?:заполнения|оформления|данных|completion|format))?\s*[:：]", re.I)
+_COVER = re.compile(r"(?iu)\b(?:титульн\w*\s+лист|лист\s+согласования|title\s+page|cover\s+page|approval\s+sheet)\b")
+_INSTRUCTION = re.compile(
+    r"(?iu)\b(?:укаж\w*|опиш\w*|привед\w*|перечисл\w*|раскро\w*|"
+    r"заполн\w*|встав\w*|сформиру\w*|добав\w*|включ\w*|"
+    r"необходимо\b|следует\b|должн\w*|"
+    r"enter\b|insert\b|fill\b|specify\b|describe\b|include\b|list\b)\b"
+)
 _PROTECTED = (".//w:fldChar | .//w:instrText | .//w:fldSimple | .//w:drawing | .//w:pict | .//w:object | "
               ".//w:sdt | .//w:ins | .//w:del | "
               ".//w:hyperlink | .//w:commentRangeStart | .//w:commentRangeEnd | .//w:commentReference")
@@ -279,12 +286,20 @@ def _layout(doc):
 
     slots, tables, examples = {}, {}, {}
     section, example_color, example = "", set(), False
+    # Unsectioned front matter is a cover/signature area when the document
+    # contains actual headings. Leave it for the owner to complete manually.
+    has_headings = any(_heading(Paragraph(e, doc)) for e in doc.element.body
+                       if e.tag.split("}")[-1] == "p")
+    cover = has_headings
     for idx, element in enumerate(doc.element.body):
         tag = element.tag.split("}")[-1]
         if tag == "p":
             p = Paragraph(element, doc)
             if _heading(p):
                 section, example = p.text, False
+                cover = bool(_COVER.search(section))
+                continue
+            if cover:
                 continue
             colored = {str(r.font.color.rgb) for r in p.runs if r.text.strip()}
             if _EXAMPLE.search(p.text):
@@ -302,6 +317,8 @@ def _layout(doc):
             if not p._p.xpath(_PROTECTED) and not (p.style and p.style.name.lower().startswith("toc")):
                 slots[f"P{idx}"] = Slot(p, p.text, section, writable=_simple(p))
         elif tag == "tbl":
+            if cover:
+                continue
             table = Table(element, doc)
             if example:
                 example = False
@@ -342,13 +359,15 @@ def _join_instruction_blocks(slots):
         following = []
         element = first.paragraph._p.getnext()
         number = int(key[1:])
-        for i in range(1, 8):
+        for i in range(1, 33):
             member = f"P{number + i}"
             other = slots.get(member)
             if (other is None or other.section != first.section or not other.writable or
                     other.paragraph._p is not element or "[" in other.text):
                 break
             following.append((member, other))
+            if sum(len(x.text) for _, x in following) + len(first.text) > 6000:
+                break
             if "]" in other.text:
                 if other.text.rstrip().endswith("]"):
                     first.text = "\n".join([first.text] + [x.text for _, x in following])
@@ -404,10 +423,9 @@ def _safe_target(slot, target):
     if slot.following and target != slot.text.strip():
         return False
     return bool(body and slot.text.count(target) == 1 and (
-        re.match(r"^\[\s*(?:указ\w*|укаж\w*|встав\w*|заполн\w*|опис\w*|прив\w*|перечисл\w*|"
-                 r"enter|insert|fill|specify|describe|add|list)\b", body, re.I) and body.endswith("]") or
-        re.match(r"^(?:укаж(?:ите|и|ать)|указыва\w+|заполн\w+|встав\w+|опиш\w+|"
-                 r"уточн\w+|enter|insert|fill|specify|describe)\b", body, re.I) or
+        (body.startswith("[") and body.endswith("]") and _INSTRUCTION.search(body)) or
+        re.match(r"(?iu)^(?:укаж\w*|заполн\w*|встав\w*|опиш\w*|"
+                 r"уточн\w*|перечисл\w*|привед\w*|enter|insert|fill|specify|describe)\b", body) or
         re.fullmatch(r"[_…⋯.]{2,}", body)))
 
 
@@ -466,6 +484,18 @@ def _find_fields(cfg, slots, issues, emit):
                 continue
             ranges.append((start, end))
             fields[f"F{len(fields) + 1}"] = (key, start, end, purpose, safe)
+        # A clear fill-in instruction is a valid fallback even when the
+        # layout model misses it. This is not a model bypass for arbitrary
+        # square-bracket citations (e.g. [12]) or ordinary source text.
+        for key, slot in batch:
+            if key in occupied or not slot.text.strip().startswith("["):
+                continue
+            target = slot.text.strip()
+            if _safe_target(slot, target):
+                fields[f"F{len(fields) + 1}"] = (
+                    key, slot.text.find(target), slot.text.find(target) + len(target),
+                    (slot.section + " — " if slot.section else "") + target, True)
+                occupied[key] = [(slot.text.find(target), slot.text.find(target) + len(target))]
         fixed_ids = analysis.get("fixed", [])
         if isinstance(fixed_ids, list):
             for key in fixed_ids:
