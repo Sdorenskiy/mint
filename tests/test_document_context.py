@@ -82,6 +82,13 @@ def test_context_reaches_draft_without_changing_sources():
             if stage == "extract":
                 return {"requirements": [{"quote": value} for value in payload["text"].splitlines()
                                          if value.strip()]}
+            if stage == "scope":
+                return {"items": [
+                    {"id": r["id"],
+                     "category": "target" if "А отправляет" in r["quote"] else "interaction",
+                     "actor": "Платформа А" if "А отправляет" in r["quote"] else "Платформа Б",
+                     "reason": "Целевая система" if "А отправляет" in r["quote"] else "Внешний участник"}
+                    for r in payload["requirements"]]}
             if stage == "rows":
                 return {"rows": []}
             if stage == "fill":

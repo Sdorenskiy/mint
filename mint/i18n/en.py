@@ -3114,4 +3114,6 @@ EN = {
     "Что меняется / границы работ": "Work scope / what will change",
     "Другие участники взаимодействия": "Other participating systems",
     "Подтвердить контекст": "Confirm context",
+    "Применимость требований": "Requirement applicability",
+    "Применимость: целевая система — {target}, общие — {shared}, взаимодействия — {interaction}, другие системы — {other}, неясные — {uncertain}.": "Applicability: target system — {target}, shared — {shared}, interactions — {interaction}, other platforms — {other}, uncertain — {uncertain}.",
 }

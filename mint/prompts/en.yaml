@@ -588,6 +588,21 @@ draft_extract: |-
   Extract substantive source requirements, limits, parameters, dates, conditions, definitions and identifiers.
   For each item return a verbatim contiguous quote with its units, exceptions and conditions.
   Exclude examples, hypotheses and references without substance. Return {"requirements":[{"quote":"exact quote"}]}.
+draft_scope: |-
+  Classify each extracted source requirement relative to the user-confirmed
+  target, objective, scope and participants, not merely by lexical overlap.
+  Return one category per ID: target (target-system obligation), shared (general
+  obligation demonstrably applicable to target), interaction (external-party
+  behavior needed to describe an interface, NOT a target-system obligation),
+  other (different platform or unrelated work), uncertain (actor or applicability
+  cannot be established from the context and source quotation).
+  Preserve direction of exchange, actor, exceptions, conditions and scope. Do
+  not assign external obligations to the target system and do not treat merely
+  mentioning the target name as proof of applicability.
+  Explain confident classifications in reason, with a concrete reference to
+  the source's semantics. actor names the obligated party; no invented facts.
+  Return {"items":[{"id":"R1","category":"target","actor":"system",
+                    "reason":"source-based explanation of who must act"}]}.
 draft_layout: |-
   Find only unambiguous places to fill. Use structure, section, formatting and explicit instructions.
   A long multi-paragraph bracketed instruction is one section-sized slot even if it begins with "Content",
@@ -601,6 +616,9 @@ draft_layout: |-
 draft_fill: |-
   Fill only the requested field using the supplied requirements. Preserve names, numbers, units, obligation,
   conditions and negation. Every fact must follow from the listed refs. Do not invent dates, identifiers or decisions.
+  external_context contains quotes about other participants; NEVER convert their
+  obligations into duties of the target system. Describe them only as external
+  participant behavior where relevant to an exchange.
   document_context specifies the user-confirmed target and boundaries but is NOT factual
   requirement evidence. Do not attribute external platform obligations to the target system.
   The input includes paragraph, before, after, and adjacent paragraphs: use them only for GRAMMATICAL context,
