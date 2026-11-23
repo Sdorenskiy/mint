@@ -29,7 +29,7 @@ _NUMBER = re.compile(r"\d+(?:[.,]\d+)?")
 _EXAMPLE = re.compile(r"^\s*\[?\s*(?:пример|example|sample)(?:\s+(?:заполнения|оформления|данных|completion|format))?\s*[:：]", re.I)
 _COVER = re.compile(r"(?iu)\b(?:титульн\w*\s+лист|лист\s+согласования|title\s+page|cover\s+page|approval\s+sheet)\b")
 _INSTRUCTION = re.compile(
-    r"(?iu)\b(?:укаж\w*|опиш\w*|привед\w*|перечисл\w*|раскро\w*|"
+    r"(?iu)\b(?:указ\w*|укаж\w*|опис\w*|опиш\w*|привед\w*|привод\w*|перечисл\w*|раскро\w*|"
     r"заполн\w*|встав\w*|сформиру\w*|добав\w*|включ\w*|"
     r"необходимо\b|следует\b|должн\w*|"
     r"enter\b|insert\b|fill\b|specify\b|describe\b|include\b|list\b)\b"
