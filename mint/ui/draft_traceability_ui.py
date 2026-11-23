@@ -63,26 +63,31 @@ def render_draft_traceability(result, source_names=()):
         page = (st.selectbox(tr("Страница"), list(range(1, pages + 1)),
                              key=f"draft_trace_page_{view}_{name}_{filter_name}") if pages > 1 else 1)
         st.caption(tr("Отображено {n} из {total}.", n=min(per_page, len(selected)), total=len(selected)))
-        for row in selected[(page - 1) * per_page:page * per_page]:
-            title = f'{row["source"]} › {row["source_section"]} · {row["quote"][:80]}'
-            with st.expander(title):
-                st.caption(tr(_COVERAGE[row["coverage"]]))
-                st.text(row["quote"])
-                if row["actor"]:
-                    st.caption(tr("Исполнитель: {actor}", actor=row["actor"]))
-                if row["scope_reason"]:
-                    st.caption(tr("Применимость: {reason}", reason=row["scope_reason"]))
-                confirmed = row["anchored"]
-                if confirmed:
-                    st.markdown("**" + tr("Где найден текст в Word") + "**")
-                    for ref in confirmed:
-                        st.caption(ref["section"] + " · " + ref["field"])
-                        st.text(ref["text"][:1000])
-                if row["cited_without_anchor"]:
-                    st.caption(tr("Ссылка модели без подтверждённого текстового фрагмента: {sections}",
-                                  sections=", ".join(dict.fromkeys(
-                                      x["section"] for x in row["cited_without_anchor"]))))
-                if row["candidate_sections"]:
-                    st.caption(tr("Разделы, для которых требование рассматривалось: {sections}",
-                                  sections=", ".join(row["candidate_sections"])))
+        visible = selected[(page - 1) * per_page:page * per_page]
+        lookup = {row["id"]: row for row in visible}
+        rid = st.selectbox(tr("Требование"), list(lookup),
+                           format_func=lambda key: (
+                               f'{lookup[key]["source"]} › {lookup[key]["source_section"]} · '
+                               f'{lookup[key]["quote"][:85]}'),
+                           key=f"draft_trace_requirement_{view}_{name}_{filter_name}_{page}")
+        row = lookup[rid]
+        st.caption(tr(_COVERAGE[row["coverage"]]))
+        st.text(row["quote"])
+        if row["actor"]:
+            st.caption(tr("Исполнитель: {actor}", actor=row["actor"]))
+        if row["scope_reason"]:
+            st.caption(tr("Применимость: {reason}", reason=row["scope_reason"]))
+        confirmed = row["anchored"]
+        if confirmed:
+            st.markdown("**" + tr("Где найден текст в Word") + "**")
+            for ref in confirmed:
+                st.caption(ref["section"] + " · " + ref["field"])
+                st.text(ref["text"][:1000])
+        if row["cited_without_anchor"]:
+            st.caption(tr("Ссылка модели без подтверждённого текстового фрагмента: {sections}",
+                          sections=", ".join(dict.fromkeys(
+                              x["section"] for x in row["cited_without_anchor"]))))
+        if row["candidate_sections"]:
+            st.caption(tr("Разделы, для которых требование рассматривалось: {sections}",
+                          sections=", ".join(row["candidate_sections"])))
     return rows
