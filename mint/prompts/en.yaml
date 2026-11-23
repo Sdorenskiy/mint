@@ -671,6 +671,10 @@ draft_edit: |-
   Propose an edit to an ALREADY GENERATED Word document; do not create it again.
   The user selected section/paragraph/cell and provided request. Return only one JSON object.
   original is the exact selected content; conversation contains previous requests/proposals.
+  focused_requirement is the exact item the user selected in traceability: do not lose its
+  identity during retrieval. If target/shared, it is also included in requirements.
+  If interaction/other/uncertain, first check its actor and applicability. It is review
+  context only, NOT support for a new target-system obligation and NOT an allowed refs ID.
   document_context is the confirmed target-system context. requirements contains
   only target/shared obligations; external_context is other participants' behavior.
   Never turn an external actor's obligations into duties of the target system,
