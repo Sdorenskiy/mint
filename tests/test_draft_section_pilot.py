@@ -259,6 +259,14 @@ def test_section_detection_and_safe_writing():
     assert doc.tables[0].cell(0, 0).text == "Keep this"
 
 
+def test_missing_evidence_skips_repair():
+    result, out = run({"section_relevant": True, "covered": False,
+                       "reason": "Insufficient evidence", "repairable": False})
+    assert not result["results"] and not result["repairs"]
+    assert result["metrics"]["diagnostics"]["pilot_section"]["repair_skipped_missing_evidence"] == 1
+    assert out.paragraphs[5].text == ""
+
+
 def test_prompt_contract():
     for lang in ("ru", "en"):
         prompt = default_prompts(lang)["draft_pilot_coverage"]
@@ -271,5 +279,6 @@ if __name__ == "__main__":
     test_repair_and_revalidation()
     test_template_instructions()
     test_section_detection_and_safe_writing()
+    test_missing_evidence_skips_repair()
     test_prompt_contract()
     print("ИТОГ: end-to-end V2 Word pilot, section preservation, traceability and coverage gaps")
