@@ -9,6 +9,7 @@ from ..draft_section_pilot import create_section_pilot, pilot_sections
 from ..kb import list_kb_documents, source_path
 from ..template_draft import DraftError, create_draft
 from .draft_review_ui import render_draft_reviews
+from .draft_pilot_report_ui import render_pilot_report
 from .document_edit_chat import render_draft_edit_chat
 from .draft_context_ui import render_draft_context
 from .draft_traceability_ui import render_draft_traceability
@@ -146,6 +147,8 @@ def render_template_draft_tab(cfg, glossary):
         render_draft_reviews(cfg)
         return
     result = saved[1]
+    if pilot:
+        render_pilot_report(result)
     render_draft_traceability(result, sources, key, allow_edit=not pilot)
     if pilot:
         st.warning(tr("Черновик V2 не согласован. Полнота извлечения не доказана."))
@@ -175,6 +178,9 @@ def render_template_draft_tab(cfg, glossary):
             for stage, item in metrics.get("stages", {}).items():
                 st.text(f"{stage_labels.get(stage, stage)}: "
                         + tr("{n} запросов к LLM, {s} с", n=item["llm_calls"], s=item["llm_seconds"]))
+    if pilot:
+        render_draft_reviews(cfg, key, template.name if template else "", sources, result)
+        return
     section_plan = result.get("section_plan", {})
     if section_plan:
         with st.expander(tr("План требований по разделам")):
