@@ -25,7 +25,7 @@ from .draft_traceability import build_traceability
 from .i18n import tr
 from .template_draft import (DraftError, Slot, _COVER, _bookmarks, _candidate_budget,
                              _fill_block, _heading, _json, _load_draft_sources,
-                             _join_instruction_blocks, _safe_target, _EXAMPLE,
+                             _join_instruction_blocks, _safe_target, _EXAMPLE, _PROTECTED,
                              _measure_draft, _record_draft_diagnostic, _simple, _text)
 
 _TOC = re.compile(r"^(?:table of contents|contents|оглавление|содержание)$", re.I)
@@ -106,7 +106,7 @@ def _section_targets(doc):
         result[start] = row
         plain_title = re.sub(r"^\s*\d+(?:\.\d+)*\.?\s+", "", title)
         if (_COVER.search(title) or _TOC.fullmatch(plain_title) or _PROTECTED_TITLE.fullmatch(title)
-                or not _simple(heading)
+                or heading._p.xpath(_PROTECTED)
                 or (heading.style and heading.style.name.lower().startswith(("toc", "оглавление")))):
             continue
         blanks, slots, examples = [], {}, []
@@ -120,7 +120,10 @@ def _section_targets(doc):
                 break
             p = Paragraph(e, doc)
             if not p.text.strip():
-                # Leave protected/numbered/whitespace-only blanks intact.
+                if p._p.xpath(_PROTECTED):
+                    protected = True
+                    break
+                # Leave numbered, bookmarked or whitespace-only blanks intact.
                 if p.text == "" and _safe_body(p):
                     blanks.append(p)
                 continue
