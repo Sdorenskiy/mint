@@ -50,6 +50,8 @@ def _type_records(cfg, records, emit, *, reset_cache=False):
             emit("registry_type", groups)
             allowed = {row["id"] for row in batch}
             payload = {"items": batch}
+            if reset_cache:
+                checkpoint.clear(payload)
             cached = None if reset_cache else checkpoint.load(payload)
             if (cached is not None and set(cached) == set(allowed)
                     and all(kind in KINDS - {"uncertain"} for kind in cached.values())):
