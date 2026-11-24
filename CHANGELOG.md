@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Add experimental V2 function grouping and evidence-linked responsibility proposals with explicit unresolved IDs, retained cross-cutting constraints and open questions. The active Word generator is unchanged; no new platform requirements are emitted yet. Development version 21.4.4.
+
 - Add an experimental typed source registry reusing Word extraction and checkpoints, preserving provenance and distinguishing obligations from existing architecture, definitions, references and unresolved questions. Bounded type classification fails closed; the active generator remains unchanged. Development version 21.4.3.
 
 - Record per-run Word drafting diagnostics (run ID, extraction cache and failure counters, applicability response reasons). Characterize legacy blank-section and false-extraction limitations on fictional inputs; no new model calls or change to the existing drafting algorithm.
