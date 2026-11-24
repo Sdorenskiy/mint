@@ -588,6 +588,25 @@ draft_extract: |-
   Extract substantive source requirements, limits, parameters, dates, conditions, definitions and identifiers.
   For each item return a verbatim contiguous quote with its units, exceptions and conditions.
   Exclude examples, hypotheses and references without substance. Return {"requirements":[{"quote":"exact quote"}]}.
+draft_function_group: |-
+  Group functional obligations describing one coherent function.
+  Do not group independent functions merely because they share words or a system name.
+  For every input id return group, the id of one input obligation chosen as group anchor.
+  The anchor id maps to itself. Do not introduce new ids.
+  Return {"items":[{"id":"R1","group":"R1"}]}.
+draft_function_allocation: |-
+  For each input obligation propose responsibility relative to the confirmed target.
+  current_state describes existing structure and responsibilities, constraints provides
+  possible cross-cutting restrictions, and open_questions contains unresolved decisions.
+  Do not turn existing behavior or open questions into new obligations.
+  target — target responsibility (actor exactly equals context.target);
+  shared — general obligation demonstrably applicable to it; interaction — external
+  participant behavior needed for an exchange; other — another party's duty;
+  uncertain — insufficient evidence. For each confident category provide state_refs
+  from current_state and reason explaining the link between need and responsibility.
+  Do not invent ids, roles, parameters or implementation choices. If ambiguous, choose uncertain.
+  Return exactly one row per input id.
+  Return {"items":[{"id":"R1","category":"uncertain","actor":"","reason":"Insufficient evidence","state_refs":[]}]}.
 draft_registry_type: |-
   For each id classify the type of the source quotation, not its applicability to the target system.
   source_role describes the document's role, not whether a specific quotation is an obligation.
