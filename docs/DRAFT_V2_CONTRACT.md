@@ -84,3 +84,7 @@ The pilot permits verbatim explicit target duties without architectural evidence
 ## Bounded repair
 
 A rejected candidate set with actionable semantic feedback or explicit coverage gap may be revised once using the existing derivation prompt and original allowed evidence. No new allocation or source IDs; direct duties without current-state refs, out-of-section proposals, technical errors and incomplete judgments are not retried. Every repaired candidate must pass the original structural and assessment gates and the whole-set section coverage review. Only a fully accepted set replaces the original proposals; failed repair remains pending. Aggregate counters are included in the sanitized export. This is not proof of model quality.
+
+## Template selection compatibility
+
+The one-section pilot is not restricted to a particular section number. It recognizes the shared Word heading detector, inherited outline levels and conservative manual numbered heading candidates. A normal paragraph is inserted when an empty section lacks a safe existing anchor. Full explicit instructions and explicitly labelled examples in an otherwise safe section are replaced only if approved candidates exist; the shared instruction validation and safe Word writer are reused. Fixed prose, complex body elements and protected titles remain blocked, with local reasons in the UI. Real templates still need local validation; no claim of full Word template compatibility or whole-document generation.
