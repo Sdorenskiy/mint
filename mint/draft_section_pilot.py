@@ -1,7 +1,7 @@
-"""Experimental end-to-end V2 pilot for an explicitly selected empty section.
+"""Experimental end-to-end V2 pilot for an explicitly selected safe section.
 
-The original document and active generator are untouched. Only simple empty
-body paragraphs are eligible. A separate per-need review checks the whole
+The original document and active generator are untouched. Only empty bodies or explicit template instructions
+are eligible; fixed content is never overwritten. A separate per-need review checks the whole
 proposed decomposition against the section and original linked evidence.
 The pilot is always an unapproved draft, never a statement of completeness.
 """
@@ -14,6 +14,7 @@ from zipfile import BadZipFile
 from docx import Document
 from docx.opc.exceptions import OpcError
 from docx.text.paragraph import Paragraph
+from docx.oxml import OxmlElement
 
 from .document_context import confirm_context
 from .draft_derivation import derive_requirements, validate_candidates, _assessment
@@ -23,6 +24,7 @@ from .draft_traceability import build_traceability
 from .i18n import tr
 from .template_draft import (DraftError, Slot, _COVER, _bookmarks, _candidate_budget,
                              _fill_block, _heading, _json, _load_draft_sources,
+                             _join_instruction_blocks, _safe_target, _EXAMPLE,
                              _measure_draft, _record_draft_diagnostic, _simple, _text)
 
 _TOC = re.compile(r"^(?:table of contents|contents|оглавление|содержание)$", re.I)
@@ -35,49 +37,125 @@ def _open(template):
         raise DraftError(tr("Не удалось прочитать файл DOCX.")) from exc
 
 
-def _empty_sections(doc):
-    """Return stable body indices and safe anchors for empty leaf sections.
+_NUMBERED_HEADING = re.compile(r"^\s*\d+(?:\.\d+){1,5}\.?\s+\S")
+_PROTECTED_TITLE = re.compile(
+    r"(?iu)^\s*(?:\d+(?:\.\d+)*\.?\s+)?(?:подписи|лист\s+подписей|signatures|approval|согласование)\s*$")
 
-    Stop at the next heading. Do not treat a table, protected paragraph,
-    section break or nonempty text as a fillable blank.
-    """
+
+def _pilot_heading(p):
+    """Reuse the standard detector; also recognize inherited outline and plain numbering."""
+    if _heading(p):
+        return True
+    style = p.style
+    seen = set()
+    while style is not None and style.style_id not in seen:
+        seen.add(style.style_id)
+        if style.element.xpath("./w:pPr/w:outlineLvl"):
+            return True
+        style = style.base_style
+    title = p.text.strip()
+    # Manual dotted subsection numbers are only candidates, never permission
+    # to overwrite prose. Avoid TOC, list items and long numbered sentences.
+    return bool(_NUMBERED_HEADING.match(title) and len(title) <= 160
+                and not title.endswith((".", ";", "!", "?"))
+                and not p._p.xpath("./w:pPr/w:numPr")
+                and p.style and not p.style.name.lower().startswith(("toc", "list", "список", "оглавление")))
+
+
+def _safe_body(p):
+    return (_simple(p) and not _bookmarks(p._p)
+            and not p._p.xpath("./w:pPr/w:sectPr | ./w:pPr/w:numPr")
+            and p.style and not p.style.name.lower().startswith(("toc", "list", "список", "оглавление")))
+
+
+def _section_targets(doc):
+    """Describe selectable sections and why others are blocked, without LLM."""
     elements = list(doc.element.body)
     headings = [i for i, e in enumerate(elements)
-                if e.tag.endswith("}p") and _heading(Paragraph(e, doc))]
+                if e.tag.endswith("}p") and _pilot_heading(Paragraph(e, doc))]
     result = {}
-    for i, start in enumerate(headings):
-        end = headings[i + 1] if i + 1 < len(headings) else len(elements)
+    for n, start in enumerate(headings):
+        end = headings[n + 1] if n + 1 < len(headings) else len(elements)
         heading = Paragraph(elements[start], doc)
         title = heading.text.strip()
-        if not title or _COVER.search(title) or _TOC.fullmatch(title) or not _simple(heading):
+        if not title:
             continue
-        blanks = []
-        valid = True
-        for e in elements[start + 1:end]:
-            # The final body-level sectPr is not part of the editable section.
+        row = {"title": title, "heading": heading, "anchor": None, "remove": [],
+               "status": "protected"}
+        result[start] = row
+        plain_title = re.sub(r"^\s*\d+(?:\.\d+)*\.?\s+", "", title)
+        if (_COVER.search(title) or _TOC.fullmatch(plain_title) or _PROTECTED_TITLE.fullmatch(title)
+                or not _simple(heading)
+                or (heading.style and heading.style.name.lower().startswith(("toc", "оглавление")))):
+            continue
+        blanks, slots, examples = [], {}, []
+        protected = False
+        for idx in range(start + 1, end):
+            e = elements[idx]
             if e.tag.endswith("}sectPr") and e is elements[-1]:
                 continue
             if not e.tag.endswith("}p"):
-                valid = False
+                protected = True
                 break
             p = Paragraph(e, doc)
-            if (p.text.strip() or not _simple(p) or _bookmarks(e)
-                    or e.xpath("./w:pPr/w:sectPr | ./w:pPr/w:numPr")
-                    or not p.style or p.style.name.lower().startswith(("toc", "list", "список"))):
-                valid = False
+            if not p.text.strip():
+                # Leave protected/numbered/whitespace-only blanks intact.
+                if p.text == "" and _safe_body(p):
+                    blanks.append(p)
+                continue
+            if not _safe_body(p):
+                protected = True
                 break
-            # Whitespace-only paragraphs are left intact, not used as anchors.
-            if p.text == "":
-                blanks.append(p)
-        if valid and blanks:
-            result[start] = (title, blanks[0])
+            if _EXAMPLE.search(p.text):
+                examples.append(p)
+            else:
+                slots[f"P{idx}"] = Slot(p, p.text, title, writable=True)
+        if protected:
+            continue
+        _join_instruction_blocks(slots)
+        if slots and not all(_safe_target(s, s.text.strip()) for s in slots.values()):
+            row["status"] = "fixed_content"
+            continue
+        if slots or examples:
+            # Do not infer that a standalone example is a fill instruction.
+            if not slots:
+                row["status"] = "fixed_content"
+                continue
+            row["remove"] = [p for s in slots.values() for p in (s.paragraph, *s.following)] + examples
+            row["status"] = "instruction"
+        else:
+            row["anchor"] = blanks[0] if blanks else None
+            row["status"] = "empty"
     return result
 
 
+def pilot_section_options(template):
+    """All detected headings with local eligibility codes; no source text export."""
+    return [{"index": i, "title": row["title"], "status": row["status"]}
+            for i, row in _section_targets(_open(template)).items()]
+
+
 def pilot_sections(template):
-    """List explicitly selectable empty sections without calling a model."""
-    return [{"index": i, "title": value[0]}
-            for i, value in _empty_sections(_open(template)).items()]
+    """List explicitly selectable safe sections without calling a model."""
+    return [{"index": row["index"], "title": row["title"]}
+            for row in pilot_section_options(template)
+            if row["status"] in {"empty", "instruction"}]
+
+
+def _write_section(target, doc, texts):
+    """Write only after successful review; retain all content when nothing passes."""
+    anchor = target["anchor"]
+    if anchor is None:
+        element = OxmlElement("w:p")
+        # A normal body paragraph avoids inheriting numbering or instruction colors.
+        target["heading"]._p.addnext(element)
+        anchor = Paragraph(element, doc)
+        anchor.style = doc.styles["Normal"]
+    if texts:
+        _fill_block(Slot(anchor, "", target["title"], writable=True), 0, 0, "\n".join(texts))
+        for p in target["remove"]:
+            p._p.getparent().remove(p._p)
+    return anchor
 
 
 def _review_need(cfg, need, candidates, records, context, title, feedback=None):
@@ -160,10 +238,10 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     """
     doc = _open(template)
     context = confirm_context(context)
-    target = _empty_sections(doc).get(section_index)
-    if target is None:
+    target = _section_targets(doc).get(section_index)
+    if target is None or target["status"] not in {"empty", "instruction"}:
         raise DraftError(tr("В шаблоне не удалось определить места заполнения."))
-    title, paragraph = target
+    title = target["title"]
     emit = progress or (lambda *_: None)
     issues = []
     sources = list(dict.fromkeys(sources))
@@ -210,16 +288,14 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     derivation["requirements"] = proposals
     result_repairs = repairs
     results = []
-    first = list(doc.element.body).index(paragraph._p)
     # Consolidate identical output text across different needs, preserving every link.
     by_text = {}
     for item in selected:
         by_text.setdefault(item["text"], []).append(item)
+    first = 0
     if selected:
-        # Reuse the existing safe writer; it generates separate Word paragraphs
-        # and preserves paragraph style. Reopen the actual output before anchoring.
-        _fill_block(Slot(paragraph, "", title, writable=True), 0, 0,
-                    "\n".join(by_text))
+        paragraph = _write_section(target, doc, list(by_text))
+        first = list(doc.element.body).index(paragraph._p)
     buf = io.BytesIO()
     doc.save(buf)
     output = buf.getvalue()
