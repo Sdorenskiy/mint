@@ -67,6 +67,7 @@ def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=Fals
                 replies = {rid: {"id": rid, "group": anchor} for rid, anchor in cached.items()}
                 status, extra = dict.fromkeys(allowed, "received"), 0
             else:
+                cached = None
                 replies, status, extra = _unique_answers(cfg, "function_group", payload, allowed)
             unexpected += extra
             # Each group anchor must itself be a valid self-assigned input ID.
