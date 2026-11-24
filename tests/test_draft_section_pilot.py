@@ -50,7 +50,8 @@ def template():
     return buf.getvalue()
 
 
-def run(coverage):
+def run(coverage, *, repair_text=None, reject_first=False):
+    attempts = {"repair": 0, "assessment": 0, "coverage": 0}
     raw = template()
     sections = pilot.pilot_sections(raw)
     assert len(sections) == 1 and sections[0]["title"] == "Functional obligations"
@@ -86,17 +87,35 @@ def run(coverage):
             if stage == "requirement_derivation":
                 need = payload["items"][0]
                 assert need["quote"] == NEED
+                if "repair" in payload:
+                    attempts["repair"] += 1
+                    assert attempts["repair"] == 1
+                    assert payload["repair"]["feedback"]["status"] in {"coverage_gap", "needs_review"}
+                    assert payload["repair"]["previous"][0]["text"] == OUTPUT
+                    if reject_first:
+                        assert payload["repair"]["previous"][0]["reason"] == "Incorrect attribution"
+                    else:
+                        assert payload["repair"]["feedback"]["reason"] == "Omitted condition"
                 return {"items": [{"id": need["id"], "status": "proposed", "requirements": [{
-                    "text": OUTPUT, "actor": CONTEXT["target"], "mode": "derived",
+                    "text": repair_text if "repair" in payload and repair_text else OUTPUT,
+                    "actor": CONTEXT["target"], "mode": "derived",
                     "need_refs": [need["id"]], "state_refs": [payload["current_state"][0]["id"]],
                     "constraint_refs": [], "reason": "Need and owner"}]}]}
             if stage == "requirement_assessment":
                 assert {row["quote"] for row in payload["evidence"]} == {NEED, OWNER}
+                attempts["assessment"] += 1
+                if reject_first and attempts["assessment"] == 1:
+                    return {"supported": True, "correct_actor": False, "no_new_decisions": True,
+                            "reason": "Incorrect attribution"}
                 return {"supported": True, "correct_actor": True, "no_new_decisions": True,
                         "reason": "Both sources support it"}
             if stage == "pilot_coverage":
                 assert payload["section"] == "Functional obligations"
-                assert payload["requirements"][0]["text"] == OUTPUT
+                attempts["coverage"] += 1
+                assert payload["requirements"][0]["text"] == (
+                    repair_text if attempts["repair"] and repair_text else OUTPUT)
+                if isinstance(coverage, list):
+                    return coverage[attempts["coverage"] - 1]
                 return coverage
             raise AssertionError(stage)
 
@@ -153,6 +172,24 @@ def test_coverage_gap_and_invalid_section():
             pass
 
 
+def test_repair_and_revalidation():
+    gap = {"section_relevant": True, "covered": False, "reason": "Omitted condition"}
+    ok = {"section_relevant": True, "covered": True, "reason": "Complete"}
+    corrected = "The Reservation Desk must provide confirmation of reservations to visitors."
+    result, out = run([gap, ok], repair_text=corrected)
+    assert out.paragraphs[5].text == corrected
+    assert result["derivation"]["requirements"][0]["text"] == corrected
+    assert result["results"][0]["proposal_ids"] == [result["derivation"]["requirements"][0]["id"]]
+    assert result["metrics"]["diagnostics"]["pilot_section"]["repair_attempts"] == 1
+    assert result["metrics"]["diagnostics"]["pilot_section"]["repair_successes"] == 1
+    result, out = run(gap, repair_text="The Reservation Desk must send confirmation in 30 seconds.")
+    assert not result["results"] and out.paragraphs[5].text == ""
+    assert next(iter(result["repairs"].values()))["status"] == "invalid_proposal"
+    result, out = run(ok, repair_text=corrected, reject_first=True)
+    assert out.paragraphs[5].text == corrected
+    assert result["metrics"]["diagnostics"]["pilot_section"]["repair_successes"] == 1
+
+
 def test_prompt_contract():
     for lang in ("ru", "en"):
         prompt = default_prompts(lang)["draft_pilot_coverage"]
@@ -162,5 +199,6 @@ def test_prompt_contract():
 if __name__ == "__main__":
     test_complete_chain()
     test_coverage_gap_and_invalid_section()
+    test_repair_and_revalidation()
     test_prompt_contract()
     print("ИТОГ: end-to-end V2 Word pilot, section preservation, traceability and coverage gaps")
