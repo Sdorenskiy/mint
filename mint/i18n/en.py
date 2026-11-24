@@ -4,6 +4,8 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Исправление отклонённых требований": "Repairing rejected requirements",
+    "Попыток исправления: {attempts}; успешно: {successes}.": "Repair attempts: {attempts}; successful: {successes}.",
     "Результаты формирования V2": "V2 generation results",
     "Записано абзацев: {written}; исходных записей: {records}; связанных с текстом: {linked}.": "Paragraphs written: {written}; source records: {records}; linked to output: {linked}.",
     "Связь с текстом не означает полного переноса требования. Коды статусов — результаты обработки, не экспертные оценки.": "A text link does not imply complete requirement coverage. Status codes describe processing, not expert verdicts.",
