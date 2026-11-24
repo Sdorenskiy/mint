@@ -4,6 +4,13 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Результаты формирования V2": "V2 generation results",
+    "Записано абзацев: {written}; исходных записей: {records}; связанных с текстом: {linked}.": "Paragraphs written: {written}; source records: {records}; linked to output: {linked}.",
+    "Связь с текстом не означает полного переноса требования. Коды статусов — результаты обработки, не экспертные оценки.": "A text link does not imply complete requirement coverage. Status codes describe processing, not expert verdicts.",
+    "Исходные записи и причины непереноса": "Source records and reasons for non-inclusion",
+    "Статусы обработки": "Processing statuses",
+    "В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей.": "Diagnostics omit text, filenames, model names and source identifiers. Review the file before sharing.",
+    "Скачать обезличенную диагностику V2": "Download sanitized V2 diagnostics",
     "V2 — экспериментальный": "V2 — experimental",
     "Прежний генератор (временно)": "Legacy generator (temporary)",
     "Режим формирования": "Generation mode",
