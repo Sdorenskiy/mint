@@ -136,6 +136,9 @@ def test_slow_earliest_request_does_not_idle_other_worker():
 
         def run():
             try:
+                # Session language is a ContextVar; a new test thread must set it
+                # explicitly so the extraction prompt and checkpoint key match.
+                set_lang("ru")
                 issues = []
                 items, count = draft._requirements(cfg, docs, issues,
                                                   lambda *event: events.append(event))
