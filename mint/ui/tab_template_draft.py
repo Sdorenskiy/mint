@@ -93,6 +93,7 @@ def render_template_draft_tab(cfg, glossary):
                 "requirement_derivation": tr("Детализация требований"),
                 "requirement_assessment": tr("Проверка обоснованности"),
                 "pilot_coverage": tr("Проверка полноты раздела"),
+                "pilot_repair": tr("Исправление отклонённых требований"),
             })
 
             def progress(stage, index):
