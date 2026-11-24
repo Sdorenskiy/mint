@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Add a compact V2 report with source record dispositions, unresolved items and a strictly allowlisted numeric diagnostic download. Reuse bidirectional traceability and local expert review. Development version 21.4.8.
+
 - Expose the experimental V2 empty-section pilot as the default Word drafting mode, with source roles, explicit section selection and read-only traceability. Retain the legacy generator temporarily. Development version 21.4.7.
 
 - Connect experimental V2 stages in an empty-section Word pilot with per-need coverage review, safe existing writer, actual output anchors and explicit unresolved dispositions. No production UI change. Development version 21.4.6.
