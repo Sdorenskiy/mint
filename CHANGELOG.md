@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Retry an actionable rejected V2 decomposition once using source evidence and specific review feedback, with the same structural and semantic gates. Export aggregate repair counters. Development version 21.4.10.
+
 - Permit a verbatim, explicitly assigned functional obligation without current-state evidence after independent assessment; keep derived requirements subject to architectural evidence. Development version 21.4.9.
 
 - Add a compact V2 report with source record dispositions, unresolved items and a strictly allowlisted numeric diagnostic download. Reuse bidirectional traceability and local expert review. Development version 21.4.8.
