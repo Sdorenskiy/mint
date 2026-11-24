@@ -133,6 +133,25 @@ def test_direct_verbatim_and_review():
     assert rejected["dispositions"]["R1"] == "invalid_allocation_evidence"
 
 
+def test_target_side_interaction_and_batch_assessment():
+    allocation = analysis_result()
+    allocation["allocations"]["R1"]["category"] = "interaction"
+    allocation["allocations"]["R3"]["category"] = "interaction"
+    result = run(response(item()), analysis=allocation)
+    assert result["dispositions"]["R1"] == "model_supported_candidates"
+    assert result["dispositions"]["R3"] == "external_proposal"
+    candidates = [{**item(), "id": "P1"}, {**item(), "id": "P2", "text": "Different duty"}]
+    verdict = {"supported": True, "correct_actor": True, "no_new_decisions": True,
+               "reason": "Supported"}
+    with patch.object(derivation, "_json", return_value={"items": [
+            {"id": "P1", **verdict}, {"id": "P2", **verdict},
+            {"id": "P2", **verdict}]}) as model:
+        derivation.assess_candidates(CFG, candidates, records(), CONTEXT["target"], lambda *_: None)
+    assert model.call_count == 1
+    assert candidates[0]["assessment"] == "model_supported"
+    assert candidates[1]["assessment"] == "assessment_incomplete"
+
+
 def test_prompts():
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
@@ -147,5 +166,6 @@ if __name__ == "__main__":
     test_structural_rejection()
     test_assessment_does_not_approve_uncertain_claims()
     test_direct_verbatim_and_review()
+    test_target_side_interaction_and_batch_assessment()
     test_prompts()
     print("ИТОГ: source-linked refinement, malformed decisions and assessment uncertainty")
