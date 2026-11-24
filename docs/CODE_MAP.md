@@ -2,9 +2,11 @@
 
 > Назначение: быстро найти место изменения и соответствующие тесты. Это краткая карта, а не полный call graph и не спецификация реализации.
 >
-> Проверенная основа: коммит `085330ed1727` ветки `main`, **до PR с обновлением этой карты**; 24 ноября 2026 г. Реальное поведение всегда определяется кодом.
+> Проверенная основа: коммит `ae2eb4f62982` ветки `main`, **до PR с исходным замером V2**; 24 ноября 2026 г. Реальное поведение всегда определяется кодом.
 >
 > Перед **каждым релизом** карту следует сверить с актуальным `main`, проверить появившиеся и удалённые модули и зафиксировать проверенную базу; только после этого готовить выпуск. Проверка проводится разработчиком вручную, без дополнительных GitHub Actions.
+
+> Проект нового алгоритма: [DRAFT_V2_CONTRACT.md](DRAFT_V2_CONTRACT.md). Это целевые контракты, не описание реализованного V2. `tests/test_draft_v2_baseline.py` воспроизводит известные ограничения текущего пути на вымышленных данных; `--strict` проверяет будущие критерии. Существующие метрики генерации включают ID прогона, число обработанных фрагментов, попадания/промахи кэша и ошибки извлечения.
 
 ## 1. Точки входа и разделение ответственности
 
@@ -73,7 +75,7 @@ flowchart TD
 | Контекст целевой системы | `document_context.py`, `ui/draft_context_ui.py` | `test_document_context.py` |
 | Исполнитель и применимость | `requirement_scope.py` | `test_requirement_scope.py` |
 | Прослеживаемость, изменения Word и чат | `draft_traceability.py`, `document_edit.py`, соответствующие `ui/` | `test_draft_traceability.py`, `test_trace_to_chat.py`, `test_document_edit.py` |
-| Ручной разбор и доказательность | `draft_review.py`, `document_quality_benchmark.py` | `test_draft_review.py`, `eval_document_quality.py` |
+| Ручной разбор и доказательность | `draft_review.py`, `document_quality_benchmark.py` | `test_draft_review.py`, `eval_document_quality.py`, `test_draft_v2_baseline.py` |
 | Индексация и совместимость моделей | `kb.py`, `search.py`, `bm25.py` | `test_embedding_compatibility.py`, `test_app.py` |
 | Чат, ссылки и ответ | `chat.py`, `citations.py`, `evaluation.py` | `test_app.py`, `test_answer_evaluation.py`, `test_eval.py` |
 | Аудит, полнота и шум | `audit.py`, `deep_checks.py`, `audit_store.py` | `test_audit_quality.py`, `test_deep_checks.py`, `test_audit_noise.py`, `test_audit_completion.py` |
