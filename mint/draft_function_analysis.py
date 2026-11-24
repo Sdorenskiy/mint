@@ -5,8 +5,10 @@ Groups are batch-local provisional units, not proof of complete functional analy
 Reuse the registry, scope vocabulary, ranked source candidates and model gateway.
 """
 from collections import Counter
+import json
 import re
 
+from .draft_checkpoint import DraftStageCheckpoint
 from .document_context import confirm_context, context_search_terms
 from .draft_registry import obligation_candidates
 from .requirement_scope import CATEGORIES
@@ -43,9 +45,10 @@ def _compact(row):
     return {key: row[key] for key in ("id", "source", "section", "quote", "kind", "source_role")}
 
 
-def _group_functions(cfg, functional, context, emit, budget):
+def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=False):
     groups, dispositions = [], {}
-    unexpected = calls = 0
+    unexpected = calls = cache_hits = 0
+    checkpoint = DraftStageCheckpoint(cfg, "function_group")
     values = list(functional.values())
     for offset in range(0, len(values), _GROUP_LIMIT):
         for batch in _batches(values[offset:offset + _GROUP_LIMIT],
@@ -54,8 +57,15 @@ def _group_functions(cfg, functional, context, emit, budget):
             calls += 1
             emit("function_group", calls)
             allowed = {row["id"]: row for row in batch}
-            replies, status, extra = _unique_answers(cfg, "function_group", {
-                "context": context, "items": [_compact(row) for row in batch]}, allowed)
+            payload = {"context": context, "items": [_compact(row) for row in batch]}
+            cached = None if reset_cache else checkpoint.load(payload)
+            if (cached is not None and set(cached) == set(allowed)
+                    and all(cached.get(anchor) == anchor for anchor in cached.values())):
+                cache_hits += 1
+                replies = {rid: {"id": rid, "group": anchor} for rid, anchor in cached.items()}
+                status, extra = dict.fromkeys(allowed, "received"), 0
+            else:
+                replies, status, extra = _unique_answers(cfg, "function_group", payload, allowed)
             unexpected += extra
             # Each group anchor must itself be a valid self-assigned input ID.
             anchors = {rid for rid, row in replies.items() if _text(row, "group") == rid}
@@ -73,8 +83,10 @@ def _group_functions(cfg, functional, context, emit, budget):
                 groups.append({"id": "G" + str(len(groups) + 1),
                                "anchor_id": anchor, "requirement_ids": ids})
             dispositions.update(status)
+            if all(value == "grouped" for value in status.values()):
+                checkpoint.save(payload, {rid: _text(row, "group") for rid, row in replies.items()})
     _record_draft_diagnostic("function_group", {
-        "batches": calls, "unexpected_rows": unexpected, "groups": len(groups),
+        "batches": calls, "cache_hits": cache_hits, "unexpected_rows": unexpected, "groups": len(groups),
         "status_counts": dict(Counter(dispositions.values())),
     })
     return groups, dispositions
@@ -130,7 +142,7 @@ def _allocation_candidates(query, queries, state, budget):
     return list(selected.values())
 
 
-def analyze_functions(cfg, records, context, emit):
+def analyze_functions(cfg, records, context, emit, *, reset_cache=False):
     """Return provisional groups, per-obligation allocations and all unresolved IDs.
 
     Context is human-confirmed. Evidence links show which source records were
@@ -150,16 +162,16 @@ def analyze_functions(cfg, records, context, emit):
     # Keep grouping compact. Allocate a larger budget to actual evidence, not instructions.
     total_budget = _candidate_budget(cfg)
     budget = min(4000, total_budget // 2)
-    groups, dispositions = _group_functions(cfg, functional, context, emit, budget)
+    groups, dispositions = _group_functions(cfg, functional, context, emit, budget, reset_cache=reset_cache)
     allocations = {rid: {"status": "not_grouped", "category": "uncertain",
                          "actor": "", "reason": "", "state_refs": []} for rid in functional}
     unexpected = 0
+    context_limited_groups = 0
     for index, group in enumerate(groups, 1):
         ids = group["requirement_ids"]
         query = " ".join([context_search_terms(context)] +
                          [functional[rid]["quote"] for rid in ids])
         # Account for the actual serialized input before selecting evidence.
-        import json
         base = {"context": context, "items": [_compact(functional[rid]) for rid in ids],
                 "target_names": list(target_names(context["target"]))}
         remaining = max(0, total_budget - len(json.dumps(base, ensure_ascii=False)) - 256)
@@ -183,6 +195,11 @@ def analyze_functions(cfg, records, context, emit):
                      context_limited=(len(state_rows) < len(state) or
                                       len(cross_rows) < len(cross_cutting) or
                                       len(question_rows) < len(questions)))
+        context_limited_groups += int(group["context_limited"])
+        if len(json.dumps(base, ensure_ascii=False)) > total_budget:
+            for rid in ids:
+                allocations[rid]["status"] = "allocation_context_limit"
+            continue
         # Without architecture, only explicitly named target obligations
         # can enter the direct path. Mere mention is insufficient.
         if not state_rows and not any(names_target(functional[rid]["quote"], context["target"])
@@ -227,7 +244,7 @@ def analyze_functions(cfg, records, context, emit):
             if direct:
                 result["direct"] = True
     _record_draft_diagnostic("function_allocation", {
-        "unexpected_rows": unexpected,
+        "unexpected_rows": unexpected, "context_limited_groups": context_limited_groups,
         "status_counts": dict(Counter(row["status"] for row in allocations.values())),
         "cross_cutting_pending": len(cross_cutting), "open_questions": len(questions),
     })
