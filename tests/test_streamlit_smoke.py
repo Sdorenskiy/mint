@@ -44,6 +44,15 @@ try:
     res["theme"] = any("mint-theme-anchor" in str(m.value) for m in at.markdown)
     res["tabs"] = len(at.tabs)
     res["new_chat_empty"] = has_button(at, "chat_clear_btn")
+    res["draft_default_v2"] = at.radio(key="draft_engine").value == "v2"
+    res["draft_v2_disabled"] = at.button(key="draft_start").disabled
+    at.radio(key="draft_engine").set_value("legacy").run()
+    res["errors"] += errors(at)
+    res["draft_legacy_available"] = at.radio(key="draft_mode").value is False
+    at.radio(key="draft_engine").set_value("v2").run()
+    res["errors"] += errors(at)
+    res["draft_v2_restored"] = at.radio(key="draft_engine").value == "v2"
+
     if not at.exception:
         at.chat_input[0].set_value("Какие требования к журналам?").run()
         res["errors"] += errors(at)
@@ -191,6 +200,9 @@ print(f"  Streamlit {ver}")
 check(not res["errors"], "страница и действия без исключений", " ⏎ ".join(res["errors"]).replace("\n", " ⏎ ")[-3000:])
 check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
 check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
+check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v2_restored")),
+      "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
+
 check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
       "«Новый чат» есть всегда: в пустом чате и сразу после первого ответа")
 cons = res.get("consult") or {}

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Expose the experimental V2 empty-section pilot as the default Word drafting mode, with source roles, explicit section selection and read-only traceability. Retain the legacy generator temporarily. Development version 21.4.7.
+
 - Connect experimental V2 stages in an empty-section Word pilot with per-need coverage review, safe existing writer, actual output anchors and explicit unresolved dispositions. No production UI change. Development version 21.4.6.
 
 - Add experimental V2 target requirement refinement with distinct need and current-state references, structural evidence checks, separate model assessment and explicit unresolved items. No change to the active Word generation path. Development version 21.4.5.

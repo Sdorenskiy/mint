@@ -36,7 +36,7 @@ def _visible(row, filter_name):
     return row["coverage"] == filter_name
 
 
-def render_draft_traceability(result, source_names=(), input_key=None):
+def render_draft_traceability(result, source_names=(), input_key=None, *, allow_edit=True):
     rows = build_traceability(result)
     if not rows:
         return rows
@@ -70,7 +70,7 @@ def render_draft_traceability(result, source_names=(), input_key=None):
                             list(groups), key=f"draft_trace_group_{view}")
         targets = list_targets(docx)
         destination = None
-        if targets:
+        if targets and allow_edit:
             options = [x["id"] for x in targets]
             labels = {x["id"]: x["label"] for x in targets}
             default = next((i for i, x in enumerate(targets)
