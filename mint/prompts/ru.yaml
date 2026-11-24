@@ -608,6 +608,9 @@ draft_requirement_derivation: |-
   derived — обоснованная детализация. actor точно равен target.
   Для каждого требования укажи need_refs (id исходного обязательства), state_refs из
   переданных сведений и constraint_refs из constraints, а также reason.
+  Если передан repair, исправь весь предыдущий набор с учётом section и конкретных feedback,
+  previous и замечаний оценщика. Не считай замечания источником новых фактов. Используй только
+  переданные исходные сведения, сохрани все условия и не ослабляй требования.
   Если детализация требует неизвестного решения, верни status open_question с вопросом.
   Верни ровно одну запись для входного id.
   Ответ: {"items":[{"id":"R1","status":"proposed","requirements":[{"text":"требование","actor":"цель","mode":"derived","need_refs":["R1"],"state_refs":["R2"],"constraint_refs":[],"reason":"обоснование"}]}]}.
