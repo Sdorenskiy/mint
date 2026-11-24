@@ -78,9 +78,10 @@ def test_registry_with_real_extraction_and_cache():
         assert result["metrics"]["diagnostics"]["registry_type"]["status_counts"] == {
             "structural": 1, "classified": 7}
         with patch.object(draft, "_json", side_effect=AssertionError("cache not reused")), patch.object(
-                registry, "_json", side_effect=type_model):
+                registry, "_json", side_effect=AssertionError("typing cache not reused")):
             again = run()
         assert again["requirements"] == records
+        assert again["metrics"]["diagnostics"]["registry_type"]["cache_hits"] > 0
         assert again["metrics"]["diagnostics"]["extraction"]["cache_hits"] == result["chunks"]
 
 
