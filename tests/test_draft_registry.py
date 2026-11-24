@@ -26,7 +26,7 @@ DOCS = [
 ]
 ROLES = {"brief.md": "need", "architecture.md": "architecture"}
 EXPECTED = {
-    NEED: "functional", OWNER: "architecture", EXTERNAL: "architecture",
+    NEED: "functional", OWNER: "current_state", EXTERNAL: "current_state",
     SHARED: "nonfunctional", QUESTION: "open_question", DEFINITION: "definition",
     NOISE: "non_requirement",
 }
@@ -92,7 +92,7 @@ def test_model_errors_are_not_obligations():
                           {"id": "R2", "kind": "uncertain"},
                           {"id": "R3", "kind": "bogus"},
                           {"id": "R4", "kind": "functional"},
-                          {"id": "R4", "kind": "architecture"},
+                          {"id": "R4", "kind": "current_state"},
                           {"id": "R6", "kind": "definition"},
                           {"id": "unknown", "kind": "functional"}]}
     with patch.object(registry, "_json", return_value=response):
