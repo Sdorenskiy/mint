@@ -617,7 +617,7 @@ draft_requirement_assessment: |-
   Do not treat citations or the author's explanation as semantic proof.
   supported means the text follows from the need and existing-state evidence;
   for mode explicit without state_refs verify that the quotation itself assigns the duty
-  to target, rather than merely mentioning it. A verbatim direct obligation needs no architecture reference.
+  to target, rather than merely mentioning it. A verbatim direct obligation needs no existing-state reference.
   correct_actor means the duty belongs to target rather than an external participant;
   no_new_decisions means there are no invented parameters, implementation choices or duties.
   Consider conditions, negation and exceptions, distinguishing existing from required behavior.
