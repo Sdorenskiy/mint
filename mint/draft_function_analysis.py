@@ -59,8 +59,10 @@ def _group_functions(cfg, functional, context, emit, budget):
             # Each group anchor must itself be a valid self-assigned input ID.
             anchors = {rid for rid, row in replies.items() if _text(row, "group") == rid}
             by_anchor = {}
-            for rid, row in replies.items():
-                anchor = _text(row, "group")
+            for rid in allowed:
+                if rid not in replies:
+                    continue
+                anchor = _text(replies[rid], "group")
                 if anchor not in anchors:
                     status[rid] = "invalid_group"
                 else:
