@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Fix the V2 template selection blocker: recognize manual numbered and inherited-outline headings, allow empty sections without an existing blank anchor, safely replace explicit instructions, and explain blocked sections. Development version 21.4.11.
+
 - Retry an actionable rejected V2 decomposition once using source evidence and specific review feedback, with the same structural and semantic gates. Export aggregate repair counters. Development version 21.4.10.
 
 - Permit a verbatim, explicitly assigned functional obligation without current-state evidence after independent assessment; keep derived requirements subject to architectural evidence. Development version 21.4.9.
