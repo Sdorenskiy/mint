@@ -588,6 +588,30 @@ draft_extract: |-
   Extract substantive source requirements, limits, parameters, dates, conditions, definitions and identifiers.
   For each item return a verbatim contiguous quote with its units, exceptions and conditions.
   Exclude examples, hypotheses and references without substance. Return {"requirements":[{"quote":"exact quote"}]}.
+draft_requirement_derivation: |-
+  For one source obligation and the confirmed target, propose one to six testable
+  target-specific requirements. Do not merely copy a broad objective without refinement.
+  allocation is a provisional assignment of responsibility, not proof.
+  current_state describes existing structure, behavior and roles; it explains why the
+  obligation belongs to the target but does not itself mandate a new change.
+  Do not introduce unsupported deadlines, values, implementation choices or external duties.
+  Preserve conditions, exceptions and negations. mode explicit means a directly stated
+  obligation; derived means justified refinement. actor must exactly equal target.
+  For each requirement supply need_refs (the source obligation id), state_refs from
+  the supplied current-state records, constraint_refs from constraints, and reason.
+  If refinement depends on an unresolved decision, return status open_question and a question.
+  Return exactly one row for the input id.
+  Return {"items":[{"id":"R1","status":"proposed","requirements":[{"text":"requirement","actor":"target","mode":"derived","need_refs":["R1"],"state_refs":["R2"],"constraint_refs":[],"reason":"explanation"}]}]}.
+  Alternative: {"items":[{"id":"R1","status":"open_question","question":"What needs agreement?"}]}.
+draft_requirement_assessment: |-
+  Independently assess the proposed requirement against the exact source records in evidence.
+  Do not treat citations or the author's explanation as semantic proof.
+  supported means the text follows from the need and existing-state evidence;
+  correct_actor means the duty belongs to target rather than an external participant;
+  no_new_decisions means there are no invented parameters, implementation choices or duties.
+  Consider conditions, negation and exceptions, distinguishing existing from required behavior.
+  If unsure about any of these three judgments, use false. Explain reason.
+  Return {"supported":false,"correct_actor":false,"no_new_decisions":false,"reason":"explanation"}.
 draft_function_group: |-
   Group functional obligations describing one coherent function.
   Do not group independent functions merely because they share words or a system name.
