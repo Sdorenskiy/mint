@@ -6,6 +6,7 @@ import io
 import json
 import re
 import time
+import uuid
 from functools import wraps
 from copy import deepcopy
 from dataclasses import dataclass
@@ -83,7 +84,8 @@ def _measure_draft(fn):
     """Collect per-stage LLM cost without logging text or affecting other sessions."""
     @wraps(fn)
     def measured(*args, **kwargs):
-        metrics = {"stages": {}, "total_seconds": 0.0}
+        metrics = {"run_id": uuid.uuid4().hex, "stages": {}, "total_seconds": 0.0,
+                   "diagnostics": {}}
         token = _DRAFT_METRICS.set(metrics)
         lock_token = _DRAFT_METRICS_LOCK.set(threading.Lock())
         started = time.perf_counter()
@@ -96,6 +98,14 @@ def _measure_draft(fn):
             _DRAFT_METRICS.reset(token)
             _DRAFT_METRICS_LOCK.reset(lock_token)
     return measured
+
+
+def _record_draft_diagnostic(stage, data):
+    """Attach structured, text-free counters to the current run, never to global logs."""
+    metrics = _DRAFT_METRICS.get()
+    if metrics is not None:
+        with _DRAFT_METRICS_LOCK.get():
+            metrics["diagnostics"][stage] = data
 
 
 def _records(data, key):
@@ -162,6 +172,7 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
     emit("extract_total", total)
     workers = min(4, max(1, int(getattr(cfg, "draft_extract_parallel", 2))))
     requirements, seen, chunks, completed, reused = {}, set(), 0, 0, 0
+    failed_fragments = invalid_quote_fragments = duplicate_quotes = 0
 
     def jobs():
         for name, markdown in documents:
@@ -207,10 +218,12 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
         emit("extract_done", completed)
 
     def accept(job, result):
-        nonlocal chunks
+        nonlocal chunks, failed_fragments, invalid_quote_fragments, duplicate_quotes
         name, section, _text_fragment, _index, _checkpoint = job
         quotes, _cached, invalid, failed, _elapsed = result
         chunks += 1
+        failed_fragments += int(failed)
+        invalid_quote_fragments += int(bool(invalid))
         if failed:
             issues.append(tr("Не удалось разобрать фрагмент основания: {source} › {section}.",
                              source=name, section=section or str(chunks)))
@@ -223,6 +236,8 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
                 seen.add(key)
                 rid = f"R{len(requirements) + 1}"
                 requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
+            else:
+                duplicate_quotes += 1
 
     if workers == 1:
         for job in jobs():
@@ -266,6 +281,13 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
                     accept(job, result)
                     next_accept += 1
                 fill(executor)
+    _record_draft_diagnostic("extraction", {
+        "fragments_total": total, "fragments_completed": completed,
+        "cache_hits": reused, "cache_misses": completed - reused,
+        "failed_fragments": failed_fragments,
+        "invalid_quote_fragments": invalid_quote_fragments,
+        "duplicate_quotes": duplicate_quotes, "accepted_records": len(requirements),
+    })
     return requirements, chunks
 
 
