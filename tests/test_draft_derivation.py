@@ -107,6 +107,32 @@ def test_assessment_does_not_approve_uncertain_claims():
         assert result["dispositions"]["R1"] == "needs_review"
 
 
+def test_direct_verbatim_and_review():
+    need = records()["R1"]
+    need["quote"] = "Reservation Desk must notify visitors."
+    allocation = {"allocations": {"R1": {"status": "proposed", "category": "target",
+                  "actor": CONTEXT["target"], "reason": "Explicit duty",
+                  "direct": True, "state_refs": []}}}
+    def model(_cfg, stage, payload):
+        assert stage == "requirement_assessment"
+        assert payload["candidate"]["text"] == need["quote"]
+        assert [row["id"] for row in payload["evidence"]] == ["R1"]
+        return {"supported": True, "correct_actor": True, "no_new_decisions": True,
+                "reason": "Explicit duty"}
+    with patch.object(derivation, "_json", side_effect=model) as llm:
+        result = derivation.derive_requirements(CFG, {"R1": need}, allocation, CONTEXT, lambda *_: None)
+    assert llm.call_count == 1
+    assert result["requirements"][0]["assessment"] == "model_supported"
+    assert result["requirements"][0]["state_refs"] == []
+    with patch.object(derivation, "_json", return_value={"supported": False}):
+        rejected = derivation.derive_requirements(CFG, {"R1": need}, allocation, CONTEXT, lambda *_: None)
+    assert rejected["dispositions"]["R1"] == "needs_review"
+    need["quote"] = "Visitors must receive notification."
+    with patch.object(derivation, "_json", side_effect=AssertionError("No evidence")):
+        rejected = derivation.derive_requirements(CFG, {"R1": need}, allocation, CONTEXT, lambda *_: None)
+    assert rejected["dispositions"]["R1"] == "invalid_allocation_evidence"
+
+
 def test_prompts():
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
@@ -120,5 +146,6 @@ if __name__ == "__main__":
     test_positive_and_open_items()
     test_structural_rejection()
     test_assessment_does_not_approve_uncertain_claims()
+    test_direct_verbatim_and_review()
     test_prompts()
     print("ИТОГ: source-linked refinement, malformed decisions and assessment uncertainty")
