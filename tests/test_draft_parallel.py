@@ -99,6 +99,78 @@ def test_bounded_extraction():
             assert two["metrics"]["stages"]["extract"]["llm_calls"] == 1
 
 
+def test_slow_earliest_request_does_not_idle_other_worker():
+    """A later completion starts another request before the earliest finishes."""
+    with TemporaryDirectory() as tmp:
+        cfg = SimpleNamespace(log_path=Path(tmp), llm_model="synthetic",
+                              llm_api_key="not-a-secret", llm_base="https://example.invalid/v1",
+                              max_tokens=1600, llm_context_tokens=8192, chars_per_token=2.5,
+                              llm_no_reasoning=True, llm_extra_body="", draft_extract_parallel=2)
+        docs = [("fictional_guide.md", "\n".join(
+            "# Section " + str(i) + "\nRequirement number " + str(i) + " must be met."
+            for i in range(1, 9)))]
+        first_started = threading.Event()
+        release_first = threading.Event()
+        fourth_started = threading.Event()
+        lock = threading.Lock()
+        running = {"now": 0, "peak": 0}
+        events, result_box, errors = [], {}, []
+
+        def fake_llm(_sys, user, *_args, **_kwargs):
+            data = json.loads(user)
+            number = int(data["text"].split("Requirement number ")[1].split(" ")[0])
+            with lock:
+                running["now"] += 1
+                running["peak"] = max(running["peak"], running["now"])
+            try:
+                if number == 1:
+                    first_started.set()
+                    if not release_first.wait(10):
+                        raise RuntimeError("first fake LLM request timed out")
+                if number == 4:
+                    fourth_started.set()
+                return json.dumps({"requirements": [{"quote": data["text"]}]})
+            finally:
+                with lock:
+                    running["now"] -= 1
+
+        def run():
+            try:
+                issues = []
+                items, count = draft._requirements(cfg, docs, issues,
+                                                  lambda *event: events.append(event))
+                result_box.update(items=items, count=count, issues=issues)
+            except BaseException as exc:
+                errors.append(exc)
+
+        with patch.object(draft, "ask_llm", side_effect=fake_llm):
+            thread = threading.Thread(target=run, daemon=True)
+            thread.start()
+            try:
+                assert first_started.wait(5), "the first request did not start"
+                assert fourth_started.wait(5), (
+                    "idle worker was not refilled while the first request was still running")
+                # Progress is completion-based, although the final IDs are source-ordered.
+                assert any(event[0] == "extract_done" and event[1] >= 2 for event in events)
+            finally:
+                release_first.set()
+                thread.join(12)
+            assert not thread.is_alive(), "extraction thread did not finish"
+            assert not errors, errors
+
+        assert running["peak"] == 2
+        assert result_box["count"] == 8 and not result_box["issues"]
+        assert [row["section"] for row in result_box["items"].values()] == [
+            "Section " + str(i) for i in range(1, 9)]
+        assert list(result_box["items"]) == ["R" + str(i) for i in range(1, 9)]
+        assert [event[1] for event in events if event[0] == "extract_done"] == list(range(1, 9))
+        # Reusing the same checkpoints must keep the same evidence and ordering.
+        with patch.object(draft, "ask_llm", side_effect=AssertionError("cache was not reused")):
+            repeat, count = draft._requirements(cfg, docs, [], lambda *_: None)
+            assert count == 8 and repeat == result_box["items"]
+
+
 if __name__ == "__main__":
     test_bounded_extraction()
-    print("ИТОГ: параллельные фрагменты, стабильный порядок, метрики, кэш, повтор сбоя, лимит потоков")
+    test_slow_earliest_request_does_not_idle_other_worker()
+    print("ИТОГ: параллельные фрагменты, нет простоя за медленным запросом, стабильные ID, прогресс, кэш, лимит потоков")
