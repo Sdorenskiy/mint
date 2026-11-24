@@ -588,6 +588,17 @@ draft_extract: |-
   Extract substantive source requirements, limits, parameters, dates, conditions, definitions and identifiers.
   For each item return a verbatim contiguous quote with its units, exceptions and conditions.
   Exclude examples, hypotheses and references without substance. Return {"requirements":[{"quote":"exact quote"}]}.
+draft_registry_type: |-
+  For each id classify the type of the source quotation, not its applicability to the target system.
+  source_role describes the document's role, not whether a specific quotation is an obligation.
+  functional — required function or behavior; nonfunctional — quality requirement;
+  constraint — mandatory restriction; definition — definition; current_state — existing
+  structure, behavior or responsibility, not a new obligation; open_question — unresolved decision;
+  reference — background or identifier; non_requirement — index entry, example or noise;
+  uncertain — type cannot be established. Do not turn current-state descriptions into requirements.
+  Preserve distinctions between conditions, obligations and unknown decisions.
+  Do not rewrite quotes. Return exactly one row for each input id; do not invent IDs.
+  Return {"items":[{"id":"R1","kind":"functional"}]}.
 draft_scope: |-
   Classify each extracted source requirement relative to the user-confirmed
   target, objective, scope and participants, not merely by lexical overlap.

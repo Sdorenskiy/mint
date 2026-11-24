@@ -1,5 +1,6 @@
 """Fill a copy of a Word template from selected originals in the knowledge base."""
 import contextvars
+import hashlib
 import threading
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 import io
@@ -160,18 +161,21 @@ def _split_section(section, lines):
             yield section, text
 
 
-def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
+def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_provenance=False):
     """Verified extraction with bounded parallel requests and stable source ordering.
 
     Only workers read/write individual checkpoint files and call the model.
     Progress tracks completed jobs even when an earlier job is still running.
     Requirements and issue IDs are assembled in input order on the main thread.
-    Worker contexts preserve language/profile/metrics.
+    Worker contexts preserve language/profile/metrics. The experimental registry
+    can request provenance without changing the legacy payload or cache format.
     """
     total = sum(1 for _, markdown in documents for _ in _source_chunks(markdown))
     emit("extract_total", total)
     workers = min(4, max(1, int(getattr(cfg, "draft_extract_parallel", 2))))
-    requirements, seen, chunks, completed, reused = {}, set(), 0, 0, 0
+    requirements, seen, chunks, completed, reused = {}, {}, 0, 0, 0
+    revisions = {name: hashlib.sha256(markdown.encode("utf-8")).hexdigest()
+                 for name, markdown in documents} if include_provenance else {}
     failed_fragments = invalid_quote_fragments = duplicate_quotes = 0
 
     def jobs():
@@ -233,11 +237,21 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
         for quote in quotes:
             key = (name, section, _normalized(quote))
             if key not in seen:
-                seen.add(key)
                 rid = f"R{len(requirements) + 1}"
+                seen[key] = rid
                 requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
+                if include_provenance:
+                    requirements[rid]["source_spans"] = []
             else:
                 duplicate_quotes += 1
+            if include_provenance:
+                spans = requirements[seen[key]]["source_spans"]
+                # A repeated quote in overlapping fragments is one requirement,
+                # with multiple candidate locations, not multiple obligations.
+                if not spans or spans[-1]["fragment"] != _index:
+                    spans.append({"source": name, "revision": revisions[name],
+                                  "section": section, "fragment": _index,
+                                  "quote": quote})
 
     if workers == 1:
         for job in jobs():

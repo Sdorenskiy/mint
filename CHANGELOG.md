@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Add an experimental typed source registry reusing Word extraction and checkpoints, preserving provenance and distinguishing obligations from existing architecture, definitions, references and unresolved questions. Bounded type classification fails closed; the active generator remains unchanged. Development version 21.4.3.
+
 - Record per-run Word drafting diagnostics (run ID, extraction cache and failure counters, applicability response reasons). Characterize legacy blank-section and false-extraction limitations on fictional inputs; no new model calls or change to the existing drafting algorithm.
 
 - Keep Word source-extraction workers busy when an earlier LLM request stalls. Report completion progress immediately, but preserve source-order requirement IDs, checkpoint reuse, validated quotations and bounded buffering. Add deterministic slow-first-request regression coverage; no extra model calls or CI workflows.
