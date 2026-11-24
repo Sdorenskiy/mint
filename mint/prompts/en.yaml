@@ -592,8 +592,8 @@ draft_registry_type: |-
   For each id classify the type of the source quotation, not its applicability to the target system.
   source_role describes the document's role, not whether a specific quotation is an obligation.
   functional — required function or behavior; nonfunctional — quality requirement;
-  constraint — mandatory restriction; definition — definition; architecture — existing
-  architecture or responsibility, not a new obligation; open_question — unresolved decision;
+  constraint — mandatory restriction; definition — definition; current_state — existing
+  structure, behavior or responsibility, not a new obligation; open_question — unresolved decision;
   reference — background or identifier; non_requirement — index entry, example or noise;
   uncertain — type cannot be established. Do not turn current-state descriptions into requirements.
   Preserve distinctions between conditions, obligations and unknown decisions.
