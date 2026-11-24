@@ -5,7 +5,7 @@ import streamlit as st
 
 from ..i18n import tr
 from ..draft_registry import SOURCE_ROLES
-from ..draft_section_pilot import create_section_pilot, pilot_sections
+from ..draft_section_pilot import create_section_pilot, pilot_section_options
 from ..kb import list_kb_documents, source_path
 from ..template_draft import DraftError, create_draft
 from .draft_review_ui import render_draft_reviews
@@ -38,7 +38,7 @@ def render_template_draft_tab(cfg, glossary):
     roles = {}
     section_index = None
     if pilot:
-        st.caption(tr("V2 формирует один пустой раздел. Результат требует экспертной проверки."))
+        st.caption(tr("V2 формирует один выбранный раздел. Результат требует экспертной проверки."))
         role_labels = {"need": tr("Исходные требования"), "architecture": tr("Описание решения"),
                        "normative": tr("Нормативные документы"), "mixed": tr("Смешанное содержание"),
                        "unspecified": tr("Роль не определена")}
@@ -48,20 +48,37 @@ def render_template_draft_tab(cfg, glossary):
                     name, sorted(SOURCE_ROLES, key=lambda role: (role != "unspecified", role)),
                     format_func=role_labels.__getitem__,
                     key="draft_pilot_role_" + hashlib.sha256(name.encode("utf-8")).hexdigest())
-        sections = []
+        options = []
         if raw:
             try:
-                sections = pilot_sections(raw)
+                options = pilot_section_options(raw)
             except DraftError as exc:
                 st.warning(str(exc))
+        sections = [row for row in options if row["status"] in {"empty", "instruction"}]
+        status_labels = {
+            "empty": tr("Пустой раздел"),
+            "instruction": tr("Раздел с подсказками"),
+            "fixed_content": tr("Содержит обычный текст или неоднозначную подсказку"),
+            "protected": tr("Защищённый заголовок или сложные элементы Word"),
+        }
         if sections:
-            labels = {row["index"]: row["title"] for row in sections}
+            labels = {row["index"]: f'{row["title"]} — {status_labels[row["status"]]}' for row in sections}
             section_index = st.selectbox(
                 tr("Раздел для формирования"), list(labels), index=None,
                 format_func=labels.__getitem__,
                 key="draft_pilot_section_" + hashlib.sha256(raw).hexdigest())
+            if section_index is not None:
+                selected = next(row for row in sections if row["index"] == section_index)
+                if selected["status"] == "instruction":
+                    st.caption(tr("Подсказки и явные примеры заменяются только после успешной проверки результата."))
         elif raw:
-            st.warning(tr("Нет безопасных пустых разделов для V2."))
+            st.warning(tr("Нет разделов, безопасных для формирования V2."))
+        if options:
+            with st.expander(tr("Распознанные разделы и причины ограничений"), expanded=not sections):
+                for row in options:
+                    st.text(f'{row["title"]} — {status_labels[row["status"]]}')
+        elif raw:
+            st.caption(tr("Заголовки разделов не распознаны. Проверьте структуру Word."))
 
     def input_key():
         versions = []
