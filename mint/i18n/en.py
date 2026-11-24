@@ -4,6 +4,15 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "V2 формирует один выбранный раздел. Результат требует экспертной проверки.": "V2 fills one selected section. Expert review is required.",
+    "Нет разделов, безопасных для формирования V2.": "No sections safe for V2 generation.",
+    "Пустой раздел": "Empty section",
+    "Раздел с подсказками": "Section with instructions",
+    "Содержит обычный текст или неоднозначную подсказку": "Contains fixed prose or an ambiguous instruction",
+    "Защищённый заголовок или сложные элементы Word": "Protected heading or complex Word elements",
+    "Подсказки и явные примеры заменяются только после успешной проверки результата.": "Instructions and explicit examples are replaced only after the result passes review.",
+    "Распознанные разделы и причины ограничений": "Detected sections and restrictions",
+    "Заголовки разделов не распознаны. Проверьте структуру Word.": "No section headings recognized. Check the Word structure.",
     "Исправление отклонённых требований": "Repairing rejected requirements",
     "Попыток исправления: {attempts}; успешно: {successes}.": "Repair attempts: {attempts}; successful: {successes}.",
     "Результаты формирования V2": "V2 generation results",
@@ -16,7 +25,6 @@ EN = {
     "V2 — экспериментальный": "V2 — experimental",
     "Прежний генератор (временно)": "Legacy generator (temporary)",
     "Режим формирования": "Generation mode",
-    "V2 формирует один пустой раздел. Результат требует экспертной проверки.": "V2 fills one empty section. Expert review is required.",
     "Исходные требования": "Source requirements",
     "Описание решения": "Solution description",
     "Нормативные документы": "Regulatory documents",
@@ -24,7 +32,6 @@ EN = {
     "Роль не определена": "Unspecified role",
     "Роли документов-оснований": "Source document roles",
     "Раздел для формирования": "Section to generate",
-    "Нет безопасных пустых разделов для V2.": "No safe empty sections for V2.",
     "Типизация исходных сведений": "Classifying source records",
     "Группировка функций": "Grouping functions",
     "Распределение ответственности": "Allocating responsibility",
