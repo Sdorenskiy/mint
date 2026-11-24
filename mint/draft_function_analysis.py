@@ -58,6 +58,8 @@ def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=Fals
             emit("function_group", calls)
             allowed = {row["id"]: row for row in batch}
             payload = {"context": context, "items": [_compact(row) for row in batch]}
+            if reset_cache:
+                checkpoint.clear(payload)
             cached = None if reset_cache else checkpoint.load(payload)
             if (cached is not None and set(cached) == set(allowed)
                     and all(cached.get(anchor) == anchor for anchor in cached.values())):
@@ -83,7 +85,7 @@ def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=Fals
                 groups.append({"id": "G" + str(len(groups) + 1),
                                "anchor_id": anchor, "requirement_ids": ids})
             dispositions.update(status)
-            if all(value == "grouped" for value in status.values()):
+            if cached is None and all(value == "grouped" for value in status.values()):
                 checkpoint.save(payload, {rid: _text(row, "group") for rid, row in replies.items()})
     _record_draft_diagnostic("function_group", {
         "batches": calls, "cache_hits": cache_hits, "unexpected_rows": unexpected, "groups": len(groups),
