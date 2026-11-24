@@ -875,6 +875,24 @@ def _mark_wiki(doc, paragraph, status, detail):
     # source documents. Do not flood Word with one comment per such field.
 
 
+def _load_draft_sources(cfg, sources, issues):
+    """Read selected originals once; shared by legacy drafting and V2 pilot."""
+    documents = []
+    for name in dict.fromkeys(sources):
+        try:
+            path = source_path(cfg, name)
+            markdown = document_to_markdown(name, path.read_bytes())
+            if not markdown.strip():
+                raise ValueError("empty source")
+        except Exception:
+            issues.append(tr("Не удалось прочитать оригинал основания: {source}.", source=name))
+            continue
+        documents.append((name, markdown))
+    if not documents:
+        raise DraftError(tr("Нет доступных оригиналов выбранных оснований."))
+    return documents
+
+
 @_measure_draft
 def create_draft(template, cfg, sources, glossary=None, progress=None, *, example=False, reset_extract_cache=False, context=None):
     """Return a new DOCX plus field/requirement coverage. Never alter the input files."""
@@ -890,19 +908,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     except (OpcError, BadZipFile, ValueError, KeyError) as exc:
         raise DraftError(tr("Не удалось прочитать файл DOCX.")) from exc
     issues, results, used = [], [], set()
-    documents = []
-    for name in dict.fromkeys(sources):
-        try:
-            path = source_path(cfg, name)
-            markdown = document_to_markdown(name, path.read_bytes())
-            if not markdown.strip():
-                raise ValueError("empty source")
-        except Exception:
-            issues.append(tr("Не удалось прочитать оригинал основания: {source}.", source=name))
-            continue
-        documents.append((name, markdown))
-    if not documents:
-        raise DraftError(tr("Нет доступных оригиналов выбранных оснований."))
+    documents = _load_draft_sources(cfg, sources, issues)
     if example:
         doc, slots, fields, tables = _from_example(doc, issues)
         examples, fixed = {}, {}
