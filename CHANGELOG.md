@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Connect experimental V2 stages in an empty-section Word pilot with per-need coverage review, safe existing writer, actual output anchors and explicit unresolved dispositions. No production UI change. Development version 21.4.6.
+
 - Add experimental V2 target requirement refinement with distinct need and current-state references, structural evidence checks, separate model assessment and explicit unresolved items. No change to the active Word generation path. Development version 21.4.5.
 
 - Add experimental V2 function grouping and evidence-linked responsibility proposals with explicit unresolved IDs, retained cross-cutting constraints and open questions. The active Word generator is unchanged; no new platform requirements are emitted yet. Development version 21.4.4.
