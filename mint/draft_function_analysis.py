@@ -89,9 +89,45 @@ def _valid_refs(row, key, allowed):
     return refs
 
 
+def target_names(target):
+    """Only aliases explicitly included by the user in the confirmed target."""
+    names = [target] if target else []
+    match = re.fullmatch(r"(.+?)\s*\(([A-ZА-ЯЁ0-9][A-ZА-ЯЁ0-9 -]{1,29})\)", target or "")
+    if match:
+        names.extend((match.group(1).strip(), match.group(2).strip()))
+    return tuple(dict.fromkeys(names))
+
+
+def is_target(actor, target):
+    return bool(actor and any(actor.casefold() == name.casefold() for name in target_names(target)))
+
+
 def names_target(quote, target):
     """Conservative literal guard, not proof that the target is the actor."""
-    return bool(target and re.search(r"(?<!\w)" + re.escape(target) + r"(?!\w)", quote, re.I))
+    return any(re.search(r"(?<!\w)" + re.escape(name) + r"(?!\w)", quote, re.I)
+               for name in target_names(target))
+
+
+
+def _allocation_candidates(query, queries, state, budget):
+    """Reuse BM25 and reserve part of the evidence budget for each obligation."""
+    if not state or budget <= 0:
+        return []
+    if sum(len(row["quote"]) + 95 for row in state.values()) <= budget:
+        return list(state.values())
+    selected, used = {}, 0
+    def add(rows):
+        nonlocal used
+        for row in rows:
+            cost = len(row["quote"]) + 95
+            if row["id"] not in selected and used + cost <= budget:
+                selected[row["id"]] = row
+                used += cost
+    each = budget // (2 * max(1, len(queries)))
+    for need in queries:
+        add(_candidates(need, state, size=each))
+    add(_candidates(query, state, size=budget))
+    return list(selected.values())
 
 
 def analyze_functions(cfg, records, context, emit):
@@ -111,7 +147,9 @@ def analyze_functions(cfg, records, context, emit):
              if row["kind"] == "current_state" and row["typing_status"] == "classified"}
     questions = {rid: row for rid, row in records.items()
                  if row["kind"] == "open_question" and row["typing_status"] == "classified"}
-    budget = min(4000, _candidate_budget(cfg) // 2)
+    # Keep grouping compact. Allocate a larger budget to actual evidence, not instructions.
+    total_budget = _candidate_budget(cfg)
+    budget = min(4000, total_budget // 2)
     groups, dispositions = _group_functions(cfg, functional, context, emit, budget)
     allocations = {rid: {"status": "not_grouped", "category": "uncertain",
                          "actor": "", "reason": "", "state_refs": []} for rid in functional}
@@ -120,9 +158,24 @@ def analyze_functions(cfg, records, context, emit):
         ids = group["requirement_ids"]
         query = " ".join([context_search_terms(context)] +
                          [functional[rid]["quote"] for rid in ids])
-        state_rows = _candidates(query, state, size=budget)
-        cross_rows = _candidates(query, cross_cutting, size=budget // 2)
-        question_rows = _candidates(query, questions, size=budget // 2)
+        # Account for the actual serialized input before selecting evidence.
+        import json
+        base = {"context": context, "items": [_compact(functional[rid]) for rid in ids],
+                "target_names": list(target_names(context["target"]))}
+        remaining = max(0, total_budget - len(json.dumps(base, ensure_ascii=False)) - 256)
+        # Existing lexical ranker, first select evidence per obligation so a
+        # dominant term in one requirement cannot crowd out another entirely.
+        state_budget = min(10000, remaining * 3 // 4)
+        state_rows = _allocation_candidates(query, [functional[rid]["quote"] for rid in ids],
+                                            state, state_budget)
+        cross_rows = _candidates(query, cross_cutting, size=min(budget // 2, remaining // 8))
+        question_rows = _candidates(query, questions, size=min(budget // 2, remaining // 8))
+        # Candidate estimates omit JSON metadata; enforce the actual bound.
+        while len(json.dumps({**base, "current_state": [_compact(row) for row in state_rows],
+                              "constraints": [_compact(row) for row in cross_rows],
+                              "open_questions": [_compact(row) for row in question_rows]},
+                             ensure_ascii=False)) > total_budget and (question_rows or cross_rows or state_rows):
+            (question_rows or cross_rows or state_rows).pop()
         allowed_state = {row["id"] for row in state_rows}
         group.update(state_candidate_ids=[row["id"] for row in state_rows],
                      cross_cutting_candidate_ids=[row["id"] for row in cross_rows],
@@ -139,7 +192,7 @@ def analyze_functions(cfg, records, context, emit):
             continue
         emit("function_allocation", index)
         answers, statuses, extra = _unique_answers(cfg, "function_allocation", {
-            "context": context, "items": [_compact(functional[rid]) for rid in ids],
+            **base,
             "current_state": [_compact(row) for row in state_rows],
             "constraints": [_compact(row) for row in cross_rows],
             "open_questions": [_compact(row) for row in question_rows],
@@ -161,14 +214,15 @@ def analyze_functions(cfg, records, context, emit):
                 continue
             # A target decision must name the confirmed target, and an external
             # decision must not rename the target as an external participant.
-            same_actor = actor.casefold() == context["target"].casefold()
+            same_actor = is_target(actor, context["target"])
             direct = (row.get("direct") is True and category == "target" and same_actor
                       and names_target(functional[rid]["quote"], context["target"]))
             if not actor or (not refs and not direct) or (category == "target" and not same_actor) or (
-                    category in {"other", "interaction"} and same_actor):
+                    category == "other" and same_actor):
                 result["status"] = "unsupported_assignment"
                 continue
-            result.update(status="proposed", category=category, actor=actor,
+            result.update(status="proposed", category=category,
+                          actor=context["target"] if same_actor else actor,
                           reason=reason, state_refs=refs)
             if direct:
                 result["direct"] = True
