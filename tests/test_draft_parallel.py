@@ -58,6 +58,8 @@ def test_bounded_extraction():
             assert [x["id"] for x in parallel["items"].values()] == ["R" + str(i) for i in range(1, 9)]
             assert [x["section"] for x in parallel["items"].values()] == [
                 "Глава " + str(i) for i in range(1, 9)]
+            assert parallel["metrics"]["extraction"] == {"total": 8, "completed": 8,
+                "cache_hits": 0, "cache_misses": 8, "failed_chunks": 0, "rejected_quote_chunks": 0}
             assert parallel["metrics"]["stages"]["extract"]["llm_calls"] == 8
             assert parallel["metrics"]["stages"]["extract"]["llm_seconds"] > parallel["metrics"]["total_seconds"]
             assert [i for stage, i in events if stage == "extract_done"] == list(range(1, 9))
@@ -67,6 +69,9 @@ def test_bounded_extraction():
             cached = run(3)
             assert state["calls"] == before and cached["items"] == parallel["items"]
             assert cached["metrics"]["stages"] == {}
+            assert cached["metrics"]["run_id"] != parallel["metrics"]["run_id"]
+            assert cached["metrics"]["extraction"] == {"total": 8, "completed": 8,
+                "cache_hits": 8, "cache_misses": 0, "failed_chunks": 0, "rejected_quote_chunks": 0}
             assert [i for stage, i in events if stage == "extract_cached"] == list(range(1, 9))
 
             state["peak"] = 0
@@ -96,6 +101,9 @@ def test_bounded_extraction():
             assert len(one["items"]) == 7 and len(one["issues"]) == 1
             two = run(2)
             assert len(two["items"]) == 8 and not two["issues"]
+            assert one["metrics"]["extraction"]["rejected_quote_chunks"] == 1
+            assert two["metrics"]["extraction"]["cache_hits"] == 7
+            assert two["metrics"]["extraction"]["cache_misses"] == 1
             assert two["metrics"]["stages"]["extract"]["llm_calls"] == 1
 
 
