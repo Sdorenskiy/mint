@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Keep Word source-extraction workers busy when an earlier LLM request stalls. Report completion progress immediately, but preserve source-order requirement IDs, checkpoint reuse, validated quotations and bounded buffering. Add deterministic slow-first-request regression coverage; no extra model calls or CI workflows.
+
 - Refresh the code map for the current Word-drafting and source-traceability architecture. Keep the code map and both diagrams on the mandatory **manual** pre-release checklist; remove diagram rendering and diagram checks from GitHub Actions to avoid unnecessary CI workload.
 
 ## 21.4.1 — diagrams refreshed and release guard

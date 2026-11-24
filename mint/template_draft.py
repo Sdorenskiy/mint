@@ -1,8 +1,7 @@
 """Fill a copy of a Word template from selected originals in the knowledge base."""
 import contextvars
 import threading
-from collections import deque
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 import io
 import json
 import re
@@ -155,13 +154,14 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
     """Verified extraction with bounded parallel requests and stable source ordering.
 
     Only workers read/write individual checkpoint files and call the model.
-    Progress callbacks, requirement IDs and issues are assembled on the main
-    thread in input order. Worker contexts preserve language/profile/metrics.
+    Progress tracks completed jobs even when an earlier job is still running.
+    Requirements and issue IDs are assembled in input order on the main thread.
+    Worker contexts preserve language/profile/metrics.
     """
     total = sum(1 for _, markdown in documents for _ in _source_chunks(markdown))
     emit("extract_total", total)
     workers = min(4, max(1, int(getattr(cfg, "draft_extract_parallel", 2))))
-    requirements, seen, chunks, reused = {}, set(), 0, 0
+    requirements, seen, chunks, completed, reused = {}, set(), 0, 0, 0
 
     def jobs():
         for name, markdown in documents:
@@ -194,17 +194,23 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
             checkpoint.save(local_index, section, text, quotes)
         return quotes, False, [name] if bad else [], False, time.perf_counter() - started
 
-    def accept(job, result):
-        nonlocal chunks, reused
-        name, section, _text_fragment, _index, _checkpoint = job
-        quotes, cached, invalid, failed, llm_elapsed = result
-        chunks += 1
-        emit("extract", chunks)
+    def report_finished(result):
+        nonlocal completed, reused
+        _quotes, cached, _invalid, _failed, elapsed = result
+        completed += 1
+        emit("extract", completed)
         # Approximate remaining wall time, not sum of concurrent LLM times.
-        emit("extract_elapsed", llm_elapsed / workers if not cached else 0.0)
+        emit("extract_elapsed", elapsed / workers if not cached else 0.0)
         if cached:
             reused += 1
             emit("extract_cached", reused)
+        emit("extract_done", completed)
+
+    def accept(job, result):
+        nonlocal chunks
+        name, section, _text_fragment, _index, _checkpoint = job
+        quotes, _cached, invalid, failed, _elapsed = result
+        chunks += 1
         if failed:
             issues.append(tr("Не удалось разобрать фрагмент основания: {source} › {section}.",
                              source=name, section=section or str(chunks)))
@@ -217,34 +223,49 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
                 seen.add(key)
                 rid = f"R{len(requirements) + 1}"
                 requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
-        emit("extract_done", chunks)
 
     if workers == 1:
         for job in jobs():
-            accept(job, process(job))
+            result = process(job)
+            report_finished(result)
+            accept(job, result)
     else:
-        pending = deque()
-        iterator = iter(jobs())
+        iterator = enumerate(jobs())
+        in_flight = {}  # future -> (input index, job); at most 'workers' LLM requests
+        buffered = {}  # completed results waiting for earlier input indices
+        next_submit = next_accept = 0
+        # A slow early request must not stall idle workers, but a stalled request
+        # must not allow unbounded buffering of later quotations either.
+        max_window = workers * 16
 
-        def queue_one(executor):
-            try:
-                job = next(iterator)
-            except StopIteration:
-                return False
-            # copy_context is per job: Context instances must not run
-            # simultaneously. Sharing metrics dict itself is safe via the lock.
-            context = contextvars.copy_context()
-            pending.append((job, executor.submit(context.run, process, job)))
-            return True
+        def fill(executor):
+            nonlocal next_submit
+            while len(in_flight) < workers and next_submit - next_accept < max_window:
+                try:
+                    index, job = next(iterator)
+                except StopIteration:
+                    break
+                # copy_context is per job: Context instances must not run
+                # simultaneously. Sharing metrics dict itself is safe via the lock.
+                context = contextvars.copy_context()
+                in_flight[executor.submit(context.run, process, job)] = (index, job)
+                next_submit += 1
 
         with ThreadPoolExecutor(max_workers=workers, thread_name_prefix="mint-draft-extract") as executor:
-            for _ in range(workers):
-                if not queue_one(executor):
-                    break
-            while pending:
-                job, future = pending.popleft()
-                accept(job, future.result())
-                queue_one(executor)
+            fill(executor)
+            while in_flight:
+                done, _ = wait(in_flight, return_when=FIRST_COMPLETED)
+                for future in sorted(done, key=lambda item: in_flight[item][0]):
+                    index, job = in_flight.pop(future)
+                    result = future.result()
+                    report_finished(result)
+                    buffered[index] = (job, result)
+                # Commit quotes, issues and R-IDs only in source order.
+                while next_accept in buffered:
+                    job, result = buffered.pop(next_accept)
+                    accept(job, result)
+                    next_accept += 1
+                fill(executor)
     return requirements, chunks
 
 
