@@ -5,6 +5,7 @@ Groups are batch-local provisional units, not proof of complete functional analy
 Reuse the registry, scope vocabulary, ranked source candidates and model gateway.
 """
 from collections import Counter
+import re
 
 from .document_context import confirm_context, context_search_terms
 from .draft_registry import obligation_candidates
@@ -88,6 +89,11 @@ def _valid_refs(row, key, allowed):
     return refs
 
 
+def names_target(quote, target):
+    """Conservative literal guard, not proof that the target is the actor."""
+    return bool(target and re.search(r"(?<!\w)" + re.escape(target) + r"(?!\w)", quote, re.I))
+
+
 def analyze_functions(cfg, records, context, emit):
     """Return provisional groups, per-obligation allocations and all unresolved IDs.
 
@@ -124,9 +130,10 @@ def analyze_functions(cfg, records, context, emit):
                      context_limited=(len(state_rows) < len(state) or
                                       len(cross_rows) < len(cross_cutting) or
                                       len(question_rows) < len(questions)))
-        # The first pilot deliberately abstains if no current-state evidence
-        # is available, including cases with an explicitly named actor.
-        if not state_rows:
+        # Without architecture, only explicitly named target obligations
+        # can enter the direct path. Mere mention is insufficient.
+        if not state_rows and not any(names_target(functional[rid]["quote"], context["target"])
+                                      for rid in ids):
             for rid in ids:
                 allocations[rid]["status"] = "no_state_evidence"
             continue
@@ -155,12 +162,16 @@ def analyze_functions(cfg, records, context, emit):
             # A target decision must name the confirmed target, and an external
             # decision must not rename the target as an external participant.
             same_actor = actor.casefold() == context["target"].casefold()
-            if not actor or not refs or (category == "target" and not same_actor) or (
+            direct = (row.get("direct") is True and category == "target" and same_actor
+                      and names_target(functional[rid]["quote"], context["target"]))
+            if not actor or (not refs and not direct) or (category == "target" and not same_actor) or (
                     category in {"other", "interaction"} and same_actor):
                 result["status"] = "unsupported_assignment"
                 continue
             result.update(status="proposed", category=category, actor=actor,
                           reason=reason, state_refs=refs)
+            if direct:
+                result["direct"] = True
     _record_draft_diagnostic("function_allocation", {
         "unexpected_rows": unexpected,
         "status_counts": dict(Counter(row["status"] for row in allocations.values())),
