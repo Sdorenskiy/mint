@@ -22,11 +22,16 @@ def test_report():
                                      secret: {"llm_calls": 99}},
                           "diagnostics": {"extraction": {"cache_hits": 1, secret: secret},
                                           "pilot_section": {"source_read_errors": 1}}}}
+    result["analysis"] = {"grouping": {"R1": "grouped", "R2": secret},
+                          "allocations": {"R1": {"status": "proposed", "category": "target", "reason": secret},
+                                          "R2": {"status": secret, "category": secret}}}
     rows = review_rows(result)
     assert [r["disposition"] for r in rows] == [
         "model_covered", "coverage_gap", "cross_cutting_ids", "linked_evidence",
         "open_question_ids", "untyped_ids"]
     exported = diagnostic_export(result)
+    assert exported["allocation_status_counts"] == {"proposed": 1, "other": 1}
+    assert exported["grouping_status_counts"] == {"grouped": 1, "other": 1}
     assert exported["records"] == 6 and exported["linked_records"] == 2
     assert exported["inserted_paragraphs"] == 1
     assert exported["source_read_errors"] == 1 and exported["extraction"]["cache_hits"] == 1

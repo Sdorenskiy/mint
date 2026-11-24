@@ -18,7 +18,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
 from .document_context import confirm_context
-from .draft_derivation import derive_requirements, validate_candidates, _assessment
+from .draft_derivation import derive_requirements, validate_candidates, assess_candidates
 from .draft_function_analysis import analyze_functions, _compact, _unique_answers
 from .draft_registry import build_registry
 from .draft_traceability import build_traceability
@@ -208,6 +208,7 @@ def _review_need(cfg, need, candidates, records, context, title, feedback=None):
         return "review_incomplete"
     if feedback is not None:
         feedback["reason"] = _text(answer, "reason")[:1200]
+        feedback["repairable"] = answer.get("repairable") is not False
     if answer.get("section_relevant") is False:
         return "out_of_section_proposal"
     if answer.get("covered") is False:
@@ -245,8 +246,7 @@ def _repair_need(cfg, need, candidates, records, context, title, allocation, fee
         return [], error
     for index, item in enumerate(repaired, next_id):
         item["id"] = "P" + str(index)
-        emit("requirement_assessment", index)
-        item["assessment"] = _assessment(cfg, item, records, context["target"])
+    assess_candidates(cfg, repaired, records, context["target"], emit)
     return repaired, _review_need(cfg, need, repaired, records, context, title)
 
 
@@ -275,7 +275,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     roles = {name: source_roles[name] for name, _ in documents if name in source_roles}
     registry = build_registry(cfg, documents, roles, issues, emit, reset_cache=reset_extract_cache)
     records = registry["requirements"]
-    analysis = analyze_functions(cfg, records, context, emit)
+    analysis = analyze_functions(cfg, records, context, emit, reset_cache=reset_extract_cache)
     derivation = derive_requirements(cfg, records, analysis, context, emit)
     proposals = derivation["requirements"]
     dispositions = dict(derivation["dispositions"])
@@ -284,6 +284,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
         grouped.setdefault(item["need_refs"][0], []).append(item)
     selected = []
     repairs = {}
+    repair_skipped = 0
     next_id = len(proposals) + 1
     for index, (rid, candidates) in enumerate(grouped.items(), 1):
         emit("pilot_coverage", index)
@@ -293,6 +294,13 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
                       (status == "needs_review" and any(
                           c["assessment"] == "needs_review" and c.get("assessment_reason")
                           for c in candidates)))
+        # Do not ask for another rewrite when the independent reviewer says
+        # the supplied evidence cannot support a fix. Preserve the gap.
+        if actionable and (feedback.get("repairable") is False or any(
+                c["assessment"] == "needs_review" and c.get("repairable") is False
+                for c in candidates)):
+            actionable = False
+            repair_skipped += 1
         allocation = analysis["allocations"].get(rid, {})
         if actionable and allocation.get("state_refs"):
             emit("pilot_repair", len(repairs) + 1)
@@ -353,6 +361,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     _record_draft_diagnostic("pilot_section", {
         "inserted": len(by_text), "dispositions": dict(Counter(dispositions.values())),
         "repair_attempts": len(repairs),
+        "repair_skipped_missing_evidence": repair_skipped,
         "repair_successes": sum(r["status"] == "model_covered" for r in repairs.values()),
         "cross_cutting_pending": len(derivation["cross_cutting_ids"]),
         "open_questions_pending": len(derivation["open_question_ids"]),

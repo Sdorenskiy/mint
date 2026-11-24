@@ -7,6 +7,8 @@ for review; do not discard a citation merely because it is not an obligation.
 from collections import Counter
 import re
 
+from .draft_checkpoint import DraftStageCheckpoint
+
 from .template_draft import (DraftError, _batches, _json, _records, _requirements,
                              _record_draft_diagnostic, _text)
 
@@ -27,7 +29,7 @@ def _toc_entry(row):
                 _LEADER.search(row["quote"]) and "\n" not in row["quote"])
 
 
-def _type_records(cfg, records, emit):
+def _type_records(cfg, records, emit, *, reset_cache=False):
     """Assign one type per ID, failing closed on malformed/duplicate answers."""
     pending = []
     for row in records.values():
@@ -39,15 +41,26 @@ def _type_records(cfg, records, emit):
             pending.append({key: row[key] for key in
                             ("id", "source", "section", "quote", "source_role")})
 
-    groups = failed_groups = unknown_rows = duplicate_rows = 0
+    groups = failed_groups = unknown_rows = duplicate_rows = cache_hits = 0
+    checkpoint = DraftStageCheckpoint(cfg, "registry_type")
     for offset in range(0, len(pending), _BATCH_LIMIT):
         for batch in _batches(pending[offset:offset + _BATCH_LIMIT],
                               lambda r: r["quote"] + r["section"] + r["source"]):
             groups += 1
             emit("registry_type", groups)
             allowed = {row["id"] for row in batch}
+            payload = {"items": batch}
+            if reset_cache:
+                checkpoint.clear(payload)
+            cached = None if reset_cache else checkpoint.load(payload)
+            if (cached is not None and set(cached) == set(allowed)
+                    and all(kind in KINDS - {"uncertain"} for kind in cached.values())):
+                cache_hits += 1
+                for rid, kind in cached.items():
+                    records[rid].update(kind=kind, typing_status="classified")
+                continue
             try:
-                answers = _records(_json(cfg, "registry_type", {"items": batch}), "items")
+                answers = _records(_json(cfg, "registry_type", payload), "items")
             except DraftError:
                 failed_groups += 1
                 for rid in allowed:
@@ -71,9 +84,11 @@ def _type_records(cfg, records, emit):
                     continue
                 row.update(kind=kind, typing_status=(
                     "explicit_uncertain" if kind == "uncertain" else "classified"))
+            if all(records[rid]["typing_status"] == "classified" for rid in allowed):
+                checkpoint.save(payload, {rid: records[rid]["kind"] for rid in allowed})
 
     _record_draft_diagnostic("registry_type", {
-        "groups": groups, "failed_groups": failed_groups,
+        "groups": groups, "failed_groups": failed_groups, "cache_hits": cache_hits,
         "unknown_rows": unknown_rows, "duplicate_rows": duplicate_rows,
         "kind_counts": dict(Counter(row["kind"] for row in records.values())),
         "status_counts": dict(Counter(row["typing_status"] for row in records.values())),
@@ -100,7 +115,7 @@ def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=Fa
                                     reset_cache=reset_cache, include_provenance=True)
     for row in records.values():
         row["source_role"] = source_roles.get(row["source"], "unspecified")
-    _type_records(cfg, records, emit)
+    _type_records(cfg, records, emit, reset_cache=reset_cache)
     return {"requirements": records, "chunks": chunks}
 
 

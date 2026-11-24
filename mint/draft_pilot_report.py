@@ -13,6 +13,16 @@ DISPOSITIONS = frozenset({
     "out_of_section_proposal", "coverage_gap", "model_supported_candidates",
     "missing_response", "duplicate_response", "batch_error",
 })
+ALLOCATION_STATUSES = frozenset({
+    "not_grouped", "no_state_evidence", "allocation_context_limit", "proposed",
+    "explicit_uncertain", "unsupported_assignment", "invalid_response",
+    "missing_response", "duplicate_response", "batch_error",
+})
+GROUP_STATUSES = frozenset({"grouped", "invalid_group", "missing_response",
+                            "duplicate_response", "batch_error"})
+ALLOCATION_CATEGORIES = frozenset({"target", "shared", "interaction", "other", "uncertain"})
+ASSESSMENT_STATUSES = frozenset({"model_supported", "needs_review",
+                                 "assessment_incomplete", "assessment_error"})
 STAGES = ("extract", "registry_type", "function_group", "function_allocation",
           "requirement_derivation", "requirement_assessment", "pilot_coverage")
 EXTRACTION = ("fragments_total", "fragments_completed", "cache_hits", "cache_misses",
@@ -51,6 +61,12 @@ def diagnostic_export(result):
                               "context_only", "linked_evidence"}
     counts = Counter(row["disposition"] if row["disposition"] in allowed else "other"
                      for row in rows)
+    analysis = result.get("analysis", {})
+    allocations = analysis.get("allocations", {})
+    def count_codes(values, allowed):
+        return dict(Counter(value if isinstance(value, str) and value in allowed
+                            else "other" for value in values))
+
     return {
         "format": "mint-v2-diagnostics/1",
         "mint": MINT_VERSION,
@@ -64,11 +80,24 @@ def diagnostic_export(result):
         "role_counts": dict(Counter(row.get("source_role") if row.get("source_role") in SOURCE_ROLES else "other"
                                     for row in rows)),
         "disposition_counts": dict(counts),
+        "grouping_status_counts": count_codes(analysis.get("grouping", {}).values(), GROUP_STATUSES),
+        "allocation_status_counts": count_codes((row.get("status") for row in allocations.values()),
+                                                ALLOCATION_STATUSES),
+        "allocation_category_counts": count_codes((row.get("category") for row in allocations.values()),
+                                                  ALLOCATION_CATEGORIES),
+        "assessment_status_counts": count_codes((row.get("assessment") for row in
+                                                 result.get("derivation", {}).get("requirements", [])),
+                                                ASSESSMENT_STATUSES),
+        "context_limited_groups": _number(diagnostics.get("function_allocation", {}).get("context_limited_groups")),
+        "expanded_groups": _number(diagnostics.get("function_allocation", {}).get("expanded_groups")),
+        "stage_cache_hits": {key: _number(diagnostics.get(key, {}).get("cache_hits"))
+                             for key in ("registry_type", "function_group")},
         "total_seconds": _number(metrics.get("total_seconds")),
         "extraction": {key: _number(extraction.get(key)) for key in EXTRACTION},
         "source_read_errors": _number(diagnostics.get("pilot_section", {}).get("source_read_errors")),
         "repair_attempts": _number(diagnostics.get("pilot_section", {}).get("repair_attempts")),
         "repair_successes": _number(diagnostics.get("pilot_section", {}).get("repair_successes")),
+        "repair_skipped_missing_evidence": _number(diagnostics.get("pilot_section", {}).get("repair_skipped_missing_evidence")),
         "stages": {key: {field: _number(stages[key].get(field))
                          for field in ("llm_calls", "llm_seconds")}
                    for key in STAGES if key in stages},

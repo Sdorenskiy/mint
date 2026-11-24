@@ -5,8 +5,10 @@ Groups are batch-local provisional units, not proof of complete functional analy
 Reuse the registry, scope vocabulary, ranked source candidates and model gateway.
 """
 from collections import Counter
+import json
 import re
 
+from .draft_checkpoint import DraftStageCheckpoint
 from .document_context import confirm_context, context_search_terms
 from .draft_registry import obligation_candidates
 from .requirement_scope import CATEGORIES
@@ -43,9 +45,10 @@ def _compact(row):
     return {key: row[key] for key in ("id", "source", "section", "quote", "kind", "source_role")}
 
 
-def _group_functions(cfg, functional, context, emit, budget):
+def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=False):
     groups, dispositions = [], {}
-    unexpected = calls = 0
+    unexpected = calls = cache_hits = 0
+    checkpoint = DraftStageCheckpoint(cfg, "function_group")
     values = list(functional.values())
     for offset in range(0, len(values), _GROUP_LIMIT):
         for batch in _batches(values[offset:offset + _GROUP_LIMIT],
@@ -54,8 +57,18 @@ def _group_functions(cfg, functional, context, emit, budget):
             calls += 1
             emit("function_group", calls)
             allowed = {row["id"]: row for row in batch}
-            replies, status, extra = _unique_answers(cfg, "function_group", {
-                "context": context, "items": [_compact(row) for row in batch]}, allowed)
+            payload = {"context": context, "items": [_compact(row) for row in batch]}
+            if reset_cache:
+                checkpoint.clear(payload)
+            cached = None if reset_cache else checkpoint.load(payload)
+            if (cached is not None and set(cached) == set(allowed)
+                    and all(cached.get(anchor) == anchor for anchor in cached.values())):
+                cache_hits += 1
+                replies = {rid: {"id": rid, "group": anchor} for rid, anchor in cached.items()}
+                status, extra = dict.fromkeys(allowed, "received"), 0
+            else:
+                cached = None
+                replies, status, extra = _unique_answers(cfg, "function_group", payload, allowed)
             unexpected += extra
             # Each group anchor must itself be a valid self-assigned input ID.
             anchors = {rid for rid, row in replies.items() if _text(row, "group") == rid}
@@ -73,8 +86,10 @@ def _group_functions(cfg, functional, context, emit, budget):
                 groups.append({"id": "G" + str(len(groups) + 1),
                                "anchor_id": anchor, "requirement_ids": ids})
             dispositions.update(status)
+            if cached is None and all(value == "grouped" for value in status.values()):
+                checkpoint.save(payload, {rid: _text(row, "group") for rid, row in replies.items()})
     _record_draft_diagnostic("function_group", {
-        "batches": calls, "unexpected_rows": unexpected, "groups": len(groups),
+        "batches": calls, "cache_hits": cache_hits, "unexpected_rows": unexpected, "groups": len(groups),
         "status_counts": dict(Counter(dispositions.values())),
     })
     return groups, dispositions
@@ -89,12 +104,48 @@ def _valid_refs(row, key, allowed):
     return refs
 
 
+def target_names(target):
+    """Only aliases explicitly included by the user in the confirmed target."""
+    names = [target] if target else []
+    match = re.fullmatch(r"(.+?)\s*\(([A-ZА-ЯЁ0-9][A-ZА-ЯЁ0-9 -]{1,29})\)", target or "")
+    if match:
+        names.extend((match.group(1).strip(), match.group(2).strip()))
+    return tuple(dict.fromkeys(names))
+
+
+def is_target(actor, target):
+    return bool(actor and any(actor.casefold() == name.casefold() for name in target_names(target)))
+
+
 def names_target(quote, target):
     """Conservative literal guard, not proof that the target is the actor."""
-    return bool(target and re.search(r"(?<!\w)" + re.escape(target) + r"(?!\w)", quote, re.I))
+    return any(re.search(r"(?<!\w)" + re.escape(name) + r"(?!\w)", quote, re.I)
+               for name in target_names(target))
 
 
-def analyze_functions(cfg, records, context, emit):
+
+def _allocation_candidates(query, queries, state, budget):
+    """Reuse BM25 and reserve part of the evidence budget for each obligation."""
+    if not state or budget <= 0:
+        return []
+    if sum(len(row["quote"]) + 95 for row in state.values()) <= budget:
+        return list(state.values())
+    selected, used = {}, 0
+    def add(rows):
+        nonlocal used
+        for row in rows:
+            cost = len(row["quote"]) + 95
+            if row["id"] not in selected and used + cost <= budget:
+                selected[row["id"]] = row
+                used += cost
+    each = budget // (2 * max(1, len(queries)))
+    for need in queries:
+        add(_candidates(need, state, size=each))
+    add(_candidates(query, state, size=budget))
+    return list(selected.values())
+
+
+def analyze_functions(cfg, records, context, emit, *, reset_cache=False):
     """Return provisional groups, per-obligation allocations and all unresolved IDs.
 
     Context is human-confirmed. Evidence links show which source records were
@@ -111,43 +162,49 @@ def analyze_functions(cfg, records, context, emit):
              if row["kind"] == "current_state" and row["typing_status"] == "classified"}
     questions = {rid: row for rid, row in records.items()
                  if row["kind"] == "open_question" and row["typing_status"] == "classified"}
-    budget = min(4000, _candidate_budget(cfg) // 2)
-    groups, dispositions = _group_functions(cfg, functional, context, emit, budget)
+    # Keep grouping compact. Allocate a larger budget to actual evidence, not instructions.
+    total_budget = _candidate_budget(cfg)
+    budget = min(4000, total_budget // 2)
+    groups, dispositions = _group_functions(cfg, functional, context, emit, budget, reset_cache=reset_cache)
     allocations = {rid: {"status": "not_grouped", "category": "uncertain",
                          "actor": "", "reason": "", "state_refs": []} for rid in functional}
     unexpected = 0
-    for index, group in enumerate(groups, 1):
-        ids = group["requirement_ids"]
+    context_limited_groups = expanded_groups = 0
+
+    def evidence_payload(ids, state_cap):
+        base = {"context": context, "items": [_compact(functional[rid]) for rid in ids],
+                "target_names": list(target_names(context["target"]))}
+        if len(json.dumps(base, ensure_ascii=False)) > total_budget:
+            return None
         query = " ".join([context_search_terms(context)] +
                          [functional[rid]["quote"] for rid in ids])
-        state_rows = _candidates(query, state, size=budget)
-        cross_rows = _candidates(query, cross_cutting, size=budget // 2)
-        question_rows = _candidates(query, questions, size=budget // 2)
-        allowed_state = {row["id"] for row in state_rows}
-        group.update(state_candidate_ids=[row["id"] for row in state_rows],
-                     cross_cutting_candidate_ids=[row["id"] for row in cross_rows],
-                     question_candidate_ids=[row["id"] for row in question_rows],
-                     context_limited=(len(state_rows) < len(state) or
-                                      len(cross_rows) < len(cross_cutting) or
-                                      len(question_rows) < len(questions)))
-        # Without architecture, only explicitly named target obligations
-        # can enter the direct path. Mere mention is insufficient.
-        if not state_rows and not any(names_target(functional[rid]["quote"], context["target"])
-                                      for rid in ids):
-            for rid in ids:
-                allocations[rid]["status"] = "no_state_evidence"
-            continue
+        remaining = max(0, total_budget - len(json.dumps(base, ensure_ascii=False)) - 256)
+        state_rows = _allocation_candidates(query, [functional[rid]["quote"] for rid in ids],
+                                            state, min(state_cap, remaining * 3 // 4))
+        cross_rows = _candidates(query, cross_cutting, size=min(budget // 2, remaining // 8))
+        question_rows = _candidates(query, questions, size=min(budget // 2, remaining // 8))
+        payload = {**base, "current_state": [_compact(row) for row in state_rows],
+                   "constraints": [_compact(row) for row in cross_rows],
+                   "open_questions": [_compact(row) for row in question_rows]}
+        # Candidate estimates omit JSON metadata; enforce the actual bound.
+        while len(json.dumps(payload, ensure_ascii=False)) > total_budget:
+            removable = payload["open_questions"] or payload["constraints"] or payload["current_state"]
+            if not removable:
+                return None
+            removable.pop()
+        return payload
+
+    def allocate(ids, payload, index):
+        nonlocal unexpected
+        allowed_state = {row["id"] for row in payload["current_state"]}
         emit("function_allocation", index)
-        answers, statuses, extra = _unique_answers(cfg, "function_allocation", {
-            "context": context, "items": [_compact(functional[rid]) for rid in ids],
-            "current_state": [_compact(row) for row in state_rows],
-            "constraints": [_compact(row) for row in cross_rows],
-            "open_questions": [_compact(row) for row in question_rows],
-        }, ids)
+        answers, statuses, extra = _unique_answers(cfg, "function_allocation", payload, ids)
         unexpected += extra
+        decisions = {}
         for rid in ids:
-            result = allocations[rid]
-            result["status"] = statuses[rid]
+            result = {"status": statuses[rid], "category": "uncertain",
+                      "actor": "", "reason": "", "state_refs": []}
+            decisions[rid] = result
             if rid not in answers:
                 continue
             row = answers[rid]
@@ -157,23 +214,62 @@ def analyze_functions(cfg, records, context, emit):
                 result["status"] = "invalid_response"
                 continue
             if category == "uncertain":
-                result.update(status="explicit_uncertain", reason=reason, state_refs=refs)
+                result.update(status="explicit_uncertain", reason=reason, state_refs=refs,
+                              needs_more_state=row.get("needs_more_state") is True)
                 continue
-            # A target decision must name the confirmed target, and an external
-            # decision must not rename the target as an external participant.
-            same_actor = actor.casefold() == context["target"].casefold()
+            same_actor = is_target(actor, context["target"])
             direct = (row.get("direct") is True and category == "target" and same_actor
                       and names_target(functional[rid]["quote"], context["target"]))
             if not actor or (not refs and not direct) or (category == "target" and not same_actor) or (
-                    category in {"other", "interaction"} and same_actor):
+                    category == "other" and same_actor):
                 result["status"] = "unsupported_assignment"
                 continue
-            result.update(status="proposed", category=category, actor=actor,
+            result.update(status="proposed", category=category,
+                          actor=context["target"] if same_actor else actor,
                           reason=reason, state_refs=refs)
             if direct:
                 result["direct"] = True
+        return decisions
+
+    for index, group in enumerate(groups, 1):
+        ids = group["requirement_ids"]
+        payload = evidence_payload(ids, 10000)
+        if payload is None:
+            for rid in ids:
+                allocations[rid]["status"] = "allocation_context_limit"
+            continue
+        allowed_state = {row["id"] for row in payload["current_state"]}
+        group.update(state_candidate_ids=[row["id"] for row in payload["current_state"]],
+                     cross_cutting_candidate_ids=[row["id"] for row in payload["constraints"]],
+                     question_candidate_ids=[row["id"] for row in payload["open_questions"]],
+                     context_limited=(len(allowed_state) < len(state) or
+                                      len(payload["constraints"]) < len(cross_cutting) or
+                                      len(payload["open_questions"]) < len(questions)))
+        context_limited_groups += int(group["context_limited"])
+        if not allowed_state and not any(names_target(functional[rid]["quote"], context["target"])
+                                         for rid in ids):
+            for rid in ids:
+                allocations[rid]["status"] = "no_state_evidence"
+            continue
+        allocations.update(allocate(ids, payload, index))
+        # Only retry genuine evidence gaps, with new evidence and a smaller set
+        # of obligations. Never repeat a failed/malformed technical response.
+        pending = [rid for rid in ids if allocations[rid].get("needs_more_state")]
+        if pending and len(allowed_state) < len(state):
+            expanded = evidence_payload(pending, 16000)
+            if expanded is not None:
+                expanded_ids = {row["id"] for row in expanded["current_state"]}
+                if expanded_ids - allowed_state:
+                    expanded_groups += 1
+                    group["expanded_state_candidate_ids"] = [row["id"] for row in expanded["current_state"]]
+                    retry = allocate(pending, expanded, index)
+                    for rid, result in retry.items():
+                        if result["status"] in {"proposed", "explicit_uncertain"}:
+                            allocations[rid] = result
+                    group["expansion_status_counts"] = dict(Counter(row["status"] for row in retry.values()))
     _record_draft_diagnostic("function_allocation", {
-        "unexpected_rows": unexpected,
+        "unexpected_rows": unexpected, "context_limited_groups": context_limited_groups,
+        "expanded_groups": expanded_groups,
         "status_counts": dict(Counter(row["status"] for row in allocations.values())),
         "cross_cutting_pending": len(cross_cutting), "open_questions": len(questions),
     })

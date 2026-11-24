@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Improve V2 target-side interaction allocation, confirmed names, bounded architecture context expansion and diagnostic breakdown; batch independent assessments, skip repairs lacking evidence, and checkpoint validated typing and grouping locally. Development version 21.4.12.
+
 - Fix the V2 template selection blocker: recognize manual numbered and inherited-outline headings, allow empty sections without an existing blank anchor, safely replace explicit instructions, and explain blocked sections. Development version 21.4.11.
 
 - Retry an actionable rejected V2 decomposition once using source evidence and specific review feedback, with the same structural and semantic gates. Export aggregate repair counters. Development version 21.4.10.
