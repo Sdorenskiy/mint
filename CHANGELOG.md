@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Add experimental V2 target requirement refinement with distinct need and current-state references, structural evidence checks, separate model assessment and explicit unresolved items. No change to the active Word generation path. Development version 21.4.5.
+
 - Add experimental V2 function grouping and evidence-linked responsibility proposals with explicit unresolved IDs, retained cross-cutting constraints and open questions. The active Word generator is unchanged; no new platform requirements are emitted yet. Development version 21.4.4.
 
 - Add an experimental typed source registry reusing Word extraction and checkpoints, preserving provenance and distinguishing obligations from existing architecture, definitions, references and unresolved questions. Bounded type classification fails closed; the active generator remains unchanged. Development version 21.4.3.
