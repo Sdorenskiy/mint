@@ -166,58 +166,42 @@ def analyze_functions(cfg, records, context, emit, *, reset_cache=False):
     allocations = {rid: {"status": "not_grouped", "category": "uncertain",
                          "actor": "", "reason": "", "state_refs": []} for rid in functional}
     unexpected = 0
-    context_limited_groups = 0
-    for index, group in enumerate(groups, 1):
-        ids = group["requirement_ids"]
-        query = " ".join([context_search_terms(context)] +
-                         [functional[rid]["quote"] for rid in ids])
-        # Account for the actual serialized input before selecting evidence.
+    context_limited_groups = expanded_groups = 0
+
+    def evidence_payload(ids, state_cap):
         base = {"context": context, "items": [_compact(functional[rid]) for rid in ids],
                 "target_names": list(target_names(context["target"]))}
+        if len(json.dumps(base, ensure_ascii=False)) > total_budget:
+            return None
+        query = " ".join([context_search_terms(context)] +
+                         [functional[rid]["quote"] for rid in ids])
         remaining = max(0, total_budget - len(json.dumps(base, ensure_ascii=False)) - 256)
-        # Existing lexical ranker, first select evidence per obligation so a
-        # dominant term in one requirement cannot crowd out another entirely.
-        state_budget = min(10000, remaining * 3 // 4)
         state_rows = _allocation_candidates(query, [functional[rid]["quote"] for rid in ids],
-                                            state, state_budget)
+                                            state, min(state_cap, remaining * 3 // 4))
         cross_rows = _candidates(query, cross_cutting, size=min(budget // 2, remaining // 8))
         question_rows = _candidates(query, questions, size=min(budget // 2, remaining // 8))
+        payload = {**base, "current_state": [_compact(row) for row in state_rows],
+                   "constraints": [_compact(row) for row in cross_rows],
+                   "open_questions": [_compact(row) for row in question_rows]}
         # Candidate estimates omit JSON metadata; enforce the actual bound.
-        while len(json.dumps({**base, "current_state": [_compact(row) for row in state_rows],
-                              "constraints": [_compact(row) for row in cross_rows],
-                              "open_questions": [_compact(row) for row in question_rows]},
-                             ensure_ascii=False)) > total_budget and (question_rows or cross_rows or state_rows):
-            (question_rows or cross_rows or state_rows).pop()
-        allowed_state = {row["id"] for row in state_rows}
-        group.update(state_candidate_ids=[row["id"] for row in state_rows],
-                     cross_cutting_candidate_ids=[row["id"] for row in cross_rows],
-                     question_candidate_ids=[row["id"] for row in question_rows],
-                     context_limited=(len(state_rows) < len(state) or
-                                      len(cross_rows) < len(cross_cutting) or
-                                      len(question_rows) < len(questions)))
-        context_limited_groups += int(group["context_limited"])
-        if len(json.dumps(base, ensure_ascii=False)) > total_budget:
-            for rid in ids:
-                allocations[rid]["status"] = "allocation_context_limit"
-            continue
-        # Without architecture, only explicitly named target obligations
-        # can enter the direct path. Mere mention is insufficient.
-        if not state_rows and not any(names_target(functional[rid]["quote"], context["target"])
-                                      for rid in ids):
-            for rid in ids:
-                allocations[rid]["status"] = "no_state_evidence"
-            continue
+        while len(json.dumps(payload, ensure_ascii=False)) > total_budget:
+            removable = payload["open_questions"] or payload["constraints"] or payload["current_state"]
+            if not removable:
+                return None
+            removable.pop()
+        return payload
+
+    def allocate(ids, payload, index):
+        nonlocal unexpected
+        allowed_state = {row["id"] for row in payload["current_state"]}
         emit("function_allocation", index)
-        answers, statuses, extra = _unique_answers(cfg, "function_allocation", {
-            **base,
-            "current_state": [_compact(row) for row in state_rows],
-            "constraints": [_compact(row) for row in cross_rows],
-            "open_questions": [_compact(row) for row in question_rows],
-        }, ids)
+        answers, statuses, extra = _unique_answers(cfg, "function_allocation", payload, ids)
         unexpected += extra
+        decisions = {}
         for rid in ids:
-            result = allocations[rid]
-            result["status"] = statuses[rid]
+            result = {"status": statuses[rid], "category": "uncertain",
+                      "actor": "", "reason": "", "state_refs": []}
+            decisions[rid] = result
             if rid not in answers:
                 continue
             row = answers[rid]
@@ -227,10 +211,9 @@ def analyze_functions(cfg, records, context, emit, *, reset_cache=False):
                 result["status"] = "invalid_response"
                 continue
             if category == "uncertain":
-                result.update(status="explicit_uncertain", reason=reason, state_refs=refs)
+                result.update(status="explicit_uncertain", reason=reason, state_refs=refs,
+                              needs_more_state=row.get("needs_more_state") is True)
                 continue
-            # A target decision must name the confirmed target, and an external
-            # decision must not rename the target as an external participant.
             same_actor = is_target(actor, context["target"])
             direct = (row.get("direct") is True and category == "target" and same_actor
                       and names_target(functional[rid]["quote"], context["target"]))
@@ -243,8 +226,47 @@ def analyze_functions(cfg, records, context, emit, *, reset_cache=False):
                           reason=reason, state_refs=refs)
             if direct:
                 result["direct"] = True
+        return decisions
+
+    for index, group in enumerate(groups, 1):
+        ids = group["requirement_ids"]
+        payload = evidence_payload(ids, 10000)
+        if payload is None:
+            for rid in ids:
+                allocations[rid]["status"] = "allocation_context_limit"
+            continue
+        allowed_state = {row["id"] for row in payload["current_state"]}
+        group.update(state_candidate_ids=[row["id"] for row in payload["current_state"]],
+                     cross_cutting_candidate_ids=[row["id"] for row in payload["constraints"]],
+                     question_candidate_ids=[row["id"] for row in payload["open_questions"]],
+                     context_limited=(len(allowed_state) < len(state) or
+                                      len(payload["constraints"]) < len(cross_cutting) or
+                                      len(payload["open_questions"]) < len(questions)))
+        context_limited_groups += int(group["context_limited"])
+        if not allowed_state and not any(names_target(functional[rid]["quote"], context["target"])
+                                         for rid in ids):
+            for rid in ids:
+                allocations[rid]["status"] = "no_state_evidence"
+            continue
+        allocations.update(allocate(ids, payload, index))
+        # Only retry genuine evidence gaps, with new evidence and a smaller set
+        # of obligations. Never repeat a failed/malformed technical response.
+        pending = [rid for rid in ids if allocations[rid].get("needs_more_state")]
+        if pending and len(allowed_state) < len(state):
+            expanded = evidence_payload(pending, 16000)
+            if expanded is not None:
+                expanded_ids = {row["id"] for row in expanded["current_state"]}
+                if expanded_ids - allowed_state:
+                    expanded_groups += 1
+                    group["expanded_state_candidate_ids"] = [row["id"] for row in expanded["current_state"]]
+                    retry = allocate(pending, expanded, index)
+                    for rid, result in retry.items():
+                        if result["status"] in {"proposed", "explicit_uncertain"}:
+                            allocations[rid] = result
+                    group["expansion_status_counts"] = dict(Counter(row["status"] for row in retry.values()))
     _record_draft_diagnostic("function_allocation", {
         "unexpected_rows": unexpected, "context_limited_groups": context_limited_groups,
+        "expanded_groups": expanded_groups,
         "status_counts": dict(Counter(row["status"] for row in allocations.values())),
         "cross_cutting_pending": len(cross_cutting), "open_questions": len(questions),
     })
