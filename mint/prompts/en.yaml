@@ -608,6 +608,9 @@ draft_requirement_derivation: |-
   obligation; derived means justified refinement. actor must exactly equal target.
   For each requirement supply need_refs (the source obligation id), state_refs from
   the supplied current-state records, constraint_refs from constraints, and reason.
+  If repair is supplied, revise the entire previous set using its section, feedback,
+  previous candidates and assessment reasons. Feedback is not evidence of new facts.
+  Use only the supplied source evidence, preserving conditions and obligations.
   If refinement depends on an unresolved decision, return status open_question and a question.
   Return exactly one row for the input id.
   Return {"items":[{"id":"R1","status":"proposed","requirements":[{"text":"requirement","actor":"target","mode":"derived","need_refs":["R1"],"state_refs":["R2"],"constraint_refs":[],"reason":"explanation"}]}]}.
