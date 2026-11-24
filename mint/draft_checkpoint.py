@@ -117,6 +117,13 @@ class DraftStageCheckpoint:
             return None
         return values
 
+    def clear(self, payload):
+        if self.directory is not None:
+            try:
+                (self.directory / (self._key(payload) + ".json")).unlink(missing_ok=True)
+            except OSError:
+                logger.warning("Could not clear draft stage checkpoint")
+
     def save(self, payload, values):
         if self.directory is None:
             return
