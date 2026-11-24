@@ -89,6 +89,7 @@ def diagnostic_export(result):
                                                  result.get("derivation", {}).get("requirements", [])),
                                                 ASSESSMENT_STATUSES),
         "context_limited_groups": _number(diagnostics.get("function_allocation", {}).get("context_limited_groups")),
+        "expanded_groups": _number(diagnostics.get("function_allocation", {}).get("expanded_groups")),
         "stage_cache_hits": {key: _number(diagnostics.get(key, {}).get("cache_hits"))
                              for key in ("registry_type", "function_group")},
         "total_seconds": _number(metrics.get("total_seconds")),
