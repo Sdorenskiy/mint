@@ -16,8 +16,8 @@ from docx.opc.exceptions import OpcError
 from docx.text.paragraph import Paragraph
 
 from .document_context import confirm_context
-from .draft_derivation import derive_requirements
-from .draft_function_analysis import analyze_functions, _compact
+from .draft_derivation import derive_requirements, validate_candidates, _assessment
+from .draft_function_analysis import analyze_functions, _compact, _unique_answers
 from .draft_registry import build_registry
 from .draft_traceability import build_traceability
 from .i18n import tr
@@ -80,7 +80,7 @@ def pilot_sections(template):
             for i, value in _empty_sections(_open(template)).items()]
 
 
-def _review_need(cfg, need, candidates, records, context, title):
+def _review_need(cfg, need, candidates, records, context, title, feedback=None):
     """Check section fit and coverage of the complete decomposition, not just each claim."""
     if not candidates or any(c["assessment"] != "model_supported" for c in candidates):
         return "needs_review"
@@ -104,6 +104,8 @@ def _review_need(cfg, need, candidates, records, context, title):
         return "review_error"
     if not _text(answer, "reason"):
         return "review_incomplete"
+    if feedback is not None:
+        feedback["reason"] = _text(answer, "reason")[:1200]
     if answer.get("section_relevant") is False:
         return "out_of_section_proposal"
     if answer.get("covered") is False:
@@ -111,6 +113,39 @@ def _review_need(cfg, need, candidates, records, context, title):
     if answer.get("section_relevant") is True and answer.get("covered") is True:
         return "model_covered"
     return "review_incomplete"
+
+ 
+def _repair_need(cfg, need, candidates, records, context, title, allocation, feedback,
+                 next_id, emit):
+    """One evidence-bounded retry. No new allocation, source IDs or decisions."""
+    state_refs = allocation.get("state_refs", [])
+    # Verbatim direct duties and missing evidence cannot be repaired by guessing.
+    if not state_refs:
+        return [], "not_eligible"
+    rid = need["id"]
+    payload = {
+        "target": context["target"], "items": [_compact(need)],
+        "allocation": allocation,
+        "current_state": [_compact(records[k]) for k in state_refs],
+        "constraints": [],
+        "repair": {"section": title, "feedback": feedback,
+                   "previous": [{"text": c["text"], "assessment": c["assessment"],
+                                 "reason": c.get("assessment_reason", "")}
+                                for c in candidates]},
+    }
+    if len(json.dumps(payload, ensure_ascii=False)) > _candidate_budget(cfg):
+        return [], "repair_context_limit"
+    replies, statuses, _ = _unique_answers(cfg, "requirement_derivation", payload, [rid])
+    if rid not in replies:
+        return [], statuses[rid]
+    repaired, error = validate_candidates(replies[rid], rid, allocation, records, context["target"])
+    if error:
+        return [], error
+    for index, item in enumerate(repaired, next_id):
+        item["id"] = "P" + str(index)
+        emit("requirement_assessment", index)
+        item["assessment"] = _assessment(cfg, item, records, context["target"])
+    return repaired, _review_need(cfg, need, repaired, records, context, title)
 
 
 @_measure_draft
@@ -146,12 +181,34 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     for item in proposals:
         grouped.setdefault(item["need_refs"][0], []).append(item)
     selected = []
+    repairs = {}
+    next_id = len(proposals) + 1
     for index, (rid, candidates) in enumerate(grouped.items(), 1):
         emit("pilot_coverage", index)
-        status = _review_need(cfg, records[rid], candidates, records, context, title)
+        feedback = {}
+        status = _review_need(cfg, records[rid], candidates, records, context, title, feedback)
+        actionable = (status == "coverage_gap" or
+                      (status == "needs_review" and any(
+                          c["assessment"] == "needs_review" and c.get("assessment_reason")
+                          for c in candidates)))
+        allocation = analysis["allocations"].get(rid, {})
+        if actionable and allocation.get("state_refs"):
+            emit("pilot_repair", len(repairs) + 1)
+            repaired, repair_status = _repair_need(
+                cfg, records[rid], candidates, records, context, title,
+                allocation, {"status": status, **feedback}, next_id, emit)
+            repairs[rid] = {"initial_status": status, "status": repair_status}
+            next_id += len(repaired)
+            if repair_status == "model_covered":
+                # Keep final proposals and their identifiers consistent with Word anchors.
+                proposals = [c for c in proposals if c["need_refs"] != [rid]] + repaired
+                candidates = repaired
+                status = repair_status
         dispositions[rid] = status
         if status == "model_covered":
             selected.extend(candidates)
+    derivation["requirements"] = proposals
+    result_repairs = repairs
     results = []
     first = list(doc.element.body).index(paragraph._p)
     # Consolidate identical output text across different needs, preserving every link.
@@ -189,11 +246,14 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
                   "fields": len(results), "total_requirements": len(records)}},
               "document_context": context, "analysis": analysis, "derivation": derivation,
               "section_dispositions": dispositions, "section_index": section_index,
+              "repairs": result_repairs,
               "pilot_status": "partial_draft" if selected else "empty_draft",
               "requires_expert_review": True}
     result["traceability"] = build_traceability(result)
     _record_draft_diagnostic("pilot_section", {
         "inserted": len(by_text), "dispositions": dict(Counter(dispositions.values())),
+        "repair_attempts": len(repairs),
+        "repair_successes": sum(r["status"] == "model_covered" for r in repairs.values()),
         "cross_cutting_pending": len(derivation["cross_cutting_ids"]),
         "open_questions_pending": len(derivation["open_question_ids"]),
         "untyped_pending": len(derivation["untyped_ids"]),

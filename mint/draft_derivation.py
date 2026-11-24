@@ -34,6 +34,22 @@ def _proposal(row, rid, allocation, records, constraint_ids, target):
             "need_refs": need, "state_refs": state, "constraint_refs": constraints}
 
 
+def validate_candidates(reply, rid, allocation, records, target):
+    """Reuse the same structural gate for initial and repaired decompositions."""
+    items = reply.get("requirements")
+    if (_text(reply, "status") != "proposed" or not isinstance(items, list)
+            or not 1 <= len(items) <= _MAX_ITEMS
+            or any(not isinstance(item, dict) for item in items)):
+        return [], "invalid_response"
+    candidates = [_proposal(item, rid, allocation, records, set(), target) for item in items]
+    if any(item is None for item in candidates):
+        return [], "invalid_proposal"
+    texts = [" ".join(item["text"].split()).casefold() for item in candidates]
+    if len(set(texts)) != len(texts):
+        return [], "duplicate_proposal"
+    return candidates, ""
+
+
 def _assessment(cfg, candidate, records, target):
     """Separate assessment of attribution, support and invented decisions.
 
@@ -49,6 +65,7 @@ def _assessment(cfg, candidate, records, target):
     except DraftError:
         return "assessment_error"
     checks = ("supported", "correct_actor", "no_new_decisions")
+    candidate["assessment_reason"] = _text(answer, "reason")[:_MAX_TEXT]
     if all(answer.get(key) is True for key in checks) and _text(answer, "reason"):
         return "model_supported"
     if any(answer.get(key) is False for key in checks):
@@ -132,21 +149,9 @@ def derive_requirements(cfg, records, analysis, context, emit):
             else:
                 dispositions[rid] = "invalid_response"
             continue
-        items = reply.get("requirements")
-        if (status != "proposed" or not isinstance(items, list)
-                or not 1 <= len(items) <= _MAX_ITEMS
-                or any(not isinstance(item, dict) for item in items)):
-            dispositions[rid] = "invalid_response"
-            continue
-        candidates = [_proposal(item, rid, allocation, records, set(), target)
-                      for item in items]
-        if any(item is None for item in candidates):
-            # Do not report partial success for a malformed decomposition.
-            dispositions[rid] = "invalid_proposal"
-            continue
-        texts = [" ".join(item["text"].split()).casefold() for item in candidates]
-        if len(set(texts)) != len(texts):
-            dispositions[rid] = "duplicate_proposal"
+        candidates, error = validate_candidates(reply, rid, allocation, records, target)
+        if error:
+            dispositions[rid] = error
             continue
         for item in candidates:
             item["id"] = "P" + str(len(proposed) + 1)

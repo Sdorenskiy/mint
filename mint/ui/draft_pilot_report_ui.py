@@ -14,6 +14,8 @@ def render_pilot_report(result):
     st.caption(tr("Записано абзацев: {written}; исходных записей: {records}; связанных с текстом: {linked}.",
                   written=export["inserted_paragraphs"], records=export["records"],
                   linked=export["linked_records"]))
+    st.caption(tr("Попыток исправления: {attempts}; успешно: {successes}.",
+                  attempts=export["repair_attempts"], successes=export["repair_successes"]))
     st.caption(tr("Связь с текстом не означает полного переноса требования. Коды статусов — результаты обработки, не экспертные оценки."))
     with st.expander(tr("Исходные записи и причины непереноса"), expanded=True):
         if rows:
