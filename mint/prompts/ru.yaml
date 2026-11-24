@@ -655,8 +655,10 @@ draft_function_allocation: |-
   category target, actor context.target, direct true и пустой state_refs. Простого упоминания
   имени цели или внешнего взаимодействия недостаточно. Не выдумывай id, роли,
   параметры, способы реализации. При неоднозначности выбирай uncertain.
+  needs_more_state — true только для uncertain, если дополнительные сведения о существующем
+  устройстве могут разрешить вопрос. Если требуется новое решение, false.
   Верни ровно одну запись на каждый входной id.
-  Ответ: {"items":[{"id":"R1","category":"uncertain","actor":"","reason":"Недостаточно сведений","state_refs":[],"direct":false}]}.
+  Ответ: {"items":[{"id":"R1","category":"uncertain","actor":"","reason":"Недостаточно сведений","state_refs":[],"direct":false,"needs_more_state":false}]}.
 draft_registry_type: |-
   Для каждого id определи тип исходной цитаты, а не её применимость к целевой системе.
   source_role — роль документа, она не доказывает обязательность конкретной цитаты.
