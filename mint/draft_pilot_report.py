@@ -67,6 +67,8 @@ def diagnostic_export(result):
         "total_seconds": _number(metrics.get("total_seconds")),
         "extraction": {key: _number(extraction.get(key)) for key in EXTRACTION},
         "source_read_errors": _number(diagnostics.get("pilot_section", {}).get("source_read_errors")),
+        "repair_attempts": _number(diagnostics.get("pilot_section", {}).get("repair_attempts")),
+        "repair_successes": _number(diagnostics.get("pilot_section", {}).get("repair_successes")),
         "stages": {key: {field: _number(stages[key].get(field))
                          for field in ("llm_calls", "llm_seconds")}
                    for key in STAGES if key in stages},
