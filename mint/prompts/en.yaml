@@ -588,6 +588,15 @@ draft_extract: |-
   Extract substantive source requirements, limits, parameters, dates, conditions, definitions and identifiers.
   For each item return a verbatim contiguous quote with its units, exceptions and conditions.
   Exclude examples, hypotheses and references without substance. Return {"requirements":[{"quote":"exact quote"}]}.
+draft_pilot_coverage: |-
+  Review the entire set of proposed requirements against the original need,
+  confirmed context, selected section and exact source records in evidence.
+  section_relevant means all proposed requirements fit the selected section's purpose.
+  covered means the set collectively reflects the entire applicable part of the source
+  obligation for the target, including conditions, exceptions and negations, without unsupported decisions.
+  Citations, word overlap or checking one sentence do not establish completeness.
+  If evidence is insufficient, return false for the corresponding judgment. Explain reason.
+  Return {"section_relevant":false,"covered":false,"reason":"explanation"}.
 draft_requirement_derivation: |-
   For one source obligation and the confirmed target, propose one to six testable
   target-specific requirements. Do not merely copy a broad objective without refinement.
