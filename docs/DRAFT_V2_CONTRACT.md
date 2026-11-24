@@ -80,3 +80,7 @@ Before expanding to all Word sections, compare a small vertical implementation a
 ## Direct functional obligations
 
 The pilot permits verbatim explicit target duties without architectural evidence only when the allocation proposes `direct: true`, the named actor matches the confirmed target, and the original quotation contains the literal target name. Separate assessment and section coverage review are still mandatory. Derived obligations retain architectural evidence checks. Cross-cutting and nonfunctional allocation remain pending.
+
+## Bounded repair
+
+A rejected candidate set with actionable semantic feedback or explicit coverage gap may be revised once using the existing derivation prompt and original allowed evidence. No new allocation or source IDs; direct duties without current-state refs, out-of-section proposals, technical errors and incomplete judgments are not retried. Every repaired candidate must pass the original structural and assessment gates and the whole-set section coverage review. Only a fully accepted set replaces the original proposals; failed repair remains pending. Aggregate counters are included in the sanitized export. This is not proof of model quality.
