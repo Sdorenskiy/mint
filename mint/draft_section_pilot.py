@@ -131,6 +131,9 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     title, paragraph = target
     emit = progress or (lambda *_: None)
     issues = []
+    sources = list(dict.fromkeys(sources))
+    if set(source_roles) - set(sources):
+        raise ValueError("Invalid registry source role")
     documents = _load_draft_sources(cfg, sources, issues)
     roles = {name: source_roles[name] for name, _ in documents if name in source_roles}
     registry = build_registry(cfg, documents, roles, issues, emit, reset_cache=reset_extract_cache)
@@ -150,28 +153,33 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
         if status == "model_covered":
             selected.extend(candidates)
     results = []
+    first = list(doc.element.body).index(paragraph._p)
+    # Consolidate identical output text across different needs, preserving every link.
+    by_text = {}
+    for item in selected:
+        by_text.setdefault(item["text"], []).append(item)
     if selected:
         # Reuse the existing safe writer; it generates separate Word paragraphs
         # and preserves paragraph style. Reopen the actual output before anchoring.
         _fill_block(Slot(paragraph, "", title, writable=True), 0, 0,
-                    "\n".join(c["text"] for c in selected))
+                    "\n".join(by_text))
     buf = io.BytesIO()
     doc.save(buf)
     output = buf.getvalue()
     reopened = _open(output)
     elements = list(reopened.element.body)
-    first = section_index + 1
-    actual = [Paragraph(e, reopened).text for e in elements[first:first + len(selected)]
+    actual = [Paragraph(e, reopened).text for e in elements[first:first + len(by_text)]
               if e.tag.endswith("}p")]
-    if actual != [c["text"] for c in selected]:
+    if actual != list(by_text):
         raise DraftError(tr("Не удалось прочитать файл DOCX."))
     used = set()
-    for item in selected:
-        refs = item["need_refs"] + item["state_refs"] + item["constraint_refs"]
+    for text, items in by_text.items():
+        refs = list(dict.fromkeys(rid for item in items
+                                  for rid in item["need_refs"] + item["state_refs"] + item["constraint_refs"]))
         used.update(refs)
-        results.append({"field": item["id"], "section": title, "kind": "field",
-                        "status": "unchecked", "text": item["text"], "detail": "",
-                        "refs": refs, "confirmed_refs": refs})
+        results.append({"field": items[0]["id"], "proposal_ids": [item["id"] for item in items],
+                        "section": title, "kind": "field", "status": "unchecked",
+                        "text": text, "detail": "", "refs": refs, "confirmed_refs": refs})
     # The existing traceability views reflect exact output anchors, not proof
     # of semantic transfer. Keep unresolved needs separately from used evidence.
     result = {"docx": output, "issues": issues, "requirements": list(records.values()),
@@ -185,7 +193,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
               "requires_expert_review": True}
     result["traceability"] = build_traceability(result)
     _record_draft_diagnostic("pilot_section", {
-        "inserted": len(selected), "dispositions": dict(Counter(dispositions.values())),
+        "inserted": len(by_text), "dispositions": dict(Counter(dispositions.values())),
         "cross_cutting_pending": len(derivation["cross_cutting_ids"]),
         "open_questions_pending": len(derivation["open_question_ids"]),
         "untyped_pending": len(derivation["untyped_ids"]),
