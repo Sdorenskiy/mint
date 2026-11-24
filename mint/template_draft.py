@@ -9,6 +9,7 @@ import time
 from functools import wraps
 from copy import deepcopy
 from dataclasses import dataclass
+from uuid import uuid4
 
 from .i18n import tr
 from .draft_checkpoint import DraftExtractCheckpoint
@@ -83,7 +84,7 @@ def _measure_draft(fn):
     """Collect per-stage LLM cost without logging text or affecting other sessions."""
     @wraps(fn)
     def measured(*args, **kwargs):
-        metrics = {"stages": {}, "total_seconds": 0.0}
+        metrics = {"run_id": uuid4().hex, "stages": {}, "total_seconds": 0.0}
         token = _DRAFT_METRICS.set(metrics)
         lock_token = _DRAFT_METRICS_LOCK.set(threading.Lock())
         started = time.perf_counter()
@@ -160,6 +161,11 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
     """
     total = sum(1 for _, markdown in documents for _ in _source_chunks(markdown))
     emit("extract_total", total)
+    metrics = _DRAFT_METRICS.get()
+    if metrics is not None:
+        metrics["extraction"] = {"total": total, "completed": 0, "cache_hits": 0,
+                                 "cache_misses": 0, "failed_chunks": 0,
+                                 "rejected_quote_chunks": 0}
     workers = min(4, max(1, int(getattr(cfg, "draft_extract_parallel", 2))))
     requirements, seen, chunks, completed, reused = {}, set(), 0, 0, 0
 
@@ -196,8 +202,14 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False):
 
     def report_finished(result):
         nonlocal completed, reused
-        _quotes, cached, _invalid, _failed, elapsed = result
+        _quotes, cached, invalid, failed, elapsed = result
         completed += 1
+        if metrics is not None:
+            extraction = metrics["extraction"]
+            extraction["completed"] = completed
+            extraction["cache_hits" if cached else "cache_misses"] += 1
+            extraction["failed_chunks"] += int(failed)
+            extraction["rejected_quote_chunks"] += int(bool(invalid))
         emit("extract", completed)
         # Approximate remaining wall time, not sum of concurrent LLM times.
         emit("extract_elapsed", elapsed / workers if not cached else 0.0)
