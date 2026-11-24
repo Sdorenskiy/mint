@@ -12,7 +12,7 @@ from .template_draft import (DraftError, _batches, _json, _records, _requirement
 
 SOURCE_ROLES = frozenset({"need", "architecture", "normative", "mixed", "unspecified"})
 KINDS = frozenset({"functional", "nonfunctional", "constraint", "definition",
-                   "architecture", "open_question", "reference", "non_requirement",
+                   "current_state", "open_question", "reference", "non_requirement",
                    "uncertain"})
 OBLIGATION_KINDS = frozenset({"functional", "nonfunctional", "constraint"})
 # Only clear contents entries (heading AND dotted leader/page number).
