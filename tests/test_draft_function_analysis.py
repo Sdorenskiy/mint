@@ -1,6 +1,7 @@
 """Offline functional analysis regressions using the V2 registry contract."""
 import sys
 from pathlib import Path
+from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 
@@ -128,6 +129,46 @@ def test_direct_without_state():
     assert not analysis.names_target("Reservation DeskX must notify visitors.", CONTEXT["target"])
 
 
+def test_alias_interaction_expansion_and_cache():
+    context = {**CONTEXT, "target": "Reservation Desk (RD)"}
+    data = {k: v for k, v in records().items() if k in {"R1", "R4"}}
+    for i in range(10, 40):
+        rid = f"R{i}"
+        data[rid] = {**data["R4"], "id": rid,
+                     "quote": f"Fictional notification responsibility {i}. " + "detail " * 110}
+    assert analysis.names_target("RD must notify visitors.", context["target"])
+    assert not analysis.names_target("ARD must notify visitors.", context["target"])
+    with TemporaryDirectory() as tmp:
+        cfg = SimpleNamespace(**vars(CFG), llm_model="synthetic", log_path=Path(tmp))
+        calls, evidence = [], []
+        def model(_cfg, stage, payload):
+            calls.append(stage)
+            if stage == "function_group":
+                return {"items": [{"id": "R1", "group": "R1"}]}
+            assert payload["target_names"] == ["Reservation Desk (RD)", "Reservation Desk", "RD"]
+            supplied = {row["id"] for row in payload["current_state"]}
+            evidence.append(supplied)
+            if len(evidence) == 1:
+                return {"items": [{"id": "R1", "category": "uncertain", "actor": "",
+                                   "reason": "Need more evidence", "state_refs": [], "needs_more_state": True}]}
+            return {"items": [{"id": "R1", "category": "interaction", "actor": "RD",
+                               "reason": "New evidence", "state_refs": [sorted(supplied - evidence[0])[0]]}]}
+        with patch.object(analysis, "_json", side_effect=model):
+            result = analysis.analyze_functions(cfg, data, context, lambda *_: None)
+            assert calls == ["function_group", "function_allocation", "function_allocation"]
+            assert evidence[1] - evidence[0]
+            assert result["allocations"]["R1"]["status"] == "proposed"
+            assert result["allocations"]["R1"]["actor"] == context["target"]
+            calls.clear()
+            evidence.clear()
+            analysis.analyze_functions(cfg, data, context, lambda *_: None)
+            assert "function_group" not in calls
+            calls.clear()
+            evidence.clear()
+            analysis.analyze_functions(cfg, data, context, lambda *_: None, reset_cache=True)
+            assert calls[0] == "function_group"
+
+
 def test_prompt_contract():
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
@@ -140,5 +181,6 @@ if __name__ == "__main__":
     test_group_and_allocate()
     test_invalid_responses_and_missing_state()
     test_direct_without_state()
+    test_alias_interaction_expansion_and_cache()
     test_prompt_contract()
     print("ИТОГ: functional grouping, evidence-linked proposals and explicit unresolved decisions")
