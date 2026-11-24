@@ -616,6 +616,8 @@ draft_requirement_assessment: |-
   Independently assess the proposed requirement against the exact source records in evidence.
   Do not treat citations or the author's explanation as semantic proof.
   supported means the text follows from the need and existing-state evidence;
+  for mode explicit without state_refs verify that the quotation itself assigns the duty
+  to target, rather than merely mentioning it. A verbatim direct obligation needs no existing-state reference.
   correct_actor means the duty belongs to target rather than an external participant;
   no_new_decisions means there are no invented parameters, implementation choices or duties.
   Consider conditions, negation and exceptions, distinguishing existing from required behavior.
@@ -637,9 +639,12 @@ draft_function_allocation: |-
   participant behavior needed for an exchange; other — another party's duty;
   uncertain — insufficient evidence. For each confident category provide state_refs
   from current_state and reason explaining the link between need and responsibility.
+  Exception: if the quotation itself explicitly and unambiguously assigns the duty to
+  context.target within task scope, return category target, actor context.target, direct true
+  and empty state_refs. Merely mentioning the target or an external exchange is insufficient.
   Do not invent ids, roles, parameters or implementation choices. If ambiguous, choose uncertain.
   Return exactly one row per input id.
-  Return {"items":[{"id":"R1","category":"uncertain","actor":"","reason":"Insufficient evidence","state_refs":[]}]}.
+  Return {"items":[{"id":"R1","category":"uncertain","actor":"","reason":"Insufficient evidence","state_refs":[],"direct":false}]}.
 draft_registry_type: |-
   For each id classify the type of the source quotation, not its applicability to the target system.
   source_role describes the document's role, not whether a specific quotation is an obligation.

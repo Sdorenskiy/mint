@@ -111,6 +111,23 @@ def test_invalid_responses_and_missing_state():
     assert len(result["allocations"]) == 3 and not result["groups"]
 
 
+def test_direct_without_state():
+    row = records()["R1"]
+    row["quote"] = "Reservation Desk must notify visitors."
+    def model(_cfg, stage, payload):
+        if stage == "function_group":
+            return {"items": [{"id": "R1", "group": "R1"}]}
+        assert stage == "function_allocation"
+        assert payload["current_state"] == []
+        return {"items": [{"id": "R1", "category": "target", "actor": CONTEXT["target"],
+                           "reason": "Explicit actor", "state_refs": [], "direct": True}]}
+    with patch.object(analysis, "_json", side_effect=model):
+        result = run({"R1": row})
+    assert result["allocations"]["R1"]["direct"] is True
+    assert result["allocations"]["R1"]["status"] == "proposed"
+    assert not analysis.names_target("Reservation DeskX must notify visitors.", CONTEXT["target"])
+
+
 def test_prompt_contract():
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
@@ -122,5 +139,6 @@ def test_prompt_contract():
 if __name__ == "__main__":
     test_group_and_allocate()
     test_invalid_responses_and_missing_state()
+    test_direct_without_state()
     test_prompt_contract()
     print("ИТОГ: functional grouping, evidence-linked proposals and explicit unresolved decisions")

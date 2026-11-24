@@ -7,7 +7,7 @@ assessment is useful evidence for review, never an expert approval.
 from collections import Counter
 
 from .document_context import confirm_context
-from .draft_function_analysis import _compact, _unique_answers, _valid_refs
+from .draft_function_analysis import _compact, _unique_answers, _valid_refs, names_target
 from .draft_registry import obligation_candidates
 from .template_draft import (DraftError, _json, _numbers_supported,
                              _record_draft_diagnostic, _text)
@@ -87,11 +87,27 @@ def derive_requirements(cfg, records, analysis, context, emit):
                          if row["kind"] == "current_state"
                          and row["typing_status"] == "classified"}
         state_refs = _valid_refs(allocation, "state_refs", allowed_state)
-        if not state_refs:
+        direct = (allocation.get("direct") is True and category == "target"
+                  and names_target(need["quote"], target))
+        if state_refs is None or (not state_refs and not direct):
             dispositions[rid] = "invalid_allocation_evidence"
             continue
         if category == "target" and allocation.get("actor", "").casefold() != target.casefold():
             dispositions[rid] = "invalid_allocation_actor"
+            continue
+        if direct and not state_refs:
+            # Preserve the original explicit obligation rather than inventing
+            # a refinement without architecture. Independent assessment and
+            # the section-wide need coverage gate still apply.
+            item = {"id": "P" + str(len(proposed) + 1),
+                    "text": need["quote"], "actor": target, "mode": "explicit",
+                    "reason": allocation["reason"], "need_refs": [rid],
+                    "state_refs": [], "constraint_refs": []}
+            emit("requirement_assessment", len(proposed) + 1)
+            item["assessment"] = _assessment(cfg, item, records, target)
+            proposed.append(item)
+            dispositions[rid] = ("model_supported_candidates" if
+                                 item["assessment"] == "model_supported" else "needs_review")
             continue
         calls += 1
         emit("requirement_derivation", calls)
