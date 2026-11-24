@@ -67,6 +67,14 @@ def test_bounded_extraction():
             cached = run(3)
             assert state["calls"] == before and cached["items"] == parallel["items"]
             assert cached["metrics"]["stages"] == {}
+            cold = parallel["metrics"]["diagnostics"]["extraction"]
+            warm = cached["metrics"]["diagnostics"]["extraction"]
+            assert cold["fragments_completed"] == cold["cache_misses"] == 8
+            assert cold["cache_hits"] == 0
+            assert warm["fragments_completed"] == warm["cache_hits"] == 8
+            assert warm["cache_misses"] == 0
+            assert warm["accepted_records"] == cold["accepted_records"] == 8
+            assert cached["metrics"]["run_id"] != parallel["metrics"]["run_id"]
             assert [i for stage, i in events if stage == "extract_cached"] == list(range(1, 9))
 
             state["peak"] = 0
