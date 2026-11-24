@@ -15,6 +15,7 @@ from docx import Document
 from docx.opc.exceptions import OpcError
 from docx.text.paragraph import Paragraph
 from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 
 from .document_context import confirm_context
 from .draft_derivation import derive_requirements, validate_candidates, _assessment
@@ -37,21 +38,25 @@ def _open(template):
         raise DraftError(tr("Не удалось прочитать файл DOCX.")) from exc
 
 
-_NUMBERED_HEADING = re.compile(r"^\s*\d+(?:\.\d+){1,5}\.?\s+\S")
+_NUMBERED_HEADING = re.compile(r"^\s*(?:\d+(?:\.\d+){1,5}\.?|\d+\.)\s+\S")
 _PROTECTED_TITLE = re.compile(
     r"(?iu)^\s*(?:\d+(?:\.\d+)*\.?\s+)?(?:подписи|лист\s+подписей|signatures|approval|согласование)\s*$")
 
 
 def _pilot_heading(p):
     """Reuse the standard detector; also recognize inherited outline and plain numbering."""
+    direct = p._p.xpath("./w:pPr/w:outlineLvl")
+    if direct:
+        return direct[0].get(qn("w:val")) in {str(i) for i in range(9)}
     if _heading(p):
         return True
     style = p.style
     seen = set()
     while style is not None and style.style_id not in seen:
         seen.add(style.style_id)
-        if style.element.xpath("./w:pPr/w:outlineLvl"):
-            return True
+        outline = style.element.xpath("./w:pPr/w:outlineLvl")
+        if outline:
+            return outline[0].get(qn("w:val")) in {str(i) for i in range(9)}
         style = style.base_style
     title = p.text.strip()
     # Manual dotted subsection numbers are only candidates, never permission
@@ -66,6 +71,22 @@ def _safe_body(p):
     return (_simple(p) and not _bookmarks(p._p)
             and not p._p.xpath("./w:pPr/w:sectPr | ./w:pPr/w:numPr")
             and p.style and not p.style.name.lower().startswith(("toc", "list", "список", "оглавление")))
+
+
+def _whole_instruction(slot):
+    """Whole-paragraph deletion needs stronger evidence than a replaceable span."""
+    body = slot.text.strip()
+    if not _safe_target(slot, body):
+        return False
+    if body.startswith("[") and body.endswith("]"):
+        # Do not remove fixed prose between independent bracketed references.
+        return body.count("[") == body.count("]") == 1
+    return bool(re.match(
+        r"(?iu)^(?:укажите|укажи|опишите|опиши|заполните|вставьте|перечислите|"
+        r"приведите|уточните|enter|insert|fill|specify|describe)\b", body)
+        or re.match(r"(?iu)^(?:в\s+(?:данном|этом|настоящем)\s+"
+                    r"(?:разделе|подразделе|пункте)|здесь)\b", body)
+        or re.fullmatch(r"[_…⋯.]{2,}", body))
 
 
 def _section_targets(doc):
@@ -113,7 +134,7 @@ def _section_targets(doc):
         if protected:
             continue
         _join_instruction_blocks(slots)
-        if slots and not all(_safe_target(s, s.text.strip()) for s in slots.values()):
+        if slots and not all(_whole_instruction(s) for s in slots.values()):
             row["status"] = "fixed_content"
             continue
         if slots or examples:
