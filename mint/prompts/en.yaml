@@ -596,13 +596,17 @@ draft_pilot_coverage: |-
   obligation for the target, including conditions, exceptions and negations, without unsupported decisions.
   Citations, word overlap or checking one sentence do not establish completeness.
   If evidence is insufficient, return false for the corresponding judgment. Explain reason.
-  Return {"section_relevant":false,"covered":false,"reason":"explanation"}.
+  repairable is true only if revision is possible using supplied evidence; otherwise false.
+  Return {"section_relevant":false,"covered":false,"repairable":false,"reason":"explanation"}.
 draft_requirement_derivation: |-
   For one source obligation and the confirmed target, propose one to six testable
   target-specific requirements. Do not merely copy a broad objective without refinement.
   allocation is a provisional assignment of responsibility, not proof.
   current_state describes existing structure, behavior and roles; it explains why the
   obligation belongs to the target but does not itself mandate a new change.
+  For interaction describe only the target side of the exchange, not other parties' work.
+  Distinguish a required change from existing behavior; if already implemented and no change
+  follows from the need, return open_question.
   Do not introduce unsupported deadlines, values, implementation choices or external duties.
   Preserve conditions, exceptions and negations. mode explicit means a directly stated
   obligation; derived means justified refinement. actor must exactly equal target.
@@ -625,7 +629,12 @@ draft_requirement_assessment: |-
   no_new_decisions means there are no invented parameters, implementation choices or duties.
   Consider conditions, negation and exceptions, distinguishing existing from required behavior.
   If unsure about any of these three judgments, use false. Explain reason.
-  Return {"supported":false,"correct_actor":false,"no_new_decisions":false,"reason":"explanation"}.
+  repairable is true only if the supplied evidence suffices to revise the text; false
+  if evidence is missing or a new decision is necessary. If input contains items, assess
+  each candidate only against its own evidence, and return {"items":[{"id":"P1",
+  "supported":false,"correct_actor":false,"no_new_decisions":false,"repairable":false,"reason":"explanation"}]}.
+  Return exactly one row per id. Otherwise return one answer.
+  Return {"supported":false,"correct_actor":false,"no_new_decisions":false,"repairable":false,"reason":"explanation"}.
 draft_function_group: |-
   Group functional obligations describing one coherent function.
   Do not group independent functions merely because they share words or a system name.
@@ -637,9 +646,9 @@ draft_function_allocation: |-
   current_state describes existing structure and responsibilities, constraints provides
   possible cross-cutting restrictions, and open_questions contains unresolved decisions.
   Do not turn existing behavior or open questions into new obligations.
-  target — target responsibility (actor exactly equals context.target);
-  shared — general obligation demonstrably applicable to it; interaction — external
-  participant behavior needed for an exchange; other — another party's duty;
+  target — target responsibility (actor equals context.target or one of target_names);
+  shared — general obligation demonstrably applicable to it; interaction — duty in an exchange: if the target performs part of the exchange,
+  set actor to context.target and describe only its part in reason; otherwise name the external party; other — another party's duty;
   uncertain — insufficient evidence. For each confident category provide state_refs
   from current_state and reason explaining the link between need and responsibility.
   Exception: if the quotation itself explicitly and unambiguously assigns the duty to
