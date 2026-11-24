@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Establish the proposed document-generation V2 contracts and a fictional end-to-end baseline with explicit known gaps and an optional strict gate. Correlate extraction totals, cache hits/misses and failures with a local run ID; no extra LLM calls and no generator replacement yet. Application version 21.4.2 for this merge.
+
 - Keep Word source-extraction workers busy when an earlier LLM request stalls. Report completion progress immediately, but preserve source-order requirement IDs, checkpoint reuse, validated quotations and bounded buffering. Add deterministic slow-first-request regression coverage; no extra model calls or CI workflows.
 
 - Refresh the code map for the current Word-drafting and source-traceability architecture. Keep the code map and both diagrams on the mandatory **manual** pre-release checklist; remove diagram rendering and diagram checks from GitHub Actions to avoid unnecessary CI workload.
