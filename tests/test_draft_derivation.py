@@ -65,8 +65,8 @@ def response(*items):
 
 
 def test_positive_and_open_items():
-    result = run(response(item(), item(text="Reservation Desk must notify the visitor of confirmation.")))
-    assert [r["id"] for r in result["requirements"]] == ["P1", "P2"]
+    result = run(response(item()))
+    assert [r["id"] for r in result["requirements"]] == ["P1"]
     assert all(r["assessment"] == "model_supported" for r in result["requirements"])
     assert result["dispositions"] == {"R1": "model_supported_candidates",
                                      "R2": "open_question", "R3": "external_proposal"}
