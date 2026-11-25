@@ -52,6 +52,9 @@ def render_draft_context(cfg, template, sources, input_signature, *, namespace='
                 state["suggestion"] = {}
             st.rerun()
         if state["suggestion"] is None:
+            if inline and st.button(tr("Указать контекст вручную"), key=namespace + "_manual"):
+                state["suggestion"] = {}
+                st.rerun()
             return None
 
         proposal = state["suggestion"]
