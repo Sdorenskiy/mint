@@ -155,3 +155,52 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
         "requires_expert_review": True,
         "caveat": "Aggregate diagnostics only; not proof of semantic accuracy or source completeness.",
     }
+
+
+# The registry has no Word anchors yet. Export only aggregate codes and numbers.
+TARGET_STAGES = ("target_section_map", "target_profile", "target_extract", "registry_type",
+                 "target_allocation", "target_verify", "target_derivation",
+                 "requirement_assessment", "target_coverage")
+_TARGET_COUNTERS = {
+    "section_roles": ("need", "interface", "metric", "architecture", "constraint", "business", "reference", "unknown"),
+    "fragment_status": ("failed", "invalid_quote", "cached", "processed"),
+    "decisions": ("proposed", "model_supported", "missing_evidence", "wrong_actor", "invalid_response",
+                  "missing_response", "duplicate_response", "batch_error", "missing_metric_evidence",
+                  "review_context_limit", "review_error", "needs_review"),
+    "changes": ("new", "change", "already_supported", "external", "unknown", "explicit"),
+    "outcomes": ("new", "change", "already_supported", "external", "unknown", "explicit",
+                 "context_only", "untyped", "open_question", "model_covered", "coverage_gap",
+                 "group_context_limit", "model_supported_candidates", "missing_metric_evidence",
+                 "missing_evidence", "wrong_actor", "invalid_response", "missing_response",
+                 "duplicate_response", "batch_error", "review_context_limit", "review_error", "needs_review"),
+    "record_kinds": tuple(sorted(KINDS)),
+    "index_revisions": ("missing", "unverified", "matched", "stale"),
+    "retrieval": ("queries", "dense_queries", "reranked_queries", "low_confidence",
+                  "matched_spans", "no_match", "no_index", "fallback_spans"),
+    "profile_retrieval": ("queries", "dense_queries", "reranked_queries", "low_confidence",
+                          "matched_spans", "no_match", "no_index", "fallback_spans"),
+    "proposal_kinds": ("functional", "interface", "metric", "constraint"),
+    "proposal_assessments": tuple(sorted(ASSESSMENT_STATUSES)),
+}
+
+
+def target_registry_export(prepared, result):
+    """Single safe file for STOP-1; never include input keys, profile, texts or raw stats."""
+    data = result.get("diagnostics", {})
+    preparation = prepared.get("metrics", {})
+    analysis = result.get("metrics", {})
+    counters = {key: {code: _number(data.get(key, {}).get(code)) for code in allowed}
+                for key, allowed in _TARGET_COUNTERS.items()}
+    counts = {key: _number(data.get(key)) for key in
+              ("profile_functions", "groups", "verified_metrics", "source_read_errors")}
+    extraction = analysis.get("diagnostics", {}).get("extraction", {})
+    return {"format": "mint-draft-analysis/1", "mint": MINT_VERSION,
+            "mode": "target_registry", "requires_expert_review": True,
+            "counts": counts, "diagnostics": counters,
+            "extraction": {key: _number(extraction.get(key)) for key in EXTRACTION},
+            "preparation": {"total_seconds": _number(preparation.get("total_seconds")),
+                            "stages": safe_stage_metrics(preparation, TARGET_STAGES)},
+            "analysis": {"total_seconds": _number(analysis.get("total_seconds")),
+                         "stages": safe_stage_metrics(analysis, TARGET_STAGES)},
+            "expert_review": None,
+            "caveat": "Model processing indicators only. No expert approval, semantic recall or Word coverage."}
