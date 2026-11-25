@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 registry: additive function-directed retrieval over the existing hybrid search, verified original quotes for data categories, interface characteristics and performance objectives; independent batched review, strict requirement-quality gates, local XLSX and exact run comparison. Development version 21.4.16.
+
 - Show completed/total counters and wall-clock stage progress in document drafting. Resolve explicit original-source cross-references in V2 registry, include bounded linked context and flag missing or ambiguous addresses. Development version 21.4.15.
 
 - Experimental checkpoint-1 registry: selected-source hybrid retrieval with original-revision verification, source section map, confirmed target profile, focused extraction and responsibility/change analysis with performance objectives. Review registry without generating Word. Development version 21.4.14.
