@@ -115,11 +115,23 @@ def registry_workbook(prepared, result):
           [("MINT", MINT_VERSION), ("identity", snapshot["identity"]),
            (tr("Целевая система"), prepared.get("context", {}).get("target", "")),
            (tr("Экспертная проверка"), tr("Обязательна")),
+           ("phase", result.get("phase", "decomposed")), ("review_mode", result.get("review", {}).get("mode", "")),
            (tr("Конфиденциальность"), tr("Содержит исходные тексты. Только для локального использования."))],
           [30, 100])
     sheet(tr("Подтверждённые функции"), ["ID", tr("Функция"), tr("Описание"), tr("Ссылки")],
           [(p["id"], p["name"], p["description"], ", ".join(p["refs"])) for p in result.get("approved_profile", [])],
           [12, 40, 100, 36])
+    def summary_rows():
+        review = result.get("review", {})
+        included, excluded = set(review.get("included", [])), set(review.get("excluded", []))
+        for gid, rows in result.get("summaries", {}).items():
+            for row in rows:
+                yield (gid, groups.get(gid, ""), row["status"], row["text"], ", ".join(row["need_refs"]),
+                       ", ".join(row["evidence_refs"]), ", ".join(r for r in row["need_refs"] if r in included),
+                       ", ".join(r for r in row["need_refs"] if r in excluded), review.get("notes", {}).get(gid, ""))
+    sheet(tr("Сводные требования"), ["ID", tr("Функция"), tr("Статус"), tr("Сводная формулировка"),
+          tr("Исходные записи"), tr("Ссылки"), tr("Включено"), tr("Исключено"), tr("Уточнение эксперта (не источник)")],
+          summary_rows(), [12, 40, 20, 100, 36, 36, 36, 36, 80])
     sheet(tr("Предложения"), ["ID", tr("Функция"), tr("Исполнитель"), tr("Тип"),
           tr("Требование"), tr("Статус"), tr("Обоснование"), tr("Причина проверки"), tr("Компоненты")],
           [(p["id"], groups.get(p["group"], ""), p["actor"], p["kind"], p["text"],
