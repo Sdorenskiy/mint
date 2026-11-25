@@ -127,6 +127,9 @@ class ReferenceMap:
                 self._add(source, "appendix", appendix[1], children)
         for bookmark, title in metadata.get("bookmarks", {}).items():
             paths = titles.get(_norm(title), [])
+            if not paths:
+                paths = [path for text, path in occurrences if _HEADING.match(text)
+                         and _norm(text[_HEADING.match(text).end():]) == _norm(title)]
             if len(paths) == 1:
                 path = paths[0]
                 self._add(source, "bookmark", bookmark,
@@ -135,6 +138,10 @@ class ReferenceMap:
         # Require an actual caption immediately before a Markdown table. Match
         # complete rows in original spans, never an unrelated table number.
         lines = markdown.splitlines()
+        row_index = defaultdict(list)
+        for sid in ids:
+            for row in {_norm(line) for line in self.spans[sid]["text"].splitlines() if line.strip().startswith("|")}:
+                row_index[row].append(sid)
         for i, line in enumerate(lines):
             caption = _TABLE_TITLE.match(line.strip("* "))
             if not caption:
@@ -155,7 +162,7 @@ class ReferenceMap:
             selected = set()
             valid = True
             for row in rows[:1] + rows[2:]:
-                matched = [sid for sid in ids if row in {_norm(s) for s in self.spans[sid]["text"].splitlines()}]
+                matched = row_index.get(row, [])
                 if not matched or len({self.spans[sid]["section_id"] for sid in matched}) != 1:
                     valid = False
                     break
