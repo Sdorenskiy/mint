@@ -20,10 +20,19 @@ def _digest(value):
 def registry_identity(prepared, result):
     # Stable only for identical original revisions, target context and selected
     # function names. Do not compare R/P IDs across different runs.
-    return _digest({"hashes": prepared.get("hashes", {}), "context": prepared.get("context", {}),
-                    "roles": prepared.get("roles", {}),
-                    "profile": sorted(_normalized(p["name"]).casefold()
-                                      for p in result.get("approved_profile", []))})
+    identity = {"hashes": prepared.get("hashes", {}), "context": prepared.get("context", {}),
+                "roles": prepared.get("roles", {}),
+                "profile": sorted(_normalized(p["name"]).casefold()
+                                  for p in result.get("approved_profile", []))}
+    # Keep old automatic/all-selected baselines comparable, but never present
+    # a deliberate change of review scope or expert guidance as a regression.
+    review = result.get("review", {})
+    if review.get("excluded") or review.get("notes"):
+        groups = {g["id"]: g["function"] for g in result.get("groups", [])}
+        identity["review"] = {
+            "excluded": sorted(record_key(result["requirements"][rid]) for rid in review.get("excluded", [])),
+            "notes": sorted((groups[gid], note) for gid, note in review.get("notes", {}).items())}
+    return _digest(identity)
 
 
 def record_key(row):
