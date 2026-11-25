@@ -80,6 +80,8 @@ def _show_refs(refs, prepared, result):
         row = result["requirements"].get(rid) or result["state_evidence"].get(rid)
         if row:
             st.caption(f"{rid} · {row['source']} › {row['section']}")
+            if row.get("source_role") == "reference_context":
+                st.caption(tr("Справочный контекст — не основание требования"))
             st.text(row["quote"])
         elif rid in prepared["spans"]:
             row = prepared["spans"][rid]
@@ -155,15 +157,16 @@ def _review_collection(collected, prepared, expert):
     return selected, notes
 
 
-def _prepare(cfg, session, sources, roles, context):
-    with st.status(tr("Профиль целевой системы"), expanded=False) as status:
+def _prepare(cfg, session, sources, roles, context, reference_sources=()):
+    with st.status(tr("Поиск сведений о системе"), expanded=False) as status:
         try:
-            prepared = prepare_target_analysis(cfg, sources, roles, context, render_progress(status))
+            prepared = prepare_target_analysis(cfg, sources, roles, context, render_progress(status),
+                                               reference_sources=reference_sources)
         except (DraftError, OSError, ValueError, KeyError, RuntimeError):
-            status.update(label=tr("Не удалось подготовить профиль системы."), state="error")
+            status.update(label=tr("Не удалось подготовить исходные материалы и сведения о системе."), state="error")
             return None
         session["target_registry_prepared"] = prepared
-        status.update(label=tr("Профиль подготовлен"), state="complete")
+        status.update(label=tr("Поиск сведений завершён"), state="complete")
         return prepared
 
 
@@ -182,15 +185,16 @@ def _decompose(cfg, session, prepared, identity, collected, selection=None, note
         return True
 
 
-def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cache, *, step, expert, advance):
+def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cache, *, step, expert, advance, reference_sources=()):
     """Render the active stage only. Navigation never starts an LLM operation."""
     session = st.session_state
     sync_target(session, key)
     prepared = session.get("target_registry_prepared")
     if step == 2:
         if prepared is None:
-            if st.button(tr("Подготовить профиль системы"), disabled=not enabled, key="target_prepare", type="primary"):
-                if _prepare(cfg, session, sources, roles, context):
+            st.caption(tr("MINT найдёт сведения о системе и предложит направления целевого поиска. Это не требования и не обязательный профиль."))
+            if st.button(tr("Найти сведения о системе"), disabled=not enabled, key="target_prepare", type="primary"):
+                if _prepare(cfg, session, sources, roles, context, reference_sources):
                     st.rerun()
             return
         sig = hashlib.sha256(json.dumps([key, prepared["profile"], prepared.get("metrics", {}).get("run_id")],
@@ -199,46 +203,65 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         if not draft or draft["sig"] != sig:
             draft = {"sig": sig, "selected": []}
             session["target_registry_profile_draft"] = draft
-        st.subheader(tr("Профиль целевой системы"))
-        st.caption(tr("Подтвердите только верные функции. При необходимости исправьте общий контекст и подготовьте профиль заново."))
+        st.subheader(tr("Сведения о системе"))
+        st.caption(tr("Предложения модели для целевого поиска. Выберите только относящиеся к задаче; исходные основания разбираются и без выбора."))
+        def show_status(code):
+            messages = {
+                "no_candidates": tr("Не найдено подходящих исходных фрагментов в доступном контексте."),
+                "model_error": tr("Модель не вернула полный ответ. Можно повторить поиск или продолжить сбор."),
+                "invalid_response": tr("Ответ модели не прошёл проверку структуры или ссылок."),
+                "no_functions": tr("Модель не выделила функции из переданного контекста."),
+                "partial": tr("Часть предложений модели не прошла проверку ссылок или структуры."),
+                "source_error": tr("Не удалось прочитать выбранные справочные документы."),
+            }
+            if code in messages:
+                st.warning(messages[code])
+
         selected = []
-        for row in prepared["profile"]:
-            pid = row["id"]
-            widget = f"target_profile_{sig}_{pid}"
-            if widget not in session:
-                session[widget] = pid in draft["selected"]
-            if st.checkbox(row["name"], key=widget):
-                selected.append(row)
-            st.caption(row["description"])
-            with st.expander(tr("Подтверждающие сведения") + " · " + pid):
-                for sid in row["refs"]:
-                    span = prepared["spans"][sid]
-                    st.caption(f"{span['source']} › {span['section']}")
-                    st.text(span["text"])
-        if not prepared["profile"]:
-            st.caption(tr("Функции не подтверждены источниками; анализ может выявить прямые обязанности и пробелы."))
+        for origin, heading in (("basis", tr("Направления поиска из оснований")),
+                                ("reference", tr("Сведения из справочных документов"))):
+            if origin == "reference" and not reference_sources:
+                continue
+            st.markdown("**" + heading + "**")
+            code = prepared.get("reference_status" if origin == "reference" else "profile_status")
+            show_status(code)
+            rows = [p for p in prepared["profile"] if p.get("origin", "basis") == origin]
+            if not rows and code is None:
+                st.caption(tr("Нет предложений для целевого поиска."))
+            if origin == "reference":
+                st.caption(tr("Сведения о существующем состоянии требуют проверки актуальности и применимости."))
+                if prepared.get("reference_issues"):
+                    st.warning(tr("Не все справочные документы удалось прочитать."))
+            for row in rows:
+                pid = row["id"]
+                widget = f"target_profile_{sig}_{pid}"
+                if widget not in session:
+                    session[widget] = pid in draft["selected"]
+                if st.checkbox(row["name"], key=widget):
+                    selected.append(row)
+                st.caption(row["description"])
+                with st.expander(tr("Подтверждающие сведения") + " · " + pid):
+                    for sid in row["refs"]:
+                        span = (prepared.get("reference_spans", {}) if origin == "reference" else prepared["spans"])[sid]
+                        st.caption(f"{span['source']} › {span['section']}")
+                        st.text(span["text"])
+        if not selected:
+            st.caption(tr("Можно продолжить без выбора функций. Все основания будут разобраны; целевой поиск по функциям ограничен."))
         draft["selected"] = [p["id"] for p in selected]
         identity = (sig, tuple(draft["selected"]))
         previous = session.get("target_registry_collected")
         same = bool(previous and previous[0] == identity)
         if previous and not same:
             st.warning(tr("После подтверждения изменений последующие результаты потребуется собрать заново."))
-        with st.expander(tr("Карта разделов оснований")):
-            for row in prepared["sections"].values():
-                st.text(f"{_label(row['role'])} · {row['source']} › {row['section']}")
-        # The primary action confirms the selected function set, including an
-        # intentionally empty profile. Explicit re-collection is separate.
-        if same:
-            label = tr("Продолжить к собранным требованиям")
-        else:
-            label = tr("Подтвердить функции и собрать требования")
+        label = tr("Продолжить к собранным требованиям") if same else tr("Собрать исходные требования")
         again = False
         with st.expander(tr("Расширенные действия")):
-            again = st.button(tr("Повторно собрать требования"), disabled=not same, key="target_collect_again")
-            if st.button(tr("Повторно определить профиль"), key="target_prepare_again"):
+            if same:
+                again = st.button(tr("Повторно собрать требования"), key="target_collect_again")
+            if st.button(tr("Повторить поиск сведений"), key="target_prepare_again"):
                 clear_target(session)
                 sync_target(session, key)
-                if _prepare(cfg, session, sources, roles, context):
+                if _prepare(cfg, session, sources, roles, context, reference_sources):
                     st.rerun()
                 return
         proceed = st.button(label, key="target_analyze", type="primary")
@@ -450,3 +473,6 @@ def _render_diagnostics(prepared, result, key, identity, finished):
                     st.caption(tr("Сравнение дословное: переформулированные требования проверяет эксперт."))
     with st.expander(tr("Замеры этапов подготовки")):
         st.json(export)
+        st.caption(tr("Классификация разделов оснований (не извлечённые требования)"))
+        for row in prepared.get("sections", {}).values():
+            st.text(f"{_label(row['role'])} · {row['source']} › {row['section']}")
