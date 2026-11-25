@@ -18,6 +18,7 @@ _STAGES = {
     "registry_type": N_("Типизация исходных сведений"),
     "target_allocation": N_("Распределение ответственности"),
     "target_verify": N_("Проверка ответственности и изменений"),
+    "target_summary": N_("Сводные формулировки требований"),
     "target_derivation": N_("Детализация требований"),
     "requirement_assessment": N_("Проверка обоснованности"),
     "target_coverage": N_("Проверка полноты функций"),
