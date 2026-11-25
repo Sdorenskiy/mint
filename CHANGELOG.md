@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2: optional expert checkpoint before decomposition, source-linked summaries, explicit exclusions and expert comments, intermediate private registry export, resume without rerunning source analysis. Development version 21.4.17.
+
 - V2 registry: additive function-directed retrieval over the existing hybrid search, verified original quotes for data categories, interface characteristics and performance objectives; independent batched review, strict requirement-quality gates, local XLSX and exact run comparison. Development version 21.4.16.
 
 - Show completed/total counters and wall-clock stage progress in document drafting. Resolve explicit original-source cross-references in V2 registry, include bounded linked context and flag missing or ambiguous addresses. Development version 21.4.15.
