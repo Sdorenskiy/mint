@@ -126,7 +126,7 @@ def test_registry_end_to_end():
         def model(_cfg, stage, payload):
             if stage == "target_section_map":
                 mapping = {"Business": "business", "Interfaces": "interface",
-                           "Metrics": "metric", "Current": "architecture"}
+                           "Metrics": "metric", "Current": "arch"}
                 return {"items": [{"id": r["id"], "role": mapping[r["section"]]} for r in payload["items"]]}
             if stage == "target_profile":
                 state = next(r for r in payload["evidence"] if CURRENT in r["text"])
