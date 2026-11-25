@@ -137,9 +137,11 @@ class DraftStageCheckpoint:
 class DraftExtractCheckpoint:
     """One namespace per exact source + model + extraction prompt + settings."""
 
-    def __init__(self, cfg, source, markdown):
-        self.directory = _private_directory(
-            cfg, "draft_extract_checkpoints", _identity(cfg, source, markdown))
+    def __init__(self, cfg, source, markdown, *, focus=None):
+        identity = _identity(cfg, source, markdown, stage="target_extract" if focus is not None else "extract")
+        if identity is not None and focus is not None:
+            identity = _digest(identity + json.dumps(focus, sort_keys=True, ensure_ascii=False))
+        self.directory = _private_directory(cfg, "draft_extract_checkpoints", identity)
 
     def _path(self, index):
         return self.directory / f"{index:06d}.json"
