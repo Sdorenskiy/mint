@@ -93,7 +93,7 @@ def _private_directory(cfg, namespace, identity):
 class DraftStageCheckpoint:
     """Cache only fully validated ID-to-code maps, never raw model output."""
     def __init__(self, cfg, stage):
-        if stage not in {"registry_type", "function_group"}:
+        if stage not in {"registry_type", "function_group", "target_dossier", "target_verify"}:
             raise ValueError("Unknown draft checkpoint stage")
         self.directory = _private_directory(
             cfg, "draft_stage_checkpoints", _identity(cfg, "", "", stage=stage))
