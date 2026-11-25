@@ -21,6 +21,7 @@ def registry_identity(prepared, result):
     # Stable only for identical original revisions, target context and selected
     # function names. Do not compare R/P IDs across different runs.
     return _digest({"hashes": prepared.get("hashes", {}), "context": prepared.get("context", {}),
+                    "roles": prepared.get("roles", {}),
                     "profile": sorted(_normalized(p["name"]).casefold()
                                       for p in result.get("approved_profile", []))})
 
@@ -116,6 +117,9 @@ def registry_workbook(prepared, result):
            (tr("Экспертная проверка"), tr("Обязательна")),
            (tr("Конфиденциальность"), tr("Содержит исходные тексты. Только для локального использования."))],
           [30, 100])
+    sheet(tr("Подтверждённые функции"), ["ID", tr("Функция"), tr("Описание"), tr("Ссылки")],
+          [(p["id"], p["name"], p["description"], ", ".join(p["refs"])) for p in result.get("approved_profile", [])],
+          [12, 40, 100, 36])
     sheet(tr("Предложения"), ["ID", tr("Функция"), tr("Исполнитель"), tr("Тип"),
           tr("Требование"), tr("Статус"), tr("Обоснование"), tr("Причина проверки"), tr("Компоненты")],
           [(p["id"], groups.get(p["group"], ""), p["actor"], p["kind"], p["text"],
@@ -124,13 +128,13 @@ def registry_workbook(prepared, result):
                 decisions.get(rid, {}).get("component", "") for rid in p["need_refs"] if decisions.get(rid, {}).get("component"))))
            for p in proposals], [12, 36, 30, 20, 100, 26, 60, 60, 36])
     headers = ["ID", tr("Источник"), tr("Раздел"), tr("Цитата"), tr("Тип"), tr("Статус"),
-               tr("Исполнитель"), tr("Изменение"), tr("Обоснование"), tr("Причина проверки"), tr("Предложения")]
+               tr("Исполнитель"), tr("Изменение"), tr("Обоснование"), tr("Причина проверки"), tr("Предложения"), tr("Ключ сравнения")]
     def source_row(rid, row):
         d = decisions.get(rid, {})
         return (rid, row["source"], row["section"], row["quote"], row.get("kind", ""),
                 result["dispositions"].get(rid, ""), d.get("actor", ""), d.get("change", ""),
-                d.get("reason", ""), d.get("review_reason", ""), ", ".join(by_need[rid]))
-    widths = [12, 36, 46, 100, 20, 28, 30, 20, 60, 60, 24]
+                d.get("reason", ""), d.get("review_reason", ""), ", ".join(by_need[rid]), record_key(row))
+    widths = [12, 36, 46, 100, 20, 28, 30, 20, 60, 60, 24, 70]
     sheet(tr("Исходные записи"), headers, (source_row(rid, r) for rid, r in records.items()), widths)
     sheet(tr("Неотражённые записи"), headers, (source_row(rid, r) for rid, r in records.items()
           if result["dispositions"].get(rid) not in {"model_covered", "already_supported", "external"}), widths)
