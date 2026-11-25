@@ -140,7 +140,7 @@ def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, 
     return dossiers, counts
 
 
-def merge_dossier_quotes(records, dossiers, spans, documents, roles):
+def merge_dossier_quotes(records, dossiers, spans, documents):
     """Append exact quotes before the existing typing stage. Preserve every
     original R-ID and quote, attach all provenance, and associate facts with IDs.
     """
@@ -195,6 +195,8 @@ def dossier_context(records, dossiers):
 def summarize_dossiers(dossiers, decisions, outcomes, proposals):
     """Expose unreflected characteristics, never interpret a mere hit as coverage."""
     counts = Counter()
+    covered_proposals = [p for p in proposals if p.get("assessment") == "model_supported"
+                         and all(outcomes.get(rid) == "model_covered" for rid in p["need_refs"])]
     for pid, dossier in dossiers.items():
         for facet, row in dossier["facets"].items():
             ids = list(dict.fromkeys(f["record_id"] for f in row["facts"] if "record_id" in f))
@@ -205,6 +207,10 @@ def summarize_dossiers(dossiers, decisions, outcomes, proposals):
                     status = outcomes[rid]
                 elif d.get("status") == "model_supported" and d.get("change") == "external":
                     status = "external"
+                elif any(rid in p["state_refs"] + p["constraint_refs"]
+                         and any(decisions.get(need, {}).get("function") == pid for need in p["need_refs"])
+                         for p in covered_proposals):
+                    status = "linked_context"
                 else:
                     status = "unresolved"
                 row["coverage"][rid] = status
