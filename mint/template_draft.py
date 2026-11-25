@@ -170,7 +170,7 @@ def _split_section(section, lines):
 
 
 def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_provenance=False,
-                  focus=None, prepared_chunks=None, fragment_status=None):
+                  focus=None, prepared_chunks=None, fragment_status=None, reference_contexts=None, reference_revision=None):
     """Verified extraction with bounded parallel requests and stable source ordering.
 
     Only workers read/write individual checkpoint files and call the model.
@@ -191,7 +191,8 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
 
     def jobs():
         for name, markdown in documents:
-            checkpoint = DraftExtractCheckpoint(cfg, name, markdown, focus=focus)
+            cache_focus = focus if reference_revision is None else {**focus, "reference_revision": reference_revision}
+            checkpoint = DraftExtractCheckpoint(cfg, name, markdown, focus=cache_focus)
             if reset_cache:
                 checkpoint.clear()
             rows = (prepared_chunks[name] if prepared_chunks is not None else
@@ -209,6 +210,10 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
             payload = {"source": name, "section": section, "text": text}
             if focus is not None:
                 payload["focus"] = focus
+            if reference_contexts is not None:
+                related = reference_contexts.get((name, local_index), {})
+                if related:
+                    payload["related_evidence"] = related
             rows = _records(_json(cfg, "target_extract" if focus is not None else "extract", payload),
                             "requirements")
         except DraftError:
@@ -898,7 +903,7 @@ def _mark_wiki(doc, paragraph, status, detail):
     # source documents. Do not flood Word with one comment per such field.
 
 
-def _load_draft_sources(cfg, sources, issues, *, source_hashes=None, emit=None):
+def _load_draft_sources(cfg, sources, issues, *, source_hashes=None, emit=None, word_metadata=None):
     """Read selected originals once; shared by legacy drafting and V2 pilot."""
     documents = []
     for name in tracked(emit or (lambda *_: None), "source_read", dict.fromkeys(sources)):
@@ -914,6 +919,9 @@ def _load_draft_sources(cfg, sources, issues, *, source_hashes=None, emit=None):
         documents.append((name, markdown))
         if source_hashes is not None:
             source_hashes[name] = hashlib.sha256(data).hexdigest()
+        if word_metadata is not None and name.lower().endswith(".docx"):
+            from .draft_word_references import word_reference_metadata
+            word_metadata[name] = word_reference_metadata(data)
     if not documents:
         raise DraftError(tr("Нет доступных оригиналов выбранных оснований."))
     return documents
