@@ -129,6 +129,9 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
             "linked_records": len(result.get("used", ())),
             "output_fields": len(result.get("results", [])),
             "issue_count": len(result.get("issues", [])),
+            "scope_counts": {key: _number(result.get("scope_counts", {}).get(key))
+                             for key in ("target", "shared", "interaction", "other", "uncertain")},
+            "removed_examples": _number(result.get("removed_examples")),
             "total_seconds": _number(metrics.get("total_seconds")),
             "stages": safe_stage_metrics(metrics, LEGACY_STAGES),
             "extraction": {key: _number(metrics.get("diagnostics", {}).get(
@@ -147,6 +150,7 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
         "mode": "v2" if pilot else "legacy",
         "generation": generation,
         "traceability": trace,
+        "traceability_basis": "original_generation",
         "expert_review": expert,
         "requires_expert_review": True,
         "caveat": "Aggregate diagnostics only; not proof of semantic accuracy or source completeness.",
