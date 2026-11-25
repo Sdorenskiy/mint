@@ -10,6 +10,7 @@ import json
 import re
 
 from .document_context import confirm_context
+from .draft_progress import tracked
 from .draft_function_analysis import _compact, _unique_answers, _valid_refs, is_target
 from .draft_registry import build_registry, OBLIGATION_KINDS
 from .draft_derivation import assess_candidates
@@ -62,8 +63,9 @@ def _map_sources(documents, roles):
 
 def _classify_sections(cfg, sections, context, emit):
     rows = [{k: v for k, v in row.items() if k != "role"} for row in sections.values()]
-    for index, batch in enumerate(_batches(rows, lambda row: json.dumps(row, ensure_ascii=False),
-                                           size=min(5000, _candidate_budget(cfg) // 2)), 1):
+    batches = list(_batches(rows, lambda row: json.dumps(row, ensure_ascii=False),
+                            size=min(5000, _candidate_budget(cfg) // 2)))
+    for index, batch in enumerate(tracked(emit, "target_section_map", batches), 1):
         emit("target_section_map", index)
         ids = [r["id"] for r in batch]
         replies, _, _ = _unique_answers(cfg, "target_section_map",
@@ -139,19 +141,18 @@ class OriginalEvidence:
         return list(found)
 
 
-def _profile_candidates(cfg, spans, sections, roles, evidence, context):
+def _profile_candidates(cfg, spans, sections, roles, evidence, context, emit):
     preferred = {s for s, role in roles.items() if role in {"architecture", "mixed"}}
     # Do not exclude other selected sources: architecture can be in a mixed FT.
     queries = [context["target"] + " " + value for value in
                ("architecture components functions", "interfaces input output responsibility",
                 "назначение функции компоненты границы", "интерфейсы обмен входы выходы")]
     ids = {}
-    for query in queries:
-        for sid in evidence.find(query, preferred or None):
+    lookups = [(query, scope) for query in queries
+               for scope in ([preferred, None] if preferred else [None])]
+    for query, scope in tracked(emit, "target_profile_search", lookups):
+        for sid in evidence.find(query, scope):
             ids[sid] = None
-        if preferred:
-            for sid in evidence.find(query):
-                ids[sid] = None
     # Full original sections supply evidence even with missing/stale index.
     for sid, span in spans.items():
         if sections[span["section_id"]]["role"] == "architecture":
@@ -194,9 +195,9 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None):
     spans, sections = _map_sources(documents, roles)
     _classify_sections(cfg, sections, context, emit)
     evidence = OriginalEvidence(cfg, spans, hashes)
-    candidates = _profile_candidates(cfg, spans, sections, roles, evidence, context)
+    candidates = _profile_candidates(cfg, spans, sections, roles, evidence, context, emit)
     profile = []
-    if candidates:
+    for _ in tracked(emit, "target_profile", [1] if candidates else []):
         emit("target_profile", 1)
         try:
             answer = _json(cfg, "target_profile", {"context": context, "evidence": candidates})
@@ -305,7 +306,7 @@ def _search_records(cfg, evidence, records, group, query):
 def _verify_decisions(cfg, decisions, records, state, context, emit):
     """Independently verify attribution and current/target distinction, including exclusions."""
     pending = [rid for rid, d in decisions.items() if d["status"] == "proposed"]
-    for index, rid in enumerate(pending, 1):
+    for index, rid in enumerate(tracked(emit, "target_verify", pending), 1):
         d = decisions[rid]
         payload = {"context": context, "need": _compact(records[rid]), "decision": d,
                    "evidence": [state[k] for k in d["state_refs"]]}
@@ -358,7 +359,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             batch.append(rid)
         if batch:
             batches.append((group, batch))
-    for group, ids in batches:
+    for group, ids in tracked(emit, "target_derivation", batches):
         changes = [rid for rid in ids if decisions[rid]["change"] != "already_supported"]
         if not changes:
             continue
@@ -421,7 +422,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             outcomes[rid] = ("model_supported_candidates" if all(c["assessment"] == "model_supported" for c in rows)
                              else "needs_review")
     # Independent group-level coverage check, not just candidate-level support.
-    for index, (group, batch) in enumerate(batches, 1):
+    for index, (group, batch) in enumerate(tracked(emit, "target_coverage", batches), 1):
         ids = [rid for rid in batch if outcomes.get(rid) == "model_supported_candidates"]
         if not ids:
             continue
@@ -482,7 +483,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    and row["typing_status"] == "classified"]
     # Bounded per-record evidence, plus profile sources that are actual originals.
     # This intentionally prioritizes accuracy over call-count optimization.
-    for index, row in enumerate(obligations, 1):
+    for index, row in enumerate(tracked(emit, "target_allocation", obligations), 1):
         rid = row["id"]
         emit("target_allocation", index)
         query = context["target"] + " " + row["quote"]
