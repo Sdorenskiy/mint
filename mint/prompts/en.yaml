@@ -775,3 +775,68 @@ draft_edit: |-
   Return {"text":"complete replacement content for ONLY the selected fragment",
           "refs":["R1"],"coverage":{"R1":"verbatim excerpt of proposed output"},
           "reason":"brief explanation for the user"}.
+
+
+draft_target_section_map: |-
+  Classify each section by heading path and sample. Never exclude solely by its heading.
+  role: need (requirements), interface (interfaces or adjacent systems), metric (performance objectives),
+  arch (current design), constraint (limits), business (business process), reference (background), unknown.
+  Return {"items":[{"id":"S1","role":"unknown"}]}. Exactly one answer per id.
+draft_target_profile: |-
+  Describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
+  Do not assign other participants' functions to the target. For each function give name, description
+  (current function, component, interfaces, exclusions) and refs, original fragment ids.
+  Never invent facts; absence of evidence is not evidence of absence.
+  Do not describe future requirements as existing capabilities. At most 20 functions.
+  Return {"functions":[{"name":"function","description":"supported description","refs":["F1"]}]}.
+draft_target_extract: |-
+  Extract verbatim contiguous quotes from text using section and focus. Preserve target-side requirements,
+  including implicit interface duties, other actors' duties for attribution, existing capabilities,
+  performance objectives, conditions, negations, constraints, exceptions, failures and units.
+  Consider headings and table rows. Never rewrite quotes or discard ambiguous obligations.
+  Do not convert existing behaviour to new requirements. Return [] when no substantive information exists.
+  Return {"requirements":[{"quote":"verbatim quote"}]}.
+draft_target_allocation: |-
+  Determine the obligation of context.target specifically, not mere mention of its name. evidence contains original
+  quotes and fragments; profile is a user-confirmed hypothesis about functions, NOT independent evidence.
+  category: target, shared, interaction, other, uncertain. actor is the actual responsible participant.
+  change: new, change, already_supported, external, unknown, explicit.
+  new/change/already_supported require actual evidence of current state and need; missing information does
+  not imply missing implementation. explicit is a direct duty to the target, not proof that a change is necessary;
+  direct_quote is a verbatim part of the source quote. external is another actor's obligation; do not transfer.
+  unknown means insufficient evidence. For target duties function is a profile id or new; for new give a concise
+  function_name, reusing the semantic name for the same function. component is supported or empty.
+  Consider performance objectives: subject, units, conditions, current and target values.
+  For quantitative objectives add metric: {"subject":"subject","value":"verbatim value from the quote",
+  "unit":"verbatim unit from the quote","conditions":"conditions","level":"current|target|unknown",
+  "current_value":"","target_value":""}. Leave absent values empty; never infer numbers.
+  For other requirements metric: null.
+  state_refs must be ids from evidence; source filename alone is not proof.
+  Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
+  "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
+  "state_refs":[],"reason":"reason"}]}.
+draft_target_verify: |-
+  Independently check decision against original need and evidence. Do not trust the previous explanation.
+  correct_actor means ownership is correct, including external; change_supported means new/change/already_supported
+  is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary.
+  conditions_preserved means conditions, exceptions, subject and metric units are considered and component is supported.
+  If uncertain, false. Return {"correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}.
+draft_target_derivation: |-
+  Draft coherent requirements for context.target by whole function using needs, decisions and state.
+  Do not transfer external or already supported behaviour as new obligations. For explicit with no state_refs,
+  preserve the exact quote. need_refs are ids of needs requiring coverage; state_refs are supporting ids allowed
+  for those needs by decisions; metric_refs are ids of applicable nonfunctional duties or constraints in needs.
+  Set kind: functional, interface, metric, constraint.
+  For metric preserve subject, value, units, conditions, current/target level. Never invent missing numbers
+  or transfer another participant's metrics; never invent implementation decisions.
+  Preserve exceptions; if evidence is insufficient return questions with the need id and question.
+  Return {"requirements":[{"text":"requirement","actor":"target","kind":"functional",
+  "need_refs":["R1"],"state_refs":["F1"],"metric_refs":[],"reason":"reason"}],
+  "questions":[{"id":"R2","question":"clarification needed"}]}.
+
+
+draft_target_coverage: |-
+  Independently assess complete coverage of each source need in items by proposals for the function.
+  Consider actor, direction, conditions, exclusions, metric units and subject.
+  A reference to an id is not proof of coverage. Do not count partial coverage.
+  Exactly one reply per id. Return {"items":[{"id":"R1","covered":false,"reason":"reason"}]}.

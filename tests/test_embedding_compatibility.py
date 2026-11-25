@@ -29,6 +29,20 @@ with patch.object(kb, 'get_query_embeddings_batch', side_effect=lambda texts, c:
         return {n: (cfg.kb_path / n).read_bytes() for n in
                 (kb.KB_FAISS, kb.KB_META, kb.KB_PARENTS, kb.KB_MANIFEST)}
     before = files()
+    # Restrict both dense and lexical candidates before rank truncation.
+    import hashlib
+    hashes = {name: hashlib.sha256(kb.source_path(cfg, name).read_bytes()).hexdigest()
+              for name in ("a.txt", "b.txt")}
+    check(kb.read_manifest(cfg)["documents"]["a.txt"]["source_sha256"] == hashes["a.txt"],
+          "index records source revision")
+    with patch.object(search, "get_query_embedding", return_value=vec):
+        for allowed, revisions, expected in (({"b.txt"}, hashes, {"b.txt"}),
+                ({"a.txt", "b.txt"}, {**hashes, "a.txt": "stale"}, {"b.txt"}),
+                (set(), hashes, set())):
+            hits, _ = search.search_parent_child("journal retention", cfg, return_items=True,
+                glossary=app.Glossary({}, {}), allow_sources=allowed, expected_hashes=revisions, quiet=True)
+            actual = {row["source"] for row in hits} if isinstance(hits, list) else set()
+            check(actual == expected, "strict selected sources and revision filter", str(actual))
     for change in (dict(embed_model='other-same-dim'), dict(embed_url=base + '/other'),
                    dict(embed_doc_prefix='passage: '), dict(embed_revision='v2'), dict(embed_input_max_chars=55)):
         other = replace(cfg, **change)

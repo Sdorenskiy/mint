@@ -45,7 +45,10 @@ try:
     res["tabs"] = len(at.tabs)
     res["new_chat_empty"] = has_button(at, "chat_clear_btn")
     res["draft_default_v2"] = at.radio(key="draft_engine").value == "v2"
-    res["draft_v2_disabled"] = at.button(key="draft_start").disabled
+    res["draft_v2_disabled"] = at.checkbox(key="draft_registry_only").value and at.button(key="target_prepare").disabled
+    at.checkbox(key="draft_registry_only").set_value(False).run()
+    res["draft_v2_disabled"] = res["draft_v2_disabled"] and at.button(key="draft_start").disabled
+    at.checkbox(key="draft_registry_only").set_value(True).run()
     at.radio(key="draft_engine").set_value("legacy").run()
     res["errors"] += errors(at)
     res["draft_legacy_available"] = at.radio(key="draft_mode").value is False
