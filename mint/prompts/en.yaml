@@ -807,6 +807,10 @@ draft_target_allocation: |-
   unknown means insufficient evidence. For target duties function is a profile id or new; for new give a concise
   function_name, reusing the semantic name for the same function. component is supported or empty.
   Consider performance objectives: subject, units, conditions, current and target values.
+  For quantitative objectives add metric: {"subject":"subject","value":"verbatim value from the quote",
+  "unit":"verbatim unit from the quote","conditions":"conditions","level":"current|target|unknown",
+  "current_value":"","target_value":""}. Leave absent values empty; never infer numbers.
+  For other requirements metric: null.
   state_refs must be ids from evidence; source filename alone is not proof.
   Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
