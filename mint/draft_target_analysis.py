@@ -478,14 +478,14 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     # quotations attributed to the current fragment. Reuse source revision
     # hashes to invalidate extraction if any linked source changed.
     reference_contexts = {}
-    for sid, span in spans.items():
+    for sid, span in tracked(emit, "reference_context", spans.items()):
         if not references.edges.get(sid):
             continue
         related, gaps = references.related([sid], budget=max(0, min(5000,
             _candidate_budget(cfg) - len(span["text"]) - _payload_size(focus) - 1000)))
         if related or gaps:
             reference_contexts[(span["source"], span["fragment"])] = {"items": related, "gaps": gaps}
-    revision = hashlib.sha256(json.dumps(prepared["hashes"], sort_keys=True).encode()).hexdigest()
+    revision = hashlib.sha256(json.dumps({"version": 1, "hashes": prepared["hashes"]}, sort_keys=True).encode()).hexdigest()
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
@@ -497,7 +497,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
     decisions, state = {}, {}
-    reference_counts = Counter(references.counts)
+    reference_counts = Counter()
     linked_by_need = {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
                    and row["typing_status"] == "classified"]
@@ -521,7 +521,10 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                 s = spans[sid]
                 pool.append({"id": sid, "source": s["source"], "section": s["section"],
                              "quote": s["text"], "kind": "uncertain", "source_role": "unspecified"})
-        pool = list(dict(reversed([(item["id"], item) for item in pool])).values())[::-1]
+        unique = {}
+        for item in pool:
+            unique.setdefault(item["id"], item)
+        pool = list(unique.values())
         base = {"context": context, "profile": focus["functions"],
                 "items": [{**_compact(row), "section_role": row["section_role"]}]}
         if linked or gaps:
@@ -540,6 +543,14 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                 reference_counts["budget_limit"] += omitted
                 gaps["budget_limit"] = gaps.get("budget_limit", 0) + omitted
             base["reference_status"] = {"linked_ids": [r["id"] for r in linked if r["id"] in supplied], "gaps": gaps}
+        # Missing parts of an explicit reference are not silently treated as covered.
+        if any(value for key, value in gaps.items() if key != "cycle"):
+            decisions[rid] = {"status": "reference_unresolved", "change": "unknown",
+                              "category": "uncertain", "state_refs": [], "reason": "",
+                              "reference_refs": base["reference_status"]["linked_ids"],
+                              "reference_gaps": gaps}
+            state.update({r["id"]: r for r in pool})
+            continue
         state.update({r["id"]: r for r in pool})
         answers, statuses, _ = _unique_answers(cfg, "target_allocation", {**base, "evidence": pool}, [rid])
         if rid not in answers:
@@ -570,7 +581,8 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "record_kinds": dict(Counter(r["kind"] for r in records.values())),
                    "index_revisions": dict(evidence.revisions),
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
-    diagnostics["references"] = dict(reference_counts)
+    diagnostics["references"] = dict(references.counts)
+    diagnostics["reference_gaps"] = dict(reference_counts)
     diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
     diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
     diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
