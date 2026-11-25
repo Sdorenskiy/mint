@@ -59,7 +59,7 @@ def test_bounded_extraction():
             assert [x["section"] for x in parallel["items"].values()] == [
                 "Глава " + str(i) for i in range(1, 9)]
             assert parallel["metrics"]["stages"]["extract"]["llm_calls"] == 8
-            assert parallel["metrics"]["stages"]["extract"]["llm_seconds"] > parallel["metrics"]["total_seconds"]
+            # Wall time also includes cache I/O and scheduling delays. Peak concurrent\n            # fake calls above prove overlap without depending on runner speed.\n            assert parallel["metrics"]["stages"]["extract"]["llm_seconds"] > 0
             assert [i for stage, i in events if stage == "extract_done"] == list(range(1, 9))
             assert len([x for x in events if x[0] == "extract_elapsed"]) == 8
 
@@ -83,7 +83,7 @@ def test_bounded_extraction():
             t_serial = time.perf_counter() - started
             assert serial["items"] == parallel["items"]
             assert state["peak"] == 1 and serial["metrics"]["stages"]["extract"]["llm_calls"] == 8
-            assert serial["metrics"]["total_seconds"] >= t_parallel
+            # Timing is informational; the peak/call assertions verify serial execution.
             print(f"Искусственная задержка: параллельно {t_parallel:.2f} с, "
                   f"последовательно {t_serial:.2f} с (не бенчмарк шлюза).")
             # Override bad concurrency settings; the cap must always hold.
