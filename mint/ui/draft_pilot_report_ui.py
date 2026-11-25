@@ -10,10 +10,13 @@ def render_pilot_report(result):
     with st.expander(tr("Исходные записи и причины непереноса"), expanded=False):
         if rows:
             statuses = sorted({row["disposition"] for row in rows})
-            selected = st.multiselect(tr("Статусы обработки"), statuses,
-                                      default=[],
-                                      key="pilot_report_status")
-            visible = [row for row in rows if row["disposition"] in selected]
+            selection = st.selectbox(tr("Статусы обработки"), ["pending", "all", *statuses],
+                                     format_func=lambda code: tr("Требуют проверки") if code == "pending"
+                                     else tr("Все извлечённые") if code == "all" else code,
+                                     key="pilot_report_filter")
+            visible = [row for row in rows if selection == "all" or
+                       (selection == "pending" and row["disposition"] not in ("model_covered", "linked_evidence")) or
+                       row["disposition"] == selection]
             st.caption(tr("Отображено {n} из {total}.", n=len(visible), total=len(rows)))
             if visible:
                 lookup = {row["id"]: row for row in visible}
