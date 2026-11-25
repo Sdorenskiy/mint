@@ -794,6 +794,7 @@ draft_target_extract: |-
   including implicit interface duties, other actors' duties for attribution, existing capabilities,
   performance objectives, conditions, negations, constraints, exceptions, failures and units.
   Consider headings and table rows. Never rewrite quotes or discard ambiguous obligations.
+  related_evidence contains linked original sections and gaps for understanding. Extract quotes only from text, not from linked sections.
   Do not convert existing behaviour to new requirements. Return [] when no substantive information exists.
   Return {"requirements":[{"quote":"verbatim quote"}]}.
 draft_target_allocation: |-
@@ -811,6 +812,7 @@ draft_target_allocation: |-
   "unit":"verbatim unit from the quote","conditions":"conditions","level":"current|target|unknown",
   "current_value":"","target_value":""}. Leave absent values empty; never infer numbers.
   For other requirements metric: null.
+  reference_status identifies exact linked sections. Use them to clarify conditions, but do not assign other actors' obligations to the target. A link alone is not proof of existing implementation.
   state_refs must be ids from evidence; source filename alone is not proof.
   Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
@@ -820,6 +822,7 @@ draft_target_verify: |-
   correct_actor means ownership is correct, including external; change_supported means new/change/already_supported
   is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary.
   conditions_preserved means conditions, exceptions, subject and metric units are considered and component is supported.
+  Consider linked sections in decision.reference_refs; a link is not proof of ownership or implementation.
   If uncertain, false. Return {"correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}.
 draft_target_derivation: |-
   Draft coherent requirements for context.target by whole function using needs, decisions and state.
@@ -829,6 +832,7 @@ draft_target_derivation: |-
   Set kind: functional, interface, metric, constraint.
   For metric preserve subject, value, units, conditions, current/target level. Never invent missing numbers
   or transfer another participant's metrics; never invent implementation decisions.
+  Expand material conditions from decisions.reference_refs; cite used ids in state_refs, without assigning other actors' obligations to the target. A reference does not establish existing implementation.
   Preserve exceptions; if evidence is insufficient return questions with the need id and question.
   Return {"requirements":[{"text":"requirement","actor":"target","kind":"functional",
   "need_refs":["R1"],"state_refs":["F1"],"metric_refs":[],"reason":"reason"}],
@@ -839,4 +843,5 @@ draft_target_coverage: |-
   Independently assess complete coverage of each source need in items by proposals for the function.
   Consider actor, direction, conditions, exclusions, metric units and subject.
   A reference to an id is not proof of coverage. Do not count partial coverage.
+  Consider reference_status and linked original evidence. Repeating a section number without material conditions of the target duty is not full coverage.
   Exactly one reply per id. Return {"items":[{"id":"R1","covered":false,"reason":"reason"}]}.
