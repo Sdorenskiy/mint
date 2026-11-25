@@ -131,6 +131,11 @@ def test_registry_end_to_end():
             if stage == "target_profile":
                 state = next(r for r in payload["evidence"] if CURRENT in r["text"])
                 return {"functions": [{"name": "Messaging", "description": CURRENT, "refs": [state["id"]]}]}
+            if stage == "target_dossier":
+                # Simulate a precise secondary retrieval result, without replacing full scan.
+                return {"items": [{"span_id": r["id"], "facet": "performance", "quote": METRIC}
+                                  for r in payload["evidence"] if METRIC in r["text"]
+                                  and "performance" in payload["facets"]]}
             if stage == "target_extract":
                 assert payload["focus"]["context"]["target"] == CONTEXT["target"]
                 return {"requirements": [{"quote": x} for x in payload["text"].splitlines() if x]}
@@ -151,7 +156,8 @@ def test_registry_end_to_end():
                                         "level": "target", "target_value": "20"}
                 return {"items": [result]}
             if stage == "target_verify":
-                return {"correct_actor": True, "change_supported": True, "conditions_preserved": True, "reason": "verified"}
+                return {"items": [{"id": r["id"], "correct_actor": True, "change_supported": True,
+                                   "conditions_preserved": True, "reason": "verified"} for r in payload["items"]]}
             if stage == "target_derivation":
                 items = []
                 for r in payload["needs"]:
@@ -168,7 +174,8 @@ def test_registry_end_to_end():
                                   "reason": "fictional support"})
                 return {"requirements": items}
             if stage == "requirement_assessment":
-                yes = {"supported": True, "correct_actor": True, "no_new_decisions": True, "reason": "supported"}
+                yes = {"supported": True, "correct_actor": True, "no_new_decisions": True, "reason": "supported",
+                       "complete": True, "unambiguous": True, "verifiable": True}
                 return {"items": [{"id": r["id"], **yes} for r in payload["items"]]} if "items" in payload else yes
             if stage == "target_coverage":
                 return {"items": [{"id": r["id"], "covered": True, "reason": "covered"} for r in payload["items"]]}
@@ -187,6 +194,9 @@ def test_registry_end_to_end():
             assert result["dispositions"][by_quote[UNSURE]] == "open_question"
             assert all(result["dispositions"][by_quote[q]] == "model_covered" for q in (NEED, NEED2, DIRECT, METRIC))
             assert len(result["groups"]) == 1
+            assert len(result["requirements"]) == len(TYPES)
+            assert result["diagnostics"]["dossiers"]["supplemental_records"] == 0
+            assert result["diagnostics"]["verification"]["batches"] < len(result["decisions"])
             assert result["metrics_registry"][by_quote[METRIC]]["unit"] == "messages per second"
             assert len(result["fragment_status"]) == len(prepared["spans"])
             assert "docx" not in result
