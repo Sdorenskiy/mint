@@ -1,10 +1,9 @@
 """Review a generated draft locally, using the existing Mint requirement list."""
-import json
 import math
 
 import streamlit as st
 
-from ..draft_review import compare, export_summary, list_runs, load_run, save_marks, save_run, summary
+from ..draft_review import compare, list_runs, load_run, save_marks, save_run, summary
 from ..i18n import tr
 from ..prompts import render
 
@@ -38,7 +37,7 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                               key="draft_review_select")
         run = load_run(cfg, run_id)
         if not run:
-            st.warning(tr("Не удалось открыть сохранённый разбор."))
+            st.caption(tr("Не удалось открыть сохранённый разбор."))
             return
         review = run["review"]
         rows = run["requirements"]
@@ -93,7 +92,4 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                                   covered=changes["covered_delta"], missing=changes["missed_delta"],
                                   unsupported=changes["unsupported_delta"]))
                     st.caption(tr("Сравнение предварительное: состав извлечённых и размеченных требований мог отличаться."))
-        st.download_button(tr("Скачать обезличенную сводку оценки"),
-                           json.dumps(export_summary(run), ensure_ascii=False, indent=2),
-                           file_name="mint_draft_review_summary.json", mime="application/json",
-                           key=f"draft_review_export_{run_id}")
+        return run
