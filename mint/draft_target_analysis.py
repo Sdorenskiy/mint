@@ -6,13 +6,13 @@ never substitutes for the original. All outputs are local, not expert approval.
 """
 from collections import Counter
 from copy import deepcopy
-from .draft_target_review import input_identity, summarize_needs, review_scope
 import hashlib
 import json
 import re
 
 from .document_context import confirm_context
 from .draft_progress import tracked
+from .draft_target_review import input_identity, summarize_needs, review_scope
 from .draft_references import ReferenceMap
 from .draft_dossiers import collect_dossiers, merge_dossier_quotes, dossier_context, summarize_dossiers
 from .draft_checkpoint import DraftStageCheckpoint
@@ -534,7 +534,6 @@ def _verify_originals(cfg, prepared):
             current = None
         if current != digest:
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
- 
 
 @_measure_draft
 def collect_target_requirements(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
