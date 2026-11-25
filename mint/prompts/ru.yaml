@@ -817,6 +817,10 @@ draft_target_allocation: |-
   Для целевой обязанности function — id функции из profile или new; для new укажи краткое function_name,
   переиспользуй смысловое название одной функции. component — доказанный компонент, иначе пустая строка.
   Учитывай показатели назначения: объект, единицы, условия, текущий и целевой уровень.
+  Для числового показателя добавь metric: {"subject":"объект","value":"буквальная величина из цитаты",
+  "unit":"буквальная единица из цитаты","conditions":"условия","level":"current|target|unknown",
+  "current_value":"","target_value":""}. Оставь отсутствующие значения пустыми; не додумывай цифры.
+  Для иных требований metric: null.
   state_refs — только id из evidence; не присваивай архитектуре доказательную силу по имени файла.
   Для каждого id один ответ. Ответ: {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
