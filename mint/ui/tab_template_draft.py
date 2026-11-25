@@ -16,6 +16,7 @@ from .document_edit_chat import render_draft_edit_chat
 from .draft_context_ui import render_draft_context
 from .draft_traceability_ui import render_draft_traceability
 from .draft_target_ui import render_target_registry
+from .draft_progress_ui import render_progress
 
 
 def render_template_draft_tab(cfg, glossary):
@@ -108,51 +109,7 @@ def render_template_draft_tab(cfg, glossary):
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources and context) or bool(missing) or (pilot and section_index is None), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=False) as status:
-            extraction = {"total": 0, "cached": 0, "durations": [], "hit": False}
-            stages = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
-                      "table": tr("Подготовка таблиц"), "scope": tr("Применимость требований"),
-                      "fill": tr("Заполнение и сверка с вики"),
-                      "fixed": tr("Сверка требований шаблона")}
-
-            stages.update({
-                "registry_type": tr("Типизация исходных сведений"),
-                "function_group": tr("Группировка функций"),
-                "function_allocation": tr("Распределение ответственности"),
-                "requirement_derivation": tr("Детализация требований"),
-                "requirement_assessment": tr("Проверка обоснованности"),
-                "pilot_coverage": tr("Проверка полноты раздела"),
-                "pilot_repair": tr("Исправление отклонённых требований"),
-            })
-
-            def progress(stage, index):
-                if stage == "extract_total":
-                    extraction["total"] = index
-                    return
-                if stage == "extract":
-                    extraction["hit"] = False
-                elif stage == "extract_elapsed":
-                    extraction["durations"].append(index)
-                    return
-                elif stage == "extract_cached":
-                    extraction["cached"] = index
-                    extraction["hit"] = True
-                    return
-                elif stage == "extract_done":
-                    pass
-                else:
-                    status.update(label=f"{stages.get(stage, stage)} · {index}")
-                    return
-
-                total = extraction["total"]
-                label = f"{stages['extract']} · {index} / {total}" if total else f"{stages['extract']} · {index}"
-                if extraction["cached"]:
-                    label += " · " + tr("Из кэша") + f": {extraction['cached']}"
-                durations = extraction["durations"]
-                if total > index and len(durations) >= 3:
-                    remaining_minutes = round((total - index) * (sum(durations) / len(durations)) / 60)
-                    label += " · " + tr("Осталось примерно {minutes} мин", minutes=remaining_minutes)
-                status.update(label=label)
-
+            progress = render_progress(status)
             try:
                 if pilot:
                     result = create_section_pilot(
