@@ -100,7 +100,8 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
         context = render_draft_context(cfg, saved["raw"], saved["sources"], saved["signature"],
                                        namespace="draft_wizard_context", inline=True)
         if not context:
-            clear_target(session)
+            if session.get("target_registry_prepared"):
+                st.warning(tr("После подтверждения изменений последующие результаты потребуется собрать заново."))
             return
     if not context:
         return
