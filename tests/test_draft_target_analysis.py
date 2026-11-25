@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mint import draft_target_analysis as target
 from mint import draft_function_analysis as function
 from mint import draft_registry as registry
+from mint import requirement_scope as scope
 from mint import draft_derivation as derivation
 from mint import template_draft as draft
 from mint.draft_pilot_report import target_registry_export
@@ -174,6 +175,10 @@ def test_registry_end_to_end():
                 return {"requirements": [{"quote": x} for x in payload["text"].splitlines() if x and x not in {DATA, METRIC}]}
             if stage == "registry_type":
                 return {"items": [{"id": r["id"], "kind": TYPES[r["quote"]]} for r in payload["items"]]}
+            if stage == "scope":
+                return {"items": [{"id": r["id"], "category": "other" if r["quote"] == EXTERNAL else "target",
+                                   "actor": "Desk" if r["quote"] == EXTERNAL else "RS", "reason": "fixture"}
+                                  for r in payload["requirements"]]}
             if stage == "target_allocation":
                 r = payload["items"][0]
                 state = next(x["id"] for x in payload["evidence"] if CURRENT in x["quote"])
@@ -222,7 +227,7 @@ def test_registry_end_to_end():
             raise AssertionError(stage)
 
         with ExitStack() as stack:
-            for module in (target, draft, registry, function, derivation):
+            for module in (target, draft, registry, function, derivation, scope):
                 stack.enter_context(patch.object(module, "_json", side_effect=model))
             stack.enter_context(patch.object(target, "load_kb_snapshot", return_value=None))
             prepared = target.prepare_target_analysis(cfg, list(docs), roles, CONTEXT)
@@ -326,6 +331,46 @@ def test_registry_end_to_end():
             auto_result = target.decompose_target_requirements(cfg, automatic_prepared, auto)
             assert auto_result["phase"] == "decomposed"
             assert auto_result["function_links"] == auto["function_links"]
+            # Wizard path: only the full typed scan and preliminary applicability
+            # run before the user picks functions. No dossier or allocation yet.
+            stages.clear()
+            preview = target.collect_target_requirements(cfg, automatic_prepared, reset_cache=True,
+                                                         summaries=False, preview_only=True)
+            assert preview["phase"] == "function_preview"
+            assert "scope" in stages and "target_extract" in stages and "registry_type" in stages
+            assert not {"target_dossier", "target_allocation", "target_verify"} & set(stages)
+            assert preview["applicability"][by_quote[EXTERNAL]]["category"] == "other"
+            ids = {p["name"]: p["id"] for p in preview["approved_profile"]}
+            assert set(ids) == {"Messaging", "Data exchange"}
+            original_preview = json.dumps(preview, sort_keys=True)
+            stages.clear()
+            with patch.object(target, "collect_dossiers", wraps=target.collect_dossiers) as deep:
+                scoped = target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
+                                                            selected_functions=[ids["Messaging"]], summaries=False)
+            assert deep.call_count == 1
+            assert set(deep.call_args.args[3]) == {ids["Messaging"]}
+            assert "target_extract" not in stages and "scope" not in stages
+            assert scoped["selected_functions"] == [ids["Messaging"]]
+            assert scoped["diagnostics"]["wiki_context"]["function_searches"] == 1
+            assert scoped["diagnostics"]["scope_selection"] == {"selected": 1, "offered": 2}
+            assert set(preview["requirements"]) <= set(scoped["requirements"])
+            assert all(scoped["requirements"][rid]["quote"] == row["quote"]
+                       for rid, row in preview["requirements"].items())
+            assert scoped["preliminary_applicability"] == preview["applicability"]
+            assert json.dumps(preview, sort_keys=True) == original_preview
+            assert set(preview["metrics"]["stages"]) <= set(scoped["metrics"]["stages"])
+            try:
+                target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
+                                                   selected_functions=["C999"])
+                raise AssertionError("invalid function accepted")
+            except ValueError:
+                pass
+            stages.clear()
+            empty = target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
+                                                       selected_functions=[], summaries=False)
+            assert "target_extract" not in stages and "target_dossier" not in stages
+            assert set(empty["requirements"]) == set(preview["requirements"])
+            assert not empty["dossiers"] and empty["selected_functions"] == []
             wiki_path.write_text("changed", encoding="utf-8")
             try:
                 target.decompose_target_requirements(cfg, wiki_prepared, wiki_collected)
