@@ -367,7 +367,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
         changes = [rid for rid in ids if decisions[rid]["change"] != "already_supported"]
         if not changes:
             continue
-        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"]))
+        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", [])))
         payload = make_payload(group, ids)
         if _payload_size(payload) > budget:
             outcomes.update(dict.fromkeys(changes, "group_context_limit"))
@@ -432,9 +432,12 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             continue
         rows = [c for c in proposed if c["group"] == group["id"] and c["assessment"] == "model_supported"
                 and set(c["need_refs"]) & set(ids)]
-        refs = list(dict.fromkeys(k for row in rows for k in row["state_refs"] + row["constraint_refs"]))
+        linked = {rid: decisions[rid].get("reference_refs", []) for rid in ids}
+        refs = list(dict.fromkeys([k for row in rows for k in row["state_refs"] + row["constraint_refs"]]
+                                  + [k for refs in linked.values() for k in refs]))
         payload = {"context": context, "items": [_compact(records[rid]) for rid in ids],
-                   "proposals": rows, "evidence": [_compact(({**records, **state})[k]) for k in refs]}
+                   "proposals": rows, "evidence": [_compact(({**records, **state})[k]) for k in refs],
+                   "reference_status": linked}
         if _payload_size(payload) > budget:
             outcomes.update(dict.fromkeys(ids, "review_context_limit"))
             continue
