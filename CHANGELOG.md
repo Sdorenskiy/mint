@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Default V2 registry workflow uses guided stages, session-retained source materials and review, readable filtered lists, localized statuses, and a separate diagnostics/export view. Legacy Word modes remain available in advanced settings. Development version 21.4.18.
+
 - V2 registry: optional expert review before decomposition (default on), bounded consolidated needs with original references, source-need selection and separately identified expert guidance. Resume without rescanning, preserve excluded records, export intermediate registry. Development version 21.4.17.
 
 - V2 registry: additive function-directed retrieval over the existing hybrid search, verified original quotes for data categories, interface characteristics and performance objectives; independent batched review, strict requirement-quality gates, local XLSX and exact run comparison. Development version 21.4.16.
