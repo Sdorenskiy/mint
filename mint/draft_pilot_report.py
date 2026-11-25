@@ -159,7 +159,7 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
 
 # The registry has no Word anchors yet. Export only aggregate codes and numbers.
 TARGET_STAGES = ("target_section_map", "target_profile", "target_dossier", "target_extract", "registry_type",
-                 "target_allocation", "target_verify", "target_derivation",
+                 "target_allocation", "target_verify", "target_review_summary", "target_derivation",
                  "requirement_assessment", "target_coverage")
 _TARGET_COUNTERS = {
     "section_roles": ("need", "interface", "metric", "architecture", "constraint", "business", "reference", "unknown"),
@@ -169,7 +169,7 @@ _TARGET_COUNTERS = {
                   "review_context_limit", "review_error", "needs_review", "reference_unresolved"),
     "changes": ("new", "change", "already_supported", "external", "unknown", "explicit"),
     "outcomes": ("new", "change", "already_supported", "external", "unknown", "explicit",
-                 "context_only", "untyped", "open_question", "model_covered", "coverage_gap",
+                 "context_only", "untyped", "open_question", "model_covered", "coverage_gap", "pending_review", "expert_excluded",
                  "group_context_limit", "model_supported_candidates", "missing_metric_evidence",
                  "missing_evidence", "wrong_actor", "invalid_response", "missing_response", "allocation_context_limit",
                  "duplicate_response", "batch_error", "review_context_limit", "review_error", "needs_review", "reference_unresolved"),
@@ -186,6 +186,7 @@ _TARGET_COUNTERS = {
     "dossiers": ("searches", "hybrid_hits", "fallback_hits", "reference_gaps", "limited_searches", "batch_errors",
                  "invalid_quotes", "facts", "supplemental_records", "cache_hits", "not_searched", "found",
                  "found_partial", "not_found", "context_limit", "error", "unresolved_facts", "covered_facts"),
+    "intermediate_review": ("confirmed", "excluded", "comments", "cards"),
     "proposal_kinds": ("functional", "interface", "metric", "constraint"),
     "proposal_assessments": tuple(sorted(ASSESSMENT_STATUSES)),
 }
