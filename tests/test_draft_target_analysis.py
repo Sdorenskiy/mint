@@ -91,6 +91,11 @@ def test_validators():
                                            "R1", records, state, profile, CONTEXT["target"])
         assert actual["status"] == "missing_metric_evidence", actual
     assert len(cases) + 6 == 36
+    # A reference-only numerical value must not become a new target value.
+    wiki = {"BF1": {"quote": "Historical service capacity: 999 messages per second.",
+                    "source_role": "reference_context"}}
+    proposed = {**base, "state_refs": ["BF1"], "metric": {**base["metric"], "target_value": "999"}}
+    assert target._validate_decision(proposed, "R1", records, wiki, profile, CONTEXT["target"])["status"] == "missing_metric_evidence"
 
 
 def test_original_evidence():
@@ -109,6 +114,21 @@ def test_original_evidence():
         assert kwargs["allow_sources"] == {"a.md", "b.md"}
         assert kwargs["expected_hashes"] == {"a.md": "a", "b.md": "b"}
         assert kwargs["quiet"] is True
+
+
+def test_profile_status():
+    cfg = config("/tmp")
+    candidates = [{"id": "F1", "text": CURRENT}]
+    for answer, status in (({}, "invalid_response"), ({"functions": []}, "no_functions"),
+                           ({"functions": [{"name": "x", "description": "x", "refs": ["F99"]}]}, "invalid_response"),
+                           ({"functions": [{"name": "x", "description": "x", "refs": ["F1"]}]}, "found")):
+        with patch.object(target, "_json", return_value=answer):
+            _, actual = target._propose_profile(cfg, candidates, CONTEXT, lambda *_: None)
+            assert actual == status, (answer, actual)
+    with patch.object(target, "_json", side_effect=draft.DraftError("simulated")):
+        assert target._propose_profile(cfg, candidates, CONTEXT, lambda *_: None) == ([], "model_error")
+    with patch.object(target, "_json", side_effect=AssertionError("unexpected LLM call")):
+        assert target._propose_profile(cfg, [], CONTEXT, lambda *_: None) == ([], "no_candidates")
 
 
 def test_registry_end_to_end():
@@ -139,17 +159,23 @@ def test_registry_end_to_end():
                                   for r in payload["evidence"] if quote in r["text"] and facet in payload["facets"]]}
             if stage == "target_extract":
                 assert payload["focus"]["context"]["target"] == CONTEXT["target"]
+                assert all(not p["id"].startswith("B") for p in payload["focus"]["functions"])
+                assert "999" not in payload["text"]
                 return {"requirements": [{"quote": x} for x in payload["text"].splitlines() if x and x not in {DATA, METRIC}]}
             if stage == "registry_type":
                 return {"items": [{"id": r["id"], "kind": TYPES[r["quote"]]} for r in payload["items"]]}
             if stage == "target_allocation":
                 r = payload["items"][0]
                 state = next(x["id"] for x in payload["evidence"] if CURRENT in x["quote"])
+                if r["quote"] == NEED:
+                    state = next((x["id"] for x in payload["evidence"] if x.get("source_role") == "reference_context"), state)
                 change = "already_supported" if r["quote"] == DONE else "explicit" if r["quote"] == DIRECT else "change"
                 result = {"id": r["id"], "category": "target", "actor": "RS", "change": change,
                           "function": "C1", "state_refs": [state] if change != "explicit" else [],
                           "reason": "fictional evidence", "component": "Relay",
                           "direct_quote": r["quote"] if change == "explicit" else ""}
+                if not payload["profile"]:
+                    result.update(function="new", function_name="Messaging")
                 if r["quote"] == EXTERNAL:
                     result.update(category="other", actor="Desk", change="external", state_refs=[])
                 if r["quote"] == METRIC:
@@ -248,6 +274,45 @@ def test_registry_end_to_end():
             assert automatic["phase"] == "decomposed" and automatic["review"]["mode"] == "automatic"
             assert automatic["summaries"] == {} and "target_summary" not in automatic["metrics"]["stages"]
             assert automatic["dispositions"] == result["dispositions"]
+            # Reference documents are searched separately and never become needs.
+            wiki_path = source_path(cfg, "wiki.md")
+            wiki_path.write_text("# Current\n" + CURRENT + "\nHistorical capacity: 999 messages per second.", encoding="utf-8")
+            wiki_prepared = target.prepare_target_analysis(cfg, list(docs), roles, CONTEXT,
+                                                            reference_sources=["wiki.md"])
+            assert wiki_prepared["documents"] == prepared["documents"]
+            assert wiki_prepared["hashes"] == prepared["hashes"]
+            assert wiki_prepared["reference_status"] == "found"
+            assert wiki_prepared["profile"][0] == prepared["profile"][0]
+            assert wiki_prepared["profile"][1]["origin"] == "reference"
+            assert set(wiki_prepared["spans"]).isdisjoint(wiki_prepared["reference_spans"])
+            with patch.object(target, "build_registry", wraps=target.build_registry) as build:
+                wiki_collected = target.collect_target_requirements(cfg, wiki_prepared, wiki_prepared["profile"])
+            assert all(name != "wiki.md" for name, _ in build.call_args.args[1])
+            assert wiki_collected["requirements"] == collected["requirements"]
+            assert all(r["source"] != "wiki.md" for r in wiki_collected["requirements"].values())
+            assert any(r["source_role"] == "reference_context" for r in wiki_collected["state_evidence"].values())
+            assert any(k.startswith("BF") for k in wiki_collected["decisions"][by_quote[NEED]]["state_refs"])
+            assert wiki_collected["diagnostics"]["wiki_context"]["sources"] == 1
+            wiki_result = target.decompose_target_requirements(cfg, wiki_prepared, wiki_collected)
+            assert all(not rid.startswith("BF") for p in wiki_result["proposals"] for rid in p["need_refs"] + p["constraint_refs"])
+            assert "wiki.md" not in json.dumps(target_registry_export(wiki_prepared, wiki_result))
+            wiki_path.write_text("changed", encoding="utf-8")
+            try:
+                target.decompose_target_requirements(cfg, wiki_prepared, wiki_collected)
+                raise AssertionError("stale reference accepted")
+            except draft.DraftError:
+                pass
+            try:
+                target.prepare_target_analysis(cfg, list(docs), roles, CONTEXT, reference_sources=["needs.md"])
+                raise AssertionError("overlapping scope accepted")
+            except ValueError:
+                pass
+            # No function profile is a valid degraded path; full original scan still runs.
+            no_profile = {**prepared, "profile": [], "profile_status": "model_error"}
+            direct_only = target.collect_target_requirements(cfg, no_profile, [])
+            assert direct_only["fragment_status"].keys() == collected["fragment_status"].keys()
+            assert DIRECT in {r["quote"] for r in direct_only["requirements"].values()}
+            assert direct_only["diagnostics"]["profile_status"] == {"model_error": 1}
             source_path(cfg, "extra.md").write_text("changed", encoding="utf-8")
             try:
                 target.decompose_target_requirements(cfg, prepared, collected)
@@ -264,6 +329,7 @@ def test_registry_end_to_end():
 if __name__ == "__main__":
     test_validators()
     test_original_evidence()
+    test_profile_status()
     test_registry_end_to_end()
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
