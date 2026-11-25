@@ -204,6 +204,7 @@ def target_registry_export(prepared, result):
     extraction = analysis.get("diagnostics", {}).get("extraction", {})
     return {"format": "mint-draft-analysis/1", "mint": MINT_VERSION,
             "mode": "target_registry", "requires_expert_review": True,
+            "phase": "collected" if result.get("phase") == "collected" else "derived",
             "counts": counts, "diagnostics": counters,
             "extraction": {key: _number(extraction.get(key)) for key in EXTRACTION},
             "preparation": {"total_seconds": _number(preparation.get("total_seconds")),
