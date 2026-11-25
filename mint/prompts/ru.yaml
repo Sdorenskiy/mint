@@ -821,7 +821,7 @@ draft_target_allocation: |-
   "unit":"буквальная единица из цитаты","conditions":"условия","level":"current|target|unknown",
   "current_value":"","target_value":""}. Оставь отсутствующие значения пустыми; не додумывай цифры.
   Для иных требований metric: null.
-  state_refs — только id из evidence; не присваивай архитектуре доказательную силу по имени файла.
+  state_refs — только id из evidence; имя файла само по себе не доказывает содержание.
   Для каждого id один ответ. Ответ: {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
   "state_refs":[],"reason":"причина"}]}.
