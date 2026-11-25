@@ -5,6 +5,7 @@ verification or applicability. Preserve all evidence and unsuccessful decisions
 for review; do not discard a citation merely because it is not an obligation.
 """
 from collections import Counter
+from copy import deepcopy
 import re
 
 from .draft_checkpoint import DraftStageCheckpoint
@@ -99,7 +100,8 @@ def _type_records(cfg, records, emit, *, reset_cache=False):
 
 def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=False,
                    focus=None, prepared_chunks=None, fragment_status=None,
-                   reference_contexts=None, reference_revision=None, supplement=None):
+                   reference_contexts=None, reference_revision=None, supplement=None,
+                   initial_records=None):
     """Build the minimal V2 registry from parsed selected originals.
 
     Source roles are supplied by the caller (not inferred from filenames).
@@ -118,13 +120,21 @@ def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=Fa
     kwargs = {} if focus is None else dict(focus=focus, prepared_chunks=prepared_chunks,
                                            fragment_status=fragment_status,
                                            reference_contexts=reference_contexts, reference_revision=reference_revision)
-    records, chunks = _requirements(cfg, documents, issues, emit,
-                                    reset_cache=reset_cache, include_provenance=True, **kwargs)
+    if initial_records is None:
+        records, chunks = _requirements(cfg, documents, issues, emit,
+                                        reset_cache=reset_cache, include_provenance=True, **kwargs)
+        previous = set()
+    else:
+        # Caller validates source revisions and model/prompt identity.
+        # Reuse the independent typed scan; only new dossier citations need typing.
+        records, chunks = deepcopy(initial_records), prepared_chunks
+        previous = set(records)
     if supplement is not None:
         supplement(records)
     for row in records.values():
         row["source_role"] = source_roles.get(row["source"], "unspecified")
-    _type_records(cfg, records, emit, reset_cache=reset_cache)
+    _type_records(cfg, {rid: row for rid, row in records.items() if rid not in previous},
+                  emit, reset_cache=reset_cache)
     return {"requirements": records, "chunks": chunks}
 
 
