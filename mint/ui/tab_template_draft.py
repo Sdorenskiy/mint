@@ -196,7 +196,16 @@ def render_template_draft_tab(cfg, glossary):
     if metrics:
         with st.expander(tr("Замеры этапов подготовки")):
             for stage, item in metrics.get("stages", {}).items():
-                st.text(f"{stage}: "
+                stage_labels = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
+                                "rows": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
+                                "check": tr("Сверка требований шаблона"),
+                                "registry_type": tr("Типизация исходных сведений"),
+                                "function_group": tr("Группировка функций"),
+                                "function_allocation": tr("Распределение ответственности"),
+                                "requirement_derivation": tr("Детализация требований"),
+                                "requirement_assessment": tr("Проверка обоснованности"),
+                                "pilot_coverage": tr("Проверка полноты раздела")}
+                st.text(f"{stage_labels.get(stage, stage)}: "
                         + tr("{n} запросов к LLM, {s} с", n=item["llm_calls"], s=item["llm_seconds"]))
     if pilot:
         render_pilot_report(result)
@@ -208,6 +217,8 @@ def render_template_draft_tab(cfg, glossary):
                              file_name="mint_draft_analysis.json", mime="application/json",
                              key="draft_analysis_export")
     st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
+    if package["expert_review"] is None:
+        st.caption(tr("Экспертная оценка текущего прогона не сохранена; выгружаются только автоматические показатели."))
     if pilot:
         return
     section_plan = result.get("section_plan", {})
