@@ -1,9 +1,10 @@
 """Review a generated draft locally, using the existing Mint requirement list."""
 import math
+import json
 
 import streamlit as st
 
-from ..draft_review import compare, fingerprint, list_runs, load_run, save_marks, save_run, summary
+from ..draft_review import compare, export_summary, fingerprint, list_runs, load_run, save_marks, save_run, summary
 from ..i18n import tr
 from ..prompts import render
 
@@ -94,6 +95,11 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                                   unsupported=changes["unsupported_delta"]))
                     st.caption(tr("Сравнение предварительное: состав извлечённых и размеченных требований мог отличаться."))
         if result is None:
+            # Historical snapshots lack the full live V2 diagnostic data.
+            st.download_button(tr("Скачать обезличенную сводку оценки"),
+                               json.dumps(export_summary(run), ensure_ascii=False, indent=2, allow_nan=False),
+                               file_name="mint_draft_review_summary.json", mime="application/json",
+                               key=f"draft_review_export_{run_id}")
             return None
         # The export concerns the current generation, even when browsing an older review.
         current_id = result.get("metrics", {}).get("run_id")
