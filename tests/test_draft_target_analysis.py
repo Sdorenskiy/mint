@@ -152,6 +152,14 @@ def test_registry_end_to_end():
                            "Metrics": "metric", "Current": "arch"}
                 return {"items": [{"id": r["id"], "role": mapping[r["section"]]} for r in payload["items"]]}
             if stage == "target_profile":
+                if payload.get("purpose") == "requirements_analysis":
+                    rows = payload["evidence"]
+                    refs = [r["id"] for r in rows if r["text"] in {NEED, NEED2, DIRECT, DONE, CURRENT}]
+                    functions = [{"name": "Messaging", "description": "Relay messages", "refs": refs}] if refs else []
+                    other = [r["id"] for r in rows if r["text"] in {NEED2, DATA}]
+                    if other:
+                        functions.append({"name": "Data exchange", "description": "Exchange reservation data", "refs": other})
+                    return {"functions": functions}
                 state = next(r for r in payload["evidence"] if CURRENT in r["text"])
                 return {"functions": [{"name": "Messaging", "description": CURRENT, "refs": [state["id"]]}]}
             if stage == "target_dossier":
@@ -300,6 +308,24 @@ def test_registry_end_to_end():
             wiki_result = target.decompose_target_requirements(cfg, wiki_prepared, wiki_collected)
             assert all(not rid.startswith("BF") for p in wiki_result["proposals"] for rid in p["need_refs"] + p["constraint_refs"])
             assert "wiki.md" not in json.dumps(target_registry_export(wiki_prepared, wiki_result))
+            # Main wizard path: no discovery before the independent extraction.
+            stages.clear()
+            automatic_prepared = target.prepare_target_analysis(cfg, list(docs), roles, CONTEXT,
+                reference_sources=["wiki.md"], discover_profile=False)
+            assert not automatic_prepared["profile"] and "target_profile" not in stages
+            auto = target.collect_target_requirements(cfg, automatic_prepared, reset_cache=True, summaries=False)
+            assert auto["automatic_functions"] and not auto["summaries"]
+            assert max(i for i, stage in enumerate(stages) if stage == "target_extract") < stages.index("target_profile")
+            assert stages.index("target_profile") < stages.index("target_dossier")
+            assert {p["name"] for p in auto["approved_profile"]} == {"Messaging", "Data exchange"}
+            assert {r["quote"] for r in collected["requirements"].values()} <= {r["quote"] for r in auto["requirements"].values()}
+            assert len(auto["function_links"][by_quote[NEED2]]) >= 2
+            assert auto["diagnostics"]["wiki_context"]["function_searches"] == 2
+            assert all(row["source"] != "wiki.md" for row in auto["requirements"].values())
+            assert len(auto["fragment_status"]) == len(prepared["spans"])
+            auto_result = target.decompose_target_requirements(cfg, automatic_prepared, auto)
+            assert auto_result["phase"] == "decomposed"
+            assert auto_result["function_links"] == auto["function_links"]
             wiki_path.write_text("changed", encoding="utf-8")
             try:
                 target.decompose_target_requirements(cfg, wiki_prepared, wiki_collected)
