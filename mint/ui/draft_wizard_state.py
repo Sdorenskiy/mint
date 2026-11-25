@@ -1,7 +1,7 @@
 """Session-only navigation for the V2 registry wizard (no model calls)."""
 
 TARGET_KEYS = (
-    "target_registry_prepared", "target_registry_collected", "target_registry_result",
+    "target_registry_prepared", "target_registry_preview", "target_registry_collected", "target_registry_result",
     "target_full_workbook", "target_registry_profile_draft", "target_registry_review_draft",
 )
 
