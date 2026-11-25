@@ -204,6 +204,27 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None):
             "profile_retrieval": dict(evidence.counts), "index_revisions": dict(evidence.revisions)}
 
 
+def _metric_fields(reply, row, state, refs):
+    """Keep quantitative values and units verbatim. Semantic attribution is reviewed separately."""
+    data = reply.get("metric")
+    if data is None:
+        return None
+    if not isinstance(data, dict):
+        return False
+    fields = ("subject", "value", "unit", "conditions", "level", "current_value", "target_value")
+    metric = {k: _text(data, k)[:300] for k in fields}
+    if not metric["subject"] or not metric["value"] or not metric["unit"] or metric["level"] not in {"current", "target", "unknown"}:
+        return False
+    need = _normalized(row["quote"])
+    evidence = [need] + [_normalized(state[k]["quote"]) for k in refs]
+    if _normalized(metric["value"]) not in need or _normalized(metric["unit"]) not in need:
+        return False
+    for key in ("current_value", "target_value"):
+        if metric[key] and not any(_normalized(metric[key]) in quote for quote in evidence):
+            return False
+    return metric
+
+
 def _validate_decision(reply, rid, records, allowed, profile, target):
     """A target claim needs explicit original need evidence; derived change needs state."""
     row = records[rid]
@@ -237,9 +258,15 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
     label = _text(reply, "function_name")[:180] if function == "new" else profile[function]["name"]
     if not label:
         return result
-    return {"status": "proposed", "category": category, "change": status, "actor": target,
-            "reason": reason, "function": function, "function_name": label,
-            "component": component, "state_refs": refs}
+    metric = _metric_fields(reply, row, allowed, refs)
+    if metric is False or (row.get("section_role") == "metric" and row["kind"] == "nonfunctional" and metric is None):
+        return {**result, "status": "missing_metric_evidence"}
+    decision = {"status": "proposed", "category": category, "change": status, "actor": target,
+                "reason": reason, "function": function, "function_name": label,
+                "component": component, "state_refs": refs}
+    if metric is not None:
+        decision["metric"] = metric
+    return decision
 
 
 def _search_records(cfg, evidence, records, group, query):
@@ -430,6 +457,9 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
                               fragment_status=fragment_status)
     records = registry["requirements"]
+    roles_by_section = {(s["source"], s["section"]): s["role"] for s in sections.values()}
+    for row in records.values():
+        row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
     decisions, state = {}, {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
@@ -447,7 +477,8 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                 pool.append({"id": sid, "source": s["source"], "section": s["section"],
                              "quote": s["text"], "kind": "uncertain", "source_role": "unspecified"})
         pool = list({item["id"]: item for item in pool}.values())
-        base = {"context": context, "profile": focus["functions"], "items": [_compact(row)]}
+        base = {"context": context, "profile": focus["functions"],
+                "items": [{**_compact(row), "section_role": row["section_role"]}]}
         pool = _bounded_rows(pool, max(0, _candidate_budget(cfg) - _payload_size(base) - 300))
         # Evidence is a view over existing registry/source spans; no second search index.
         state.update({r["id"]: r for r in pool})
@@ -456,7 +487,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             decisions[rid] = {"status": statuses[rid], "change": "unknown", "category": "uncertain",
                               "state_refs": [], "reason": ""}
             continue
-        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"] for r in pool}, profile,
+        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, profile,
                                             context["target"])
     _verify_decisions(cfg, decisions, records, state, context, emit)
     groups = _group_decisions(decisions)
@@ -477,11 +508,14 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "record_kinds": dict(Counter(r["kind"] for r in records.values())),
                    "index_revisions": dict(evidence.revisions),
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
+    diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
     diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
     diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
     diagnostics["source_read_errors"] = len(prepared["roles"].keys() - prepared["hashes"].keys())
     _record_draft_diagnostic("target_registry", diagnostics)
     return {"requirements": records, "state_evidence": state, "groups": groups,
+            "metrics_registry": {rid: d["metric"] for rid, d in decisions.items()
+                                 if d["status"] == "model_supported" and "metric" in d},
             "decisions": decisions, "proposals": proposals, "questions": questions,
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
             "diagnostics": diagnostics, "requires_expert_review": True}
