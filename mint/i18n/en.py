@@ -4,6 +4,23 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Согласовать требования перед декомпозицией": "Review requirements before decomposition",
+    "Собрать требования": "Collect requirements",
+    "Требования собраны": "Requirements collected",
+    "Собранные требования до декомпозиции": "Collected requirements before decomposition",
+    "Формулировки — предварительное обобщение модели. Сверьте их с цитатами. Уточнения эксперта не заменяют основания.": "Formulations are preliminary model summaries. Check against quotations. Expert comments do not replace evidence.",
+    "Собранная формулировка": "Consolidated formulation",
+    "Дословные цитаты — обобщение недоступно": "Verbatim quotations — summary unavailable",
+    "Исходные требования и связанные сведения": "Original requirements and related evidence",
+    "Исключить отдельные исходные требования": "Exclude individual source requirements",
+    "Уточнение эксперта (не является основанием)": "Expert clarification (not source evidence)",
+    "Непроверенные и неотражённые исходные сведения": "Unverified and unreflected source evidence",
+    "Подтверждаю выбранные требования для декомпозиции": "Confirm selected requirements for decomposition",
+    "Подтвердить и декомпозировать": "Confirm and decompose",
+    "Подтвердите исходные требования перед продолжением.": "Confirm the source requirements before continuing.",
+    "Обобщение исходных требований": "Summarizing source requirements",
+    "Согласование требований": "Requirement review",
+    "Исключённые записи": "Excluded records",
     "Сведения о прогоне": "Run information",
     "Поле": "Field",
     "Значение": "Value",
