@@ -70,6 +70,9 @@ def _classify_sections(cfg, sections, context, emit):
                                          {"context": context, "items": batch}, ids)
         for rid, row in replies.items():
             role = _text(row, "role")
+            # Neutral prompt code; keep the existing internal role vocabulary.
+            if role == "arch":
+                role = "architecture"
             if role in SECTION_ROLES:
                 sections[rid]["role"] = role
 
