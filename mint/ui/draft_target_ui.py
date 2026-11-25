@@ -289,7 +289,8 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
                                   selection=chosen if expert else None, notes=notes if expert else None):
                 advance(4)
                 return
-        _render_registry_details(prepared, collected, key, identity, finished=False)
+        with st.expander(tr("Подробности сбора и выгрузки")):
+            _render_registry_details(prepared, collected, key, identity, finished=False)
         return
     if not saved or saved[0] != identity:
         advance(3)
