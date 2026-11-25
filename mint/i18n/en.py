@@ -4,6 +4,11 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Результаты формирования": "Generation results",
+    "Сформировано полей: {fields}; связано исходных записей: {used} из {total}; замечаний: {issues}.": "Output fields: {fields}; linked source records: {used} of {total}; issues: {issues}.",
+    "Замечания формирования ({n})": "Generation issues ({n})",
+    "Скачать обезличенные данные для анализа": "Download sanitized analysis data",
+    "Экспертная оценка текущего прогона не сохранена; выгружаются только автоматические показатели.": "No expert review saved for this run; only automated metrics are exported.",
     "V2 формирует один выбранный раздел. Результат требует экспертной проверки.": "V2 fills one selected section. Expert review is required.",
     "Нет разделов, безопасных для формирования V2.": "No sections safe for V2 generation.",
     "Пустой раздел": "Empty section",
