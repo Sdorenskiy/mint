@@ -163,11 +163,9 @@ try:
              patch.object(target_ui, "collect_target_requirements", return_value=collected_) as collect_, \
              patch.object(target_ui, "decompose_target_requirements", return_value=derived_) as derive_:
             at.run()
-            at.button(key="target_prepare").click().run()
             res["wizard_no_early_repeat"] = not has_button(at, "target_collect_again")
             res["wizard_no_section_map"] = not any(e.label == "Карта разделов оснований" for e in at.expander)
-            profile_widget = next(w for w in at.checkbox if w.label == "Fixture function")
-            profile_widget.check().run()
+            res["wizard_no_preliminary_profile"] = not any(w.label == "Fixture function" for w in at.checkbox)
             at.button(key="target_analyze").click().run()
             res["wizard_collection"] = (at.session_state["draft_wizard_step"] == 3
                 and not has_button(at, "target_analyze") and collect_.call_count == 1 and derive_.call_count == 0)
@@ -178,7 +176,7 @@ try:
             res["wizard_review_retained"] = at.text_area(key="target_review_note_wizard-run_G1").value == "fixture note"
             at.button(key="target_decompose").click().run()
             at.button(key="wizard_stage_2").click().run()
-            res["wizard_profile_retained"] = next(w for w in at.checkbox if w.label == "Fixture function").value
+            res["wizard_profile_retained"] = not any(w.label == "Fixture function" for w in at.checkbox) and not has_button(at, "target_prepare")
             res["wizard_repeat_visible"] = has_button(at, "target_collect_again")
             at.button(key="target_analyze").click().run()
             at.button(key="target_decompose").click().run()
@@ -271,7 +269,7 @@ check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_l
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
 check(all(res.get(k) for k in ("wizard_collection", "wizard_result", "wizard_review_retained",
                                "wizard_profile_retained", "wizard_no_repeat", "wizard_same_materials",
-                               "wizard_invalidated", "wizard_no_early_repeat", "wizard_no_section_map", "wizard_repeat_visible")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
+                               "wizard_invalidated", "wizard_no_preliminary_profile", "wizard_no_early_repeat", "wizard_no_section_map", "wizard_repeat_visible")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
       str({k: v for k, v in res.items() if k.startswith("wizard_")}))
 
 check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
