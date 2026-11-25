@@ -272,7 +272,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     sources = list(dict.fromkeys(sources))
     if set(source_roles) - set(sources):
         raise ValueError("Invalid registry source role")
-    documents = _load_draft_sources(cfg, sources, issues)
+    documents = _load_draft_sources(cfg, sources, issues, emit=emit)
     roles = {name: source_roles[name] for name, _ in documents if name in source_roles}
     registry = build_registry(cfg, documents, roles, issues, emit, reset_cache=reset_extract_cache)
     records = registry["requirements"]
