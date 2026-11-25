@@ -158,7 +158,7 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
 
 
 # The registry has no Word anchors yet. Export only aggregate codes and numbers.
-TARGET_STAGES = ("target_section_map", "target_profile", "target_extract", "registry_type",
+TARGET_STAGES = ("target_section_map", "target_profile", "target_dossier", "target_extract", "registry_type",
                  "target_allocation", "target_verify", "target_derivation",
                  "requirement_assessment", "target_coverage")
 _TARGET_COUNTERS = {
@@ -181,6 +181,9 @@ _TARGET_COUNTERS = {
                           "matched_spans", "no_match", "no_index", "fallback_spans"),
     "references": ("resolved", "ambiguous", "missing", "outside_scope", "unidentified_document", "unsupported_range"),
     "reference_gaps": ("ambiguous", "missing", "outside_scope", "unidentified_document", "unsupported_range", "cycle", "depth_limit", "budget_limit"),
+    "dossiers": ("searches", "hybrid_hits", "fallback_hits", "reference_gaps", "limited_searches", "batch_errors",
+                 "invalid_quotes", "facts", "supplemental_records", "cache_hits", "not_searched", "found",
+                 "found_partial", "not_found", "context_limit", "error", "unresolved_facts", "covered_facts"),
     "proposal_kinds": ("functional", "interface", "metric", "constraint"),
     "proposal_assessments": tuple(sorted(ASSESSMENT_STATUSES)),
 }
