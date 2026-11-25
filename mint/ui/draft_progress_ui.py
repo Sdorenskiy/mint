@@ -12,6 +12,7 @@ _STAGES = {
     "target_profile_search": N_("Поиск сведений о системе"),
     "target_profile": N_("Профиль целевой системы"),
     "reference_map": N_("Разрешение перекрёстных ссылок"),
+    "reference_context": N_("Сбор связанных фрагментов"),
     "extract": N_("Разбор оснований"),
     "registry_type": N_("Типизация исходных сведений"),
     "target_allocation": N_("Распределение ответственности"),
@@ -42,7 +43,8 @@ def render_progress(status):
         if not tracker.update(event, value):
             return
         lines = []
-        for row in tracker.snapshot():
+        rows = tracker.snapshot()
+        for row in rows:
             name = tr(_STAGES.get(row["stage"], row["stage"]))
             total, done = row["total"], row["done"]
             count = f"{done} / {total}" if total is not None else str(done)
@@ -60,7 +62,7 @@ def render_progress(status):
             lines.append(line)
         if lines:
             placeholder.text("\n".join(lines))
-            active = next((r for r in tracker.snapshot() if r["stage"] == tracker.active), None)
+            active = next((r for r in rows if r["stage"] == tracker.active), None)
             if active:
                 label = tr(_STAGES.get(active["stage"], active["stage"]))
                 count = f"{active['done']} / {active['total']}" if active["total"] is not None else str(active["done"])
