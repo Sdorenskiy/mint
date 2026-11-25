@@ -159,6 +159,9 @@ def test_registry_end_to_end():
             if stage == "target_verify":
                 return {"items": [{"id": r["id"], "correct_actor": True, "change_supported": True,
                                    "conditions_preserved": True, "reason": "verified"} for r in payload["items"]]}
+            if stage == "target_summary":
+                return {"text": " ".join(r["quote"] for r in payload["needs"]),
+                        "need_refs": [r["id"] for r in payload["needs"]], "evidence_refs": []}
             if stage == "target_derivation":
                 items = []
                 for r in payload["needs"]:
@@ -188,7 +191,24 @@ def test_registry_end_to_end():
             stack.enter_context(patch.object(target, "load_kb_snapshot", return_value=None))
             prepared = target.prepare_target_analysis(cfg, list(docs), roles, CONTEXT)
             assert len(prepared["profile"]) == 1
-            result = target.analyze_target_registry(cfg, prepared, prepared["profile"])
+            collected = target.collect_target_requirements(cfg, prepared, prepared["profile"])
+            assert collected["phase"] == "collected" and not collected["proposals"]
+            assert all(r["status"] == "draft" for rows in collected["summaries"].values() for r in rows)
+            assert "target_derivation" not in collected["metrics"]["stages"]
+            original = json.dumps(collected["dispositions"], sort_keys=True)
+            ids = [rid for rid, status in collected["dispositions"].items() if status == "awaiting_decomposition"]
+            excluded = next(rid for rid in ids if collected["requirements"][rid]["quote"] == DATA)
+            with patch.object(target, "build_registry", side_effect=AssertionError("repeated extraction")), patch.object(
+                    target, "_verify_decisions", side_effect=AssertionError("repeated allocation")):
+                reviewed = target.decompose_target_requirements(cfg, prepared, collected,
+                    selection=[rid for rid in ids if rid != excluded], notes={"G1": "Use original evidence only."})
+                assert reviewed["dispositions"][excluded] == "expert_excluded"
+                assert not any(excluded in p["need_refs"] for p in reviewed["proposals"])
+                assert reviewed["review"]["notes"]["G1"] == "Use original evidence only."
+                assert json.dumps(collected["dispositions"], sort_keys=True) == original
+                assert reviewed["review"]["mode"] == "expert"
+                result = target.decompose_target_requirements(cfg, prepared, collected)
+            assert result["phase"] == "decomposed" and result["review"]["mode"] == "automatic"
             by_quote = {row["quote"]: rid for rid, row in result["requirements"].items()}
             assert result["dispositions"][by_quote[EXTERNAL]] == "external"
             assert result["dispositions"][by_quote[DONE]] == "already_supported"
@@ -209,6 +229,11 @@ def test_registry_end_to_end():
             assert safe["counts"]["verified_metrics"] == 1
             source_path(cfg, "extra.md").write_text("changed", encoding="utf-8")
             try:
+                target.decompose_target_requirements(cfg, prepared, collected)
+                raise AssertionError("stale collected input accepted")
+            except draft.DraftError:
+                pass
+            try:
                 target.analyze_target_registry(cfg, prepared, prepared["profile"])
                 raise AssertionError("changed original accepted")
             except draft.DraftError:
@@ -222,6 +247,6 @@ if __name__ == "__main__":
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
         for stage in ("target_section_map", "target_profile", "target_extract", "target_allocation",
-                      "target_verify", "target_derivation", "target_coverage"):
+                      "target_verify", "target_summary", "target_derivation", "target_coverage"):
             assert "draft_" + stage in prompts
     print("ИТОГ: 36 contract cases, original evidence, target registry pipeline and privacy")
