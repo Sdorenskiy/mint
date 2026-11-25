@@ -4,6 +4,8 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Подготовить промежуточный реестр Excel": "Prepare intermediate Excel registry",
+    "Скачать промежуточный реестр Excel": "Download intermediate Excel registry",
     "Согласовать требования перед декомпозицией": "Review requirements before decomposition",
     "Собрать требования": "Collect requirements",
     "Требования собраны": "Requirements collected",
@@ -14,7 +16,6 @@ EN = {
     "Исходные требования и связанные сведения": "Original requirements and related evidence",
     "Исключить отдельные исходные требования": "Exclude individual source requirements",
     "Уточнение эксперта (не является основанием)": "Expert clarification (not source evidence)",
-    "Непроверенные и неотражённые исходные сведения": "Unverified and unreflected source evidence",
     "Подтверждаю выбранные требования для декомпозиции": "Confirm selected requirements for decomposition",
     "Подтвердить и декомпозировать": "Confirm and decompose",
     "Подтвердите исходные требования перед продолжением.": "Confirm the source requirements before continuing.",
