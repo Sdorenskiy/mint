@@ -99,7 +99,7 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
     context = context_state.get("confirmed")
     step = clamp_step(session, context_ready=bool(context))
     last = reachable_step(session, context_ready=bool(context))
-    labels = [tr("Материалы"), tr("Контекст"), tr("Сбор требований"),
+    labels = [tr("Материалы"), tr("Контекст"), tr("Согласование требований"),
               tr("Детализация"), tr("Word — в разработке")]
     cols = st.columns(5)
     for i, (col, label) in enumerate(zip(cols, labels), 1):
