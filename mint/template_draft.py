@@ -14,6 +14,7 @@ from dataclasses import dataclass
 
 from .i18n import tr
 from .draft_checkpoint import DraftExtractCheckpoint
+from .draft_progress import tracked
 from .evidence import quoted, verify_comparison
 from .kb import source_path
 from .parsing import document_to_markdown
@@ -186,6 +187,7 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
     revisions = {name: hashlib.sha256(markdown.encode("utf-8")).hexdigest()
                  for name, markdown in documents} if include_provenance else {}
     failed_fragments = invalid_quote_fragments = duplicate_quotes = 0
+    progress_errors = 0
 
     def jobs():
         for name, markdown in documents:
@@ -224,7 +226,7 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
         return quotes, False, [name] if bad else [], False, time.perf_counter() - started
 
     def report_finished(result):
-        nonlocal completed, reused
+        nonlocal completed, reused, progress_errors
         _quotes, cached, _invalid, _failed, elapsed = result
         completed += 1
         emit("extract", completed)
@@ -233,6 +235,9 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
         if cached:
             reused += 1
             emit("extract_cached", reused)
+        if _invalid or _failed:
+            progress_errors += 1
+            emit("extract_failed", progress_errors)
         emit("extract_done", completed)
 
     def accept(job, result):
@@ -633,7 +638,8 @@ def _adjacent_text(paragraph, direction):
 
 def _find_fields(cfg, slots, issues, emit):
     fields, fixed = {}, {}
-    for i, batch in enumerate(_batches(list(slots.items()), lambda item: item[1].text), 1):
+    batches = list(_batches(list(slots.items()), lambda item: item[1].text))
+    for i, batch in enumerate(tracked(emit, "layout", batches), 1):
         emit("layout", i)
         try:
             analysis = _json(cfg, "layout", {"blocks": [s.describe(k) for k, s in batch]})
@@ -715,7 +721,7 @@ def _candidate_budget(cfg):
     return min(SECTION_PLAN_LIMIT, max(1500, int(max(600, limit - output - 1100) * ratio)))
 
 
-def _section_plan(cfg, fields, slots, requirements, context=None):
+def _section_plan(cfg, fields, slots, requirements, context=None, emit=None):
     """Plan source coverage for each template section BEFORE filling any field.
 
     A section-wide candidate pool complements field-specific retrieval, preventing
@@ -730,7 +736,7 @@ def _section_plan(cfg, fields, slots, requirements, context=None):
         by_section.setdefault(slot.section, []).append((field_id, purpose, slot.column))
     budget = _candidate_budget(cfg)
     field_candidates, summary = {}, {}
-    for section, entries in by_section.items():
+    for section, entries in tracked(emit or (lambda *_: None), "section_plan", by_section.items()):
         section_query = " ".join([focus, section] + [purpose + " " + column for _, purpose, column in entries])
         group = _candidates(section_query, requirements, size=budget)
         selected_ids = set()
@@ -831,7 +837,7 @@ def _table_sample(cell):
 
 def _row_plans(cfg, tables, requirements, issues, emit, context=None):
     plans = {}
-    for i, (key, table) in enumerate(tables.items(), 1):
+    for i, (key, table) in enumerate(tracked(emit, "table", tables.items()), 1):
         headers = [c.text for c in table.rows[0].cells]
         sample = table.rows[-1]
         if any(not _table_sample(c) for c in sample.cells):
@@ -892,10 +898,10 @@ def _mark_wiki(doc, paragraph, status, detail):
     # source documents. Do not flood Word with one comment per such field.
 
 
-def _load_draft_sources(cfg, sources, issues, *, source_hashes=None):
+def _load_draft_sources(cfg, sources, issues, *, source_hashes=None, emit=None):
     """Read selected originals once; shared by legacy drafting and V2 pilot."""
     documents = []
-    for name in dict.fromkeys(sources):
+    for name in tracked(emit or (lambda *_: None), "source_read", dict.fromkeys(sources)):
         try:
             path = source_path(cfg, name)
             data = path.read_bytes()
@@ -928,7 +934,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     except (OpcError, BadZipFile, ValueError, KeyError) as exc:
         raise DraftError(tr("Не удалось прочитать файл DOCX.")) from exc
     issues, results, used = [], [], set()
-    documents = _load_draft_sources(cfg, sources, issues)
+    documents = _load_draft_sources(cfg, sources, issues, emit=emit)
     if example:
         doc, slots, fields, tables = _from_example(doc, issues)
         examples, fixed = {}, {}
@@ -943,9 +949,9 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
     requirements = classify(cfg, requirements, context, issues, emit)
     eligible, interactions = partition(requirements, context)
     plans = _row_plans(cfg, tables, eligible, issues, emit, context=context) if eligible else {}
-    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, eligible, context=context)
+    candidates_by_field, section_plan = _section_plan(cfg, fields, slots, eligible, context=context, emit=emit)
     edits = []
-    for i, (field, (key, start, end, purpose, safe)) in enumerate(fields.items(), 1):
+    for i, (field, (key, start, end, purpose, safe)) in enumerate(tracked(emit, "fill", fields.items()), 1):
         slot = slots[key]
         if slot.table in plans and slot.paragraph._p.getparent().getparent() is tables[slot.table].rows[-1]._tr:
             continue
@@ -1055,7 +1061,7 @@ def create_draft(template, cfg, sources, glossary=None, progress=None, *, exampl
                 _replace(p, 0, len(p.text), "")
             issues.append(tr("Требуется ручная вставка") + ": " + key)
 
-    for i, slot in enumerate(fixed.values(), 1):
+    for i, slot in enumerate(tracked(emit, "fixed", fixed.values()), 1):
         emit("fixed", i)
         status, detail = _verify(cfg, slot.text, [], requirements, glossary, issues, sources)
         if status in {"conflict", "uncertain"}:
