@@ -4,7 +4,7 @@ import json
 
 import streamlit as st
 
-from ..draft_target_analysis import prepare_target_analysis, analyze_target_registry
+from ..draft_target_analysis import prepare_target_analysis, collect_target_registry, finalize_target_registry
 from ..draft_pilot_report import target_registry_export
 from ..draft_registry_workbook import registry_workbook, regression_snapshot, compare_registries
 from ..i18n import tr
@@ -29,11 +29,13 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         session["target_registry_key"] = key
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
+        session.pop("target_registry_collected", None)
         session.pop("target_full_workbook", None)
     st.caption(tr("Контрольная точка 1: сначала анализ требований, без формирования Word."))
     if st.button(tr("Подготовить профиль системы"), disabled=not enabled, key="target_prepare"):
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
+        session.pop("target_registry_collected", None)
         session.pop("target_full_workbook", None)
         with st.status(tr("Профиль целевой системы"), expanded=False) as status:
             try:
@@ -68,18 +70,30 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     approved = st.checkbox(tr("Подтверждаю выбранный профиль и неизвестные границы"),
                            value=False, key="target_profile_confirm_" + sig)
     identity = (sig, tuple(p["id"] for p in selected))
-    if st.button(tr("Сформировать реестр требований"), disabled=not approved, key="target_analyze"):
+    expert = st.checkbox(tr("Согласовать требования перед декомпозицией"), value=True,
+                         key="target_intermediate_review")
+    if st.button(tr("Собрать требования") if expert else tr("Сформировать реестр требований"),
+                 disabled=not approved, key="target_analyze"):
         session.pop("target_registry_result", None)
+        session.pop("target_registry_collected", None)
         session.pop("target_full_workbook", None)
         with st.status(tr("Распределение ответственности"), expanded=False) as status:
             try:
-                result = analyze_target_registry(cfg, prepared, selected, render_progress(status),
-                                                 reset_cache=reset_cache)
+                collected = collect_target_registry(cfg, prepared, selected, render_progress(status),
+                                                     reset_cache=reset_cache, summaries=expert)
+                session["target_registry_collected"] = identity, collected
+                if not expert:
+                    result = finalize_target_registry(cfg, prepared, collected, render_progress(status))
+                    session["target_registry_result"] = identity, result
             except (DraftError, OSError, ValueError, KeyError, RuntimeError):
                 status.update(label=tr("Не удалось сформировать реестр требований."), state="error")
             else:
-                session["target_registry_result"] = identity, result
-                status.update(label=tr("Реестр подготовлен"), state="complete")
+                status.update(label=tr("Требования собраны") if expert else tr("Реестр подготовлен"), state="complete")
+    snapshot = session.get("target_registry_collected")
+    if approved and snapshot and snapshot[0] == identity:
+        collected = snapshot[1]
+        if expert or not session.get("target_registry_result"):
+            _render_intermediate_review(cfg, prepared, collected, identity)
     saved = session.get("target_registry_result")
     if not approved or not saved or saved[0] != identity:
         return
@@ -185,3 +199,77 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
             st.text(issue)
     with st.expander(tr("Замеры этапов подготовки")):
         st.json(export)
+
+
+def _render_intermediate_review(cfg, prepared, collected, identity):
+    """All source records remain accessible. No rerun of collection on edits."""
+    session = st.session_state
+    run_id = collected["metrics"]["run_id"]
+    records, decisions = collected["requirements"], collected["decisions"]
+    st.subheader(tr("Собранные требования до декомпозиции"))
+    st.caption(tr("Формулировки — предварительное обобщение модели. Сверьте их с цитатами. Уточнения эксперта не заменяют основания."))
+    cards = collected.get("review_cards", [])
+    cards_by_group = {}
+    for card in cards:
+        cards_by_group.setdefault(card["group"], []).append(card)
+    with st.form("target_review_" + run_id):
+        excluded, notes = [], {}
+        for group in collected["groups"]:
+            ids = [rid for rid in group["requirement_ids"] if decisions[rid]["change"] != "already_supported"]
+            if not ids:
+                continue
+            gid = group["id"]
+            st.markdown("**" + tr("Функция") + " " + gid + "**")
+            st.text(group["function"])
+            for card in cards_by_group.get(gid, []):
+                st.caption(tr("Собранная формулировка") if card["status"] == "model_summary"
+                           else tr("Дословные цитаты — обобщение недоступно"))
+                st.text(card["text"])
+            with st.expander(tr("Исходные требования и связанные сведения") + " · " + gid):
+                for rid in group["requirement_ids"]:
+                    d = decisions[rid]
+                    st.caption(f"{rid} · {d['change']}")
+                    _show_refs([rid] + list(dict.fromkeys(d.get("reference_refs", []) +
+                                                         d.get("dossier_refs", []) + d.get("state_refs", []))),
+                               prepared, collected)
+                    if d.get("metric"):
+                        st.json(d["metric"])
+            excluded.extend(st.multiselect(tr("Исключить отдельные исходные требования"), ids,
+                                            format_func=lambda rid: f"{rid} · {records[rid]['quote'][:100]}",
+                                            key=f"target_excluded_{run_id}_{gid}"))
+            note = st.text_area(tr("Уточнение эксперта (не является основанием)"), max_chars=1000,
+                                key=f"target_note_{run_id}_{gid}")
+            if note.strip():
+                notes[gid] = note
+        with st.expander(tr("Характеристики функций")):
+            for dossier in collected.get("dossiers", {}).values():
+                st.text(dossier["function"])
+                for facet, row in dossier["facets"].items():
+                    st.caption(f"{facet} · {row['status']}")
+                    for fact in row["facts"]:
+                        st.text(f"{fact.get('record_id', '')} · {fact['quote']}")
+        with st.expander(tr("Непроверенные и неотражённые исходные сведения")):
+            grouped_ids = {rid for g in collected["groups"] for rid in g["requirement_ids"]}
+            for rid, row in records.items():
+                if rid not in grouped_ids:
+                    st.caption(f"{rid} · {collected['dispositions'][rid]}")
+                    _show_refs([rid], prepared, collected)
+        confirmed = st.checkbox(tr("Подтверждаю выбранные требования для декомпозиции"),
+                                key="target_confirm_review_" + run_id)
+        submit = st.form_submit_button(tr("Подтвердить и декомпозировать"))
+    if not submit:
+        return
+    if not confirmed:
+        st.warning(tr("Подтвердите исходные требования перед продолжением."))
+        return
+    session.pop("target_registry_result", None)
+    session.pop("target_full_workbook", None)
+    with st.status(tr("Детализация требований"), expanded=False) as status:
+        try:
+            result = finalize_target_registry(cfg, prepared, collected, render_progress(status),
+                                              excluded=excluded, notes=notes, reviewed=True)
+        except (DraftError, OSError, ValueError, KeyError, RuntimeError):
+            status.update(label=tr("Не удалось сформировать реестр требований."), state="error")
+        else:
+            session["target_registry_result"] = identity, result
+            status.update(label=tr("Реестр подготовлен"), state="complete")
