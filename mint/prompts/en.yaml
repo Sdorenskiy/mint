@@ -829,3 +829,10 @@ draft_target_derivation: |-
   Return {"requirements":[{"text":"requirement","actor":"target","kind":"functional",
   "need_refs":["R1"],"state_refs":["F1"],"metric_refs":[],"reason":"reason"}],
   "questions":[{"id":"R2","question":"clarification needed"}]}.
+
+
+draft_target_coverage: |-
+  Independently assess complete coverage of each source need in items by proposals for the function.
+  Consider actor, direction, conditions, exclusions, metric units and subject.
+  A reference to an id is not proof of coverage. Do not count partial coverage.
+  Exactly one reply per id. Return {"items":[{"id":"R1","covered":false,"reason":"reason"}]}.
