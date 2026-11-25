@@ -5,6 +5,8 @@ Every original fragment is screened; retrieval ranks supporting evidence and
 never substitutes for the original. All outputs are local, not expert approval.
 """
 from collections import Counter
+from copy import deepcopy
+from .draft_target_review import input_identity, summarize_needs, review_scope
 import hashlib
 import json
 import re
@@ -399,16 +401,19 @@ def _group_decisions(decisions):
              "requirement_ids": ids} for i, ids in enumerate(grouped.values(), 1)]
 
 
-def _proposals(cfg, groups, decisions, records, state, context, emit):
+def _proposals(cfg, groups, decisions, records, state, context, emit, *, notes=None):
     proposed, questions, outcomes = [], [], {}
     budget = _candidate_budget(cfg)
     # Keep global group IDs. Subdivide only the model payload if necessary.
     def make_payload(group, ids):
         refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []) + decisions[rid].get("dossier_refs", [])))
-        return {"context": context, "function": group["function"],
+        payload = {"context": context, "function": group["function"],
                 "needs": [_compact(records[rid]) for rid in ids],
                 "decisions": {rid: decisions[rid] for rid in ids},
                 "state": [state[k] for k in refs]}
+        if notes and notes.get(group["id"]):
+            payload["expert_guidance"] = notes[group["id"]]
+        return payload
     batches = []
     for group in groups:
         batch = []
@@ -520,12 +525,8 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
     return proposed, questions, outcomes
 
 
-@_measure_draft
-def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
-    """Stage C/D; explicit profile confirmation, no DOCX generation."""
-    emit = progress or (lambda *_: None)
-    context = prepared["context"]
-    # Verify originals have not changed between profile and analysis.
+def _verify_originals(cfg, prepared):
+    """Reject stale source bytes at both sides of the review boundary."""
     for source, digest in prepared["hashes"].items():
         try:
             current = hashlib.sha256(source_path(cfg, source).read_bytes()).hexdigest()
@@ -533,6 +534,14 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             current = None
         if current != digest:
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
+ 
+
+@_measure_draft
+def collect_target_requirements(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
+    """Collect verified original needs and review summaries, without decomposition."""
+    emit = progress or (lambda *_: None)
+    context = prepared["context"]
+    _verify_originals(cfg, prepared)
     profile = {p["id"]: p for p in approved_profile}
     offered = {p["id"]: p for p in prepared["profile"]}
     if any(offered.get(k) != p for k, p in profile.items()):
@@ -666,7 +675,12 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             decisions[rid]["reference_gaps"] = gaps
     verification_counts = _verify_decisions(cfg, decisions, records, state, context, emit, reset_cache=reset_cache)
     groups = _group_decisions(decisions)
-    proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state, context, emit)
+    summaries, summary_counts = summarize_needs(cfg, groups, records, decisions, state, context, emit, _json)
+    proposals, questions, outcomes = [], [], {}
+    for g in groups:
+        for rid in g["requirement_ids"]:
+            if decisions[rid]["change"] != "already_supported":
+                outcomes[rid] = "awaiting_decomposition"
     # Every extracted record has a visible disposition; "external" is verified separately.
     for rid, row in records.items():
         decision = decisions.get(rid)
@@ -685,6 +699,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
     dossier_counts.update(summarize_dossiers(dossiers, decisions, outcomes, proposals))
     diagnostics["dossiers"] = dict(dossier_counts)
+    diagnostics["summaries"] = summary_counts
     diagnostics["verification"] = dict(verification_counts)
     diagnostics["allocation_validation"] = dict(Counter(d["validation_code"] for d in decisions.values() if "validation_code" in d))
     diagnostics["references"] = dict(references.counts)
@@ -694,18 +709,63 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
     diagnostics["source_read_errors"] = len(prepared["issues"])
     _record_draft_diagnostic("target_registry", diagnostics)
-    # Confirm original revision again after long model processing.
-    for source, digest in prepared["hashes"].items():
-        try:
-            current = hashlib.sha256(source_path(cfg, source).read_bytes()).hexdigest()
-        except OSError:
-            current = None
-        if current != digest:
-            raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
+    _verify_originals(cfg, prepared)
     return {"requirements": records, "state_evidence": state, "groups": groups,
             "metrics_registry": {rid: d["metric"] for rid, d in decisions.items()
                                  if d["status"] == "model_supported" and "metric" in d},
             "decisions": decisions, "proposals": proposals, "questions": questions,
             "linked_by_need": linked_by_need, "dossiers": dossiers, "approved_profile": list(profile.values()),
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
-            "diagnostics": diagnostics, "requires_expert_review": True}
+            "diagnostics": diagnostics, "requires_expert_review": True,
+            "phase": "collected", "summaries": summaries,
+            "input_identity": input_identity(cfg, prepared, list(profile.values()))}
+
+@_measure_draft
+def _decompose_target_requirements(cfg, prepared, collected, selection, notes, progress):
+    if collected.get("phase") != "collected" or collected.get("input_identity") != input_identity(
+            cfg, prepared, collected["approved_profile"]):
+        raise ValueError("Collected requirements no longer match inputs")
+    _verify_originals(cfg, prepared)
+    groups, review = review_scope(collected, selection, notes)
+    result = deepcopy(collected)
+    records, decisions, state = result["requirements"], result["decisions"], result["state_evidence"]
+    emit = progress or (lambda *_: None)
+    proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state,
+                                                prepared["context"], emit, notes=review["notes"])
+    dispositions = result["dispositions"]
+    for rid in review["excluded"]:
+        dispositions[rid] = "expert_excluded"
+    for rid in review["included"]:
+        dispositions[rid] = outcomes.get(rid, "coverage_gap")
+    result.update(phase="decomposed", proposals=proposals, questions=questions, review=review)
+    diagnostics = result["diagnostics"]
+    diagnostics["outcomes"] = dict(Counter(dispositions.values()))
+    diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
+    diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
+    diagnostics["review_scope"] = {"included": len(review["included"]), "excluded": len(review["excluded"]),
+                                   "notes": len(review["notes"])}
+    diagnostics["dossiers"].update(summarize_dossiers(result["dossiers"], decisions, dispositions, proposals))
+    _record_draft_diagnostic("target_registry", diagnostics)
+    _verify_originals(cfg, prepared)
+    return result
+
+
+def decompose_target_requirements(cfg, prepared, collected, progress=None, *, selection=None, notes=None):
+    """Resume without rescanning or allocating. Combine compute time only."""
+    result = _decompose_target_requirements(cfg, prepared, collected, selection, notes, progress)
+    previous, current = collected["metrics"], result["metrics"]
+    stages = deepcopy(previous["stages"])
+    for name, row in current["stages"].items():
+        stats = stages.setdefault(name, {"llm_calls": 0, "llm_seconds": 0.0})
+        for field in ("llm_calls", "llm_seconds"):
+            stats[field] += row[field]
+    current["stages"] = stages
+    current["total_seconds"] += previous["total_seconds"]
+    current["diagnostics"] = {**previous["diagnostics"], **current["diagnostics"]}
+    return result
+
+
+def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
+    """Automatic path uses the very same collection and decomposition stages."""
+    collected = collect_target_requirements(cfg, prepared, approved_profile, progress, reset_cache=reset_cache)
+    return decompose_target_requirements(cfg, prepared, collected, progress)
