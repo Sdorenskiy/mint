@@ -4,6 +4,7 @@ import hashlib
 import streamlit as st
 
 from ..draft_registry import SOURCE_ROLES
+from ..draft_target_review import input_identity
 from ..i18n import tr
 from ..kb import list_kb_documents, source_path
 from .draft_context_ui import render_draft_context
@@ -73,6 +74,8 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
         session.pop("draft_wizard_context", None)
         session["draft_wizard_step"] = 1
         st.warning(tr("Исходные материалы изменились. Подтвердите их заново."))
+    if session.pop("draft_wizard_stale_settings", False):
+        st.warning(tr("Настройки анализа изменились. Соберите требования заново."))
     context_state = session.get("draft_wizard_context") or {}
     context = context_state.get("confirmed")
     step = clamp_step(session, context_ready=bool(context))
@@ -103,6 +106,15 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
         return
     key = (saved["signature"], tuple(sorted(context.items())))
     sync_target(session, key)
+    prepared = session.get("target_registry_prepared")
+    item = session.get("target_registry_collected")
+    if prepared and item:
+        collection = item[1]
+        if collection.get("input_identity") != input_identity(cfg, prepared, collection["approved_profile"]):
+            clear_target(session)
+            session["draft_wizard_stale_settings"] = True
+            _go(2)
+            return
     # No downstream data are rendered while upstream inputs are being edited.
     if step > reachable_step(session, context_ready=True):
         _go(reachable_step(session, context_ready=True))
