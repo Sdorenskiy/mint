@@ -3,7 +3,7 @@ import math
 
 import streamlit as st
 
-from ..draft_review import compare, list_runs, load_run, save_marks, save_run, summary
+from ..draft_review import compare, fingerprint, list_runs, load_run, save_marks, save_run, summary
 from ..i18n import tr
 from ..prompts import render
 
@@ -24,6 +24,7 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
             except (OSError, ValueError):
                 pass
             st.session_state["draft_review_id"] = save_run(cfg, input_key, filename, sources, result, prompt_sig)
+            st.session_state["draft_review_select"] = st.session_state["draft_review_id"]
         runs = list_runs(cfg)
         if not runs:
             st.caption(tr("Сохранённых разборов черновика пока нет."))
@@ -92,4 +93,13 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                                   covered=changes["covered_delta"], missing=changes["missed_delta"],
                                   unsupported=changes["unsupported_delta"]))
                     st.caption(tr("Сравнение предварительное: состав извлечённых и размеченных требований мог отличаться."))
-        return run
+        if result is None:
+            return None
+        # The export concerns the current generation, even when browsing an older review.
+        current_id = result.get("metrics", {}).get("run_id")
+        matches = [r for r in runs if current_id and
+                   r.get("metrics", {}).get("run_id") == current_id and
+                   r.get("input_fingerprint") == fingerprint(input_key)]
+        if any(r["id"] == run_id for r in matches):
+            return run
+        return load_run(cfg, matches[0]["id"]) if matches else None
