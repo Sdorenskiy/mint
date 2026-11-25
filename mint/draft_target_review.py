@@ -11,7 +11,7 @@ import json
 from .draft_checkpoint import _identity
 from .draft_function_analysis import _compact, _valid_refs
 from .draft_progress import tracked
-from .prompts import prompts_version
+from .prompts import effective_prompts, DRAFT_PREFIX
 from .template_draft import DraftError, _candidate_budget, _numbers_supported, _text
 
 MAX_NOTE = 800
@@ -21,7 +21,8 @@ MAX_SUMMARY = 2400
 def input_identity(cfg, prepared, profile):
     data = {"hashes": prepared["hashes"], "roles": prepared["roles"],
             "context": prepared["context"], "profile": profile,
-            "kb": str(cfg.kb_path), "prompt_version": prompts_version(),
+            "kb": str(cfg.kb_path),
+            "draft_prompts": {k: v for k, v in effective_prompts().items() if k.startswith(DRAFT_PREFIX)},
             "model_identity": _identity(cfg, "", "", stage="target_derivation")}
     return hashlib.sha256(json.dumps(data, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
