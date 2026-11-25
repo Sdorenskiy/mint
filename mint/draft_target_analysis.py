@@ -674,7 +674,8 @@ def _collect_target_registry(cfg, prepared, approved_profile, progress=None, *, 
             decisions[rid]["reference_gaps"] = gaps
     verification_counts = _verify_decisions(cfg, decisions, records, state, context, emit, reset_cache=reset_cache)
     groups = _group_decisions(decisions)
-    proposals, questions, outcomes = [], [], {}
+    pending = {rid for g in groups for rid in g["requirement_ids"] if decisions[rid]["change"] != "already_supported"}
+    proposals, questions, outcomes = [], [], dict.fromkeys(pending, "pending_review")
     # Every extracted record has a visible disposition; "external" is verified separately.
     for rid, row in records.items():
         decision = decisions.get(rid)
@@ -745,6 +746,9 @@ def _finish_target_registry(cfg, prepared, collected, progress=None, *, excluded
     groups = [g for g in groups if g["requirement_ids"]]
     proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state,
                                                prepared["context"], progress or (lambda *_: None), notes=notes)
+    # Retain visible gaps even if a malformed derivation produces no outcome.
+    result["dispositions"].update({rid: "coverage_gap" for rid, status in result["dispositions"].items()
+                                   if status == "pending_review"})
     result["dispositions"].update(outcomes)
     result["dispositions"].update(dict.fromkeys(excluded, "expert_excluded"))
     result.update(proposals=proposals, questions=questions, phase="derived",
