@@ -6,37 +6,9 @@ import streamlit as st
 
 from ..draft_target_analysis import prepare_target_analysis, analyze_target_registry
 from ..draft_pilot_report import target_registry_export
-from ..i18n import N_, tr
+from ..i18n import tr
+from .draft_progress_ui import render_progress
 from ..template_draft import DraftError
-
-_STAGES = {
-    "target_section_map": N_("Карта разделов оснований"),
-    "target_profile": N_("Профиль целевой системы"),
-    "target_extract": N_("Разбор оснований"),
-    "extract": N_("Разбор оснований"),
-    "registry_type": N_("Типизация исходных сведений"),
-    "target_allocation": N_("Распределение ответственности"),
-    "target_verify": N_("Проверка ответственности и изменений"),
-    "target_derivation": N_("Детализация требований"),
-    "requirement_assessment": N_("Проверка обоснованности"),
-    "target_coverage": N_("Проверка полноты функций"),
-}
-
-
-def _progress(status):
-    total = 0
-    def update(stage, index):
-        nonlocal total
-        if stage == "extract_total":
-            total = index
-            return
-        if stage in {"extract_elapsed", "extract_cached", "extract_done"}:
-            return
-        label = tr(_STAGES[stage]) if stage in _STAGES else stage
-        suffix = f" / {total}" if stage == "extract" and total else ""
-        status.update(label=f"{label} · {index}{suffix}")
-    return update
-
 
 def _show_refs(refs, prepared, result):
     for rid in refs:
@@ -62,7 +34,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         session.pop("target_registry_result", None)
         with st.status(tr("Профиль целевой системы"), expanded=False) as status:
             try:
-                prepared = prepare_target_analysis(cfg, sources, roles, context, _progress(status))
+                prepared = prepare_target_analysis(cfg, sources, roles, context, render_progress(status))
             except (DraftError, OSError, ValueError, KeyError, RuntimeError):
                 status.update(label=tr("Не удалось подготовить профиль системы."), state="error")
             else:
@@ -97,7 +69,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         session.pop("target_registry_result", None)
         with st.status(tr("Распределение ответственности"), expanded=False) as status:
             try:
-                result = analyze_target_registry(cfg, prepared, selected, _progress(status),
+                result = analyze_target_registry(cfg, prepared, selected, render_progress(status),
                                                  reset_cache=reset_cache)
             except (DraftError, OSError, ValueError, KeyError, RuntimeError):
                 status.update(label=tr("Не удалось сформировать реестр требований."), state="error")
@@ -154,6 +126,14 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
             st.text(d.get("reason", ""))
             st.text(d.get("review_reason", ""))
             _show_refs(d.get("state_refs", []), prepared, result)
+            related = result.get("linked_by_need", {}).get(rid, {})
+            if related:
+                st.caption(tr("Связанные пункты оснований"))
+                for item in related["items"]:
+                    st.caption(f"{item['source']} › {item['section']} · {item['reference']} · {' → '.join(item['path'])}")
+                    st.text(item["quote"])
+                if related["gaps"]:
+                    st.json(related["gaps"])
             for p in proposals:
                 if rid in p["need_refs"]:
                     st.text(f"{p['id']} · {p['text']}")

@@ -9,6 +9,7 @@ import json
 import re
 
 from .draft_checkpoint import DraftStageCheckpoint
+from .draft_progress import tracked
 from .document_context import confirm_context, context_search_terms
 from .draft_registry import obligation_candidates
 from .requirement_scope import CATEGORIES
@@ -50,44 +51,45 @@ def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=Fals
     unexpected = calls = cache_hits = 0
     checkpoint = DraftStageCheckpoint(cfg, "function_group")
     values = list(functional.values())
-    for offset in range(0, len(values), _GROUP_LIMIT):
-        for batch in _batches(values[offset:offset + _GROUP_LIMIT],
-                              lambda r: r["quote"] + r["section"] + r["source"],
-                              size=budget):
-            calls += 1
-            emit("function_group", calls)
-            allowed = {row["id"]: row for row in batch}
-            payload = {"context": context, "items": [_compact(row) for row in batch]}
-            if reset_cache:
-                checkpoint.clear(payload)
-            cached = None if reset_cache else checkpoint.load(payload)
-            if (cached is not None and set(cached) == set(allowed)
-                    and all(cached.get(anchor) == anchor for anchor in cached.values())):
-                cache_hits += 1
-                replies = {rid: {"id": rid, "group": anchor} for rid, anchor in cached.items()}
-                status, extra = dict.fromkeys(allowed, "received"), 0
+    batches = [batch for offset in range(0, len(values), _GROUP_LIMIT)
+               for batch in _batches(values[offset:offset + _GROUP_LIMIT],
+                                     lambda r: r["quote"] + r["section"] + r["source"],
+                                     size=budget)]
+    for batch in tracked(emit, "function_group", batches):
+        calls += 1
+        emit("function_group", calls)
+        allowed = {row["id"]: row for row in batch}
+        payload = {"context": context, "items": [_compact(row) for row in batch]}
+        if reset_cache:
+            checkpoint.clear(payload)
+        cached = None if reset_cache else checkpoint.load(payload)
+        if (cached is not None and set(cached) == set(allowed)
+                and all(cached.get(anchor) == anchor for anchor in cached.values())):
+            cache_hits += 1
+            replies = {rid: {"id": rid, "group": anchor} for rid, anchor in cached.items()}
+            status, extra = dict.fromkeys(allowed, "received"), 0
+        else:
+            cached = None
+            replies, status, extra = _unique_answers(cfg, "function_group", payload, allowed)
+        unexpected += extra
+        # Each group anchor must itself be a valid self-assigned input ID.
+        anchors = {rid for rid, row in replies.items() if _text(row, "group") == rid}
+        by_anchor = {}
+        for rid in allowed:
+            if rid not in replies:
+                continue
+            anchor = _text(replies[rid], "group")
+            if anchor not in anchors:
+                status[rid] = "invalid_group"
             else:
-                cached = None
-                replies, status, extra = _unique_answers(cfg, "function_group", payload, allowed)
-            unexpected += extra
-            # Each group anchor must itself be a valid self-assigned input ID.
-            anchors = {rid for rid, row in replies.items() if _text(row, "group") == rid}
-            by_anchor = {}
-            for rid in allowed:
-                if rid not in replies:
-                    continue
-                anchor = _text(replies[rid], "group")
-                if anchor not in anchors:
-                    status[rid] = "invalid_group"
-                else:
-                    status[rid] = "grouped"
-                    by_anchor.setdefault(anchor, []).append(rid)
-            for anchor, ids in by_anchor.items():
-                groups.append({"id": "G" + str(len(groups) + 1),
-                               "anchor_id": anchor, "requirement_ids": ids})
-            dispositions.update(status)
-            if cached is None and all(value == "grouped" for value in status.values()):
-                checkpoint.save(payload, {rid: _text(row, "group") for rid, row in replies.items()})
+                status[rid] = "grouped"
+                by_anchor.setdefault(anchor, []).append(rid)
+        for anchor, ids in by_anchor.items():
+            groups.append({"id": "G" + str(len(groups) + 1),
+                           "anchor_id": anchor, "requirement_ids": ids})
+        dispositions.update(status)
+        if cached is None and all(value == "grouped" for value in status.values()):
+            checkpoint.save(payload, {rid: _text(row, "group") for rid, row in replies.items()})
     _record_draft_diagnostic("function_group", {
         "batches": calls, "cache_hits": cache_hits, "unexpected_rows": unexpected, "groups": len(groups),
         "status_counts": dict(Counter(dispositions.values())),
@@ -231,7 +233,7 @@ def analyze_functions(cfg, records, context, emit, *, reset_cache=False):
                 result["direct"] = True
         return decisions
 
-    for index, group in enumerate(groups, 1):
+    for index, group in enumerate(tracked(emit, "function_allocation", groups), 1):
         ids = group["requirement_ids"]
         payload = evidence_payload(ids, 10000)
         if payload is None:

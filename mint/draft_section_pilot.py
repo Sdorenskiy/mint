@@ -18,6 +18,7 @@ from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 
 from .document_context import confirm_context
+from .draft_progress import tracked
 from .draft_derivation import derive_requirements, validate_candidates, assess_candidates
 from .draft_function_analysis import analyze_functions, _compact, _unique_answers
 from .draft_registry import build_registry
@@ -271,7 +272,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     sources = list(dict.fromkeys(sources))
     if set(source_roles) - set(sources):
         raise ValueError("Invalid registry source role")
-    documents = _load_draft_sources(cfg, sources, issues)
+    documents = _load_draft_sources(cfg, sources, issues, emit=emit)
     roles = {name: source_roles[name] for name, _ in documents if name in source_roles}
     registry = build_registry(cfg, documents, roles, issues, emit, reset_cache=reset_extract_cache)
     records = registry["requirements"]
@@ -286,7 +287,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     repairs = {}
     repair_skipped = 0
     next_id = len(proposals) + 1
-    for index, (rid, candidates) in enumerate(grouped.items(), 1):
+    for index, (rid, candidates) in enumerate(tracked(emit, "pilot_coverage", grouped.items()), 1):
         emit("pilot_coverage", index)
         feedback = {}
         status = _review_need(cfg, records[rid], candidates, records, context, title, feedback)
@@ -303,11 +304,12 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
             repair_skipped += 1
         allocation = analysis["allocations"].get(rid, {})
         if actionable and allocation.get("state_refs"):
-            emit("pilot_repair", len(repairs) + 1)
+            emit("pilot_repair_total", 1)
             repaired, repair_status = _repair_need(
                 cfg, records[rid], candidates, records, context, title,
                 allocation, {"status": status, **feedback}, next_id, emit)
             repairs[rid] = {"initial_status": status, "status": repair_status}
+            emit("pilot_repair_done", 1)
             next_id += len(repaired)
             if repair_status == "model_covered":
                 # Keep final proposals and their identifiers consistent with Word anchors.
@@ -325,6 +327,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
     for item in selected:
         by_text.setdefault(item["text"], []).append(item)
     first = 0
+    emit("word_write_total", 1)
     if selected:
         paragraph = _write_section(target, doc, list(by_text))
         first = list(doc.element.body).index(paragraph._p)
@@ -337,6 +340,7 @@ def create_section_pilot(template, cfg, sources, source_roles, context, section_
               if e.tag.endswith("}p")]
     if actual != list(by_text):
         raise DraftError(tr("Не удалось прочитать файл DOCX."))
+    emit("word_write_done", 1)
     used = set()
     for text, items in by_text.items():
         refs = list(dict.fromkeys(rid for item in items

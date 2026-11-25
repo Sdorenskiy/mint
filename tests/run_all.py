@@ -21,6 +21,7 @@ SUITES = [
     ("MINT V2: сквозной пилот формирования раздела Word", ["test_draft_section_pilot.py"]),
     ("MINT V2: отчёт и обезличенная диагностика", ["test_draft_pilot_report.py"]),
     ("MINT V2: контрольная точка 1 — целевой реестр", ["test_draft_target_analysis.py"]),
+    ("MINT V2: ссылки оснований и прогресс", ["test_draft_references_progress.py"]),
     ("Пригодный к вычитке Word: титул, 7.1, цвета, таблицы, примеры и ссылки", ["test_draft_usable_word.py"]),
     ("Чат по документу Word: предложения, подтверждение, откат, источники и целостность", ["test_document_edit.py"]),
     ("Контекст создаваемого документа: определение из шаблона и подтверждение", ["test_document_context.py"]),

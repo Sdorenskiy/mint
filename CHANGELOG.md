@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Show completed/total counters and wall-clock stage progress in document drafting. Resolve explicit original-source cross-references in V2 registry, include bounded linked context and flag missing or ambiguous addresses. Development version 21.4.15.
+
 - Experimental checkpoint-1 registry: selected-source hybrid retrieval with original-revision verification, source section map, confirmed target profile, focused extraction and responsibility/change analysis with performance objectives. Review registry without generating Word. Development version 21.4.14.
 
 - Compact Word drafting results: collapse issues and detailed reports; replace separate diagnostics/review downloads with a single sanitized analysis JSON for the current run. Development version 21.4.13.

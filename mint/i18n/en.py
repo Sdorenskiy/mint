@@ -4,6 +4,15 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Чтение оригиналов оснований": "Reading original source documents",
+    "Поиск сведений о системе": "Retrieving system evidence",
+    "Разрешение перекрёстных ссылок": "Resolving cross-references",
+    "Сбор связанных фрагментов": "Collecting linked fragments",
+    "План разделов документа": "Document section plan",
+    "Запись Word": "Writing Word",
+    "Прошло {seconds} с": "Elapsed {seconds} s",
+    "Фрагментов с ошибками: {n}": "Fragments with errors: {n}",
+    "Связанные пункты оснований": "Linked source sections",
     "Карта разделов оснований": "Source section map",
     "Профиль целевой системы": "Target system profile",
     "Проверка ответственности и изменений": "Verifying responsibility and changes",

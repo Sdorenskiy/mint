@@ -39,8 +39,9 @@ def classify(cfg, requirements, context, issues, emit):
     for rid, item in requirements.items():
         normalized[rid] = {**item, "applicability": {
             "category": "uncertain", "actor": "", "reason": "Применимость не подтверждена"}}
-    for i, batch in enumerate(_batches(list(requirements.values()), lambda r: r["quote"],
-                                       size=MAX_CHARS * 2), 1):
+    from .draft_progress import tracked
+    batches = list(_batches(list(requirements.values()), lambda r: r["quote"], size=MAX_CHARS * 2))
+    for i, batch in enumerate(tracked(emit, "scope", batches), 1):
         emit("scope", i)
         groups += 1
         allowed = {r["id"]: r for r in batch}
