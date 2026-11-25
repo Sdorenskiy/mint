@@ -4,7 +4,7 @@
 
 ## Unreleased
 
-- V2 extracts original requirements with confirmed context independent of preliminary function selections; directed dossier retrieval supplements the initial scan before typing. Preliminary hints remain available for supplemental retrieval and allocation until the requirements-first grouping UI is implemented. Development version 21.4.20.
+- V2 requirements-first analysis: independent full scan, function discovery from original quotes, bounded additive dossier refinement and directed optional reference retrieval. Candidate many-to-many associations and reviewed primary allocation remain distinct. One collection action, individual requirement review by function, linked source clauses, clear stage labels, and local traceability workbook. Development version 21.4.20.
 
 - V2 separates original bases from optional wiki reference context (up to eight explicitly selected documents). Reference excerpts support interpretation but cannot become original needs or independent target metrics. Discovery failures are distinguished; section classification is shown in diagnostics, and repeat collection is hidden until a matching collection exists. Development version 21.4.19.
 
