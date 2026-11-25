@@ -112,7 +112,10 @@ def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, 
         valid, seen = [], set()
         items = reply.get("items") if isinstance(reply, dict) else None
         malformed = not isinstance(items, list)
-        for item in items if isinstance(items, list) else []:
+        if isinstance(items, list) and len(items) > 12:
+            malformed = True
+            counts["limited_searches"] += 1
+        for item in items[:12] if isinstance(items, list) else []:
             if not isinstance(item, dict):
                 malformed = True
                 continue
