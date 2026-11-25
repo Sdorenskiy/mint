@@ -8,6 +8,7 @@ from collections import Counter
 import re
 
 from .draft_checkpoint import DraftStageCheckpoint
+from .draft_progress import tracked
 
 from .template_draft import (DraftError, _batches, _json, _records, _requirements,
                              _record_draft_diagnostic, _text)
@@ -43,49 +44,50 @@ def _type_records(cfg, records, emit, *, reset_cache=False):
 
     groups = failed_groups = unknown_rows = duplicate_rows = cache_hits = 0
     checkpoint = DraftStageCheckpoint(cfg, "registry_type")
-    for offset in range(0, len(pending), _BATCH_LIMIT):
-        for batch in _batches(pending[offset:offset + _BATCH_LIMIT],
-                              lambda r: r["quote"] + r["section"] + r["source"]):
-            groups += 1
-            emit("registry_type", groups)
-            allowed = {row["id"] for row in batch}
-            payload = {"items": batch}
-            if reset_cache:
-                checkpoint.clear(payload)
-            cached = None if reset_cache else checkpoint.load(payload)
-            if (cached is not None and set(cached) == set(allowed)
-                    and all(kind in KINDS - {"uncertain"} for kind in cached.values())):
-                cache_hits += 1
-                for rid, kind in cached.items():
-                    records[rid].update(kind=kind, typing_status="classified")
+    batches = [batch for offset in range(0, len(pending), _BATCH_LIMIT)
+               for batch in _batches(pending[offset:offset + _BATCH_LIMIT],
+                                     lambda r: r["quote"] + r["section"] + r["source"])]
+    for batch in tracked(emit, "registry_type", batches):
+        groups += 1
+        emit("registry_type", groups)
+        allowed = {row["id"] for row in batch}
+        payload = {"items": batch}
+        if reset_cache:
+            checkpoint.clear(payload)
+        cached = None if reset_cache else checkpoint.load(payload)
+        if (cached is not None and set(cached) == set(allowed)
+                and all(kind in KINDS - {"uncertain"} for kind in cached.values())):
+            cache_hits += 1
+            for rid, kind in cached.items():
+                records[rid].update(kind=kind, typing_status="classified")
+            continue
+        try:
+            answers = _records(_json(cfg, "registry_type", payload), "items")
+        except DraftError:
+            failed_groups += 1
+            for rid in allowed:
+                records[rid]["typing_status"] = "batch_error"
+            continue
+        seen = set()
+        for answer in answers:
+            rid = _text(answer, "id")
+            if rid not in allowed:
+                unknown_rows += 1
                 continue
-            try:
-                answers = _records(_json(cfg, "registry_type", payload), "items")
-            except DraftError:
-                failed_groups += 1
-                for rid in allowed:
-                    records[rid]["typing_status"] = "batch_error"
+            row = records[rid]
+            if rid in seen:
+                duplicate_rows += 1
+                row.update(kind="uncertain", typing_status="duplicate_response")
                 continue
-            seen = set()
-            for answer in answers:
-                rid = _text(answer, "id")
-                if rid not in allowed:
-                    unknown_rows += 1
-                    continue
-                row = records[rid]
-                if rid in seen:
-                    duplicate_rows += 1
-                    row.update(kind="uncertain", typing_status="duplicate_response")
-                    continue
-                seen.add(rid)
-                kind = _text(answer, "kind")
-                if kind not in KINDS:
-                    row["typing_status"] = "invalid_kind"
-                    continue
-                row.update(kind=kind, typing_status=(
-                    "explicit_uncertain" if kind == "uncertain" else "classified"))
-            if all(records[rid]["typing_status"] == "classified" for rid in allowed):
-                checkpoint.save(payload, {rid: records[rid]["kind"] for rid in allowed})
+            seen.add(rid)
+            kind = _text(answer, "kind")
+            if kind not in KINDS:
+                row["typing_status"] = "invalid_kind"
+                continue
+            row.update(kind=kind, typing_status=(
+                "explicit_uncertain" if kind == "uncertain" else "classified"))
+        if all(records[rid]["typing_status"] == "classified" for rid in allowed):
+            checkpoint.save(payload, {rid: records[rid]["kind"] for rid in allowed})
 
     _record_draft_diagnostic("registry_type", {
         "groups": groups, "failed_groups": failed_groups, "cache_hits": cache_hits,
