@@ -727,6 +727,8 @@ def collect_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     if summaries:
         collected["review_cards"] = review_cards(cfg, collected, prepared["context"],
                                                  progress or (lambda *_: None), _json)
+    collected["diagnostics"]["intermediate_review"] = {"confirmed": 0, "excluded": 0, "comments": 0,
+                                                       "cards": len(collected.get("review_cards", []))}
     _check_originals(cfg, prepared)
     return collected
 
