@@ -154,9 +154,10 @@ def _profile_candidates(cfg, spans, sections, roles, evidence, context):
         if sections[span["section_id"]]["role"] == "architecture":
             ids[sid] = None
     if not ids:
-        for sid, span in spans.items():
-            if span["source"] in preferred:
-                ids[sid] = None
+        pool = {sid: {"id": sid, "source": s["source"], "section": s["section"],
+                      "quote": s["text"]} for sid, s in spans.items()}
+        for row in _candidates(" ".join(queries), pool, size=_candidate_budget(cfg)):
+            ids[row["id"]] = None
     return _bounded_rows((spans[sid] for sid in ids),
                          max(0, _candidate_budget(cfg) - _payload_size(context) - 1000))
 
@@ -337,18 +338,29 @@ def _group_decisions(decisions):
 def _proposals(cfg, groups, decisions, records, state, context, emit):
     proposed, questions, outcomes = [], [], {}
     budget = _candidate_budget(cfg)
-    # All groups are global. Oversized groups are explicitly unresolved; don't
-    # truncate away conditions to fit an arbitrary prompt.
+    # Keep global group IDs. Subdivide only the model payload if necessary.
+    def make_payload(group, ids):
+        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"]))
+        return {"context": context, "function": group["function"],
+                "needs": [_compact(records[rid]) for rid in ids],
+                "decisions": {rid: decisions[rid] for rid in ids},
+                "state": [state[k] for k in refs]}
+    batches = []
     for group in groups:
-        ids = group["requirement_ids"]
+        batch = []
+        for rid in group["requirement_ids"]:
+            if batch and _payload_size(make_payload(group, batch + [rid])) > budget:
+                batches.append((group, batch))
+                batch = []
+            batch.append(rid)
+        if batch:
+            batches.append((group, batch))
+    for group, ids in batches:
         changes = [rid for rid in ids if decisions[rid]["change"] != "already_supported"]
         if not changes:
             continue
         refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"]))
-        payload = {"context": context, "function": group["function"],
-                   "needs": [_compact(records[rid]) for rid in ids],
-                   "decisions": {rid: decisions[rid] for rid in ids},
-                   "state": [state[k] for k in refs]}
+        payload = make_payload(group, ids)
         if _payload_size(payload) > budget:
             outcomes.update(dict.fromkeys(changes, "group_context_limit"))
             continue
@@ -406,11 +418,12 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             outcomes[rid] = ("model_supported_candidates" if all(c["assessment"] == "model_supported" for c in rows)
                              else "needs_review")
     # Independent group-level coverage check, not just candidate-level support.
-    for index, group in enumerate(groups, 1):
-        ids = [rid for rid in group["requirement_ids"] if outcomes.get(rid) == "model_supported_candidates"]
+    for index, (group, batch) in enumerate(batches, 1):
+        ids = [rid for rid in batch if outcomes.get(rid) == "model_supported_candidates"]
         if not ids:
             continue
-        rows = [c for c in proposed if c["group"] == group["id"] and c["assessment"] == "model_supported"]
+        rows = [c for c in proposed if c["group"] == group["id"] and c["assessment"] == "model_supported"
+                and set(c["need_refs"]) & set(ids)]
         refs = list(dict.fromkeys(k for row in rows for k in row["state_refs"] + row["constraint_refs"]))
         payload = {"context": context, "items": [_compact(records[rid]) for rid in ids],
                    "proposals": rows, "evidence": [_compact(({**records, **state})[k]) for k in refs]}
@@ -450,8 +463,8 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         chunks[span["source"]].append((span["fragment"], span["section"], span["text"]))
     issues = list(prepared["issues"])
     fragment_status = {}
-    focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"],
-                                                "description": p["description"]} for p in profile.values()]}
+    focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
+                                                for p in profile.values()]}
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
@@ -479,7 +492,12 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         pool = list({item["id"]: item for item in pool}.values())
         base = {"context": context, "profile": focus["functions"],
                 "items": [{**_compact(row), "section_role": row["section_role"]}]}
-        pool = _bounded_rows(pool, max(0, _candidate_budget(cfg) - _payload_size(base) - 300))
+        budget = _candidate_budget(cfg)
+        if _payload_size(base) > budget:
+            decisions[rid] = {"status": "allocation_context_limit", "change": "unknown",
+                              "category": "uncertain", "state_refs": [], "reason": ""}
+            continue
+        pool = _bounded_rows(pool, max(0, budget - _payload_size(base) - 300))
         # Evidence is a view over existing registry/source spans; no second search index.
         state.update({r["id"]: r for r in pool})
         answers, statuses, _ = _unique_answers(cfg, "target_allocation", {**base, "evidence": pool}, [rid])
@@ -511,8 +529,16 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
     diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
     diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
-    diagnostics["source_read_errors"] = len(prepared["roles"].keys() - prepared["hashes"].keys())
+    diagnostics["source_read_errors"] = len(prepared["issues"])
     _record_draft_diagnostic("target_registry", diagnostics)
+    # Confirm original revision again after long model processing.
+    for source, digest in prepared["hashes"].items():
+        try:
+            current = hashlib.sha256(source_path(cfg, source).read_bytes()).hexdigest()
+        except OSError:
+            current = None
+        if current != digest:
+            raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
     return {"requirements": records, "state_evidence": state, "groups": groups,
             "metrics_registry": {rid: d["metric"] for rid, d in decisions.items()
                                  if d["status"] == "model_supported" and "metric" in d},
