@@ -8,6 +8,7 @@ from collections import Counter
 import json
 
 from .document_context import confirm_context
+from .draft_progress import tracked
 from .draft_function_analysis import _compact, _unique_answers, _valid_refs, names_target, is_target
 from .draft_registry import obligation_candidates
 from .template_draft import (DraftError, _json, _numbers_supported,
@@ -87,6 +88,9 @@ def assess_candidates(cfg, candidates, records, target, emit):
         return {"id": candidate["id"], "candidate": candidate,
                 "evidence": [_compact(records[rid]) for rid in refs]}
 
+    completed = 0
+    emit("requirement_assessment_total", len(candidates))
+
     def assess(batch):
         if not batch:
             return
@@ -119,6 +123,12 @@ def assess_candidates(cfg, candidates, records, target, emit):
                                        if rid in replies and rid not in duplicates
                                        else "assessment_incomplete")
 
+    def finish_batch(batch):
+        nonlocal completed
+        assess(batch)
+        completed += len(batch)
+        emit("requirement_assessment_done", completed)
+
     batch = []
     budget = _candidate_budget(cfg)
     for candidate in candidates:
@@ -126,10 +136,11 @@ def assess_candidates(cfg, candidates, records, target, emit):
         if batch and (len(proposed) > 4 or len(json.dumps(
                 {"target": target, "items": [payload(c) for c in proposed]},
                 ensure_ascii=False)) > budget):
-            assess(batch)
+            finish_batch(batch)
             batch = []
         batch.append(candidate)
-    assess(batch)
+    if batch:
+        finish_batch(batch)
 
 
 def derive_requirements(cfg, records, analysis, context, emit):
@@ -148,7 +159,7 @@ def derive_requirements(cfg, records, analysis, context, emit):
     dispositions = dict.fromkeys(functional, "allocation_unresolved")
     proposed, questions = [], []
     unexpected = calls = 0
-    for rid, need in functional.items():
+    for rid, need in tracked(emit, "requirement_derivation", functional.items()):
         allocation = analysis.get("allocations", {}).get(rid, {})
         if allocation.get("status") != "proposed":
             continue
