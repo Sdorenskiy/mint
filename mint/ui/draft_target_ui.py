@@ -32,12 +32,17 @@ def _review_collection(collected, prepared, expert):
     selected, notes = [], {}
     st.subheader(tr("Собранные требования перед декомпозицией"))
     st.caption(tr("Сводные формулировки — черновик модели по всей функции. Выбор меняет область декомпозиции, но не исходную сводку. Декомпозиция опирается на цитаты и проверенное распределение."))
-    candidates = sum(len(row["need_refs"]) for rows in collected["summaries"].values() for row in rows)
+    candidates = sum(decisions[rid]["change"] != "already_supported"
+                     for group in collected["groups"] for rid in group["requirement_ids"])
     st.caption(tr("Функций: {n}; исходных потребностей для детализации: {count}.", n=len(collected["groups"]), count=candidates))
     for group in collected["groups"]:
         gid = group["id"]
         ids = [rid for rid in group["requirement_ids"] if decisions[rid]["change"] != "already_supported"]
         rows = collected["summaries"].get(gid, [])
+        if not rows and ids:
+            # Automatic collection has no summary calls; allow later expert
+            # review of the original needs without rescanning the sources.
+            rows = [{"status": "not_requested", "need_refs": ids}]
         if not ids:
             continue
         with st.expander(f"{group['function']} · {len(ids)}", expanded=len(collected["groups"]) == 1):
@@ -131,7 +136,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         with st.status(tr("Распределение ответственности"), expanded=False) as status:
             try:
                 collected = collect_target_requirements(cfg, prepared, selected, render_progress(status),
-                                                       reset_cache=reset_cache)
+                                                       reset_cache=reset_cache, summaries=expert)
             except (DraftError, OSError, ValueError, KeyError, RuntimeError):
                 status.update(label=tr("Не удалось собрать исходные требования."), state="error")
             else:
@@ -150,7 +155,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     if not approved or not collected_item or collected_item[0] != identity:
         return
     collected = collected_item[1]
-    chosen, notes = _review_collection(collected, prepared, expert)
+    chosen, notes = _review_collection(collected, prepared, expert) if expert else ([], {})
     saved = session.get("target_registry_result")
     desired_mode = "expert" if expert else "automatic"
     def matches(item):
