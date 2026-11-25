@@ -686,7 +686,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         for item in pool:
             unique.setdefault(item["id"], item)
         pool = list(unique.values())
-        base = {"context": context, "profile": [{"id": p["id"], "name": p["name"]} for p in profile.values()],
+        base = {"context": context, "profile": list(focus["functions"]),
                 "items": [{**_compact(row), "section_role": row["section_role"]}]}
         if linked or gaps:
             base["reference_status"] = {"linked_ids": [r["id"] for r in linked], "gaps": gaps}
@@ -710,10 +710,19 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         pool.extend(_bounded_rows(unique_extras.values(), free))
         # Evidence is a view over existing registry/source spans; no second search index.
         # Preserve A and linked evidence first. Only use unused budget for B.
+        allocation_profile = dict(base_profile)
         if wiki_pool:
             free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
-            wiki = _bounded_rows(_candidates(query, wiki_pool, size=min(free, budget // 5)),
-                                 min(free, budget // 5)) if free else []
+            # Add B hints only together with supporting spans, after A has its
+            # original budget. Neither a B label nor its evidence displaces A.
+            extra_budget = min(free, budget // 5)
+            wiki = _bounded_rows(_candidates(query, wiki_pool, size=extra_budget), extra_budget)
+            wiki_ids = {r["id"] for r in wiki}
+            spare = max(0, extra_budget - sum(_payload_size(r) + 2 for r in wiki))
+            hints = _bounded_rows(({"id": p["id"], "name": p["name"]} for p in profile.values()
+                                   if p.get("origin") == "reference" and set(p["refs"]) <= wiki_ids), spare)
+            base["profile"].extend(hints)
+            allocation_profile.update({p["id"]: profile[p["id"]] for p in hints})
             pool.extend(wiki)
             wiki_counts["needs_with_context"] += int(bool(wiki))
             wiki_counts["spans_supplied"] += len(wiki)
@@ -738,7 +747,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
             decisions[rid] = {"status": statuses[rid], "change": "unknown", "category": "uncertain",
                               "state_refs": [], "reason": ""}
             continue
-        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, profile,
+        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, allocation_profile,
                                             context["target"])
         decision = decisions[rid]
         if decision["status"] == "proposed" and decision.get("function") in dossier_ids:
