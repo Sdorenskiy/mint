@@ -598,7 +598,7 @@ def _verify_originals(cfg, prepared):
         if current != digest:
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
 
-def _functions_from_records(cfg, records, references, spans, context, emit):
+def _functions_from_records(cfg, records, references, spans, context, emit, *, existing=()):
     """Discover bounded functional hypotheses from the independent scan.
     Keep each original R-ID; one record can support several functions.
     A capped or incomplete discovery is not a completeness claim.
@@ -606,10 +606,13 @@ def _functions_from_records(cfg, records, references, spans, context, emit):
     rows = [{"id": rid, "source": r["source"], "section": r["section"], "text": r["quote"]}
             for rid, r in records.items()]
     budget = max(0, _candidate_budget(cfg) - _payload_size(context) - 1000)
-    functions, counts = {}, Counter()
-    for batch in _batches(rows, lambda r: json.dumps(r, ensure_ascii=False), size=max(1, budget)):
-        batch = _bounded_rows(batch, budget)
-        proposed, status = _propose_profile(cfg, batch, context, emit, from_requirements=True)
+    functions = {_normalized(p["name"]).casefold(): p for p in existing}
+    counts = Counter()
+    batches = list(_batches(rows, lambda r: json.dumps(r, ensure_ascii=False), size=max(1, budget)))
+    for batch in tracked(emit, "target_function_discovery", batches):
+        bounded = _bounded_rows(batch, budget)
+        counts["context_limit"] += len(batch) - len(bounded)
+        proposed, status = _propose_profile(cfg, bounded, context, lambda *_: None, from_requirements=True)
         counts[status] += 1
         for p in proposed:
             key = _normalized(p["name"]).casefold()
@@ -684,6 +687,24 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
         dossier_counts.update(counts)
         dossier_counts["supplemental_records"] = merge_dossier_quotes(
             records, dossiers, spans, prepared["documents"])
+        # One bounded follow-up only for newly discovered original citations.
+        # A new function gets the same dossier analysis, without a recursive loop.
+        added = {rid: r for rid, r in records.items() if rid not in original_ids}
+        if automatic_functions and added:
+            prior = set(base_profile)
+            discovered, counts = _functions_from_records(cfg, added, references, spans, context, emit,
+                                                          existing=base_profile.values())
+            base_profile.update(discovered)
+            profile.update(discovered)
+            function_counts.update(counts)
+            new_functions = {pid: p for pid, p in discovered.items() if pid not in prior}
+            if new_functions:
+                more, counts = collect_dossiers(cfg, evidence, references, new_functions, context, emit, _json,
+                                                reset_cache=reset_cache)
+                dossier_counts.update(counts)
+                dossier_counts["supplemental_records"] += merge_dossier_quotes(
+                    records, more, spans, prepared["documents"])
+                dossiers.update(more)
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=extraction_focus, prepared_chunks=chunks,
