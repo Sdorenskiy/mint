@@ -5,6 +5,8 @@ Every original fragment is screened; retrieval ranks supporting evidence and
 never substitutes for the original. All outputs are local, not expert approval.
 """
 from collections import Counter
+from copy import deepcopy
+from .draft_review_gate import review_cards, validate_review
 import hashlib
 import json
 import re
@@ -399,16 +401,20 @@ def _group_decisions(decisions):
              "requirement_ids": ids} for i, ids in enumerate(grouped.values(), 1)]
 
 
-def _proposals(cfg, groups, decisions, records, state, context, emit):
+def _proposals(cfg, groups, decisions, records, state, context, emit, *, notes=None):
+    notes = notes or {}
     proposed, questions, outcomes = [], [], {}
     budget = _candidate_budget(cfg)
     # Keep global group IDs. Subdivide only the model payload if necessary.
     def make_payload(group, ids):
         refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []) + decisions[rid].get("dossier_refs", [])))
-        return {"context": context, "function": group["function"],
+        payload = {"context": context, "function": group["function"],
                 "needs": [_compact(records[rid]) for rid in ids],
                 "decisions": {rid: decisions[rid] for rid in ids},
                 "state": [state[k] for k in refs]}
+        if group["id"] in notes:
+            payload["expert_comment"] = notes[group["id"]]
+        return payload
     batches = []
     for group in groups:
         batch = []
@@ -520,12 +526,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
     return proposed, questions, outcomes
 
 
-@_measure_draft
-def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
-    """Stage C/D; explicit profile confirmation, no DOCX generation."""
-    emit = progress or (lambda *_: None)
-    context = prepared["context"]
-    # Verify originals have not changed between profile and analysis.
+def _check_originals(cfg, prepared):
     for source, digest in prepared["hashes"].items():
         try:
             current = hashlib.sha256(source_path(cfg, source).read_bytes()).hexdigest()
@@ -533,6 +534,13 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             current = None
         if current != digest:
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
+
+
+def _collect_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
+    """Collect and verify source obligations without decomposition."""
+    emit = progress or (lambda *_: None)
+    context = prepared["context"]
+    _check_originals(cfg, prepared)
     profile = {p["id"]: p for p in approved_profile}
     offered = {p["id"]: p for p in prepared["profile"]}
     if any(offered.get(k) != p for k, p in profile.items()):
@@ -666,7 +674,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             decisions[rid]["reference_gaps"] = gaps
     verification_counts = _verify_decisions(cfg, decisions, records, state, context, emit, reset_cache=reset_cache)
     groups = _group_decisions(decisions)
-    proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state, context, emit)
+    proposals, questions, outcomes = [], [], {}
     # Every extracted record has a visible disposition; "external" is verified separately.
     for rid, row in records.items():
         decision = decisions.get(rid)
@@ -695,17 +703,83 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     diagnostics["source_read_errors"] = len(prepared["issues"])
     _record_draft_diagnostic("target_registry", diagnostics)
     # Confirm original revision again after long model processing.
-    for source, digest in prepared["hashes"].items():
-        try:
-            current = hashlib.sha256(source_path(cfg, source).read_bytes()).hexdigest()
-        except OSError:
-            current = None
-        if current != digest:
-            raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
+    _check_originals(cfg, prepared)
     return {"requirements": records, "state_evidence": state, "groups": groups,
             "metrics_registry": {rid: d["metric"] for rid, d in decisions.items()
                                  if d["status"] == "model_supported" and "metric" in d},
             "decisions": decisions, "proposals": proposals, "questions": questions,
             "linked_by_need": linked_by_need, "dossiers": dossiers, "approved_profile": list(profile.values()),
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
-            "diagnostics": diagnostics, "requires_expert_review": True}
+            "diagnostics": diagnostics, "requires_expert_review": True,
+            "collection_identity": _collection_identity(prepared), "phase": "collected"}
+
+
+def _collection_identity(prepared):
+    return hashlib.sha256(json.dumps({k: prepared[k] for k in ("hashes", "context", "roles")},
+                                     sort_keys=True, ensure_ascii=False).encode()).hexdigest()
+
+
+@_measure_draft
+def collect_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False,
+                            summaries=True):
+    collected = _collect_target_registry(cfg, prepared, approved_profile, progress, reset_cache=reset_cache)
+    if summaries:
+        collected["review_cards"] = review_cards(cfg, collected, prepared["context"],
+                                                 progress or (lambda *_: None), _json)
+    _check_originals(cfg, prepared)
+    return collected
+
+
+def _finish_target_registry(cfg, prepared, collected, progress=None, *, excluded=(), notes=None,
+                            reviewed=False):
+    if collected.get("phase") != "collected" or collected.get("collection_identity") != _collection_identity(prepared):
+        raise ValueError("Invalid or stale collection")
+    _check_originals(cfg, prepared)
+    if not reviewed and (excluded or notes):
+        raise ValueError("Expert confirmation required")
+    excluded, notes = validate_review(collected, excluded, notes or {})
+    result = deepcopy(collected)
+    records, decisions, state = result["requirements"], result["decisions"], result["state_evidence"]
+    groups = [{**g, "requirement_ids": [rid for rid in g["requirement_ids"] if rid not in excluded]}
+              for g in result["groups"]]
+    groups = [g for g in groups if g["requirement_ids"]]
+    proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state,
+                                               prepared["context"], progress or (lambda *_: None), notes=notes)
+    result["dispositions"].update(outcomes)
+    result["dispositions"].update(dict.fromkeys(excluded, "expert_excluded"))
+    result.update(proposals=proposals, questions=questions, phase="derived",
+                  expert_review={"confirmed": reviewed, "excluded": sorted(excluded), "notes": notes})
+    diagnostics = result["diagnostics"]
+    diagnostics["outcomes"] = dict(Counter(result["dispositions"].values()))
+    diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
+    diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
+    diagnostics["dossiers"].update(summarize_dossiers(result["dossiers"], decisions,
+                                                       result["dispositions"], proposals))
+    diagnostics["intermediate_review"] = {"confirmed": int(reviewed), "excluded": len(excluded),
+                                          "comments": len(notes), "cards": len(result.get("review_cards", []))}
+    _record_draft_diagnostic("target_registry", diagnostics)
+    _check_originals(cfg, prepared)
+    return result
+
+
+_measured_finish = _measure_draft(_finish_target_registry)
+
+
+def finalize_target_registry(cfg, prepared, collected, progress=None, *, excluded=(), notes=None,
+                             reviewed=False):
+    """Resume from a collected snapshot; retain both stages' active timings."""
+    result = _measured_finish(cfg, prepared, collected, progress, excluded=excluded, notes=notes,
+                              reviewed=reviewed)
+    first = collected.get("metrics", {})
+    final = result["metrics"]
+    final["total_seconds"] = round(first.get("total_seconds", 0) + final["total_seconds"], 3)
+    final["stages"] = {**first.get("stages", {}), **final["stages"]}
+    final["diagnostics"] = {**first.get("diagnostics", {}), **final["diagnostics"]}
+    return result
+
+
+@_measure_draft
+def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
+    """Backward-compatible automatic path without an intermediate model call."""
+    collected = _collect_target_registry(cfg, prepared, approved_profile, progress, reset_cache=reset_cache)
+    return _finish_target_registry(cfg, prepared, collected, progress)
