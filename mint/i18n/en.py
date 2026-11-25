@@ -97,7 +97,6 @@ EN = {
     "Подтверждающие сведения": "Supporting evidence",
     "Функции не подтверждены источниками; анализ может выявить прямые обязанности и пробелы.": "No functions were confirmed by sources; analysis can identify direct duties and gaps.",
     "Подтверждаю выбранный профиль и неизвестные границы": "Confirm selected profile and unknown boundaries",
-    "Сформировать реестр требований": "Build requirement registry",
     "Не удалось сформировать реестр требований.": "Could not build the requirement registry.",
     "Реестр подготовлен": "Registry prepared",
     "Реестр требований к целевой системе": "Target-system requirement registry",
