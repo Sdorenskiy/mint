@@ -191,7 +191,7 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None):
     emit = progress or (lambda *_: None)
     context = confirm_context(context)
     issues, hashes = [], {}
-    documents = _load_draft_sources(cfg, sources, issues, source_hashes=hashes)
+    documents = _load_draft_sources(cfg, sources, issues, source_hashes=hashes, emit=emit)
     spans, sections = _map_sources(documents, roles)
     _classify_sections(cfg, sections, context, emit)
     evidence = OriginalEvidence(cfg, spans, hashes)
