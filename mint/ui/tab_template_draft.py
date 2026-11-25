@@ -15,6 +15,7 @@ from .draft_pilot_report_ui import render_pilot_report
 from .document_edit_chat import render_draft_edit_chat
 from .draft_context_ui import render_draft_context
 from .draft_traceability_ui import render_draft_traceability
+from .draft_target_ui import render_target_registry
 
 
 def render_template_draft_tab(cfg, glossary):
@@ -24,6 +25,8 @@ def render_template_draft_tab(cfg, glossary):
     engine = st.radio(tr("Режим формирования"), list(engines), horizontal=True,
                       key="draft_engine", format_func=engines.__getitem__)
     pilot = engine == "v2"
+    registry_only = pilot and st.checkbox(tr("Сначала проверить реестр требований (без Word)"),
+                                          value=True, key="draft_registry_only")
     example = False if pilot else st.radio(
         tr("Что загружаете"), [False, True], horizontal=True, key="draft_mode",
         format_func=mode_labels.__getitem__)
@@ -40,7 +43,8 @@ def render_template_draft_tab(cfg, glossary):
     roles = {}
     section_index = None
     if pilot:
-        st.caption(tr("V2 формирует один выбранный раздел. Результат требует экспертной проверки."))
+        if not registry_only:
+            st.caption(tr("V2 формирует один выбранный раздел. Результат требует экспертной проверки."))
         role_labels = {"need": tr("Исходные требования"), "architecture": tr("Описание решения"),
                        "normative": tr("Нормативные документы"), "mixed": tr("Смешанное содержание"),
                        "unspecified": tr("Роль не определена")}
@@ -50,37 +54,38 @@ def render_template_draft_tab(cfg, glossary):
                     name, sorted(SOURCE_ROLES, key=lambda role: (role != "unspecified", role)),
                     format_func=role_labels.__getitem__,
                     key="draft_pilot_role_" + hashlib.sha256(name.encode("utf-8")).hexdigest())
-        options = []
-        if raw:
-            try:
-                options = pilot_section_options(raw)
-            except DraftError as exc:
-                st.warning(str(exc))
-        sections = [row for row in options if row["status"] in {"empty", "instruction"}]
-        status_labels = {
-            "empty": tr("Пустой раздел"),
-            "instruction": tr("Раздел с подсказками"),
-            "fixed_content": tr("Содержит обычный текст или неоднозначную подсказку"),
-            "protected": tr("Защищённый заголовок или сложные элементы Word"),
-        }
-        if sections:
-            labels = {row["index"]: f'{row["title"]} — {status_labels[row["status"]]}' for row in sections}
-            section_index = st.selectbox(
-                tr("Раздел для формирования"), list(labels), index=None,
-                format_func=labels.__getitem__,
-                key="draft_pilot_section_" + hashlib.sha256(raw).hexdigest())
-            if section_index is not None:
-                selected = next(row for row in sections if row["index"] == section_index)
-                if selected["status"] == "instruction":
-                    st.caption(tr("Подсказки и явные примеры заменяются только после успешной проверки результата."))
-        elif raw:
-            st.warning(tr("Нет разделов, безопасных для формирования V2."))
-        if options:
-            with st.expander(tr("Распознанные разделы и причины ограничений"), expanded=False):
-                for row in options:
-                    st.text(f'{row["title"]} — {status_labels[row["status"]]}')
-        elif raw:
-            st.caption(tr("Заголовки разделов не распознаны. Проверьте структуру Word."))
+        if not registry_only:
+            options = []
+            if raw:
+                try:
+                    options = pilot_section_options(raw)
+                except DraftError as exc:
+                    st.warning(str(exc))
+            sections = [row for row in options if row["status"] in {"empty", "instruction"}]
+            status_labels = {
+                "empty": tr("Пустой раздел"),
+                "instruction": tr("Раздел с подсказками"),
+                "fixed_content": tr("Содержит обычный текст или неоднозначную подсказку"),
+                "protected": tr("Защищённый заголовок или сложные элементы Word"),
+            }
+            if sections:
+                labels = {row["index"]: f'{row["title"]} — {status_labels[row["status"]]}' for row in sections}
+                section_index = st.selectbox(
+                    tr("Раздел для формирования"), list(labels), index=None,
+                    format_func=labels.__getitem__,
+                    key="draft_pilot_section_" + hashlib.sha256(raw).hexdigest())
+                if section_index is not None:
+                    selected = next(row for row in sections if row["index"] == section_index)
+                    if selected["status"] == "instruction":
+                        st.caption(tr("Подсказки и явные примеры заменяются только после успешной проверки результата."))
+            elif raw:
+                st.warning(tr("Нет разделов, безопасных для формирования V2."))
+            if options:
+                with st.expander(tr("Распознанные разделы и причины ограничений"), expanded=False):
+                    for row in options:
+                        st.text(f'{row["title"]} — {status_labels[row["status"]]}')
+            elif raw:
+                st.caption(tr("Заголовки разделов не распознаны. Проверьте структуру Word."))
 
     def input_key():
         versions = []
@@ -96,6 +101,10 @@ def render_template_draft_tab(cfg, glossary):
     context = render_draft_context(cfg, raw, sources if not missing else [], base_key)
     key = (base_key, tuple(sorted(context.items())) if context else None,
            engine, section_index, tuple(sorted(roles.items())))
+    if registry_only:
+        render_target_registry(cfg, key, sources, roles, context,
+                               bool(raw and sources and context and not missing), reset_extract_cache)
+        return
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources and context) or bool(missing) or (pilot and section_index is None), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=False) as status:
