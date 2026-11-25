@@ -612,11 +612,12 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         chunks[span["source"]].append((span["fragment"], span["section"], span["text"]))
     issues = list(prepared["issues"])
     fragment_status = {}
-    # Keep the previous A-only extraction focus and checkpoint identity.
-    # B must never change which original fragments are extracted or typed.
+    # Preliminary functions are supplemental retrieval hints, not an
+    # input to the independent full scan of original requirements.
     base_profile = {pid: p for pid, p in profile.items() if p.get("origin") != "reference"}
     focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
                                                 for p in base_profile.values()]}
+    extraction_focus = {"context": context, "functions": []}
     references = prepared["references"]
     # Include referenced originals for comprehension, never as a source of
     # quotations attributed to the current fragment. Reuse source revision
@@ -626,21 +627,26 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         if not references.edges.get(sid):
             continue
         related, gaps = references.related([sid], budget=max(0, min(5000,
-            _candidate_budget(cfg) - len(span["text"]) - _payload_size(focus) - 1000)))
+            _candidate_budget(cfg) - len(span["text"]) - _payload_size(extraction_focus) - 1000)))
         if related or gaps:
             reference_contexts[(span["source"], span["fragment"])] = {"items": related, "gaps": gaps}
     revision = hashlib.sha256(json.dumps({"version": 1, "hashes": prepared["hashes"]}, sort_keys=True).encode()).hexdigest()
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
-    dossiers, dossier_counts = collect_dossiers(cfg, evidence, references, base_profile, context, emit, _json,
-                                               reset_cache=reset_cache)
+    dossiers, dossier_counts = {}, Counter()
     original_ids = set()
     def supplement(records):
+        # build_registry calls this only after extracting original records.
+        # Keep the existing merge/typing pipeline; never replace originals.
         original_ids.update(records)
+        found, counts = collect_dossiers(cfg, evidence, references, base_profile, context, emit, _json,
+                                         reset_cache=reset_cache)
+        dossiers.update(found)
+        dossier_counts.update(counts)
         dossier_counts["supplemental_records"] = merge_dossier_quotes(
             records, dossiers, spans, prepared["documents"])
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
-                              reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
+                              reset_cache=reset_cache, focus=extraction_focus, prepared_chunks=chunks,
                               fragment_status=fragment_status, reference_contexts=reference_contexts,
                               reference_revision=revision, supplement=supplement)
     records = registry["requirements"]
