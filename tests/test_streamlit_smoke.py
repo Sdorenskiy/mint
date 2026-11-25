@@ -156,19 +156,29 @@ try:
                       "source": source_, "section": "1"}}, "decisions": {"R1": {"change": "new", "status": "model_supported"}},
                       "proposals": [], "questions": [], "issues": [], "dossiers": {}, "metrics_registry": {},
                       "summaries": {}, "dispositions": {"R1": "awaiting_decomposition"}, "state_evidence": {}}
+        preview_ = {"phase": "function_preview", "input_identity": "fixture", "approved_profile": profile_,
+                    "metrics": {"run_id": "wizard-preview"}, "requirements": collected_["requirements"],
+                    "applicability": {"R1": {"category": "target", "actor": "Fixture", "reason": "fixture"}},
+                    "function_links": {"R1": ["C1"]}}
+        collected_.update(selected_functions=["C1"], function_links={"R1": ["C1"]})
         derived_ = {**collected_, "phase": "decomposed", "metrics": {"run_id": "wizard-derived"},
                     "review": {"mode": "expert", "included": ["R1"], "excluded": [], "notes": {"G1": "fixture note"}}}
         with patch.object(wizard_ui, "input_identity", return_value="fixture"), \
              patch.object(target_ui, "prepare_target_analysis", return_value=prepared_) as prep_, \
-             patch.object(target_ui, "collect_target_requirements", return_value=collected_) as collect_, \
+             patch.object(target_ui, "collect_target_requirements", side_effect=[preview_, collected_]) as collect_, \
              patch.object(target_ui, "decompose_target_requirements", return_value=derived_) as derive_:
             at.run()
             res["wizard_no_early_repeat"] = not has_button(at, "target_collect_again")
             res["wizard_no_section_map"] = not any(e.label == "Карта разделов оснований" for e in at.expander)
             res["wizard_no_preliminary_profile"] = not any(w.label == "Fixture function" for w in at.checkbox)
             at.button(key="target_analyze").click().run()
+            res["wizard_preview"] = (at.session_state["draft_wizard_step"] == 2
+                and collect_.call_count == 1 and derive_.call_count == 0)
+            at.checkbox(key="target_function_pick_wizard-preview_C1").check().run()
+            at.button(key="target_analyze").click().run()
             res["wizard_collection"] = (at.session_state["draft_wizard_step"] == 3
-                and not has_button(at, "target_analyze") and collect_.call_count == 1 and derive_.call_count == 0)
+                and not has_button(at, "target_analyze") and collect_.call_count == 2 and derive_.call_count == 0
+                and collect_.call_args.kwargs["selected_functions"] == ["C1"])
             at.text_area(key="target_review_note_wizard-run_G1").set_value("fixture note").run()
             at.button(key="target_decompose").click().run()
             res["wizard_result"] = at.session_state["draft_wizard_step"] == 4 and derive_.call_count == 1
@@ -176,20 +186,21 @@ try:
             res["wizard_review_retained"] = at.text_area(key="target_review_note_wizard-run_G1").value == "fixture note"
             at.button(key="target_decompose").click().run()
             at.button(key="wizard_stage_2").click().run()
-            res["wizard_profile_retained"] = not any(w.label == "Fixture function" for w in at.checkbox) and not has_button(at, "target_prepare")
+            res["wizard_profile_retained"] = at.checkbox(key="target_function_pick_wizard-preview_C1").value and not has_button(at, "target_prepare")
             res["wizard_repeat_visible"] = has_button(at, "target_collect_again")
             at.button(key="target_analyze").click().run()
             at.button(key="target_decompose").click().run()
-            res["wizard_no_repeat"] = prep_.call_count == collect_.call_count == derive_.call_count == 1
+            res["wizard_no_repeat"] = prep_.call_count == derive_.call_count == 1 and collect_.call_count == 2
             at.button(key="wizard_stage_1").click().run()
             at.button(key="wizard_materials_next").click().run()
             res["wizard_same_materials"] = ("target_registry_result" in at.session_state
-                                             and prep_.call_count == collect_.call_count == derive_.call_count == 1)
+                                             and prep_.call_count == derive_.call_count == 1 and collect_.call_count == 2)
             at.button(key="wizard_stage_1").click().run()
             role_key = "wizard_role_" + hashlib.sha256(source_.encode("utf-8")).hexdigest()
             at.selectbox(key=role_key).set_value("mixed").run()
             at.button(key="wizard_materials_next").click().run()
             res["wizard_invalidated"] = ("target_registry_collected" not in at.session_state
+                                           and "target_registry_preview" not in at.session_state
                                            and "target_registry_result" not in at.session_state
                                            and at.session_state["draft_wizard_step"] == 2)
             res["errors"] += errors(at)
@@ -267,7 +278,7 @@ check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"ш
 check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
 check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v2_restored")),
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
-check(all(res.get(k) for k in ("wizard_collection", "wizard_result", "wizard_review_retained",
+check(all(res.get(k) for k in ("wizard_preview", "wizard_collection", "wizard_result", "wizard_review_retained",
                                "wizard_profile_retained", "wizard_no_repeat", "wizard_same_materials",
                                "wizard_invalidated", "wizard_no_preliminary_profile", "wizard_no_early_repeat", "wizard_no_section_map", "wizard_repeat_visible")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
       str({k: v for k, v in res.items() if k.startswith("wizard_")}))
