@@ -12,6 +12,8 @@ import re
 from .document_context import confirm_context
 from .draft_progress import tracked
 from .draft_references import ReferenceMap
+from .draft_dossiers import collect_dossiers, merge_dossier_quotes, dossier_context, summarize_dossiers
+from .draft_checkpoint import DraftStageCheckpoint
 from .draft_function_analysis import _compact, _unique_answers, _valid_refs, is_target
 from .draft_registry import build_registry, OBLIGATION_KINDS
 from .draft_derivation import assess_candidates
@@ -489,16 +491,22 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         if related or gaps:
             reference_contexts[(span["source"], span["fragment"])] = {"items": related, "gaps": gaps}
     revision = hashlib.sha256(json.dumps({"version": 1, "hashes": prepared["hashes"]}, sort_keys=True).encode()).hexdigest()
+    evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
+    dossiers, dossier_counts = collect_dossiers(cfg, evidence, references, profile, context, emit, _json,
+                                               reset_cache=reset_cache)
+    def supplement(records):
+        dossier_counts["supplemental_records"] = merge_dossier_quotes(
+            records, dossiers, spans, prepared["documents"], prepared["roles"])
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
                               fragment_status=fragment_status, reference_contexts=reference_contexts,
-                              reference_revision=revision)
+                              reference_revision=revision, supplement=supplement)
     records = registry["requirements"]
     roles_by_section = {(s["source"], s["section"]): s["role"] for s in sections.values()}
     for row in records.values():
         row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
-    evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
+    dossier_positions, dossier_ids = dossier_context(records, dossiers)
     decisions, state = {}, {}
     reference_counts = Counter()
     linked_by_need = {}
@@ -518,7 +526,9 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         linked_pool = [{"id": r["id"], "source": r["source"], "section": r["section"],
                         "quote": r["quote"], "kind": "reference", "source_role": "unspecified"}
                        for r in linked]
-        pool = linked_pool + _search_records(cfg, evidence, records, {rid}, query)
+        # Preserve the original retrieval path. The dossier is supplemental.
+        original_pool = _search_records(cfg, evidence, records, {rid}, query)
+        pool = linked_pool + original_pool
         for p in profile.values():
             for sid in p["refs"]:
                 s = spans[sid]
@@ -537,7 +547,19 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             decisions[rid] = {"status": "allocation_context_limit", "change": "unknown",
                               "category": "uncertain", "state_refs": [], "reason": ""}
             continue
-        pool = _bounded_rows(pool, max(0, budget - _payload_size(base) - 300))
+        remaining = max(0, budget - _payload_size(base) - 500)
+        matched_functions = set()
+        for pos in row.get("source_spans", []):
+            matched_functions.update(dossier_positions.get((pos["source"], pos["fragment"]), set()))
+        # Supplemental quotes must not displace evidence already selected by
+        # the original search. Append only in genuinely unused context.
+        pool = _bounded_rows(pool, remaining)
+        selected_ids = {r["id"] for r in pool} | {rid}
+        extras = [_compact(records[k]) for pid in sorted(matched_functions)
+                  for k in dossier_ids[pid] if k not in selected_ids]
+        unique_extras = {r["id"]: r for r in extras}
+        free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
+        pool.extend(_bounded_rows(unique_extras.values(), free))
         # Evidence is a view over existing registry/source spans; no second search index.
         supplied = {r["id"] for r in pool}
         if linked or gaps:
@@ -584,6 +606,8 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "record_kinds": dict(Counter(r["kind"] for r in records.values())),
                    "index_revisions": dict(evidence.revisions),
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
+    dossier_counts.update(summarize_dossiers(dossiers, decisions, outcomes, proposals))
+    diagnostics["dossiers"] = dict(dossier_counts)
     diagnostics["references"] = dict(references.counts)
     diagnostics["reference_gaps"] = dict(reference_counts)
     diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
@@ -603,6 +627,6 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             "metrics_registry": {rid: d["metric"] for rid, d in decisions.items()
                                  if d["status"] == "model_supported" and "metric" in d},
             "decisions": decisions, "proposals": proposals, "questions": questions,
-            "linked_by_need": linked_by_need,
+            "linked_by_need": linked_by_need, "dossiers": dossiers, "approved_profile": list(profile.values()),
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
             "diagnostics": diagnostics, "requires_expert_review": True}
