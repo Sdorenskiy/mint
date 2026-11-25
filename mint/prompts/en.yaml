@@ -797,6 +797,15 @@ draft_target_extract: |-
   related_evidence contains linked original sections and gaps for understanding. Extract quotes only from text, not from linked sections.
   Do not convert existing behaviour to new requirements. Return [] when no substantive information exists.
   Return {"requirements":[{"quote":"verbatim quote"}]}.
+draft_target_dossier: |-
+  Find verbatim contiguous quotations in evidence describing facets of the specific function and its interactions.
+  Seek conditions, participants, information content and categories, quantitative objectives with value, unit, subject and conditions, not just names.
+  Consider headings, tables and linked sections. Quote enough of the fragment to convey its meaning.
+  Relevance to a function is not proof of target ownership. Retain other participants' information as context.
+  Never invent characteristics or treat missing information as evidence of absence. Return nothing for dimensions not found.
+  Use only ids from evidence and facet codes from facets. At most 12 material quotations, without repeats.
+  Return {"items":[{"span_id":"F1","facet":"data_content","quote":"verbatim quote"}]}.
+
 draft_target_allocation: |-
   Determine the obligation of context.target specifically, not mere mention of its name. evidence contains original
   quotes and fragments; profile is a user-confirmed hypothesis about functions, NOT independent evidence.
@@ -813,7 +822,9 @@ draft_target_allocation: |-
   "current_value":"","target_value":""}. Leave absent values empty; never infer numbers.
   For other requirements metric: null.
   reference_status identifies exact linked sections. Use them to clarify conditions, but do not assign other actors' obligations to the target. A link alone is not proof of existing implementation.
-  state_refs must be ids from evidence; source filename alone is not proof.
+  For new, change, already_supported cite actual current-state evidence, not merely related material.
+  function must be an id from profile (not a name) or new; for new function_name is mandatory. For external/unknown function may be empty.
+  state_refs must always be an array of ids from evidence, including an empty array if appropriate; source filename alone is not proof.
   Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
   "state_refs":[],"reason":"reason"}]}.
@@ -823,7 +834,9 @@ draft_target_verify: |-
   is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary.
   conditions_preserved means conditions, exceptions, subject and metric units are considered and component is supported.
   Consider linked sections in decision.reference_refs; a link is not proof of ownership or implementation.
-  If uncertain, false. Return {"correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}.
+  Treat dossier_refs as supplemental function context, not proof of implementation.
+  For each element in items independently review only its own need, decision and evidence. If uncertain, false.
+  Return {"items":[{"id":"R1","correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}]}.
 draft_target_derivation: |-
   Draft coherent requirements for context.target by whole function using needs, decisions and state.
   Do not transfer external or already supported behaviour as new obligations. For explicit with no state_refs,
@@ -832,6 +845,7 @@ draft_target_derivation: |-
   Set kind: functional, interface, metric, constraint.
   For metric preserve subject, value, units, conditions, current/target level. Never invent missing numbers
   or transfer another participant's metrics; never invent implementation decisions.
+  Use decisions.dossier_refs to cover data content, objectives, interfaces and conditions. Do not make a bare field name a standalone requirement without an action, actor and object.
   Expand material conditions from decisions.reference_refs; cite used ids in state_refs, without assigning other actors' obligations to the target. A reference does not establish existing implementation.
   Preserve exceptions; if evidence is insufficient return questions with the need id and question.
   Return {"requirements":[{"text":"requirement","actor":"target","kind":"functional",
