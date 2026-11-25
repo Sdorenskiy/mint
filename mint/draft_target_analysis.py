@@ -536,7 +536,7 @@ def _verify_originals(cfg, prepared):
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
 
 @_measure_draft
-def collect_target_requirements(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
+def collect_target_requirements(cfg, prepared, approved_profile, progress=None, *, reset_cache=False, summaries=True):
     """Collect verified original needs and review summaries, without decomposition."""
     emit = progress or (lambda *_: None)
     context = prepared["context"]
@@ -674,7 +674,8 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
             decisions[rid]["reference_gaps"] = gaps
     verification_counts = _verify_decisions(cfg, decisions, records, state, context, emit, reset_cache=reset_cache)
     groups = _group_decisions(decisions)
-    summaries, summary_counts = summarize_needs(cfg, groups, records, decisions, state, context, emit, _json)
+    review_summaries, summary_counts = (summarize_needs(cfg, groups, records, decisions, state, context, emit, _json)
+                                       if summaries else ({}, {}))
     proposals, questions, outcomes = [], [], {}
     for g in groups:
         for rid in g["requirement_ids"]:
@@ -716,7 +717,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
             "linked_by_need": linked_by_need, "dossiers": dossiers, "approved_profile": list(profile.values()),
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
             "diagnostics": diagnostics, "requires_expert_review": True,
-            "phase": "collected", "summaries": summaries,
+            "phase": "collected", "summaries": review_summaries,
             "input_identity": input_identity(cfg, prepared, list(profile.values()))}
 
 @_measure_draft
@@ -729,7 +730,16 @@ def _decompose_target_requirements(cfg, prepared, collected, selection, notes, p
     result = deepcopy(collected)
     records, decisions, state = result["requirements"], result["decisions"], result["state_evidence"]
     emit = progress or (lambda *_: None)
-    proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state,
+    # Keep the original decision graph for traceability. Excluded need IDs
+    # cannot re-enter derivation or coverage as supplemental R-ID evidence.
+    excluded = set(review["excluded"])
+    derivation_decisions = deepcopy(decisions)
+    for decision in derivation_decisions.values():
+        for field in ("state_refs", "reference_refs", "dossier_refs"):
+            if field in decision:
+                decision[field] = [rid for rid in decision[field] if rid not in excluded]
+    derivation_state = {rid: row for rid, row in state.items() if rid not in excluded}
+    proposals, questions, outcomes = _proposals(cfg, groups, derivation_decisions, records, derivation_state,
                                                 prepared["context"], emit, notes=review["notes"])
     dispositions = result["dispositions"]
     for rid in review["excluded"]:
@@ -766,5 +776,6 @@ def decompose_target_requirements(cfg, prepared, collected, progress=None, *, se
 
 def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
     """Automatic path uses the very same collection and decomposition stages."""
-    collected = collect_target_requirements(cfg, prepared, approved_profile, progress, reset_cache=reset_cache)
+    collected = collect_target_requirements(cfg, prepared, approved_profile, progress,
+                                            reset_cache=reset_cache, summaries=False)
     return decompose_target_requirements(cfg, prepared, collected, progress)
