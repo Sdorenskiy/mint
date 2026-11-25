@@ -51,7 +51,7 @@ def render_draft_traceability(result, source_names=(), input_key=None, *, allow_
     counts = trace_counts(rows)
     with st.expander(tr("Требования и их отражение в Word")):
         if state is not None and state.get("identity") == identity and state["changes"]:
-            st.warning(tr("Word уже изменён через чат. Отчёт построен по первоначальной генерации; "
+            st.caption(tr("Word уже изменён через чат. Отчёт построен по первоначальной генерации; "
                           "неподтверждённые связи требуют повторной проверки."))
         st.caption(tr("Показаны только извлечённые требования. Их текстовое присутствие в Word "
                       "не доказывает правильность и полноту переноса или полноту извлечения."))

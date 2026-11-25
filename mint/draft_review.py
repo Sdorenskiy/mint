@@ -139,11 +139,12 @@ def summary(run):
 
 
 def export_summary(run):
-    """No filenames, source quotes, draft text or model credentials; share only aggregated stats."""
-    meta = run["meta"]
-    return {"format": FORMAT, "mint": meta["mint"], "model": meta["model"],
-            "prompt_signature": meta["prompt_signature"], "input_fingerprint": meta["input_fingerprint"],
-            "metrics": meta.get("metrics") or {}, "summary": summary(run),
+    """Historical review export: aggregate numbers only, including allowlisted metrics."""
+    from .draft_pilot_report import safe_stage_metrics, _number
+    metrics = run["meta"].get("metrics") or {}
+    return {"format": FORMAT, "metrics": {"total_seconds": _number(metrics.get("total_seconds")),
+                                           "stages": safe_stage_metrics(metrics)},
+            "summary": summary(run),
             "caveat": "Manual review of extracted source items, not proof of complete document quality or true recall."}
 
 

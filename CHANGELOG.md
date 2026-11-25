@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Compact Word drafting results: collapse issues and detailed reports; replace separate diagnostics/review downloads with a single sanitized analysis JSON for the current run. Development version 21.4.13.
+
 - Improve V2 target-side interaction allocation, confirmed names, bounded architecture context expansion and diagnostic breakdown; batch independent assessments, skip repairs lacking evidence, and checkpoint validated typing and grouping locally. Development version 21.4.12.
 
 - Fix the V2 template selection blocker: recognize manual numbered and inherited-outline headings, allow empty sections without an existing blank anchor, safely replace explicit instructions, and explain blocked sections. Development version 21.4.11.

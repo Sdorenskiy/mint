@@ -1,10 +1,10 @@
 """Review a generated draft locally, using the existing Mint requirement list."""
-import json
 import math
+import json
 
 import streamlit as st
 
-from ..draft_review import compare, export_summary, list_runs, load_run, save_marks, save_run, summary
+from ..draft_review import compare, export_summary, fingerprint, list_runs, load_run, save_marks, save_run, summary
 from ..i18n import tr
 from ..prompts import render
 
@@ -25,6 +25,7 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
             except (OSError, ValueError):
                 pass
             st.session_state["draft_review_id"] = save_run(cfg, input_key, filename, sources, result, prompt_sig)
+            st.session_state["draft_review_select"] = st.session_state["draft_review_id"]
         runs = list_runs(cfg)
         if not runs:
             st.caption(tr("Сохранённых разборов черновика пока нет."))
@@ -38,7 +39,7 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                               key="draft_review_select")
         run = load_run(cfg, run_id)
         if not run:
-            st.warning(tr("Не удалось открыть сохранённый разбор."))
+            st.caption(tr("Не удалось открыть сохранённый разбор."))
             return
         review = run["review"]
         rows = run["requirements"]
@@ -93,7 +94,18 @@ def render_draft_reviews(cfg, input_key=None, filename="", sources=(), result=No
                                   covered=changes["covered_delta"], missing=changes["missed_delta"],
                                   unsupported=changes["unsupported_delta"]))
                     st.caption(tr("Сравнение предварительное: состав извлечённых и размеченных требований мог отличаться."))
-        st.download_button(tr("Скачать обезличенную сводку оценки"),
-                           json.dumps(export_summary(run), ensure_ascii=False, indent=2),
-                           file_name="mint_draft_review_summary.json", mime="application/json",
-                           key=f"draft_review_export_{run_id}")
+        if result is None:
+            # Historical snapshots lack the full live V2 diagnostic data.
+            st.download_button(tr("Скачать обезличенную сводку оценки"),
+                               json.dumps(export_summary(run), ensure_ascii=False, indent=2, allow_nan=False),
+                               file_name="mint_draft_review_summary.json", mime="application/json",
+                               key=f"draft_review_export_{run_id}")
+            return None
+        # The export concerns the current generation, even when browsing an older review.
+        current_id = result.get("metrics", {}).get("run_id")
+        matches = [r for r in runs if current_id and
+                   r.get("metrics", {}).get("run_id") == current_id and
+                   r.get("input_fingerprint") == fingerprint(input_key)]
+        if any(r["id"] == run_id for r in matches):
+            return run
+        return load_run(cfg, matches[0]["id"]) if matches else None

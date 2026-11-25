@@ -1,10 +1,12 @@
 """Document drafting tab."""
 import hashlib
+import json
 
 import streamlit as st
 
 from ..i18n import tr
 from ..draft_registry import SOURCE_ROLES
+from ..draft_pilot_report import diagnostic_package
 from ..draft_section_pilot import create_section_pilot, pilot_section_options
 from ..kb import list_kb_documents, source_path
 from ..template_draft import DraftError, create_draft
@@ -42,7 +44,7 @@ def render_template_draft_tab(cfg, glossary):
         role_labels = {"need": tr("Исходные требования"), "architecture": tr("Описание решения"),
                        "normative": tr("Нормативные документы"), "mixed": tr("Смешанное содержание"),
                        "unspecified": tr("Роль не определена")}
-        with st.expander(tr("Роли документов-оснований"), expanded=bool(sources)):
+        with st.expander(tr("Роли документов-оснований"), expanded=False):
             for name in sources:
                 roles[name] = st.selectbox(
                     name, sorted(SOURCE_ROLES, key=lambda role: (role != "unspecified", role)),
@@ -74,7 +76,7 @@ def render_template_draft_tab(cfg, glossary):
         elif raw:
             st.warning(tr("Нет разделов, безопасных для формирования V2."))
         if options:
-            with st.expander(tr("Распознанные разделы и причины ограничений"), expanded=not sections):
+            with st.expander(tr("Распознанные разделы и причины ограничений"), expanded=False):
                 for row in options:
                     st.text(f'{row["title"]} — {status_labels[row["status"]]}')
         elif raw:
@@ -96,7 +98,7 @@ def render_template_draft_tab(cfg, glossary):
            engine, section_index, tuple(sorted(roles.items())))
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources and context) or bool(missing) or (pilot and section_index is None), key="draft_start"):
         st.session_state.pop("draft_result", None)
-        with st.status(tr("Готовим черновик"), expanded=True) as status:
+        with st.status(tr("Готовим черновик"), expanded=False) as status:
             extraction = {"total": 0, "cached": 0, "durations": [], "hit": False}
             stages = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
                       "table": tr("Подготовка таблиц"), "scope": tr("Применимость требований"),
@@ -165,39 +167,59 @@ def render_template_draft_tab(cfg, glossary):
         render_draft_reviews(cfg)
         return
     result = saved[1]
+    st.subheader(tr("Результаты формирования"))
     if pilot:
-        render_pilot_report(result)
-    render_draft_traceability(result, sources, key, allow_edit=not pilot)
-    if pilot:
-        st.warning(tr("Черновик V2 не согласован. Полнота извлечения не доказана."))
         if result["pilot_status"] == "empty_draft":
-            st.warning(tr("Ни одно предложение не прошло проверку для выбранного раздела."))
+            st.error(tr("Ни одно предложение не прошло проверку для выбранного раздела."))
+        else:
+            st.caption(tr("Черновик V2 не согласован. Полнота извлечения не доказана."))
         edited_docx = result["docx"]
     else:
         edited_docx = render_draft_edit_chat(cfg, key, result)
-    st.download_button(tr("Скачать черновик Word"), edited_docx, file_name="MINT_draft.docx",
-                       mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                       key="draft_download")
-    for issue in result["issues"]:
-        st.warning(issue)
-    if pilot:
-        st.caption(tr("Связано с текстом исходных записей: {used} из {total}. Прочитано фрагментов: {chunks}.",
-                      used=len(result["used"]), total=len(result["requirements"]), chunks=result["chunks"]))
-    else:
-        st.caption(tr("Перенесено извлечённых пунктов: {used} из {total}. Прочитано фрагментов оснований: {chunks}.",
-                      used=len(result["used"]), total=len(result["requirements"]), chunks=result["chunks"]))
     metrics = result.get("metrics", {})
+    st.caption(tr("Сформировано полей: {fields}; связано исходных записей: {used} из {total}; замечаний: {issues}.",
+                  fields=len(result["results"]), used=len(result["used"]),
+                  total=len(result["requirements"]), issues=len(result["issues"])))
     if metrics:
-        st.caption(tr("Время формирования: {seconds} с", seconds=metrics.get("total_seconds", 0)))
+        st.caption(tr("Время формирования: {seconds} с", seconds=round(metrics.get("total_seconds", 0))))
+    word_col, diagnostic_col = st.columns(2)
+    word_col.download_button(tr("Скачать черновик Word"), edited_docx, file_name="MINT_draft.docx",
+                             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                             key="draft_download")
+    # Reserve the download position above expert details; fill it after review
+    # controls have run so saving marks takes effect in the same script rerun.
+    download = diagnostic_col.empty()
+    if result["issues"]:
+        with st.expander(tr("Замечания формирования ({n})", n=len(result["issues"]))):
+            for issue in result["issues"]:
+                st.text(issue)
+    if metrics:
         with st.expander(tr("Замеры этапов подготовки")):
-            stage_labels = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
-                            "rows": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
-                            "check": tr("Сверка требований шаблона")}
             for stage, item in metrics.get("stages", {}).items():
+                stage_labels = {"layout": tr("Разбор шаблона"), "extract": tr("Разбор оснований"),
+                                "rows": tr("Подготовка таблиц"), "fill": tr("Заполнение и сверка с вики"),
+                                "check": tr("Сверка требований шаблона"),
+                                "registry_type": tr("Типизация исходных сведений"),
+                                "function_group": tr("Группировка функций"),
+                                "function_allocation": tr("Распределение ответственности"),
+                                "requirement_derivation": tr("Детализация требований"),
+                                "requirement_assessment": tr("Проверка обоснованности"),
+                                "pilot_coverage": tr("Проверка полноты раздела")}
                 st.text(f"{stage_labels.get(stage, stage)}: "
                         + tr("{n} запросов к LLM, {s} с", n=item["llm_calls"], s=item["llm_seconds"]))
     if pilot:
-        render_draft_reviews(cfg, key, template.name if template else "", sources, result)
+        render_pilot_report(result)
+    render_draft_traceability(result, sources, key, allow_edit=not pilot)
+    review = render_draft_reviews(cfg, key, template.name if template else "", sources, result)
+    package = diagnostic_package(result, pilot=pilot, input_key=key, review=review)
+    download.download_button(tr("Скачать обезличенные данные для анализа"),
+                             json.dumps(package, ensure_ascii=False, indent=2, allow_nan=False),
+                             file_name="mint_draft_analysis.json", mime="application/json",
+                             key="draft_analysis_export")
+    st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
+    if package["expert_review"] is None:
+        st.caption(tr("Экспертная оценка текущего прогона не сохранена; выгружаются только автоматические показатели."))
+    if pilot:
         return
     section_plan = result.get("section_plan", {})
     if section_plan:
@@ -236,7 +258,7 @@ def render_template_draft_tab(cfg, glossary):
             if item["detail"]:
                 st.text(item["detail"])
             if item.get("unconfirmed_coverage"):
-                st.warning(tr("Вставка не подтверждает перенос пунктов: {ids}. Проверьте текст.",
+                st.caption(tr("Вставка не подтверждает перенос пунктов: {ids}. Проверьте текст.",
                               ids=", ".join(item["unconfirmed_coverage"])))
             for key in item["refs"]:
                 source = refs[key]
@@ -249,4 +271,3 @@ def render_template_draft_tab(cfg, glossary):
                 state = tr("Перенесено") if item["id"] in result["used"] else tr("Требует разбора")
             st.text(f"{item['id']} · {state} · {item['source']} › {item['section']}\n{item['quote']}")
 
-    render_draft_reviews(cfg, key, template.name if template else "", sources, result)
