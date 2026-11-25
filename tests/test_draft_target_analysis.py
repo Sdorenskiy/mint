@@ -23,12 +23,13 @@ NEED = "Visitors must receive an acknowledgement of a reservation."
 EXTERNAL = "Desk must allocate a locker; Relay Service receives the event."
 CURRENT = "Relay Service sends cancellation notices only; acknowledgements are not implemented."
 METRIC = "Relay Service must send 20 messages per second."
+DATA = "Relay Service must transfer reservation identifiers and contact categories."
 DONE = "Relay Service must send cancellation notices."
 DIRECT = "Relay Service must reject an empty event."
 NEED2 = "Acknowledgement must include the reservation identifier."
 UNSURE = "The retention interval shall be agreed."
 TYPES = {NEED: "functional", EXTERNAL: "functional", CURRENT: "current_state",
-         METRIC: "nonfunctional", DONE: "functional", DIRECT: "functional",
+         METRIC: "nonfunctional", DATA: "functional", DONE: "functional", DIRECT: "functional",
          NEED2: "functional", UNSURE: "open_question"}
 
 
@@ -116,7 +117,7 @@ def test_registry_end_to_end():
         docs = {"needs.md": "# Business\n" + EXTERNAL + "\n# Interfaces\n" + NEED + "\n" + DIRECT +
                 "\n" + DONE + "\n# Metrics\n" + METRIC + "\n" + UNSURE,
                 "design.md": "# Current\n" + CURRENT,
-                "extra.md": "# Interfaces\n" + NEED2}
+                "extra.md": "# Interfaces\n" + NEED2 + "\n" + DATA}
         roles = {"needs.md": "need", "design.md": "architecture", "extra.md": "need"}
         for name, content in docs.items():
             path = source_path(cfg, name)
@@ -131,9 +132,14 @@ def test_registry_end_to_end():
             if stage == "target_profile":
                 state = next(r for r in payload["evidence"] if CURRENT in r["text"])
                 return {"functions": [{"name": "Messaging", "description": CURRENT, "refs": [state["id"]]}]}
+            if stage == "target_dossier":
+                # Simulate a precise secondary retrieval result, without replacing full scan.
+                return {"items": [{"span_id": r["id"], "facet": facet, "quote": quote}
+                                  for facet, quote in (("performance", METRIC), ("data_categories", DATA))
+                                  for r in payload["evidence"] if quote in r["text"] and facet in payload["facets"]]}
             if stage == "target_extract":
                 assert payload["focus"]["context"]["target"] == CONTEXT["target"]
-                return {"requirements": [{"quote": x} for x in payload["text"].splitlines() if x]}
+                return {"requirements": [{"quote": x} for x in payload["text"].splitlines() if x and x not in {DATA, METRIC}]}
             if stage == "registry_type":
                 return {"items": [{"id": r["id"], "kind": TYPES[r["quote"]]} for r in payload["items"]]}
             if stage == "target_allocation":
@@ -151,7 +157,8 @@ def test_registry_end_to_end():
                                         "level": "target", "target_value": "20"}
                 return {"items": [result]}
             if stage == "target_verify":
-                return {"correct_actor": True, "change_supported": True, "conditions_preserved": True, "reason": "verified"}
+                return {"items": [{"id": r["id"], "correct_actor": True, "change_supported": True,
+                                   "conditions_preserved": True, "reason": "verified"} for r in payload["items"]]}
             if stage == "target_derivation":
                 items = []
                 for r in payload["needs"]:
@@ -168,7 +175,8 @@ def test_registry_end_to_end():
                                   "reason": "fictional support"})
                 return {"requirements": items}
             if stage == "requirement_assessment":
-                yes = {"supported": True, "correct_actor": True, "no_new_decisions": True, "reason": "supported"}
+                yes = {"supported": True, "correct_actor": True, "no_new_decisions": True, "reason": "supported",
+                       "complete": True, "unambiguous": True, "verifiable": True}
                 return {"items": [{"id": r["id"], **yes} for r in payload["items"]]} if "items" in payload else yes
             if stage == "target_coverage":
                 return {"items": [{"id": r["id"], "covered": True, "reason": "covered"} for r in payload["items"]]}
@@ -185,8 +193,13 @@ def test_registry_end_to_end():
             assert result["dispositions"][by_quote[EXTERNAL]] == "external"
             assert result["dispositions"][by_quote[DONE]] == "already_supported"
             assert result["dispositions"][by_quote[UNSURE]] == "open_question"
-            assert all(result["dispositions"][by_quote[q]] == "model_covered" for q in (NEED, NEED2, DIRECT, METRIC))
+            assert all(result["dispositions"][by_quote[q]] == "model_covered" for q in (NEED, NEED2, DIRECT, METRIC, DATA))
             assert len(result["groups"]) == 1
+            assert len(result["requirements"]) == len(TYPES)
+            assert result["diagnostics"]["dossiers"]["supplemental_records"] == 2
+            assert result["dossiers"]["C1"]["facets"]["data_categories"]["facts"]
+            assert result["dossiers"]["C1"]["facets"]["performance"]["coverage"][by_quote[METRIC]] == "model_covered"
+            assert result["diagnostics"]["verification"]["batches"] < len(result["decisions"])
             assert result["metrics_registry"][by_quote[METRIC]]["unit"] == "messages per second"
             assert len(result["fragment_status"]) == len(prepared["spans"])
             assert "docx" not in result

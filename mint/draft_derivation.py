@@ -71,6 +71,8 @@ def _assessment(cfg, candidate, records, target):
 
 def _assessment_verdict(candidate, answer):
     checks = ("supported", "correct_actor", "no_new_decisions")
+    if candidate.get("quality_gate") is True:
+        checks += ("complete", "unambiguous", "verifiable")
     candidate["assessment_reason"] = _text(answer, "reason")[:_MAX_TEXT]
     if type(answer.get("repairable")) is bool:
         candidate["repairable"] = answer["repairable"]

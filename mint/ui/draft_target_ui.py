@@ -1,4 +1,4 @@
-"""Local STOP-1 review. No Word output or private data downloads."""
+"""Local STOP-1 review and explicit private registry export."""
 import hashlib
 import json
 
@@ -6,6 +6,7 @@ import streamlit as st
 
 from ..draft_target_analysis import prepare_target_analysis, analyze_target_registry
 from ..draft_pilot_report import target_registry_export
+from ..draft_registry_workbook import registry_workbook, regression_snapshot, compare_registries
 from ..i18n import tr
 from .draft_progress_ui import render_progress
 from ..template_draft import DraftError
@@ -28,10 +29,12 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         session["target_registry_key"] = key
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
+        session.pop("target_full_workbook", None)
     st.caption(tr("Контрольная точка 1: сначала анализ требований, без формирования Word."))
     if st.button(tr("Подготовить профиль системы"), disabled=not enabled, key="target_prepare"):
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
+        session.pop("target_full_workbook", None)
         with st.status(tr("Профиль целевой системы"), expanded=False) as status:
             try:
                 prepared = prepare_target_analysis(cfg, sources, roles, context, render_progress(status))
@@ -67,6 +70,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     identity = (sig, tuple(p["id"] for p in selected))
     if st.button(tr("Сформировать реестр требований"), disabled=not approved, key="target_analyze"):
         session.pop("target_registry_result", None)
+        session.pop("target_full_workbook", None)
         with st.status(tr("Распределение ответственности"), expanded=False) as status:
             try:
                 result = analyze_target_registry(cfg, prepared, selected, render_progress(status),
@@ -88,6 +92,33 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
                   n=len(proposals), ok=len(accepted), groups=len(result["groups"])))
     if not accepted:
         st.error(tr("Нет требований, прошедших все автоматические проверки."))
+    st.caption(tr("Полный реестр содержит исходные тексты. Храните его только внутри разрешённого контура."))
+    workbook_key = (key, identity, result.get("metrics", {}).get("run_id"))
+    workbook = session.get("target_full_workbook")
+    if not workbook or workbook[:3] != workbook_key:
+        try:
+            workbook = (*workbook_key, registry_workbook(prepared, result))
+        except (ImportError, ValueError, OSError, KeyError, RuntimeError):
+            workbook = (*workbook_key, None)
+        session["target_full_workbook"] = workbook
+    if workbook[3] is not None:
+        st.download_button(tr("Скачать полный реестр Excel"), workbook[3], file_name="mint_registry.xlsx",
+                           mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", key="target_full_export")
+    else:
+        st.warning(tr("Не удалось подготовить полный реестр Excel."))
+    with st.expander(tr("Сравнение прогонов (локально)")):
+        snapshot = regression_snapshot(prepared, result)
+        st.download_button(tr("Скачать контрольный снимок реестра"), json.dumps(snapshot, ensure_ascii=False, indent=2),
+                           file_name="mint_registry_baseline.json", mime="application/json", key="target_baseline_export")
+        baseline = st.file_uploader(tr("Контрольный снимок прошлого прогона"), type=["json"], key="target_baseline_import")
+        if baseline is not None:
+            try:
+                delta = compare_registries(json.loads(baseline.getvalue()), snapshot)
+            except (ValueError, TypeError, AttributeError, UnicodeError):
+                st.warning(tr("Несовместимые прогоны: проверьте исходные ревизии, контекст и выбранные функции."))
+            else:
+                st.json(delta)
+                st.caption(tr("Сравнение дословное: переформулированные требования проверяет эксперт."))
     export = target_registry_export(prepared, result)
     st.download_button(tr("Скачать обезличенные данные для анализа"),
                        json.dumps(export, ensure_ascii=False, indent=2, allow_nan=False),
@@ -105,6 +136,15 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
             st.caption(f"{groups.get(p['group'], '')} · {p['kind']} · {p['assessment']}")
             st.text(p["text"])
             _show_refs(p["need_refs"] + p["state_refs"] + p["constraint_refs"], prepared, result)
+    with st.expander(tr("Характеристики функций")):
+        dossiers = result.get("dossiers", {})
+        if dossiers:
+            pid = st.selectbox(tr("Функция"), list(dossiers), format_func=lambda k: dossiers[k]["function"], key="target_dossier_function")
+            for facet, row in dossiers[pid]["facets"].items():
+                st.caption(f"{facet} · {row['status']} · {len(row['facts'])}")
+                for fact in row["facts"]:
+                    rid = fact.get("record_id", "")
+                    st.text(f"{rid} · {row.get('coverage', {}).get(rid, '')} · {fact['quote']}")
     with st.expander(tr("Показатели назначения")):
         for rid, row in result["metrics_registry"].items():
             st.text(f"{rid} · {row['subject']} · {row['value']} {row['unit']} · {row['level']}")
