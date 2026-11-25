@@ -1,5 +1,4 @@
 """Local STOP-1 review and explicit private registry export."""
-import hashlib
 import json
 
 import streamlit as st
@@ -11,7 +10,7 @@ from ..draft_pilot_report import target_registry_export
 from ..draft_registry_workbook import registry_workbook, regression_snapshot, compare_registries
 from ..i18n import tr
 from .draft_progress_ui import render_progress
-from .draft_wizard_state import sync_target, clear_target
+from .draft_wizard_state import sync_target
 from ..template_draft import DraftError
 
 def _label(code):
@@ -90,7 +89,7 @@ def _show_refs(refs, prepared, result):
 
 
 def _review_collection(collected, prepared, expert):
-    """One review control per function, no compulsory checkbox per quote."""
+    """Review individual original obligations, grouped by primary allocation."""
     run = collected["metrics"]["run_id"]
     decisions, records = collected["decisions"], collected["requirements"]
     selected, notes = [], {}
@@ -99,29 +98,25 @@ def _review_collection(collected, prepared, expert):
     if not draft or draft["run"] != run:
         draft = {"run": run, "selected": {}, "notes": {}}
         session["target_registry_review_draft"] = draft
-    st.subheader(tr("Собранные требования перед декомпозицией"))
-    st.caption(tr("Сводные формулировки — черновик модели по всей функции. Выбор меняет область декомпозиции, но не исходную сводку. Декомпозиция опирается на цитаты и проверенное распределение."))
-    candidates = sum(decisions[rid]["change"] != "already_supported"
-                     for group in collected["groups"] for rid in group["requirement_ids"])
+    st.subheader(tr("Собранные требования по функциям"))
+    st.caption(tr("Проверьте исходные требования и выберите те, которые нужно детализировать. Функция объединяет требования, но не заменяет их."))
+    candidates = len({rid for group in collected["groups"] for rid in group["requirement_ids"]
+                      if decisions[rid]["change"] != "already_supported"})
+    profile_names = {p["id"]: p["name"] for p in collected.get("approved_profile", [])}
     st.caption(tr("Функций: {n}; исходных потребностей для детализации: {count}.", n=len(collected["groups"]), count=candidates))
     for group in collected["groups"]:
         gid = group["id"]
         ids = [rid for rid in group["requirement_ids"] if decisions[rid]["change"] != "already_supported"]
-        rows = collected["summaries"].get(gid, [])
-        if not rows and ids:
-            # Automatic collection has no summary calls; allow later expert
-            # review of the original needs without rescanning the sources.
-            rows = [{"status": "not_requested", "need_refs": ids}]
-        if not ids:
-            continue
         with st.expander(f"{group['function']} · {len(ids)}", expanded=len(collected["groups"]) == 1):
-            for row in rows:
-                if row["status"] == "draft":
-                    st.text(row["text"])
-                    st.caption(", ".join(row["need_refs"] + row["evidence_refs"]))
-                else:
-                    st.caption(tr("Сводка не получена; используйте исходные формулировки."))
-                    _show_refs(row["need_refs"], prepared, collected)
+            st.markdown("**" + tr("Исходные требования") + "**")
+            for rid in group["requirement_ids"]:
+                d = decisions[rid]
+                st.caption(_label(d["change"]))
+                _show_refs([rid], prepared, collected)
+                names = [profile_names[pid] for pid in collected.get("function_links", {}).get(rid, [])
+                         if pid in profile_names and profile_names[pid] != group["function"]]
+                if names:
+                    st.caption(tr("Возможная связь с другими функциями: {names}", names=", ".join(names)))
             if expert:
                 scope_key = f"target_review_scope_{run}_{gid}"
                 note_key = f"target_review_note_{run}_{gid}"
@@ -129,8 +124,8 @@ def _review_collection(collected, prepared, expert):
                     session[scope_key] = draft["selected"].get(gid, ids)
                 if note_key not in session:
                     session[note_key] = draft["notes"].get(gid, "")
-                chosen = st.multiselect(tr("Включить исходные потребности в декомпозицию"),
-                                        ids, format_func=lambda rid: f"{rid} · {records[rid]['quote'][:140]}",
+                chosen = st.multiselect(tr("Включить требования в детализацию"),
+                                        ids, format_func=lambda rid: records[rid]["quote"][:180],
                                         key=scope_key)
                 selected.extend(chosen)
                 note = st.text_area(tr("Уточнение эксперта (не источник)"), max_chars=MAX_NOTE,
@@ -139,34 +134,46 @@ def _review_collection(collected, prepared, expert):
                 draft["notes"][gid] = note
                 if chosen and note.strip():
                     notes[gid] = note.strip()
-            show = st.checkbox(tr("Показать исходные цитаты и основания"), key=f"target_review_refs_{run}_{gid}")
+            show = st.checkbox(tr("Показать связанные пункты и сведения о реализации"), key=f"target_review_refs_{run}_{gid}")
             if show:
                 for rid in group["requirement_ids"]:
                     d = decisions[rid]
                     st.caption(f"{rid} · {_label(d['change'])} · {_label(d['status'])}")
-                    _show_refs([rid] + d.get("state_refs", []) + d.get("reference_refs", [])
-                               + d.get("dossier_refs", []), prepared, collected)
+                    refs = list(dict.fromkeys(d.get("state_refs", []) + d.get("reference_refs", []) + d.get("dossier_refs", [])))
+                    _show_refs([r for r in refs if r != rid], prepared, collected)
+                    related = collected.get("linked_by_need", {}).get(rid, {})
+                    for item in related.get("items", []):
+                        st.caption(f"{item['source']} › {item['section']} · {item['reference']}")
+                        st.text(item["quote"])
+                    if related.get("gaps"):
+                        st.warning(tr("Некоторые перекрёстные ссылки не удалось раскрыть."))
             for rid in group["requirement_ids"]:
                 metric = collected["metrics_registry"].get(rid)
                 if metric:
                     st.text(f"{rid} · {metric['subject']} · {metric['value']} {metric['unit']} · {metric['level']}")
                     st.text(metric["conditions"])
+    unresolved = [rid for rid, d in decisions.items() if d["status"] != "model_supported"]
+    if unresolved:
+        st.warning(tr("Исходных требований, требующих дополнительного разбора: {n}. Они сохранены в реестре.", n=len(unresolved)))
+        for rid in _page(unresolved, "target_review_unresolved"):
+            st.caption(_label(decisions[rid]["status"]))
+            _show_refs([rid], prepared, collected)
     if expert:
-        st.caption(tr("Выбрано {n} из {total} потребностей. Исключённые записи остаются в реестре.",
+        st.caption(tr("Выбрано {n} из {total} требований. Исключённые записи остаются в реестре.",
                       n=len(selected), total=candidates))
     return selected, notes
 
 
 def _prepare(cfg, session, sources, roles, context, reference_sources=()):
-    with st.status(tr("Поиск сведений о системе"), expanded=False) as status:
+    with st.status(tr("Подготовка оснований"), expanded=False) as status:
         try:
             prepared = prepare_target_analysis(cfg, sources, roles, context, render_progress(status),
-                                               reference_sources=reference_sources)
+                                               reference_sources=reference_sources, discover_profile=False)
         except (DraftError, OSError, ValueError, KeyError, RuntimeError):
-            status.update(label=tr("Не удалось подготовить исходные материалы и сведения о системе."), state="error")
+            status.update(label=tr("Не удалось подготовить исходные материалы."), state="error")
             return None
         session["target_registry_prepared"] = prepared
-        status.update(label=tr("Поиск сведений завершён"), state="complete")
+        status.update(label=tr("Основания подготовлены"), state="complete")
         return prepared
 
 
@@ -191,97 +198,38 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     sync_target(session, key)
     prepared = session.get("target_registry_prepared")
     if step == 2:
-        if prepared is None:
-            st.caption(tr("MINT найдёт сведения о системе и предложит направления целевого поиска. Это не требования и не обязательный профиль."))
-            if st.button(tr("Найти сведения о системе"), disabled=not enabled, key="target_prepare", type="primary"):
-                if _prepare(cfg, session, sources, roles, context, reference_sources):
-                    st.rerun()
-            return
-        sig = hashlib.sha256(json.dumps([key, prepared["profile"], prepared.get("metrics", {}).get("run_id")],
-                                        ensure_ascii=False, default=str).encode()).hexdigest()[:16]
-        draft = session.get("target_registry_profile_draft")
-        if not draft or draft["sig"] != sig:
-            draft = {"sig": sig, "selected": []}
-            session["target_registry_profile_draft"] = draft
-        st.subheader(tr("Сведения о системе"))
-        st.caption(tr("Предложения модели для целевого поиска. Выберите только относящиеся к задаче; исходные основания разбираются и без выбора."))
-        def show_status(code):
-            messages = {
-                "no_candidates": tr("Не найдено подходящих исходных фрагментов в доступном контексте."),
-                "model_error": tr("Модель не вернула полный ответ. Можно повторить поиск или продолжить сбор."),
-                "invalid_response": tr("Ответ модели не прошёл проверку структуры или ссылок."),
-                "no_functions": tr("Модель не выделила функции из переданного контекста."),
-                "partial": tr("Часть предложений модели не прошла проверку ссылок или структуры."),
-                "source_error": tr("Не удалось прочитать выбранные справочные документы."),
-            }
-            if code in messages:
-                st.warning(messages[code])
-
-        selected = []
-        for origin, heading in (("basis", tr("Направления поиска из оснований")),
-                                ("reference", tr("Сведения из справочных документов"))):
-            if origin == "reference" and not reference_sources:
-                continue
-            st.markdown("**" + heading + "**")
-            code = prepared.get("reference_status" if origin == "reference" else "profile_status")
-            show_status(code)
-            rows = [p for p in prepared["profile"] if p.get("origin", "basis") == origin]
-            if not rows and code is None:
-                st.caption(tr("Нет предложений для целевого поиска."))
-            if origin == "reference":
-                st.caption(tr("Сведения о существующем состоянии требуют проверки актуальности и применимости."))
-                if prepared.get("reference_issues"):
-                    st.warning(tr("Не все справочные документы удалось прочитать."))
-            for row in rows:
-                pid = row["id"]
-                widget = f"target_profile_{sig}_{pid}"
-                if widget not in session:
-                    session[widget] = pid in draft["selected"]
-                if st.checkbox(row["name"], key=widget):
-                    selected.append(row)
-                st.caption(row["description"])
-                with st.expander(tr("Подтверждающие сведения") + " · " + pid):
-                    for sid in row["refs"]:
-                        span = (prepared.get("reference_spans", {}) if origin == "reference" else prepared["spans"])[sid]
-                        st.caption(f"{span['source']} › {span['section']}")
-                        st.text(span["text"])
-        if not selected:
-            st.caption(tr("Можно продолжить без выбора функций. Все основания будут разобраны; целевой поиск по функциям ограничен."))
-        draft["selected"] = [p["id"] for p in selected]
-        identity = (sig, tuple(draft["selected"]))
+        st.subheader(tr("Сбор исходных требований"))
+        st.caption(tr("MINT разберёт все выбранные основания, выявит связанные функции, уточнит недостающие сведения и представит требования для согласования."))
         previous = session.get("target_registry_collected")
-        same = bool(previous and previous[0] == identity)
-        if previous and not same:
-            st.warning(tr("После подтверждения изменений последующие результаты потребуется собрать заново."))
-        label = tr("Продолжить к собранным требованиям") if same else tr("Собрать исходные требования")
+        same = bool(prepared and previous)
         again = False
-        with st.expander(tr("Расширенные действия")):
-            if same:
+        if same:
+            with st.expander(tr("Расширенные действия")):
                 again = st.button(tr("Повторно собрать требования"), key="target_collect_again")
-            if st.button(tr("Повторить поиск сведений"), key="target_prepare_again"):
-                clear_target(session)
-                sync_target(session, key)
-                if _prepare(cfg, session, sources, roles, context, reference_sources):
-                    st.rerun()
-                return
-        proceed = st.button(label, key="target_analyze", type="primary")
+        label = tr("Продолжить к собранным требованиям") if same else tr("Собрать исходные требования")
+        proceed = st.button(label, key="target_analyze", type="primary", disabled=not enabled)
         if not (proceed or again):
             return
         if not same or again:
             for name in ("target_registry_collected", "target_registry_result", "target_full_workbook",
                          "target_registry_review_draft"):
                 session.pop(name, None)
-            with st.status(tr("Распределение ответственности"), expanded=False) as status:
+            if prepared is None or again:
+                prepared = _prepare(cfg, session, sources, roles, context, reference_sources)
+            if prepared is None:
+                return
+            with st.status(tr("Сбор исходных требований"), expanded=False) as status:
                 try:
-                    collected = collect_target_requirements(cfg, prepared, selected, render_progress(status),
-                                                           reset_cache=reset_cache, summaries=expert)
+                    collected = collect_target_requirements(cfg, prepared, None, render_progress(status),
+                                                           reset_cache=reset_cache, summaries=False)
                 except (DraftError, OSError, ValueError, KeyError, RuntimeError):
                     status.update(label=tr("Не удалось собрать исходные требования."), state="error")
                     return
+                identity = collected["input_identity"]
                 session["target_registry_collected"] = identity, collected
                 status.update(label=tr("Исходные требования собраны"), state="complete")
         else:
-            collected = previous[1]
+            identity, collected = previous
         if not expert:
             saved = session.get("target_registry_result")
             if saved and saved[0] == identity and saved[1].get("review", {}).get("mode") == "automatic":
@@ -306,7 +254,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
             not expert or (review.get("included") == sorted(chosen) and review.get("notes") == notes))
         if saved and not same:
             st.warning(tr("Изменённая область согласования требует повторной декомпозиции, но не сбора требований."))
-        label = tr("Открыть готовый реестр") if same else tr("Подтвердить и декомпозировать")
+        label = tr("Открыть готовый реестр") if same else tr("Согласовать и детализировать")
         if st.button(label, key="target_decompose", type="primary"):
             if same or _decompose(cfg, session, prepared, identity, collected,
                                   selection=chosen if expert else None, notes=notes if expert else None):
