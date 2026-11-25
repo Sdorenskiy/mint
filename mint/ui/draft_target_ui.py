@@ -126,6 +126,14 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
             st.text(d.get("reason", ""))
             st.text(d.get("review_reason", ""))
             _show_refs(d.get("state_refs", []), prepared, result)
+            related = result.get("linked_by_need", {}).get(rid, {})
+            if related:
+                st.caption(tr("Связанные пункты оснований"))
+                for item in related["items"]:
+                    st.caption(f"{item['source']} › {item['section']} · {item['reference']} · {' → '.join(item['path'])}")
+                    st.text(item["quote"])
+                if related["gaps"]:
+                    st.json(related["gaps"])
             for p in proposals:
                 if rid in p["need_refs"]:
                     st.text(f"{p['id']} · {p['text']}")
