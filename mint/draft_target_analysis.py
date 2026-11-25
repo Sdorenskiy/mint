@@ -93,6 +93,7 @@ class OriginalEvidence:
         self.cfg, self.spans, self.hashes = cfg, spans, hashes
         self.snapshot = load_kb_snapshot(cfg)
         self.counts = Counter()
+        self._find_cache = {}
         self.by_source = {}
         for sid, span in spans.items():
             self.by_source.setdefault(span["source"], []).append(sid)
@@ -110,6 +111,10 @@ class OriginalEvidence:
         if not selected or self.snapshot is None:
             self.counts["no_index"] += 1
             return []
+        key = (query, tuple(sorted(selected)), k)
+        if key in self._find_cache:
+            self.counts["cache_hits"] += 1
+            return list(self._find_cache[key])
         self.counts["queries"] += 1
         diagnostics = {}
         items, _ = search_parent_child(query[:min(600, self.cfg.max_query_chars,
@@ -141,6 +146,7 @@ class OriginalEvidence:
         self.counts["matched_spans"] += len(found)
         if not found:
             self.counts["no_match"] += 1
+        self._find_cache[key] = tuple(found)
         return list(found)
 
 
@@ -365,7 +371,7 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
     for rid in pending:
         d = decisions[rid]
         item = {"id": rid, "need": _compact(records[rid]), "decision": d,
-                "evidence": [state[k] for k in dict.fromkeys(d["state_refs"] + d.get("reference_refs", []))]}
+                "evidence": [state[k] for k in dict.fromkeys(d["state_refs"] + d.get("reference_refs", []) + d.get("dossier_refs", []))]}
         if _payload_size({"context": context, "items": [item]}) > budget:
             d["status"] = "review_context_limit"
             completed += 1
@@ -398,7 +404,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
     budget = _candidate_budget(cfg)
     # Keep global group IDs. Subdivide only the model payload if necessary.
     def make_payload(group, ids):
-        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", [])))
+        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []) + decisions[rid].get("dossier_refs", [])))
         return {"context": context, "function": group["function"],
                 "needs": [_compact(records[rid]) for rid in ids],
                 "decisions": {rid: decisions[rid] for rid in ids},
@@ -417,7 +423,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
         changes = [rid for rid in ids if decisions[rid]["change"] != "already_supported"]
         if not changes:
             continue
-        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", [])))
+        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []) + decisions[rid].get("dossier_refs", [])))
         payload = make_payload(group, ids)
         if _payload_size(payload) > budget:
             outcomes.update(dict.fromkeys(changes, "group_context_limit"))
@@ -446,7 +452,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             if any(records[k]["kind"] not in {"nonfunctional", "constraint"} for k in metric_refs):
                 continue
             explicit = all(decisions[k]["change"] == "explicit" for k in need_refs)
-            allowed_state = set(ref for rid in need_refs for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []))
+            allowed_state = set(ref for rid in need_refs for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []) + decisions[rid].get("dossier_refs", []))
             if not set(state_refs) <= allowed_state:
                 continue
             if not explicit and not state_refs:
@@ -496,7 +502,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             continue
         rows = [c for c in proposed if c["group"] == group["id"] and c["assessment"] == "model_supported"
                 and set(c["need_refs"]) & set(ids)]
-        linked = {rid: decisions[rid].get("reference_refs", []) for rid in ids}
+        linked = {rid: decisions[rid].get("reference_refs", []) + decisions[rid].get("dossier_refs", []) for rid in ids}
         refs = list(dict.fromkeys([k for row in rows for k in row["state_refs"] + row["constraint_refs"]]
                                   + [k for refs in linked.values() for k in refs]))
         payload = {"context": context, "items": [_compact(records[rid]) for rid in ids],
@@ -556,9 +562,11 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
     dossiers, dossier_counts = collect_dossiers(cfg, evidence, references, profile, context, emit, _json,
                                                reset_cache=reset_cache)
+    original_ids = set()
     def supplement(records):
+        original_ids.update(records)
         dossier_counts["supplemental_records"] = merge_dossier_quotes(
-            records, dossiers, spans, prepared["documents"], prepared["roles"])
+            records, dossiers, spans, prepared["documents"])
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
@@ -568,6 +576,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     roles_by_section = {(s["source"], s["section"]): s["role"] for s in sections.values()}
     for row in records.values():
         row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
+    original_records = {rid: row for rid, row in records.items() if rid in original_ids}
     dossier_positions, dossier_ids = dossier_context(records, dossiers)
     decisions, state = {}, {}
     reference_counts = Counter()
@@ -589,7 +598,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                         "quote": r["quote"], "kind": "reference", "source_role": "unspecified"}
                        for r in linked]
         # Preserve the original retrieval path. The dossier is supplemental.
-        original_pool = _search_records(cfg, evidence, records, {rid}, query)
+        original_pool = _search_records(cfg, evidence, original_records, {rid}, query)
         pool = linked_pool + original_pool
         for p in profile.values():
             for sid in p["refs"]:
@@ -609,7 +618,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             decisions[rid] = {"status": "allocation_context_limit", "change": "unknown",
                               "category": "uncertain", "state_refs": [], "reason": ""}
             continue
-        remaining = max(0, budget - _payload_size(base) - 500)
+        remaining = max(0, budget - _payload_size(base) - 300)
         matched_functions = set()
         for pos in row.get("source_spans", []):
             matched_functions.update(dossier_positions.get((pos["source"], pos["fragment"]), set()))
@@ -646,6 +655,12 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             continue
         decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, profile,
                                             context["target"])
+        decision = decisions[rid]
+        if decision["status"] == "proposed" and decision.get("function") in dossier_ids:
+            # Keep additional function evidence separate from current-state assertions.
+            fact_rows = [_compact(records[k]) for k in dossier_ids[decision["function"]]
+                         if k in supplied and k != rid and k not in decision["state_refs"]]
+            decision["dossier_refs"] = [r["id"] for r in _bounded_rows(fact_rows, min(2500, budget // 5))]
         if linked or gaps:
             decisions[rid]["reference_refs"] = base["reference_status"]["linked_ids"]
             decisions[rid]["reference_gaps"] = gaps
