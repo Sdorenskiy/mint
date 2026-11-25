@@ -14,7 +14,7 @@ from .draft_progress import tracked
 from .draft_references import ReferenceMap
 from .draft_dossiers import collect_dossiers, merge_dossier_quotes, dossier_context, summarize_dossiers
 from .draft_checkpoint import DraftStageCheckpoint
-from .draft_function_analysis import _compact, _unique_answers, _valid_refs, is_target
+from .draft_function_analysis import _compact, _unique_answers, _valid_refs, is_target, names_target
 from .draft_registry import build_registry, OBLIGATION_KINDS
 from .draft_derivation import assess_candidates
 from .glossary import Glossary
@@ -248,8 +248,14 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
     refs = _valid_refs(reply, "state_refs", allowed)
     result = {"category": "uncertain", "change": "unknown", "reason": reason,
               "status": "invalid_response", "state_refs": [], "function": "", "component": ""}
-    if category not in {"target", "shared", "interaction", "other", "uncertain"} or status not in DECISIONS or refs is None or not reason:
-        return result
+    if category not in {"target", "shared", "interaction", "other", "uncertain"}:
+        return {**result, "validation_code": "category"}
+    if status not in DECISIONS:
+        return {**result, "validation_code": "change"}
+    if refs is None:
+        return {**result, "validation_code": "refs"}
+    if not reason:
+        return {**result, "validation_code": "reason"}
     if category == "uncertain" or status == "unknown":
         return {**result, "status": "missing_evidence", "state_refs": refs}
     if category == "other" or category == "interaction" and not is_target(actor, target):
@@ -260,15 +266,15 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
     if not is_target(actor, target) or status == "external":
         return {**result, "status": "wrong_actor"}
     if not function or (function not in profile and function != "new"):
-        return result
+        return {**result, "validation_code": "function"}
     if status in {"change", "new", "already_supported"} and not refs:
         return {**result, "status": "missing_evidence"}
-    if status == "explicit" and (category != "target" or not _text(reply, "direct_quote")
+    if status == "explicit" and (category != "target" or not names_target(row["quote"], target) or not _text(reply, "direct_quote")
                                  or _normalized(_text(reply, "direct_quote")) not in _normalized(row["quote"])):
         return {**result, "status": "missing_evidence"}
     label = _text(reply, "function_name")[:180] if function == "new" else profile[function]["name"]
     if not label:
-        return result
+        return {**result, "validation_code": "function_name"}
     metric = _metric_fields(reply, row, allowed, refs)
     if metric is False or (row.get("section_role") == "metric" and row["kind"] == "nonfunctional" and metric is None):
         return {**result, "status": "missing_metric_evidence"}
@@ -309,26 +315,68 @@ def _search_records(cfg, evidence, records, group, query):
     return pool
 
 
-def _verify_decisions(cfg, decisions, records, state, context, emit):
-    """Independently verify attribution and current/target distinction, including exclusions."""
+def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_cache=False):
+    """Review bounded batches independently. Cache exact successful verdicts,
+    with model/prompt/payload identity; never promote incomplete responses.
+    """
     pending = [rid for rid, d in decisions.items() if d["status"] == "proposed"]
-    for index, rid in enumerate(tracked(emit, "target_verify", pending), 1):
+    budget = _candidate_budget(cfg)
+    cache = DraftStageCheckpoint(cfg, "target_verify")
+    stats = Counter()
+    completed = 0
+    emit("target_verify_total", len(pending))
+
+    def review(items):
+        nonlocal completed
+        if not items:
+            return
+        payload = {"context": context, "items": items}
+        if reset_cache:
+            cache.clear(payload)
+        allowed = {item["id"] for item in items}
+        cached = None if reset_cache else cache.load(payload)
+        if cached and set(cached) == allowed and all(v.strip() for v in cached.values()):
+            for rid, reason in cached.items():
+                decisions[rid].update(status="model_supported", review_reason=reason)
+            stats["cache_hits"] += len(items)
+        else:
+            replies, statuses, _ = _unique_answers(cfg, "target_verify", payload, allowed)
+            accepted = {}
+            for rid in allowed:
+                d = decisions[rid]
+                reply = replies.get(rid)
+                if reply is None:
+                    d["status"] = "review_error" if statuses[rid] == "batch_error" else "needs_review"
+                    stats["invalid_verdicts"] += 1
+                    continue
+                checks = ("correct_actor", "change_supported", "conditions_preserved")
+                reason = _text(reply, "reason")[:_MAX_TEXT]
+                d["status"] = "model_supported" if all(reply.get(k) is True for k in checks) and reason else "needs_review"
+                d["review_reason"] = reason
+                if d["status"] == "model_supported":
+                    accepted[rid] = reason
+            if set(accepted) == allowed:
+                cache.save(payload, accepted)
+            stats["batches"] += 1
+        completed += len(items)
+        emit("target_verify_done", completed)
+
+    batch = []
+    for rid in pending:
         d = decisions[rid]
-        payload = {"context": context, "need": _compact(records[rid]), "decision": d,
-                   "evidence": [state[k] for k in dict.fromkeys(d["state_refs"] + d.get("reference_refs", []))]}
-        if _payload_size(payload) > _candidate_budget(cfg):
+        item = {"id": rid, "need": _compact(records[rid]), "decision": d,
+                "evidence": [state[k] for k in dict.fromkeys(d["state_refs"] + d.get("reference_refs", []))]}
+        if _payload_size({"context": context, "items": [item]}) > budget:
             d["status"] = "review_context_limit"
+            completed += 1
+            emit("target_verify_done", completed)
             continue
-        emit("target_verify", index)
-        try:
-            reply = _json(cfg, "target_verify", payload)
-        except DraftError:
-            d["status"] = "review_error"
-            continue
-        checks = ("correct_actor", "change_supported", "conditions_preserved")
-        d["status"] = ("model_supported" if all(reply.get(k) is True for k in checks)
-                       and _text(reply, "reason") else "needs_review")
-        d["review_reason"] = _text(reply, "reason")[:_MAX_TEXT]
+        if batch and (len(batch) >= 4 or _payload_size({"context": context, "items": batch + [item]}) > budget):
+            review(batch)
+            batch = []
+        batch.append(item)
+    review(batch)
+    return stats
 
 
 def _group_decisions(decisions):
@@ -420,6 +468,20 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
         for row in reply.get("questions", []) if isinstance(reply.get("questions"), list) else []:
             if isinstance(row, dict) and _text(row, "id") in changes and _text(row, "question"):
                 questions.append({"need_id": row["id"], "question": _text(row, "question")[:_MAX_TEXT]})
+    # Merge identical text within a function while preserving all evidence links.
+    consolidated = {}
+    for candidate in proposed:
+        key = (candidate["group"], candidate["kind"], candidate["mode"], _normalized(candidate["text"]).casefold())
+        if key not in consolidated:
+            consolidated[key] = candidate
+        else:
+            original = consolidated[key]
+            for field in ("need_refs", "state_refs", "constraint_refs"):
+                original[field] = list(dict.fromkeys(original[field] + candidate[field]))
+    proposed = list(consolidated.values())
+    for index, candidate in enumerate(proposed, 1):
+        candidate["id"] = "P" + str(index)
+        candidate["quality_gate"] = True
     # Existing independent candidate assessor; no additional Word renderer.
     assess_candidates(cfg, proposed, {**records, **state}, context["target"], emit)
     for rid in outcomes:
@@ -587,7 +649,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         if linked or gaps:
             decisions[rid]["reference_refs"] = base["reference_status"]["linked_ids"]
             decisions[rid]["reference_gaps"] = gaps
-    _verify_decisions(cfg, decisions, records, state, context, emit)
+    verification_counts = _verify_decisions(cfg, decisions, records, state, context, emit, reset_cache=reset_cache)
     groups = _group_decisions(decisions)
     proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state, context, emit)
     # Every extracted record has a visible disposition; "external" is verified separately.
@@ -608,6 +670,8 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
     dossier_counts.update(summarize_dossiers(dossiers, decisions, outcomes, proposals))
     diagnostics["dossiers"] = dict(dossier_counts)
+    diagnostics["verification"] = dict(verification_counts)
+    diagnostics["allocation_validation"] = dict(Counter(d["validation_code"] for d in decisions.values() if "validation_code" in d))
     diagnostics["references"] = dict(references.counts)
     diagnostics["reference_gaps"] = dict(reference_counts)
     diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
