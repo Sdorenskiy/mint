@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Experimental checkpoint-1 registry: selected-source hybrid retrieval with original-revision verification, source section map, confirmed target profile, focused extraction and responsibility/change analysis with performance objectives. Review registry without generating Word. Development version 21.4.14.
+
 - Compact Word drafting results: collapse issues and detailed reports; replace separate diagnostics/review downloads with a single sanitized analysis JSON for the current run. Development version 21.4.13.
 
 - Improve V2 target-side interaction allocation, confirmed names, bounded architecture context expansion and diagnostic breakdown; batch independent assessments, skip repairs lacking evidence, and checkpoint validated typing and grouping locally. Development version 21.4.12.
