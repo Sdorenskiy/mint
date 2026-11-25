@@ -34,6 +34,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     if st.button(tr("Подготовить профиль системы"), disabled=not enabled, key="target_prepare"):
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
+        session.pop("target_full_workbook", None)
         with st.status(tr("Профиль целевой системы"), expanded=False) as status:
             try:
                 prepared = prepare_target_analysis(cfg, sources, roles, context, render_progress(status))
@@ -69,6 +70,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     identity = (sig, tuple(p["id"] for p in selected))
     if st.button(tr("Сформировать реестр требований"), disabled=not approved, key="target_analyze"):
         session.pop("target_registry_result", None)
+        session.pop("target_full_workbook", None)
         with st.status(tr("Распределение ответственности"), expanded=False) as status:
             try:
                 result = analyze_target_registry(cfg, prepared, selected, render_progress(status),
@@ -91,12 +93,19 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     if not accepted:
         st.error(tr("Нет требований, прошедших все автоматические проверки."))
     st.caption(tr("Полный реестр содержит исходные тексты. Храните его только внутри разрешённого контура."))
-    if st.button(tr("Подготовить полный реестр Excel"), key="target_full_prepare"):
-        session["target_full_workbook"] = (key, identity, result.get("metrics", {}).get("run_id"), registry_workbook(prepared, result))
+    workbook_key = (key, identity, result.get("metrics", {}).get("run_id"))
     workbook = session.get("target_full_workbook")
-    if workbook and workbook[:3] == (key, identity, result.get("metrics", {}).get("run_id")):
+    if not workbook or workbook[:3] != workbook_key:
+        try:
+            workbook = (*workbook_key, registry_workbook(prepared, result))
+        except (ImportError, ValueError, OSError, KeyError, RuntimeError):
+            workbook = (*workbook_key, None)
+        session["target_full_workbook"] = workbook
+    if workbook[3] is not None:
         st.download_button(tr("Скачать полный реестр Excel"), workbook[3], file_name="mint_registry.xlsx",
                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", key="target_full_export")
+    else:
+        st.warning(tr("Не удалось подготовить полный реестр Excel."))
     with st.expander(tr("Сравнение прогонов (локально)")):
         snapshot = regression_snapshot(prepared, result)
         st.download_button(tr("Скачать контрольный снимок реестра"), json.dumps(snapshot, ensure_ascii=False, indent=2),
