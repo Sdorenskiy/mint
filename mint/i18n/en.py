@@ -4,6 +4,7 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Подробности сбора и выгрузки": "Collection details and exports",
     "Поддержано моделью": "Supported by the model",
     "Перенос подтверждён моделью": "Coverage confirmed by the model",
     "Ожидает детализации": "Awaiting decomposition",
