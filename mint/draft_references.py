@@ -11,12 +11,12 @@ from .draft_progress import tracked
 
 _NUMBER = r"\d+(?:\.\d+)*"
 _LIST = rf"{_NUMBER}(?:\s*(?:[,;]|и\b|and\b|[–—-])\s*{_NUMBER})*"
-_SECTION = re.compile(rf"(?<!\w)(?:пп?\.|пункт(?:а|е|у|ом|ы|ов|ам)?\b|подпункт(?:а|е|у|ом|ы|ов)?\b|раздел(?:а|е|у|ом|ы|ов)?\b|sections?\b|clauses?\b|paragraphs?\b|secs?\.)\s*№?\s*(?P<address>{_LIST})(?![\d.])", re.I)
-_TABLE = re.compile(r"(?<!\w)(?:таблиц(?:а|е|ы|у|ей|ам|ах)?\b|табл\.|tables?\b)\s*№?\s*(?P<address>\d+(?:\.\d+)*)(?![\d.])", re.I)
+_SECTION = re.compile(rf"(?<!\w)(?:пп?\.|пункт(?:а|е|у|ом|ы|ов|ам)?\b|подпункт(?:а|е|у|ом|ы|ов)?\b|раздел(?:а|е|у|ом|ы|ов)?\b|sections?\b|clauses?\b|paragraphs?\b|secs?\.)\s*№?\s*(?P<address>{_LIST})(?!\d|\.\d)", re.I)
+_TABLE = re.compile(r"(?<!\w)(?:таблиц(?:а|е|ы|у|ей|ам|ах)?\b|табл\.|tables?\b)\s*№?\s*(?P<address>\d+(?:\.\d+)*)(?!\d|\.\d)", re.I)
 _APPENDIX = re.compile(r"(?<!\w)(?:приложени(?:е|я|ю|и|ем|ях)\b|appendix\b|annex\b)\s*№?\s*(?P<address>[А-ЯA-Z]|\d+)(?!\w)", re.I)
 _HEADING = re.compile(rf"^\s*({_NUMBER})[.)]?(?:\s+|$)")
 _APPENDIX_TITLE = re.compile(r"^\s*(?:приложение|appendix|annex)\s+([А-ЯA-Z]|\d+)(?!\w)", re.I)
-_TABLE_TITLE = re.compile(rf"^\s*(?:таблица|table)\s*№?\s*({_NUMBER})(?![\d.])", re.I)
+_TABLE_TITLE = re.compile(rf"^\s*(?:таблица|table)\s*№?\s*({_NUMBER})(?!\d|\.\d)", re.I)
 _MARKDOWN_HEADING = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 _TOC = re.compile(r"^(?:содержание|оглавление|contents|table of contents)$", re.I)
 _DOC = re.compile(r'^\s*(?:настоящего\s+документа|данного\s+документа|this\s+document)\b', re.I)
@@ -67,6 +67,7 @@ class ReferenceMap:
         self.targets = defaultdict(list)
         self.positions = {(s["source"], s["fragment"]): sid for sid, s in spans.items()}
         self.by_source = defaultdict(list)
+        self.word_fields = defaultdict(list)
         self.names = defaultdict(set)
         for name, _ in documents:
             base = PurePosixPath(name.replace("\\", "/"))
@@ -82,8 +83,9 @@ class ReferenceMap:
             metadata = (word_metadata or {}).get(span["source"], {})
             for field in metadata.get("fields", []):
                 if field["text"] and _norm(field["text"]) in _norm(span["text"]):
-                    self.edges[sid].append(self._lookup(span["source"], "bookmark", field["bookmark"],
-                                                        "REF " + field["bookmark"]))
+                    edge = self._lookup(span["source"], "bookmark", field["bookmark"], "REF " + field["bookmark"])
+                    self.edges[sid].append(edge)
+                    self.word_fields[sid].append((field["text"], edge))
             self.counts.update(edge["status"] for edge in self.edges[sid])
 
     def _add(self, source, kind, address, ids):
@@ -227,6 +229,7 @@ class ReferenceMap:
                 # Resolve literal references from this obligation, not neighbouring
                 # text. Word REF metadata is usable when its rendered field is present.
                 edges = self._resolve(self.spans[sid]["source"], quote)
+                edges += [edge for text, edge in self.word_fields.get(sid, []) if _norm(text) in _norm(quote)]
             for edge in edges:
                 if edge["status"] != "resolved":
                     gaps[edge["status"]] += 1
