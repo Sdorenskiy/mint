@@ -716,7 +716,7 @@ def _collect_target_registry(cfg, prepared, approved_profile, progress=None, *, 
 
 
 def _collection_identity(prepared):
-    return hashlib.sha256(json.dumps({k: prepared[k] for k in ("hashes", "context", "roles")},
+    return hashlib.sha256(json.dumps({k: prepared[k] for k in ("hashes", "context", "roles", "profile")},
                                      sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
@@ -744,7 +744,14 @@ def _finish_target_registry(cfg, prepared, collected, progress=None, *, excluded
     groups = [{**g, "requirement_ids": [rid for rid in g["requirement_ids"] if rid not in excluded]}
               for g in result["groups"]]
     groups = [g for g in groups if g["requirement_ids"]]
-    proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state,
+    # Excluded R IDs must not enter decomposition again as supplemental evidence.
+    # Preserve original decisions in the exported collection for traceability.
+    derivation_decisions = deepcopy(decisions)
+    for d in derivation_decisions.values():
+        for field in ("state_refs", "reference_refs", "dossier_refs"):
+            if field in d:
+                d[field] = [rid for rid in d[field] if rid not in excluded]
+    proposals, questions, outcomes = _proposals(cfg, groups, derivation_decisions, records, state,
                                                prepared["context"], progress or (lambda *_: None), notes=notes)
     # Retain visible gaps even if a malformed derivation produces no outcome.
     result["dispositions"].update({rid: "coverage_gap" for rid, status in result["dispositions"].items()
