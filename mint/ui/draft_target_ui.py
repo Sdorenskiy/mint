@@ -193,7 +193,8 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
                 if _prepare(cfg, session, sources, roles, context):
                     st.rerun()
             return
-        sig = hashlib.sha256(json.dumps(prepared["profile"], ensure_ascii=False).encode()).hexdigest()[:16]
+        sig = hashlib.sha256(json.dumps([key, prepared["profile"], prepared.get("metrics", {}).get("run_id")],
+                                        ensure_ascii=False, default=str).encode()).hexdigest()[:16]
         draft = session.get("target_registry_profile_draft")
         if not draft or draft["sig"] != sig:
             draft = {"sig": sig, "selected": []}
@@ -276,7 +277,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     identity, collected = item
     saved = session.get("target_registry_result")
     if step == 3:
-        chosen, notes = _review_collection(collected, prepared, expert)
+        chosen, notes = _review_collection(collected, prepared, expert) if expert else ([], {})
         review = saved[1].get("review", {}) if saved and saved[0] == identity else {}
         same = review.get("mode") == ("expert" if expert else "automatic") and (
             not expert or (review.get("included") == sorted(chosen) and review.get("notes") == notes))
