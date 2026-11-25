@@ -11,6 +11,7 @@ _STAGES = {
     "target_section_map": N_("Классификация разделов оснований"),
     "target_profile_search": N_("Поиск сведений о системе"),
     "target_profile": N_("Выделение функций и сведений"),
+    "target_function_discovery": N_("Определение функций по исходным требованиям"),
     "reference_map": N_("Разрешение перекрёстных ссылок"),
     "reference_context": N_("Сбор связанных фрагментов"),
     "target_dossier": N_("Целевой поиск характеристик функций"),
