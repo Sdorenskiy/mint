@@ -11,6 +11,7 @@ import re
 
 from .document_context import confirm_context
 from .draft_progress import tracked
+from .draft_references import ReferenceMap
 from .draft_function_analysis import _compact, _unique_answers, _valid_refs, is_target
 from .draft_registry import build_registry, OBLIGATION_KINDS
 from .draft_derivation import assess_candidates
@@ -190,9 +191,11 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None):
     """Stage A/B: read actual originals, map sections, propose a bounded profile."""
     emit = progress or (lambda *_: None)
     context = confirm_context(context)
-    issues, hashes = [], {}
-    documents = _load_draft_sources(cfg, sources, issues, source_hashes=hashes, emit=emit)
+    issues, hashes, word_metadata = [], {}, {}
+    documents = _load_draft_sources(cfg, sources, issues, source_hashes=hashes, emit=emit,
+                                    word_metadata=word_metadata)
     spans, sections = _map_sources(documents, roles)
+    references = ReferenceMap(documents, spans, emit, word_metadata)
     _classify_sections(cfg, sections, context, emit)
     evidence = OriginalEvidence(cfg, spans, hashes)
     candidates = _profile_candidates(cfg, spans, sections, roles, evidence, context, emit)
@@ -206,6 +209,7 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None):
             pass
     return {"documents": documents, "hashes": hashes, "spans": spans, "sections": sections,
             "profile": profile, "issues": issues, "context": context, "roles": dict(roles),
+            "references": references,
             "profile_retrieval": dict(evidence.counts), "index_revisions": dict(evidence.revisions)}
 
 
@@ -309,7 +313,7 @@ def _verify_decisions(cfg, decisions, records, state, context, emit):
     for index, rid in enumerate(tracked(emit, "target_verify", pending), 1):
         d = decisions[rid]
         payload = {"context": context, "need": _compact(records[rid]), "decision": d,
-                   "evidence": [state[k] for k in d["state_refs"]]}
+                   "evidence": [state[k] for k in dict.fromkeys(d["state_refs"] + d.get("reference_refs", []))]}
         if _payload_size(payload) > _candidate_budget(cfg):
             d["status"] = "review_context_limit"
             continue
@@ -344,7 +348,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
     budget = _candidate_budget(cfg)
     # Keep global group IDs. Subdivide only the model payload if necessary.
     def make_payload(group, ids):
-        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"]))
+        refs = list(dict.fromkeys(ref for rid in ids for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", [])))
         return {"context": context, "function": group["function"],
                 "needs": [_compact(records[rid]) for rid in ids],
                 "decisions": {rid: decisions[rid] for rid in ids},
@@ -392,7 +396,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             if any(records[k]["kind"] not in {"nonfunctional", "constraint"} for k in metric_refs):
                 continue
             explicit = all(decisions[k]["change"] == "explicit" for k in need_refs)
-            allowed_state = set(ref for rid in need_refs for ref in decisions[rid]["state_refs"])
+            allowed_state = set(ref for rid in need_refs for ref in decisions[rid]["state_refs"] + decisions[rid].get("reference_refs", []))
             if not set(state_refs) <= allowed_state:
                 continue
             if not explicit and not state_refs:
@@ -469,16 +473,32 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     fragment_status = {}
     focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
                                                 for p in profile.values()]}
+    references = prepared["references"]
+    # Include referenced originals for comprehension, never as a source of
+    # quotations attributed to the current fragment. Reuse source revision
+    # hashes to invalidate extraction if any linked source changed.
+    reference_contexts = {}
+    for sid, span in spans.items():
+        if not references.edges.get(sid):
+            continue
+        related, gaps = references.related([sid], budget=max(0, min(5000,
+            _candidate_budget(cfg) - len(span["text"]) - _payload_size(focus) - 1000)))
+        if related or gaps:
+            reference_contexts[(span["source"], span["fragment"])] = {"items": related, "gaps": gaps}
+    revision = hashlib.sha256(json.dumps(prepared["hashes"], sort_keys=True).encode()).hexdigest()
     registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
-                              fragment_status=fragment_status)
+                              fragment_status=fragment_status, reference_contexts=reference_contexts,
+                              reference_revision=revision)
     records = registry["requirements"]
     roles_by_section = {(s["source"], s["section"]): s["role"] for s in sections.values()}
     for row in records.values():
         row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
     decisions, state = {}, {}
+    reference_counts = Counter(references.counts)
+    linked_by_need = {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
                    and row["typing_status"] == "classified"]
     # Bounded per-record evidence, plus profile sources that are actual originals.
@@ -487,15 +507,25 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         rid = row["id"]
         emit("target_allocation", index)
         query = context["target"] + " " + row["quote"]
-        pool = _search_records(cfg, evidence, records, {rid}, query)
+        roots = [references.positions.get((p["source"], p["fragment"])) for p in row.get("source_spans", [])]
+        linked, gaps = references.related(roots, quote=row["quote"], budget=min(6000, _candidate_budget(cfg) // 2))
+        reference_counts.update(gaps)
+        if linked or gaps:
+            linked_by_need[rid] = {"items": linked, "gaps": gaps}
+        linked_pool = [{"id": r["id"], "source": r["source"], "section": r["section"],
+                        "quote": r["quote"], "kind": "reference", "source_role": "unspecified"}
+                       for r in linked]
+        pool = linked_pool + _search_records(cfg, evidence, records, {rid}, query)
         for p in profile.values():
             for sid in p["refs"]:
                 s = spans[sid]
                 pool.append({"id": sid, "source": s["source"], "section": s["section"],
                              "quote": s["text"], "kind": "uncertain", "source_role": "unspecified"})
-        pool = list({item["id"]: item for item in pool}.values())
+        pool = list(dict(reversed([(item["id"], item) for item in pool])).values())[::-1]
         base = {"context": context, "profile": focus["functions"],
                 "items": [{**_compact(row), "section_role": row["section_role"]}]}
+        if linked or gaps:
+            base["reference_status"] = {"linked_ids": [r["id"] for r in linked], "gaps": gaps}
         budget = _candidate_budget(cfg)
         if _payload_size(base) > budget:
             decisions[rid] = {"status": "allocation_context_limit", "change": "unknown",
@@ -503,6 +533,13 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             continue
         pool = _bounded_rows(pool, max(0, budget - _payload_size(base) - 300))
         # Evidence is a view over existing registry/source spans; no second search index.
+        supplied = {r["id"] for r in pool}
+        if linked or gaps:
+            omitted = sum(r["id"] not in supplied for r in linked)
+            if omitted:
+                reference_counts["budget_limit"] += omitted
+                gaps["budget_limit"] = gaps.get("budget_limit", 0) + omitted
+            base["reference_status"] = {"linked_ids": [r["id"] for r in linked if r["id"] in supplied], "gaps": gaps}
         state.update({r["id"]: r for r in pool})
         answers, statuses, _ = _unique_answers(cfg, "target_allocation", {**base, "evidence": pool}, [rid])
         if rid not in answers:
@@ -511,6 +548,9 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             continue
         decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, profile,
                                             context["target"])
+        if linked or gaps:
+            decisions[rid]["reference_refs"] = base["reference_status"]["linked_ids"]
+            decisions[rid]["reference_gaps"] = gaps
     _verify_decisions(cfg, decisions, records, state, context, emit)
     groups = _group_decisions(decisions)
     proposals, questions, outcomes = _proposals(cfg, groups, decisions, records, state, context, emit)
@@ -530,6 +570,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "record_kinds": dict(Counter(r["kind"] for r in records.values())),
                    "index_revisions": dict(evidence.revisions),
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
+    diagnostics["references"] = dict(reference_counts)
     diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
     diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
     diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
@@ -547,5 +588,6 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
             "metrics_registry": {rid: d["metric"] for rid, d in decisions.items()
                                  if d["status"] == "model_supported" and "metric" in d},
             "decisions": decisions, "proposals": proposals, "questions": questions,
+            "linked_by_need": linked_by_need,
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
             "diagnostics": diagnostics, "requires_expert_review": True}
