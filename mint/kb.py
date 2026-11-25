@@ -452,6 +452,7 @@ def index_parsed_document(filename, units, tables, pages_real, structured, cfg, 
             "embed_model": cfg.embed_model, "embed_dim": dim, "embed_doc_prefix": cfg.embed_doc_prefix,
             **{k: int(getattr(cfg, k)) for k in CHUNK_PARAM_KEYS},
             "indexed_at": time.strftime("%Y-%m-%d %H:%M:%S"), "mint_version": MINT_VERSION,
+            **({"source_sha256": info["source_sha256"]} if info and info.get("source_sha256") else {}),
             **({"format": info.get("format"), "structure": info.get("structure")} if info else {}),
         }
         _commit_kb(cfg, index, metadata_to_save, parent_store, doc_updates={filename: doc_params})
@@ -498,7 +499,8 @@ def process_and_add_to_kb(filename, data: bytes, cfg, store_source=True):
                                      "профиль эмбеддингов несовместим или неизвестен. После загрузки всех "
                                      "недостающих оригиналов переиндексируйте базу.")
         ok, msg = index_parsed_document(filename, parsed["units"], parsed["tables"], parsed["pages_real"],
-                                        parsed["structured"], cfg, info=parsed["info"])
+                                        parsed["structured"], cfg, info={**parsed["info"],
+                                                                         "source_sha256": hashlib.sha256(data).hexdigest()})
         if ok and store_source:
             with kb_write_lock(cfg):
                 sp = source_path(cfg, filename)
