@@ -201,10 +201,25 @@ def test_registry_end_to_end():
             excluded = next(rid for rid in ids if collected["requirements"][rid]["quote"] == DATA)
             with patch.object(target, "build_registry", side_effect=AssertionError("repeated extraction")), patch.object(
                     target, "_verify_decisions", side_effect=AssertionError("repeated allocation")):
-                reviewed = target.decompose_target_requirements(cfg, prepared, collected,
-                    selection=[rid for rid in ids if rid != excluded], notes={"G1": "Use original evidence only."})
+                # Explicitly exercise an excluded requirement also appearing in the
+                # supplemental evidence graph. It stays in the original snapshot.
+                from copy import deepcopy
+                review_input = deepcopy(collected)
+                included = next(rid for rid in ids if rid != excluded)
+                review_input["decisions"][included].setdefault("dossier_refs", []).append(excluded)
+                review_input["state_evidence"][excluded] = review_input["requirements"][excluded]
+                with patch.object(target, "_proposals", wraps=target._proposals) as derive:
+                    reviewed = target.decompose_target_requirements(cfg, prepared, review_input,
+                        selection=[rid for rid in ids if rid != excluded], notes={"G1": "Use original evidence only."})
+                _, _, derived_decisions, _, derived_state, *_ = derive.call_args.args
+                assert excluded not in derived_state
+                assert all(excluded not in d.get(field, []) for d in derived_decisions.values()
+                           for field in ("state_refs", "reference_refs", "dossier_refs"))
+                assert excluded in reviewed["decisions"][included]["dossier_refs"]
+                assert excluded in review_input["state_evidence"]
                 assert reviewed["dispositions"][excluded] == "expert_excluded"
-                assert not any(excluded in p["need_refs"] for p in reviewed["proposals"])
+                assert not any(excluded in p[field] for p in reviewed["proposals"]
+                               for field in ("need_refs", "state_refs", "constraint_refs"))
                 assert reviewed["review"]["notes"]["G1"] == "Use original evidence only."
                 assert json.dumps(collected["dispositions"], sort_keys=True) == original
                 assert reviewed["review"]["mode"] == "expert"
@@ -228,6 +243,11 @@ def test_registry_end_to_end():
             payload = json.dumps(safe, ensure_ascii=False, allow_nan=False)
             assert all(private not in payload for private in (NEED, CURRENT, METRIC, "needs.md", "Messaging", "Relay Service"))
             assert safe["counts"]["verified_metrics"] == 1
+            with patch.object(target, "summarize_needs", side_effect=AssertionError("unnecessary summary call")):
+                automatic = target.analyze_target_registry(cfg, prepared, prepared["profile"])
+            assert automatic["phase"] == "decomposed" and automatic["review"]["mode"] == "automatic"
+            assert automatic["summaries"] == {} and "target_summary" not in automatic["metrics"]["stages"]
+            assert automatic["dispositions"] == result["dispositions"]
             source_path(cfg, "extra.md").write_text("changed", encoding="utf-8")
             try:
                 target.decompose_target_requirements(cfg, prepared, collected)
