@@ -130,13 +130,19 @@ def registry_workbook(prepared, result):
            ("phase", result.get("phase", "decomposed")), ("review_mode", result.get("review", {}).get("mode", "")),
            (tr("Конфиденциальность"), tr("Содержит исходные тексты. Только для локального использования."))],
           [30, 100])
-    sheet(tr("Подтверждённые функции"), ["ID", tr("Функция"), tr("Описание"), tr("Ссылки")],
+    sheet(tr("Выявленные функции"), ["ID", tr("Функция"), tr("Описание"), tr("Ссылки")],
           [(p["id"], p["name"], p["description"], ", ".join(p["refs"])) for p in result.get("approved_profile", [])],
           [12, 40, 100, 36])
     if prepared.get("reference_sources"):
         sheet(tr("Справочный контекст"), ["ID", tr("Источник"), tr("Раздел"), tr("Цитата")],
-              [(r["id"], r["source"], r["section"], r["text"]) for r in prepared.get("reference_candidates", [])],
+              [(r["id"], r["source"], r["section"], r.get("quote", r.get("text", "")))
+               for r in result.get("reference_candidates", prepared.get("reference_candidates", []))],
               [12, 40, 46, 100])
+    if result.get("function_links"):
+        names = {p["id"]: p["name"] for p in result.get("approved_profile", [])}
+        sheet(tr("Связи требований с функциями"), ["ID", tr("Функция"), tr("Источник"), tr("Цитата")],
+              [(rid, names[pid], records[rid]["source"], records[rid]["quote"])
+               for rid, pids in result["function_links"].items() for pid in pids], [12, 40, 40, 100])
     def summary_rows():
         review = result.get("review", {})
         included, excluded = set(review.get("included", [])), set(review.get("excluded", []))
