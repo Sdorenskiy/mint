@@ -74,7 +74,8 @@ def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, 
         counts.update({"searches": 1, "hybrid_hits": len(hits), "fallback_hits": len(fallback)})
         counts["reference_gaps"] += sum(gaps.values())
         candidates = list(dict.fromkeys(roots + [r["id"] for r in linked]))
-        base = {"context": context, "function": p, "facets": list(facets)}
+        base = {"context": context, "function": {k: p[k] for k in ("id", "name", "description")},
+                "facets": list(facets)}
         budget = _candidate_budget(cfg)
         rows, used = [], _size(base) + 100
         for sid in candidates:

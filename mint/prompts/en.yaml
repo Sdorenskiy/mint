@@ -785,6 +785,7 @@ draft_target_section_map: |-
   arch (current design), constraint (limits), business (business process), reference (background), unknown.
   Return {"items":[{"id":"S1","role":"unknown"}]}. Exactly one answer per id.
 draft_target_profile: |-
+  If purpose = requirements_analysis, evidence contains exact quotes from the primary registry. Identify capabilities/interactions necessary to satisfy requirements within the target boundary; do not present desired behavior as implemented. Link all relevant original IDs (including shared constraints where applicable); one ID may relate to several functions. Do not turn a requirement or metric itself into a function. If quotes describe only a system-wide constraint, do not invent a function.
   If purpose = reference_current_state, identify only described existing functions of the target itself; plans, other-system analogies and uncertain state do not establish implementation. Return an empty list if evidence is missing.
   Describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
   Do not assign other participants' functions to the target. For each function give name, description
