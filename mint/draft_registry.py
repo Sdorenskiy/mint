@@ -98,7 +98,8 @@ def _type_records(cfg, records, emit, *, reset_cache=False):
 
 
 def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=False,
-                   focus=None, prepared_chunks=None, fragment_status=None):
+                   focus=None, prepared_chunks=None, fragment_status=None,
+                   reference_contexts=None, reference_revision=None):
     """Build the minimal V2 registry from parsed selected originals.
 
     Source roles are supplied by the caller (not inferred from filenames).
@@ -115,7 +116,8 @@ def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=Fa
                                                for role in source_roles.values()):
         raise ValueError("Invalid registry source role")
     kwargs = {} if focus is None else dict(focus=focus, prepared_chunks=prepared_chunks,
-                                           fragment_status=fragment_status)
+                                           fragment_status=fragment_status,
+                                           reference_contexts=reference_contexts, reference_revision=reference_revision)
     records, chunks = _requirements(cfg, documents, issues, emit,
                                     reset_cache=reset_cache, include_provenance=True, **kwargs)
     for row in records.values():
