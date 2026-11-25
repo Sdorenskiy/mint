@@ -35,7 +35,7 @@ class StageProgress:
             return False
         if event.endswith("_total"):
             stage = event[:-6]
-            self.rows[stage] = {"total": value, "done": 0, "start": now, "end": None}
+            self.rows[stage] = {"total": value, "done": 0, "start": now, "end": now if value == 0 else None}
             self.active = stage
             if stage == "extract":
                 self.cached = self.failed = 0
