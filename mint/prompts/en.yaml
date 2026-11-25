@@ -780,7 +780,7 @@ draft_edit: |-
 draft_target_section_map: |-
   Classify each section by heading path and sample. Never exclude solely by its heading.
   role: need (requirements), interface (interfaces or adjacent systems), metric (performance objectives),
-  current design (use role code arch), constraint (limits), business (business process), reference (background), unknown.
+  arch (current design), constraint (limits), business (business process), reference (background), unknown.
   Return {"items":[{"id":"S1","role":"unknown"}]}. Exactly one answer per id.
 draft_target_profile: |-
   Describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
