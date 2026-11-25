@@ -629,12 +629,13 @@ draft_requirement_assessment: |-
   no_new_decisions means there are no invented parameters, implementation choices or duties.
   Consider conditions, negation and exceptions, distinguishing existing from required behavior.
   If unsure about any of these three judgments, use false. Explain reason.
+  If candidate.quality_gate is true, also return complete, unambiguous, verifiable (boolean): standalone complete duty with action and object, unambiguous conditions, and testability. A bare attribute or quote fragment is insufficient.
   repairable is true only if the supplied evidence suffices to revise the text; false
   if evidence is missing or a new decision is necessary. If input contains items, assess
   each candidate only against its own evidence, and return {"items":[{"id":"P1",
-  "supported":false,"correct_actor":false,"no_new_decisions":false,"repairable":false,"reason":"explanation"}]}.
+  "supported":false,"correct_actor":false,"no_new_decisions":false,"complete":false,"unambiguous":false,"verifiable":false,"repairable":false,"reason":"explanation"}]}.
   Return exactly one row per id. Otherwise return one answer.
-  Return {"supported":false,"correct_actor":false,"no_new_decisions":false,"repairable":false,"reason":"explanation"}.
+  Return {"supported":false,"correct_actor":false,"no_new_decisions":false,"complete":false,"unambiguous":false,"verifiable":false,"repairable":false,"reason":"explanation"}.
 draft_function_group: |-
   Group functional obligations describing one coherent function.
   Do not group independent functions merely because they share words or a system name.
