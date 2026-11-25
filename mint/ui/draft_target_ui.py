@@ -30,12 +30,14 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
         session.pop("target_registry_collected", None)
+        session.pop("target_review_workbook", None)
         session.pop("target_full_workbook", None)
     st.caption(tr("Контрольная точка 1: сначала анализ требований, без формирования Word."))
     if st.button(tr("Подготовить профиль системы"), disabled=not enabled, key="target_prepare"):
         session.pop("target_registry_prepared", None)
         session.pop("target_registry_result", None)
         session.pop("target_registry_collected", None)
+        session.pop("target_review_workbook", None)
         session.pop("target_full_workbook", None)
         with st.status(tr("Профиль целевой системы"), expanded=False) as status:
             try:
@@ -76,6 +78,7 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
                  disabled=not approved, key="target_analyze"):
         session.pop("target_registry_result", None)
         session.pop("target_registry_collected", None)
+        session.pop("target_review_workbook", None)
         session.pop("target_full_workbook", None)
         with st.status(tr("Распределение ответственности"), expanded=False) as status:
             try:
@@ -208,10 +211,45 @@ def _render_intermediate_review(cfg, prepared, collected, identity):
     records, decisions = collected["requirements"], collected["decisions"]
     st.subheader(tr("Собранные требования до декомпозиции"))
     st.caption(tr("Формулировки — предварительное обобщение модели. Сверьте их с цитатами. Уточнения эксперта не заменяют основания."))
+    if st.button(tr("Подготовить промежуточный реестр Excel"), key="target_review_xlsx_" + run_id):
+        try:
+            session["target_review_workbook"] = run_id, registry_workbook(prepared, collected)
+        except (ImportError, ValueError, OSError, KeyError, RuntimeError):
+            st.warning(tr("Не удалось подготовить полный реестр Excel."))
+    workbook = session.get("target_review_workbook")
+    if workbook and workbook[0] == run_id:
+        st.download_button(tr("Скачать промежуточный реестр Excel"), workbook[1],
+                           file_name="mint_collected_registry.xlsx",
+                           mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                           key="target_review_download_" + run_id)
+    st.download_button(tr("Скачать обезличенные данные для анализа"),
+                       json.dumps(target_registry_export(prepared, collected), ensure_ascii=False, indent=2),
+                       file_name="mint_collected_diagnostics.json", mime="application/json",
+                       key="target_review_diag_" + run_id)
+    st.caption(tr("Полный реестр содержит исходные тексты. Храните его только внутри разрешённого контура."))
     cards = collected.get("review_cards", [])
     cards_by_group = {}
     for card in cards:
         cards_by_group.setdefault(card["group"], []).append(card)
+    with st.expander(tr("Исходные требования и связанные сведения")):
+        if records:
+            rid = st.selectbox(tr("Требование"), list(records),
+                               format_func=lambda k: f"{k} · {collected['dispositions'][k]} · {records[k]['quote'][:100]}",
+                               key="target_review_source_" + run_id)
+            d = decisions.get(rid, {})
+            st.caption(f"{d.get('category', '')} · {d.get('change', '')} · {d.get('status', '')}")
+            st.text(d.get("reason", ""))
+            _show_refs([rid] + list(dict.fromkeys(d.get("reference_refs", []) + d.get("dossier_refs", []) + d.get("state_refs", []))), prepared, collected)
+            if d.get("metric"):
+                st.json(d["metric"])
+    with st.expander(tr("Характеристики функций")):
+        dossiers = collected.get("dossiers", {})
+        if dossiers:
+            pid = st.selectbox(tr("Функция"), list(dossiers), format_func=lambda k: dossiers[k]["function"], key="target_review_dossier_" + run_id)
+            for facet, row in dossiers[pid]["facets"].items():
+                st.caption(f"{facet} · {row['status']}")
+                for fact in row["facts"]:
+                    st.text(f"{fact.get('record_id', '')} · {fact['quote']}")
     with st.form("target_review_" + run_id):
         excluded, notes = [], {}
         for group in collected["groups"]:
@@ -225,15 +263,6 @@ def _render_intermediate_review(cfg, prepared, collected, identity):
                 st.caption(tr("Собранная формулировка") if card["status"] == "model_summary"
                            else tr("Дословные цитаты — обобщение недоступно"))
                 st.text(card["text"])
-            with st.expander(tr("Исходные требования и связанные сведения") + " · " + gid):
-                for rid in group["requirement_ids"]:
-                    d = decisions[rid]
-                    st.caption(f"{rid} · {d['change']}")
-                    _show_refs([rid] + list(dict.fromkeys(d.get("reference_refs", []) +
-                                                         d.get("dossier_refs", []) + d.get("state_refs", []))),
-                               prepared, collected)
-                    if d.get("metric"):
-                        st.json(d["metric"])
             excluded.extend(st.multiselect(tr("Исключить отдельные исходные требования"), ids,
                                             format_func=lambda rid: f"{rid} · {records[rid]['quote'][:100]}",
                                             key=f"target_excluded_{run_id}_{gid}"))
@@ -241,19 +270,6 @@ def _render_intermediate_review(cfg, prepared, collected, identity):
                                 key=f"target_note_{run_id}_{gid}")
             if note.strip():
                 notes[gid] = note
-        with st.expander(tr("Характеристики функций")):
-            for dossier in collected.get("dossiers", {}).values():
-                st.text(dossier["function"])
-                for facet, row in dossier["facets"].items():
-                    st.caption(f"{facet} · {row['status']}")
-                    for fact in row["facts"]:
-                        st.text(f"{fact.get('record_id', '')} · {fact['quote']}")
-        with st.expander(tr("Непроверенные и неотражённые исходные сведения")):
-            grouped_ids = {rid for g in collected["groups"] for rid in g["requirement_ids"]}
-            for rid, row in records.items():
-                if rid not in grouped_ids:
-                    st.caption(f"{rid} · {collected['dispositions'][rid]}")
-                    _show_refs([rid], prepared, collected)
         confirmed = st.checkbox(tr("Подтверждаю выбранные требования для декомпозиции"),
                                 key="target_confirm_review_" + run_id)
         submit = st.form_submit_button(tr("Подтвердить и декомпозировать"))
