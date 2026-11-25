@@ -120,6 +120,12 @@ def registry_workbook(prepared, result):
     sheet(tr("Подтверждённые функции"), ["ID", tr("Функция"), tr("Описание"), tr("Ссылки")],
           [(p["id"], p["name"], p["description"], ", ".join(p["refs"])) for p in result.get("approved_profile", [])],
           [12, 40, 100, 36])
+    sheet(tr("Согласование требований"), ["ID", tr("Функция"), tr("Собранная формулировка"), tr("Ссылки"),
+          tr("Статус"), tr("Исключённые записи"), tr("Уточнение эксперта (не является основанием)")],
+          [(card["id"], card["function"], card["text"], ", ".join(card["need_refs"]), card["status"],
+            ", ".join(rid for rid in card["need_refs"] if rid in result.get("expert_review", {}).get("excluded", [])),
+            result.get("expert_review", {}).get("notes", {}).get(card["group"], ""))
+           for card in result.get("review_cards", [])], [12, 40, 100, 36, 28, 36, 80])
     sheet(tr("Предложения"), ["ID", tr("Функция"), tr("Исполнитель"), tr("Тип"),
           tr("Требование"), tr("Статус"), tr("Обоснование"), tr("Причина проверки"), tr("Компоненты")],
           [(p["id"], groups.get(p["group"], ""), p["actor"], p["kind"], p["text"],
