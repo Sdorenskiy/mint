@@ -6,6 +6,8 @@
 >
 > Перед **каждым релизом** карту следует сверить с актуальным `main`, проверить появившиеся и удалённые модули и зафиксировать проверенную базу; только после этого готовить выпуск. Проверка проводится разработчиком вручную, без дополнительных GitHub Actions.
 
+> Прогресс формирования: `mint/draft_progress.py:tracked()` и `StageProgress` передают завершённые операции и объём через прежний callback; общий интерфейс `mint/ui/draft_progress_ui.py:render_progress()` ограничивает частоту обновления. `mint/draft_references.py:ReferenceMap` строит адреса и связи выбранных оригиналов; `mint/draft_word_references.py:word_reference_metadata()` извлекает поддерживаемую нумерацию и закладки Word. Контекст ссылок используется в реестре V2, без отдельного индекса. Тесты — `tests/test_draft_references_progress.py`.
+>
 > Контрольная точка 1: `mint/draft_target_analysis.py:prepare_target_analysis()` строит карту и предлагает профиль, `analyze_target_registry()` использует существующий `build_registry`, `search_parent_child` с allowlist и проверкой ревизии, проверяет ответственность/изменения, группирует по подтверждённым функциям и оценивает требования. `mint/ui/draft_target_ui.py` — локальная проверка реестра без Word, по умолчанию в V2. `target_registry_export()` в `draft_pilot_report.py` — единая обезличенная диагностика. Старый Word-пилот сохранён опционально до локальной проверки. Тесты — `tests/test_draft_target_analysis.py`. Синтетическая проверка не доказывает полноту или пригодность на рабочих основаниях.
 >
 > Экспериментальный этап V2: `mint/draft_registry.py:build_registry()` использует существующее извлечение, добавляет происхождение цитат и типизацию, но пока не вызывается из активной вкладки Word. Проверки — `tests/test_draft_registry.py`.
