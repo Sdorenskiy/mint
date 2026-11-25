@@ -159,6 +159,9 @@ def test_registry_end_to_end():
             if stage == "target_verify":
                 return {"items": [{"id": r["id"], "correct_actor": True, "change_supported": True,
                                    "conditions_preserved": True, "reason": "verified"} for r in payload["items"]]}
+            if stage == "target_review_summary":
+                return {"text": "\n".join(r["quote"] for r in payload["items"]),
+                        "need_refs": [r["id"] for r in payload["items"]]}
             if stage == "target_derivation":
                 items = []
                 for r in payload["needs"]:
@@ -207,7 +210,49 @@ def test_registry_end_to_end():
             payload = json.dumps(safe, ensure_ascii=False, allow_nan=False)
             assert all(private not in payload for private in (NEED, CURRENT, METRIC, "needs.md", "Messaging", "Relay Service"))
             assert safe["counts"]["verified_metrics"] == 1
+            collected = target.collect_target_registry(cfg, prepared, prepared["profile"])
+            assert collected["phase"] == "collected" and not collected["proposals"]
+            assert "target_derivation" not in collected["metrics"]["stages"]
+            assert collected["review_cards"]
+            # Source obligations survive review, including excluded items.
+            before = json.dumps(collected["requirements"], sort_keys=True)
+            ids = {row["quote"]: rid for rid, row in collected["requirements"].items()}
+            assert set(ids) == set(by_quote)
+            assert {rid for card in collected["review_cards"] for rid in card["need_refs"]} == {
+                ids[q] for q in (NEED, NEED2, DIRECT, METRIC, DATA)}
+            from unittest.mock import Mock
+            captured = Mock(side_effect=model)
+            with patch.object(target, "_json", captured):
+                reviewed = target.finalize_target_registry(cfg, prepared, collected,
+                    excluded=[ids[DATA]], notes={collected["groups"][0]["id"]: "private expert note"}, reviewed=True)
+            assert reviewed["phase"] == "derived"
+            assert reviewed["expert_review"]["confirmed"] is True
+            assert reviewed["dispositions"][ids[DATA]] == "expert_excluded"
+            assert all(ids[DATA] not in p["need_refs"] for p in reviewed["proposals"])
+            assert all(reviewed["dispositions"][ids[q]] == "model_covered" for q in (NEED, NEED2, DIRECT, METRIC))
+            assert json.dumps(collected["requirements"], sort_keys=True) == before
+            assert not collected["proposals"] and collected["phase"] == "collected"
+            assert all(call.args[1] == "target_derivation" for call in captured.call_args_list)
+            assert any(call.args[2].get("expert_comment") == "private expert note" for call in captured.call_args_list)
+            safe = json.dumps(target_registry_export(prepared, reviewed))
+            assert "private expert note" not in safe
+            assert reviewed["diagnostics"]["intermediate_review"]["excluded"] == 1
+            try:
+                target.finalize_target_registry(cfg, prepared, collected, excluded=["not-a-record"], reviewed=True)
+                raise AssertionError("unknown review id accepted")
+            except ValueError:
+                pass
+            try:
+                target.finalize_target_registry(cfg, prepared, collected, excluded=[ids[DATA]])
+                raise AssertionError("unconfirmed exclusion accepted")
+            except ValueError:
+                pass
             source_path(cfg, "extra.md").write_text("changed", encoding="utf-8")
+            try:
+                target.finalize_target_registry(cfg, prepared, collected, reviewed=True)
+                raise AssertionError("stale review accepted")
+            except draft.DraftError:
+                pass
             try:
                 target.analyze_target_registry(cfg, prepared, prepared["profile"])
                 raise AssertionError("changed original accepted")
