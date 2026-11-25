@@ -191,7 +191,8 @@ def test_registry_end_to_end():
             stack.enter_context(patch.object(target, "load_kb_snapshot", return_value=None))
             prepared = target.prepare_target_analysis(cfg, list(docs), roles, CONTEXT)
             assert len(prepared["profile"]) == 1
-            collected = target.collect_target_requirements(cfg, prepared, prepared["profile"])
+            with patch.object(target, "_proposals", side_effect=AssertionError("premature decomposition")):
+                collected = target.collect_target_requirements(cfg, prepared, prepared["profile"])
             assert collected["phase"] == "collected" and not collected["proposals"]
             assert all(r["status"] == "draft" for rows in collected["summaries"].values() for r in rows)
             assert "target_derivation" not in collected["metrics"]["stages"]
