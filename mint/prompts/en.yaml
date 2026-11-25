@@ -788,7 +788,7 @@ draft_target_profile: |-
   Do not assign other participants' functions to the target. For each function give name, description
   (current function, component, interfaces, exclusions) and refs, original fragment ids.
   Never invent facts; absence of evidence is not evidence of absence.
-  Do not describe future requirements as existing capabilities. At most 20 functions.
+  Distinguish existing functions from explicitly required target functions in description; do not describe future functions as implemented. At most 20 functions.
   Return {"functions":[{"name":"function","description":"supported description","refs":["F1"]}]}.
 draft_target_extract: |-
   Extract verbatim contiguous quotes from text using section and focus. Preserve target-side requirements,
