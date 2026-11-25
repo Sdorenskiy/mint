@@ -159,7 +159,7 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
 
 # The registry has no Word anchors yet. Export only aggregate codes and numbers.
 TARGET_STAGES = ("target_section_map", "target_profile", "target_dossier", "target_extract", "registry_type",
-                 "target_allocation", "target_verify", "target_derivation",
+                 "target_allocation", "target_verify", "target_summary", "target_derivation",
                  "requirement_assessment", "target_coverage")
 _TARGET_COUNTERS = {
     "section_roles": ("need", "interface", "metric", "architecture", "constraint", "business", "reference", "unknown"),
@@ -170,6 +170,7 @@ _TARGET_COUNTERS = {
     "changes": ("new", "change", "already_supported", "external", "unknown", "explicit"),
     "outcomes": ("new", "change", "already_supported", "external", "unknown", "explicit",
                  "context_only", "untyped", "open_question", "model_covered", "coverage_gap",
+                 "awaiting_decomposition", "expert_excluded",
                  "group_context_limit", "model_supported_candidates", "missing_metric_evidence",
                  "missing_evidence", "wrong_actor", "invalid_response", "missing_response", "allocation_context_limit",
                  "duplicate_response", "batch_error", "review_context_limit", "review_error", "needs_review", "reference_unresolved"),
@@ -181,6 +182,8 @@ _TARGET_COUNTERS = {
                           "matched_spans", "no_match", "no_index", "fallback_spans", "cache_hits"),
     "references": ("resolved", "ambiguous", "missing", "outside_scope", "unidentified_document", "unsupported_range"),
     "reference_gaps": ("ambiguous", "missing", "outside_scope", "unidentified_document", "unsupported_range", "cycle", "depth_limit", "budget_limit"),
+    "summaries": ("draft", "invalid", "error", "context_limit"),
+    "review_scope": ("included", "excluded", "notes"),
     "verification": ("batches", "cache_hits", "invalid_verdicts"),
     "allocation_validation": ("category", "change", "refs", "reason", "function", "function_name"),
     "dossiers": ("searches", "hybrid_hits", "fallback_hits", "reference_gaps", "limited_searches", "batch_errors",
@@ -203,6 +206,7 @@ def target_registry_export(prepared, result):
     extraction = analysis.get("diagnostics", {}).get("extraction", {})
     return {"format": "mint-draft-analysis/1", "mint": MINT_VERSION,
             "mode": "target_registry", "requires_expert_review": True,
+            "phase": "collected" if result.get("phase") == "collected" else "decomposed",
             "counts": counts, "diagnostics": counters,
             "extraction": {key: _number(extraction.get(key)) for key in EXTRACTION},
             "preparation": {"total_seconds": _number(preparation.get("total_seconds")),

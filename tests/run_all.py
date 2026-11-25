@@ -23,6 +23,7 @@ SUITES = [
     ("MINT V2: контрольная точка 1 — целевой реестр", ["test_draft_target_analysis.py"]),
     ("MINT V2: ссылки оснований и прогресс", ["test_draft_references_progress.py"]),
     ("MINT V2: досье функций, реестр Excel и сравнение прогонов", ["test_draft_dossiers.py"]),
+    ("MINT V2: согласование перед декомпозицией", ["test_draft_target_review.py"]),
     ("Пригодный к вычитке Word: титул, 7.1, цвета, таблицы, примеры и ссылки", ["test_draft_usable_word.py"]),
     ("Чат по документу Word: предложения, подтверждение, откат, источники и целостность", ["test_document_edit.py"]),
     ("Контекст создаваемого документа: определение из шаблона и подтверждение", ["test_document_context.py"]),

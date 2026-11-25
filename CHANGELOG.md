@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 registry: optional expert review before decomposition (default on), bounded consolidated needs with original references, source-need selection and separately identified expert guidance. Resume without rescanning, preserve excluded records, export intermediate registry. Development version 21.4.17.
+
 - V2 registry: additive function-directed retrieval over the existing hybrid search, verified original quotes for data categories, interface characteristics and performance objectives; independent batched review, strict requirement-quality gates, local XLSX and exact run comparison. Development version 21.4.16.
 
 - Show completed/total counters and wall-clock stage progress in document drafting. Resolve explicit original-source cross-references in V2 registry, include bounded linked context and flag missing or ambiguous addresses. Development version 21.4.15.
