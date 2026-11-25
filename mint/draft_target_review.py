@@ -24,6 +24,9 @@ def input_identity(cfg, prepared, profile):
             "kb": str(cfg.kb_path),
             "draft_prompts": {k: v for k, v in effective_prompts().items() if k.startswith(DRAFT_PREFIX)},
             "model_identity": _identity(cfg, "", "", stage="target_derivation")}
+    if prepared.get("reference_sources"):
+        data["reference_sources"] = prepared["reference_sources"]
+        data["reference_hashes"] = prepared["reference_hashes"]
     return hashlib.sha256(json.dumps(data, sort_keys=True, ensure_ascii=False).encode()).hexdigest()
 
 
@@ -76,7 +79,8 @@ def summarize_needs(cfg, groups, records, decisions, state, context, emit, ask):
                 text = _text(reply, "text")
                 if (need_refs is not None and set(need_refs) == set(ids)
                         and refs is not None and text and len(text) <= MAX_SUMMARY
-                        and _numbers_supported(text, need_refs + refs, {**records, **state})):
+                        and _numbers_supported(text, need_refs + [k for k in refs if state[k].get("source_role") != "reference_context"],
+                                               {**records, **state})):
                     row.update(text=text, status="draft", evidence_refs=refs)
                 else:
                     row["status"] = "invalid"

@@ -51,16 +51,16 @@ def _bounded_rows(rows, budget):
     return selected
 
 
-def _map_sources(documents, roles):
+def _map_sources(documents, roles, *, prefix=""):
     spans, sections = {}, {}
     for name, markdown in documents:
         for index, (path, text) in enumerate(_source_chunks(markdown, full_path=True), 1):
             key = (name, path)
             if key not in sections:
-                sections[key] = {"id": "S" + str(len(sections) + 1), "source": name,
+                sections[key] = {"id": prefix + "S" + str(len(sections) + 1), "source": name,
                                  "section": path, "source_role": roles.get(name, "unspecified"),
                                  "sample": text[:600], "role": "unknown"}
-            sid = "F" + str(len(spans) + 1)
+            sid = prefix + "F" + str(len(spans) + 1)
             spans[sid] = {"id": sid, "source": name, "section": path, "fragment": index,
                           "text": text, "section_id": sections[key]["id"]}
     return spans, {s["id"]: s for s in sections.values()}
@@ -196,11 +196,48 @@ def _validate_profile(answer, allowed):
     return result
 
 
+def _propose_profile(cfg, candidates, context, emit, *, reference=False):
+    """Keep a failed/empty response distinct from a verified citation set."""
+    status = "no_candidates"
+    profile = []
+    for _ in tracked(emit, "target_profile", [1] if candidates else []):
+        emit("target_profile", 1)
+        try:
+            payload = {"context": context, "evidence": candidates}
+            if reference:
+                payload["purpose"] = "reference_current_state"
+            answer = _json(cfg, "target_profile", payload)
+        except DraftError:
+            status = "model_error"
+        else:
+            rows = answer.get("functions") if isinstance(answer, dict) else None
+            if not isinstance(rows, list):
+                status = "invalid_response"
+            elif not rows:
+                status = "no_functions"
+            else:
+                profile = _validate_profile(answer, {r["id"] for r in candidates})
+                status = ("found" if len(profile) == len(rows) else "partial" if profile
+                          else "invalid_response")
+    return profile, status
+
+
 @_measure_draft
-def prepare_target_analysis(cfg, sources, roles, context, progress=None):
-    """Stage A/B: read actual originals, map sections, propose a bounded profile."""
+def prepare_target_analysis(cfg, sources, roles, context, progress=None, *, reference_sources=()):
+    """Separate original bases from optional, user-scoped wiki context.
+
+    References are evidence for current-state interpretation only, never
+    inputs to extraction or a second obligation registry.
+    """
     emit = progress or (lambda *_: None)
     context = confirm_context(context)
+    sources = list(dict.fromkeys(sources))
+    reference_sources = list(dict.fromkeys(reference_sources))
+    if set(sources) & set(reference_sources):
+        raise ValueError("Basis and reference scopes must be disjoint")
+    # First pilot: explicitly bounded source scope, no scanning the whole wiki.
+    if len(reference_sources) > 8:
+        raise ValueError("Reference scope exceeds eight documents")
     issues, hashes, word_metadata = [], {}, {}
     documents = _load_draft_sources(cfg, sources, issues, source_hashes=hashes, emit=emit,
                                     word_metadata=word_metadata)
@@ -209,17 +246,35 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None):
     _classify_sections(cfg, sections, context, emit)
     evidence = OriginalEvidence(cfg, spans, hashes)
     candidates = _profile_candidates(cfg, spans, sections, roles, evidence, context, emit)
-    profile = []
-    for _ in tracked(emit, "target_profile", [1] if candidates else []):
-        emit("target_profile", 1)
+    profile, profile_status = _propose_profile(cfg, candidates, context, emit)
+    reference_hashes, reference_issues, reference_spans = {}, [], {}
+    reference_candidates, reference_retrieval = [], {}
+    reference_status = "disabled"
+    if reference_sources:
         try:
-            answer = _json(cfg, "target_profile", {"context": context, "evidence": candidates})
-            profile = _validate_profile(answer, {r["id"] for r in candidates})
+            reference_documents = _load_draft_sources(cfg, reference_sources, reference_issues,
+                                                      source_hashes=reference_hashes, emit=emit)
         except DraftError:
-            pass
+            reference_status = "source_error"
+        else:
+            reference_spans, reference_sections = _map_sources(reference_documents, {}, prefix="B")
+            ref_evidence = OriginalEvidence(cfg, reference_spans, reference_hashes)
+            reference_candidates = _profile_candidates(cfg, reference_spans, reference_sections, {},
+                                                       ref_evidence, context, emit)
+            reference_retrieval = dict(ref_evidence.counts)
+            ref_profile, reference_status = _propose_profile(cfg, reference_candidates, context, emit,
+                                                             reference=True)
+            # Preserve A-only hints and their IDs, even for overlapping names.
+            # Separate B rows so the user can judge their own source evidence.
+            for row in ref_profile:
+                profile.append({**row, "id": "B" + row["id"], "origin": "reference"})
     return {"documents": documents, "hashes": hashes, "spans": spans, "sections": sections,
-            "profile": profile, "issues": issues, "context": context, "roles": dict(roles),
-            "references": references,
+            "profile": profile, "profile_status": profile_status, "issues": issues,
+            "context": context, "roles": dict(roles), "references": references,
+            "reference_sources": reference_sources, "reference_hashes": reference_hashes,
+            "reference_spans": reference_spans, "reference_candidates": reference_candidates,
+            "reference_issues": reference_issues, "reference_status": reference_status,
+            "reference_retrieval": reference_retrieval,
             "profile_retrieval": dict(evidence.counts), "index_revisions": dict(evidence.revisions)}
 
 
@@ -236,10 +291,13 @@ def _metric_fields(reply, row, state, refs):
         return False
     need = _normalized(row["quote"])
     evidence = [need] + [_normalized(state[k]["quote"]) for k in refs]
+    basis_evidence = [need] + [_normalized(state[k]["quote"]) for k in refs
+                              if state[k].get("source_role") != "reference_context"]
     if _normalized(metric["value"]) not in need or _normalized(metric["unit"]) not in need:
         return False
     for key in ("current_value", "target_value"):
-        if metric[key] and not any(_normalized(metric[key]) in quote for quote in evidence):
+        allowed_quotes = basis_evidence if key == "target_value" else evidence
+        if metric[key] and not any(_normalized(metric[key]) in quote for quote in allowed_quotes):
             return False
     return metric
 
@@ -465,7 +523,9 @@ def _proposals(cfg, groups, decisions, records, state, context, emit, *, notes=N
             if explicit and not state_refs and (len(need_refs) != 1 or
                                                 _normalized(text) != _normalized(records[need_refs[0]]["quote"])):
                 continue
-            if not _numbers_supported(text, need_refs + state_refs + metric_refs, {**records, **state}):
+            # A number from B is not authority for a new quantitative target.
+            numeric_refs = need_refs + [k for k in state_refs if state[k].get("source_role") != "reference_context"] + metric_refs
+            if not _numbers_supported(text, numeric_refs, {**records, **state}):
                 continue
             candidates.append({"id": "P" + str(len(proposed) + len(candidates) + 1),
                                "text": text, "actor": context["target"],
@@ -527,7 +587,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit, *, notes=N
 
 def _verify_originals(cfg, prepared):
     """Reject stale source bytes at both sides of the review boundary."""
-    for source, digest in prepared["hashes"].items():
+    for source, digest in {**prepared["hashes"], **prepared.get("reference_hashes", {})}.items():
         try:
             current = hashlib.sha256(source_path(cfg, source).read_bytes()).hexdigest()
         except OSError:
@@ -552,8 +612,11 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         chunks[span["source"]].append((span["fragment"], span["section"], span["text"]))
     issues = list(prepared["issues"])
     fragment_status = {}
+    # Keep the previous A-only extraction focus and checkpoint identity.
+    # B must never change which original fragments are extracted or typed.
+    base_profile = {pid: p for pid, p in profile.items() if p.get("origin") != "reference"}
     focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
-                                                for p in profile.values()]}
+                                                for p in base_profile.values()]}
     references = prepared["references"]
     # Include referenced originals for comprehension, never as a source of
     # quotations attributed to the current fragment. Reuse source revision
@@ -568,7 +631,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
             reference_contexts[(span["source"], span["fragment"])] = {"items": related, "gaps": gaps}
     revision = hashlib.sha256(json.dumps({"version": 1, "hashes": prepared["hashes"]}, sort_keys=True).encode()).hexdigest()
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
-    dossiers, dossier_counts = collect_dossiers(cfg, evidence, references, profile, context, emit, _json,
+    dossiers, dossier_counts = collect_dossiers(cfg, evidence, references, base_profile, context, emit, _json,
                                                reset_cache=reset_cache)
     original_ids = set()
     def supplement(records):
@@ -587,6 +650,12 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
     original_records = {rid: row for rid, row in records.items() if rid in original_ids}
     dossier_positions, dossier_ids = dossier_context(records, dossiers)
     decisions, state = {}, {}
+    # B candidates are exact original spans, never inserted into records.
+    # Rank only the already retrieved bounded pool; no extra query per need.
+    wiki_pool = {r["id"]: {"id": r["id"], "source": r["source"], "section": r["section"],
+                           "quote": r["text"], "kind": "uncertain", "source_role": "reference_context"}
+                 for r in prepared.get("reference_candidates", [])}
+    wiki_counts = Counter()
     reference_counts = Counter()
     linked_by_need = {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
@@ -608,7 +677,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         # Preserve the original retrieval path. The dossier is supplemental.
         original_pool = _search_records(cfg, evidence, original_records, {rid}, query)
         pool = linked_pool + original_pool
-        for p in profile.values():
+        for p in base_profile.values():
             for sid in p["refs"]:
                 s = spans[sid]
                 pool.append({"id": sid, "source": s["source"], "section": s["section"],
@@ -617,7 +686,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         for item in pool:
             unique.setdefault(item["id"], item)
         pool = list(unique.values())
-        base = {"context": context, "profile": focus["functions"],
+        base = {"context": context, "profile": list(focus["functions"]),
                 "items": [{**_compact(row), "section_role": row["section_role"]}]}
         if linked or gaps:
             base["reference_status"] = {"linked_ids": [r["id"] for r in linked], "gaps": gaps}
@@ -640,6 +709,23 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
         free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
         pool.extend(_bounded_rows(unique_extras.values(), free))
         # Evidence is a view over existing registry/source spans; no second search index.
+        # Preserve A and linked evidence first. Only use unused budget for B.
+        allocation_profile = dict(base_profile)
+        if wiki_pool:
+            free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
+            # Add B hints only together with supporting spans, after A has its
+            # original budget. Neither a B label nor its evidence displaces A.
+            extra_budget = min(free, budget // 5)
+            wiki = _bounded_rows(_candidates(query, wiki_pool, size=extra_budget), extra_budget)
+            wiki_ids = {r["id"] for r in wiki}
+            spare = max(0, extra_budget - sum(_payload_size(r) + 2 for r in wiki))
+            hints = _bounded_rows(({"id": p["id"], "name": p["name"]} for p in profile.values()
+                                   if p.get("origin") == "reference" and set(p["refs"]) <= wiki_ids), spare)
+            base["profile"].extend(hints)
+            allocation_profile.update({p["id"]: profile[p["id"]] for p in hints})
+            pool.extend(wiki)
+            wiki_counts["needs_with_context"] += int(bool(wiki))
+            wiki_counts["spans_supplied"] += len(wiki)
         supplied = {r["id"] for r in pool}
         if linked or gaps:
             omitted = sum(r["id"] not in supplied for r in linked)
@@ -661,7 +747,7 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
             decisions[rid] = {"status": statuses[rid], "change": "unknown", "category": "uncertain",
                               "state_refs": [], "reason": ""}
             continue
-        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, profile,
+        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, allocation_profile,
                                             context["target"])
         decision = decisions[rid]
         if decision["status"] == "proposed" and decision.get("function") in dossier_ids:
@@ -699,6 +785,10 @@ def collect_target_requirements(cfg, prepared, approved_profile, progress=None, 
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
     dossier_counts.update(summarize_dossiers(dossiers, decisions, outcomes, proposals))
     diagnostics["dossiers"] = dict(dossier_counts)
+    diagnostics["profile_status"] = {prepared.get("profile_status", "no_candidates"): 1}
+    diagnostics["wiki_status"] = {prepared.get("reference_status", "disabled"): 1}
+    diagnostics["wiki_context"] = {**wiki_counts, "sources": len(prepared.get("reference_hashes", {})),
+                                   "read_errors": len(prepared.get("reference_issues", []))}
     diagnostics["summaries"] = summary_counts
     diagnostics["verification"] = dict(verification_counts)
     diagnostics["allocation_validation"] = dict(Counter(d["validation_code"] for d in decisions.values() if "validation_code" in d))

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 separates original bases from optional wiki reference context (up to eight explicitly selected documents). Reference excerpts support interpretation but cannot become original needs or independent target metrics. Discovery failures are distinguished; section classification is shown in diagnostics, and repeat collection is hidden until a matching collection exists. Development version 21.4.19.
+
 - Default V2 registry workflow uses guided stages, session-retained source materials and review, readable filtered lists, localized statuses, and a separate diagnostics/export view. Legacy Word modes remain available in advanced settings. Development version 21.4.18.
 
 - V2 registry: optional expert review before decomposition (default on), bounded consolidated needs with original references, source-need selection and separately identified expert guidance. Resume without rescanning, preserve excluded records, export intermediate registry. Development version 21.4.17.

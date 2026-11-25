@@ -620,6 +620,7 @@ draft_requirement_derivation: |-
   Return {"items":[{"id":"R1","status":"proposed","requirements":[{"text":"requirement","actor":"target","mode":"derived","need_refs":["R1"],"state_refs":["R2"],"constraint_refs":[],"reason":"explanation"}]}]}.
   Alternative: {"items":[{"id":"R1","status":"open_question","question":"What needs agreement?"}]}.
 draft_requirement_assessment: |-
+  Information with source_role = reference_context does not establish a new obligation, parameter or implementation choice. Check that it applies to the target's current state; do not approve the candidate if uncertain.
   Independently assess the proposed requirement against the exact source records in evidence.
   Do not treat citations or the author's explanation as semantic proof.
   supported means the text follows from the need and existing-state evidence;
@@ -784,6 +785,7 @@ draft_target_section_map: |-
   arch (current design), constraint (limits), business (business process), reference (background), unknown.
   Return {"items":[{"id":"S1","role":"unknown"}]}. Exactly one answer per id.
 draft_target_profile: |-
+  If purpose = reference_current_state, identify only described existing functions of the target itself; plans, other-system analogies and uncertain state do not establish implementation. Return an empty list if evidence is missing.
   Describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
   Do not assign other participants' functions to the target. For each function give name, description
   (current function, component, interfaces, exclusions) and refs, original fragment ids.
@@ -808,6 +810,7 @@ draft_target_dossier: |-
   Return {"items":[{"span_id":"F1","facet":"data_content","quote":"verbatim quote"}]}.
 
 draft_target_allocation: |-
+  Sources with source_role = reference_context are informational, not independent obligations. Use only explicitly applicable current state of the target; plans, analogies and disputed revisions do not establish implementation. Target metrics must follow from original bases.
   Determine the obligation of context.target specifically, not mere mention of its name. evidence contains original
   quotes and fragments; profile is a user-confirmed hypothesis about functions, NOT independent evidence.
   category: target, shared, interaction, other, uncertain. actor is the actual responsible participant.
@@ -830,6 +833,7 @@ draft_target_allocation: |-
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
   "state_refs":[],"reason":"reason"}]}.
 draft_target_verify: |-
+  Sources with source_role = reference_context create no duties and do not establish implementation without explicit applicability to current target state. If target metrics come only from reference context, set conditions_preserved = false.
   Independently check decision against original need and evidence. Do not trust the previous explanation.
   correct_actor means ownership is correct, including external; change_supported means new/change/already_supported
   is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary.
@@ -839,6 +843,7 @@ draft_target_verify: |-
   For each element in items independently review only its own need, decision and evidence. If uncertain, false.
   Return {"items":[{"id":"R1","correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}]}.
 draft_target_summary: |-
+  Information with source_role = reference_context explains context but adds no new needs, conditions or target metrics.
   Summarize the original needs for context.target by function, before detailed solution requirements.
   Use all needs, consider reviewed decisions and linked evidence, preserve material conditions, exceptions,
   data content and categories, metrics with units and exchange direction. Do not present existing behavior as new,
@@ -847,6 +852,7 @@ draft_target_summary: |-
   Return {"text":"consolidated need","need_refs":["R1"],"evidence_refs":["F1"]}.
 
 draft_target_derivation: |-
+  Information with source_role = reference_context may explain existing design; never convert it into independent obligations or target metrics. Ask a question if applicability, currency or conflicts are unresolved.
   expert_guidance, if present, is expert clarification, not a quotation or additional source. Apply only when supported by needs and state; otherwise ask a question. Do not derive duties absent from needs.
   Draft coherent requirements for context.target by whole function using needs, decisions and state.
   Do not transfer external or already supported behaviour as new obligations. For explicit with no state_refs,
@@ -864,6 +870,7 @@ draft_target_derivation: |-
 
 
 draft_target_coverage: |-
+  Reference context with source_role = reference_context does not replace an original need or establish coverage by itself.
   Independently assess complete coverage of each source need in items by proposals for the function.
   Consider actor, direction, conditions, exclusions, metric units and subject.
   A reference to an id is not proof of coverage. Do not count partial coverage.

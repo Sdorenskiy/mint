@@ -12,7 +12,7 @@ from .draft_target_ui import render_target_registry
 from .draft_wizard_state import apply_materials, clamp_step, clear_target, reachable_step, sync_target
 
 
-def _signature(cfg, raw, sources, roles):
+def _signature(cfg, raw, sources, roles, reference_sources=()):
     versions = []
     for name in sources:
         try:
@@ -20,8 +20,18 @@ def _signature(cfg, raw, sources, roles):
             versions.append((name, stat.st_size, stat.st_mtime_ns))
         except OSError:
             versions.append((name, None, None))
-    return (str(cfg.kb_path), hashlib.sha256(raw).hexdigest(),
-            tuple(versions), tuple(sorted(roles.items())))
+    baseline = (str(cfg.kb_path), hashlib.sha256(raw).hexdigest(),
+                tuple(versions), tuple(sorted(roles.items())))
+    if not reference_sources:
+        return baseline
+    ref_versions = []
+    for name in reference_sources:
+        try:
+            stat = source_path(cfg, name).stat()
+            ref_versions.append((name, stat.st_size, stat.st_mtime_ns))
+        except OSError:
+            ref_versions.append((name, None, None))
+    return (*baseline, tuple(ref_versions))
 
 
 def _go(step):
@@ -55,13 +65,22 @@ def _materials(cfg):
         if key not in session:
             session[key] = saved.get("roles", {}).get(source, "unspecified")
         roles[source] = st.selectbox(source, options, format_func=labels.__getitem__, key=key)
-    signature = _signature(cfg, raw, sources, roles)
+    st.subheader(tr("Справочный контекст"))
+    st.caption(tr("Дополнительно выберите до 8 документов о существующей системе. Они не становятся основаниями требований."))
+    available = [n for n in names if n not in sources and source_path(cfg, n).is_file()]
+    if "wizard_reference_sources" not in session:
+        session["wizard_reference_sources"] = [n for n in saved.get("reference_sources", []) if n in available]
+    elif any(n not in available for n in session["wizard_reference_sources"]):
+        session["wizard_reference_sources"] = [n for n in session["wizard_reference_sources"] if n in available]
+    reference_sources = st.multiselect(tr("Документы вики для справки"), available,
+                                      max_selections=8, key="wizard_reference_sources")
+    signature = _signature(cfg, raw, sources, roles, reference_sources)
     if saved and signature != saved["signature"]:
         st.warning(tr("После подтверждения изменений последующие результаты потребуется собрать заново."))
     if st.button(tr("Продолжить к контексту"), key="wizard_materials_next",
                  disabled=not (raw and sources) or bool(missing), type="primary"):
         apply_materials(session, {"raw": raw, "name": name, "sources": list(sources),
-                                  "roles": roles, "signature": signature})
+                                  "roles": roles, "signature": signature, "reference_sources": list(reference_sources)})
         _go(2)
 
 
@@ -69,7 +88,7 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
     session = st.session_state
     saved = session.get("draft_wizard_materials")
     # Invalidate stale original revisions even if the material stage is hidden.
-    if saved and _signature(cfg, saved["raw"], saved["sources"], saved["roles"]) != saved["signature"]:
+    if saved and _signature(cfg, saved["raw"], saved["sources"], saved["roles"], saved.get("reference_sources", [])) != saved["signature"]:
         clear_target(session)
         session.pop("draft_wizard_context", None)
         session["draft_wizard_step"] = 1
@@ -96,7 +115,7 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
         _go(1)
         return
     if step == 2:
-        st.subheader(tr("Контекст и функции системы"))
+        st.subheader(tr("Контекст документа"))
         context = render_draft_context(cfg, saved["raw"], saved["sources"], saved["signature"],
                                        namespace="draft_wizard_context", inline=True)
         if not context:
@@ -121,4 +140,5 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
         _go(reachable_step(session, context_ready=True))
         return
     render_target_registry(cfg, key, saved["sources"], saved["roles"], context,
-                           True, reset_cache, step=step, expert=expert, advance=_go)
+                           True, reset_cache, step=step, expert=expert, advance=_go,
+                           reference_sources=saved.get("reference_sources", []))

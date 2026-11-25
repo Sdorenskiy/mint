@@ -8,9 +8,9 @@ from ..i18n import N_, tr
 
 _STAGES = {
     "source_read": N_("Чтение оригиналов оснований"),
-    "target_section_map": N_("Карта разделов оснований"),
+    "target_section_map": N_("Классификация разделов оснований"),
     "target_profile_search": N_("Поиск сведений о системе"),
-    "target_profile": N_("Профиль целевой системы"),
+    "target_profile": N_("Выделение функций и сведений"),
     "reference_map": N_("Разрешение перекрёстных ссылок"),
     "reference_context": N_("Сбор связанных фрагментов"),
     "target_dossier": N_("Целевой поиск характеристик функций"),

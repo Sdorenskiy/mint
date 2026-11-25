@@ -24,6 +24,9 @@ def registry_identity(prepared, result):
                 "roles": prepared.get("roles", {}),
                 "profile": sorted(_normalized(p["name"]).casefold()
                                   for p in result.get("approved_profile", []))}
+    if prepared.get("reference_sources"):
+        identity["reference_sources"] = prepared["reference_sources"]
+        identity["reference_hashes"] = prepared.get("reference_hashes", {})
     # Keep old automatic/all-selected baselines comparable, but never present
     # a deliberate change of review scope or expert guidance as a regression.
     review = result.get("review", {})
@@ -130,6 +133,10 @@ def registry_workbook(prepared, result):
     sheet(tr("Подтверждённые функции"), ["ID", tr("Функция"), tr("Описание"), tr("Ссылки")],
           [(p["id"], p["name"], p["description"], ", ".join(p["refs"])) for p in result.get("approved_profile", [])],
           [12, 40, 100, 36])
+    if prepared.get("reference_sources"):
+        sheet(tr("Справочный контекст"), ["ID", tr("Источник"), tr("Раздел"), tr("Цитата")],
+              [(r["id"], r["source"], r["section"], r["text"]) for r in prepared.get("reference_candidates", [])],
+              [12, 40, 46, 100])
     def summary_rows():
         review = result.get("review", {})
         included, excluded = set(review.get("included", [])), set(review.get("excluded", []))
