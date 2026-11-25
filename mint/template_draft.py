@@ -134,14 +134,21 @@ def _batches(items, key, size=MAX_CHARS):
         yield batch
 
 
-def _source_chunks(markdown):
+def _source_chunks(markdown, *, full_path=False):
     section = ""
+    headings = []
     lines = []
     for line in markdown.splitlines():
         if re.match(r"^#{1,6}\s", line):
             if lines:
                 yield from _split_section(section, lines)
-            section, lines = line.lstrip("# ").strip(), []
+            title = line.lstrip("# ").strip()
+            if full_path:
+                level = len(line) - len(line.lstrip("#"))
+                headings = [(n, value) for n, value in headings if n < level]
+                headings.append((level, title))
+                title = " › ".join(value for _, value in headings)
+            section, lines = title, []
         else:
             lines.append(line)
     if lines:
@@ -161,7 +168,8 @@ def _split_section(section, lines):
             yield section, text
 
 
-def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_provenance=False):
+def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_provenance=False,
+                  focus=None, prepared_chunks=None, fragment_status=None):
     """Verified extraction with bounded parallel requests and stable source ordering.
 
     Only workers read/write individual checkpoint files and call the model.
@@ -170,7 +178,8 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
     Worker contexts preserve language/profile/metrics. The experimental registry
     can request provenance without changing the legacy payload or cache format.
     """
-    total = sum(1 for _, markdown in documents for _ in _source_chunks(markdown))
+    total = (sum(len(rows) for rows in prepared_chunks.values()) if prepared_chunks is not None
+             else sum(1 for _, markdown in documents for _ in _source_chunks(markdown)))
     emit("extract_total", total)
     workers = min(4, max(1, int(getattr(cfg, "draft_extract_parallel", 2))))
     requirements, seen, chunks, completed, reused = {}, {}, 0, 0, 0
@@ -180,10 +189,12 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
 
     def jobs():
         for name, markdown in documents:
-            checkpoint = DraftExtractCheckpoint(cfg, name, markdown)
+            checkpoint = DraftExtractCheckpoint(cfg, name, markdown, focus=focus)
             if reset_cache:
                 checkpoint.clear()
-            for local_index, (section, text) in enumerate(_source_chunks(markdown), 1):
+            rows = (prepared_chunks[name] if prepared_chunks is not None else
+                    [(index, section, text) for index, (section, text) in enumerate(_source_chunks(markdown), 1)])
+            for local_index, section, text in rows:
                 yield (name, section, text, local_index, checkpoint)
 
     def process(job):
@@ -193,7 +204,10 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
         if cached is not None:
             return cached, True, [], False, time.perf_counter() - started
         try:
-            rows = _records(_json(cfg, "extract", {"source": name, "section": section, "text": text}),
+            payload = {"source": name, "section": section, "text": text}
+            if focus is not None:
+                payload["focus"] = focus
+            rows = _records(_json(cfg, "target_extract" if focus is not None else "extract", payload),
                             "requirements")
         except DraftError:
             return [], False, [], True, time.perf_counter() - started
@@ -226,6 +240,9 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
         name, section, _text_fragment, _index, _checkpoint = job
         quotes, _cached, invalid, failed, _elapsed = result
         chunks += 1
+        if fragment_status is not None:
+            fragment_status[(name, _index)] = ("failed" if failed else "invalid_quote" if invalid else
+                                               "cached" if _cached else "processed")
         failed_fragments += int(failed)
         invalid_quote_fragments += int(bool(invalid))
         if failed:
