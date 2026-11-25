@@ -50,6 +50,8 @@ def regression_snapshot(prepared, result):
 
 
 def compare_registries(previous, current):
+    if not isinstance(previous, dict) or not isinstance(current, dict):
+        raise ValueError("Invalid registry comparison format")
     if previous.get("format") != current.get("format") or previous.get("format") != "mint-registry-regression/1":
         raise ValueError("Invalid registry comparison format")
     if previous.get("identity") != current.get("identity"):
@@ -117,7 +119,7 @@ def registry_workbook(prepared, result):
     sheet(tr("Предложения"), ["ID", tr("Функция"), tr("Исполнитель"), tr("Тип"),
           tr("Требование"), tr("Статус"), tr("Обоснование"), tr("Причина проверки"), tr("Компоненты")],
           [(p["id"], groups.get(p["group"], ""), p["actor"], p["kind"], p["text"],
-            "model_covered" if _accepted(p, result) else p["assessment"], p.get("reason", ""),
+            "model_covered" if _accepted(p, result) else ("coverage_unresolved" if p["assessment"] == "model_supported" else p["assessment"]), p.get("reason", ""),
             p.get("assessment_reason", ""), ", ".join(dict.fromkeys(
                 decisions.get(rid, {}).get("component", "") for rid in p["need_refs"] if decisions.get(rid, {}).get("component"))))
            for p in proposals], [12, 36, 30, 20, 100, 26, 60, 60, 36])
