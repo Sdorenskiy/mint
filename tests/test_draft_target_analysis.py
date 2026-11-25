@@ -144,7 +144,9 @@ def test_registry_end_to_end():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content, encoding="utf-8")
 
+        stages = []
         def model(_cfg, stage, payload):
+            stages.append(stage)
             if stage == "target_section_map":
                 mapping = {"Business": "business", "Interfaces": "interface",
                            "Metrics": "metric", "Current": "arch"}
@@ -159,7 +161,7 @@ def test_registry_end_to_end():
                                   for r in payload["evidence"] if quote in r["text"] and facet in payload["facets"]]}
             if stage == "target_extract":
                 assert payload["focus"]["context"]["target"] == CONTEXT["target"]
-                assert all(not p["id"].startswith("B") for p in payload["focus"]["functions"])
+                assert payload["focus"]["functions"] == []
                 assert "999" not in payload["text"]
                 return {"requirements": [{"quote": x} for x in payload["text"].splitlines() if x and x not in {DATA, METRIC}]}
             if stage == "registry_type":
@@ -219,6 +221,8 @@ def test_registry_end_to_end():
             assert len(prepared["profile"]) == 1
             with patch.object(target, "_proposals", side_effect=AssertionError("premature decomposition")):
                 collected = target.collect_target_requirements(cfg, prepared, prepared["profile"])
+            assert "target_extract" in stages and "target_dossier" in stages
+            assert max(i for i, stage in enumerate(stages) if stage == "target_extract") < stages.index("target_dossier")
             assert collected["phase"] == "collected" and not collected["proposals"]
             assert all(r["status"] == "draft" for rows in collected["summaries"].values() for r in rows)
             assert "target_derivation" not in collected["metrics"]["stages"]
@@ -309,7 +313,9 @@ def test_registry_end_to_end():
                 pass
             # No function profile is a valid degraded path; full original scan still runs.
             no_profile = {**prepared, "profile": [], "profile_status": "model_error"}
-            direct_only = target.collect_target_requirements(cfg, no_profile, [])
+            with patch.object(target, "build_registry", wraps=target.build_registry) as build:
+                direct_only = target.collect_target_requirements(cfg, no_profile, [])
+            assert build.call_args.kwargs["focus"] == {"context": prepared["context"], "functions": []}
             assert direct_only["fragment_status"].keys() == collected["fragment_status"].keys()
             assert DIRECT in {r["quote"] for r in direct_only["requirements"].values()}
             assert direct_only["diagnostics"]["profile_status"] == {"model_error": 1}
