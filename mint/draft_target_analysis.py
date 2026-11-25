@@ -885,9 +885,15 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
     diagnostics["dossiers"] = dict(dossier_counts)
     diagnostics["profile_status"] = (dict(function_counts) if automatic_functions else
                                      {prepared.get("profile_status", "no_candidates"): 1})
-    diagnostics["wiki_status"] = {prepared.get("reference_status", "disabled"): 1}
+    wiki_status = prepared.get("reference_status", "disabled")
+    if automatic_functions and wiki_status not in {"disabled", "source_error"}:
+        wiki_status = "found" if wiki_pool else "no_candidates"
+    diagnostics["wiki_status"] = {wiki_status: 1}
     diagnostics["wiki_context"] = {**wiki_counts, "sources": len(prepared.get("reference_hashes", {})),
                                    "read_errors": len(prepared.get("reference_issues", []))}
+    diagnostics["function_links"] = {"linked_records": sum(bool(ids) for ids in function_links.values()),
+                                      "shared_records": sum(len(ids) > 1 for ids in function_links.values()),
+                                      "unlinked_records": sum(not ids for ids in function_links.values())}
     diagnostics["summaries"] = summary_counts
     diagnostics["verification"] = dict(verification_counts)
     diagnostics["allocation_validation"] = dict(Counter(d["validation_code"] for d in decisions.values() if "validation_code" in d))
@@ -905,7 +911,7 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
             "decisions": decisions, "proposals": proposals, "questions": questions,
             "linked_by_need": linked_by_need, "dossiers": dossiers, "approved_profile": list(profile.values()),
             "automatic_functions": automatic_functions, "function_links": function_links,
-            "reference_candidates": list(wiki_pool.values()),
+            "reference_candidates": [r for r in state.values() if r.get("source_role") == "reference_context"],
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
             "diagnostics": diagnostics, "requires_expert_review": True,
             "phase": "collected", "summaries": review_summaries,
