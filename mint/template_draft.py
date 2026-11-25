@@ -875,19 +875,22 @@ def _mark_wiki(doc, paragraph, status, detail):
     # source documents. Do not flood Word with one comment per such field.
 
 
-def _load_draft_sources(cfg, sources, issues):
+def _load_draft_sources(cfg, sources, issues, *, source_hashes=None):
     """Read selected originals once; shared by legacy drafting and V2 pilot."""
     documents = []
     for name in dict.fromkeys(sources):
         try:
             path = source_path(cfg, name)
-            markdown = document_to_markdown(name, path.read_bytes())
+            data = path.read_bytes()
+            markdown = document_to_markdown(name, data)
             if not markdown.strip():
                 raise ValueError("empty source")
         except Exception:
             issues.append(tr("Не удалось прочитать оригинал основания: {source}.", source=name))
             continue
         documents.append((name, markdown))
+        if source_hashes is not None:
+            source_hashes[name] = hashlib.sha256(data).hexdigest()
     if not documents:
         raise DraftError(tr("Нет доступных оригиналов выбранных оснований."))
     return documents
