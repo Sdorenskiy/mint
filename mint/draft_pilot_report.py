@@ -162,6 +162,9 @@ TARGET_STAGES = ("target_section_map", "target_profile", "target_dossier", "targ
                  "target_allocation", "target_verify", "target_summary", "target_derivation",
                  "requirement_assessment", "target_coverage")
 _TARGET_COUNTERS = {
+    "profile_status": ("no_candidates", "model_error", "invalid_response", "no_functions", "partial", "found"),
+    "wiki_status": ("disabled", "source_error", "no_candidates", "model_error", "invalid_response", "no_functions", "partial", "found"),
+    "wiki_context": ("sources", "read_errors", "needs_with_context", "spans_supplied"),
     "section_roles": ("need", "interface", "metric", "architecture", "constraint", "business", "reference", "unknown"),
     "fragment_status": ("failed", "invalid_quote", "cached", "processed"),
     "decisions": ("proposed", "model_supported", "missing_evidence", "wrong_actor", "invalid_response",
