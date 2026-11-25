@@ -31,7 +31,7 @@ def _review_collection(collected, prepared, expert):
     decisions, records = collected["decisions"], collected["requirements"]
     selected, notes = [], {}
     st.subheader(tr("Собранные требования перед декомпозицией"))
-    st.caption(tr("Сводные формулировки — черновик модели. Декомпозиция опирается на исходные цитаты и проверенное распределение, а не на пересказ."))
+    st.caption(tr("Сводные формулировки — черновик модели по всей функции. Выбор меняет область декомпозиции, но не исходную сводку. Декомпозиция опирается на цитаты и проверенное распределение."))
     candidates = sum(len(row["need_refs"]) for rows in collected["summaries"].values() for row in rows)
     st.caption(tr("Функций: {n}; исходных потребностей для детализации: {count}.", n=len(collected["groups"]), count=candidates))
     for group in collected["groups"]:
