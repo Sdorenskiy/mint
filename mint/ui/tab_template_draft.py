@@ -15,19 +15,29 @@ from .draft_pilot_report_ui import render_pilot_report
 from .document_edit_chat import render_draft_edit_chat
 from .draft_context_ui import render_draft_context
 from .draft_traceability_ui import render_draft_traceability
-from .draft_target_ui import render_target_registry
+from .draft_wizard_ui import render_draft_wizard
 from .draft_progress_ui import render_progress
 
 
 def render_template_draft_tab(cfg, glossary):
+    with st.expander(tr("Расширенные настройки")):
+        engines = {"v2": tr("V2 — экспериментальный"), "legacy": tr("Прежний генератор (временно)")}
+        engine = st.radio(tr("Режим формирования"), list(engines), horizontal=True,
+                          key="draft_engine", format_func=engines.__getitem__)
+        pilot = engine == "v2"
+        registry_only = pilot and st.checkbox(tr("Сначала проверить реестр требований (без Word)"),
+                                              value=True, key="draft_registry_only")
+        reset_extract_cache = st.checkbox(tr("Повторно разобрать основания (не использовать сохранённые результаты)"),
+                                         value=False, key="draft_reset_extract")
+        if "target_expert_review" not in st.session_state:
+            st.session_state["target_expert_review"] = True
+        expert = st.checkbox(tr("Согласование требований перед декомпозицией"),
+                             key="target_expert_review", disabled=not registry_only)
+    if registry_only:
+        render_draft_wizard(cfg, expert=expert, reset_cache=reset_extract_cache)
+        return
     st.caption(tr("Выберите утверждённые основания из базы знаний и загрузите файл Word."))
     mode_labels = {False: tr("Шаблон с подсказками"), True: tr("Документ-образец")}
-    engines = {"v2": tr("V2 — экспериментальный"), "legacy": tr("Прежний генератор (временно)")}
-    engine = st.radio(tr("Режим формирования"), list(engines), horizontal=True,
-                      key="draft_engine", format_func=engines.__getitem__)
-    pilot = engine == "v2"
-    registry_only = pilot and st.checkbox(tr("Сначала проверить реестр требований (без Word)"),
-                                          value=True, key="draft_registry_only")
     example = False if pilot else st.radio(
         tr("Что загружаете"), [False, True], horizontal=True, key="draft_mode",
         format_func=mode_labels.__getitem__)
@@ -37,8 +47,6 @@ def render_template_draft_tab(cfg, glossary):
     missing = [name for name in sources if not source_path(cfg, name).is_file()]
     if missing:
         st.warning(tr("Для этих оснований нет оригиналов: {names}", names=", ".join(missing)))
-    reset_extract_cache = st.checkbox(tr("Повторно разобрать основания (не использовать сохранённые результаты)"),
-                                     value=False, key="draft_reset_extract")
     raw = template.getvalue() if template else b""
 
     roles = {}
@@ -102,10 +110,6 @@ def render_template_draft_tab(cfg, glossary):
     context = render_draft_context(cfg, raw, sources if not missing else [], base_key)
     key = (base_key, tuple(sorted(context.items())) if context else None,
            engine, section_index, tuple(sorted(roles.items())))
-    if registry_only:
-        render_target_registry(cfg, key, sources, roles, context,
-                               bool(raw and sources and context and not missing), reset_extract_cache)
-        return
     if st.button(tr("Собрать черновик Word"), disabled=not (raw and sources and context) or bool(missing) or (pilot and section_index is None), key="draft_start"):
         st.session_state.pop("draft_result", None)
         with st.status(tr("Готовим черновик"), expanded=False) as status:
