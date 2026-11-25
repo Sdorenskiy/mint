@@ -635,7 +635,7 @@ def _functions_from_records(cfg, records, references, spans, context, emit, *, e
 
 
 @_measure_draft
-def collect_target_requirements(cfg, prepared, approved_profile=None, progress=None, *, reset_cache=False, summaries=True,
+def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=None, *, reset_cache=False, summaries=True,
                                 preview_only=False, preview=None, selected_functions=None):
     """Collect original needs; optionally pause after independent scan for scope selection."""
     emit = progress or (lambda *_: None)
@@ -932,6 +932,8 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
     diagnostics["wiki_status"] = {wiki_status: 1}
     diagnostics["wiki_context"] = {**wiki_counts, "sources": len(prepared.get("reference_hashes", {})),
                                    "read_errors": len(prepared.get("reference_issues", []))}
+    diagnostics["scope_selection"] = {"selected": len(selected), "offered": len(preview["approved_profile"])} if preview is not None else {}
+    diagnostics["preliminary_applicability"] = dict(Counter(a["category"] for a in preview["applicability"].values())) if preview is not None else {}
     diagnostics["function_links"] = {"linked_records": sum(bool(ids) for ids in function_links.values()),
                                       "shared_records": sum(len(ids) > 1 for ids in function_links.values()),
                                       "unlinked_records": sum(not ids for ids in function_links.values())}
@@ -959,6 +961,26 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
             "diagnostics": diagnostics, "requires_expert_review": True,
             "phase": "collected", "summaries": review_summaries,
             "input_identity": input_identity(cfg, prepared, list(profile.values()))}
+
+def _combine_metrics(prior, result):
+    previous, current = prior["metrics"], result["metrics"]
+    stages = deepcopy(previous["stages"])
+    for name, row in current["stages"].items():
+        stats = stages.setdefault(name, {"llm_calls": 0, "llm_seconds": 0.0})
+        for field in ("llm_calls", "llm_seconds"):
+            stats[field] += row[field]
+    current["stages"] = stages
+    current["total_seconds"] += previous["total_seconds"]
+    current["diagnostics"] = {**previous["diagnostics"], **current["diagnostics"]}
+    return result
+
+def collect_target_requirements(cfg, prepared, approved_profile=None, progress=None, *, reset_cache=False,
+                                summaries=True, preview_only=False, preview=None, selected_functions=None):
+    result = _collect_target_requirements(cfg, prepared, approved_profile, progress, reset_cache=reset_cache,
+                                          summaries=summaries, preview_only=preview_only, preview=preview,
+                                          selected_functions=selected_functions)
+    return _combine_metrics(preview, result) if preview is not None else result
+
 
 @_measure_draft
 def _decompose_target_requirements(cfg, prepared, collected, selection, notes, progress):
@@ -1002,16 +1024,7 @@ def _decompose_target_requirements(cfg, prepared, collected, selection, notes, p
 def decompose_target_requirements(cfg, prepared, collected, progress=None, *, selection=None, notes=None):
     """Resume without rescanning or allocating. Combine compute time only."""
     result = _decompose_target_requirements(cfg, prepared, collected, selection, notes, progress)
-    previous, current = collected["metrics"], result["metrics"]
-    stages = deepcopy(previous["stages"])
-    for name, row in current["stages"].items():
-        stats = stages.setdefault(name, {"llm_calls": 0, "llm_seconds": 0.0})
-        for field in ("llm_calls", "llm_seconds"):
-            stats[field] += row[field]
-    current["stages"] = stages
-    current["total_seconds"] += previous["total_seconds"]
-    current["diagnostics"] = {**previous["diagnostics"], **current["diagnostics"]}
-    return result
+    return _combine_metrics(collected, result)
 
 
 def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):
