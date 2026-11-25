@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 extracts original requirements with confirmed context independent of preliminary function selections; directed dossier retrieval supplements the initial scan before typing. Preliminary hints remain available for supplemental retrieval and allocation until the requirements-first grouping UI is implemented. Development version 21.4.20.
+
 - V2 separates original bases from optional wiki reference context (up to eight explicitly selected documents). Reference excerpts support interpretation but cannot become original needs or independent target metrics. Discovery failures are distinguished; section classification is shown in diagnostics, and repeat collection is hidden until a matching collection exists. Development version 21.4.19.
 
 - Default V2 registry workflow uses guided stages, session-retained source materials and review, readable filtered lists, localized statuses, and a separate diagnostics/export view. Legacy Word modes remain available in advanced settings. Development version 21.4.18.
