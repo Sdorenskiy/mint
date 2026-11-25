@@ -838,7 +838,15 @@ draft_target_verify: |-
   Treat dossier_refs as supplemental function context, not proof of implementation.
   For each element in items independently review only its own need, decision and evidence. If uncertain, false.
   Return {"items":[{"id":"R1","correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}]}.
+draft_target_review_summary: |-
+  Form a concise coherent summary of the original needs in items for function before decomposition.
+  Preserve target duties, participants, directions, data categories and content, objectives with conditions and units.
+  Never invent implementation choices. Do not turn other participants' information into target obligations.
+  Distinguish original needs from supplemental linked context. Do not describe existing behavior as required change.
+  Include every id from items in need_refs; add no other ids. Preserve the meaning of every item.
+  Return {"text":"consolidated formulation","need_refs":["R1"]}.
 draft_target_derivation: |-
+  If expert_comment is present, it is a user clarification, not evidence. Use it only within the supported sources; raise a question on conflict. Do not omit confirmed needs because of the comment.
   Draft coherent requirements for context.target by whole function using needs, decisions and state.
   Do not transfer external or already supported behaviour as new obligations. For explicit with no state_refs,
   preserve the exact quote. need_refs are ids of needs requiring coverage; state_refs are supporting ids allowed
