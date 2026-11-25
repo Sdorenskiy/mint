@@ -34,10 +34,14 @@ def test_local_review():
         assert (scores["reviewed"], scores["covered"], scores["missing"],
                 scores["unsupported_claims"], scores["applicable_reviewed"]) == (2, 1, 2, 1, 3)
         assert scores["coverage_of_reviewed_applicable"] == 0.3333
+        current["meta"]["metrics"]["private"] = secret
+        current["meta"]["metrics"]["stages"][secret] = {"llm_calls": 99}
+        current["meta"]["metrics"]["stages"]["extract"]["private"] = secret
         exported = json.dumps(dr.export_summary(current), ensure_ascii=False)
         assert secret not in exported and q not in exported
         assert "Ещё одно пропущенное" not in exported and "Необоснованное" not in exported
         assert "llm_api_key" not in exported and dr.FORMAT in exported
+        assert "fictional-model" not in exported and "input_fingerprint" not in exported
         assert dr.load_run(cfg, one)["meta"]["metrics"]["total_seconds"] == 123.5
         for verdict in ("invented", "true"):
             try:
