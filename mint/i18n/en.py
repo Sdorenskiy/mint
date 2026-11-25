@@ -5,7 +5,7 @@ string has a translation with the same {placeholders}."""
 
 EN = {
     "Собранные требования перед декомпозицией": "Collected requirements before decomposition",
-    "Сводные формулировки — черновик модели. Декомпозиция опирается на исходные цитаты и проверенное распределение, а не на пересказ.": "Consolidated formulations are model drafts. Decomposition relies on original quotations and reviewed allocation, not paraphrases.",
+    "Сводные формулировки — черновик модели по всей функции. Выбор меняет область декомпозиции, но не исходную сводку. Декомпозиция опирается на цитаты и проверенное распределение.": "Consolidated formulations are model drafts for the whole function. Selection changes the scope of decomposition, not the original summary. Decomposition relies on quotations and reviewed allocation.",
     "Функций: {n}; исходных потребностей для детализации: {count}.": "Functions: {n}; source needs for elaboration: {count}.",
     "Сводка не получена; используйте исходные формулировки.": "Summary unavailable; use original formulations.",
     "Включить исходные потребности в декомпозицию": "Include source needs in decomposition",
