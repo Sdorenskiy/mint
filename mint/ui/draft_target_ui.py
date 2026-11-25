@@ -308,6 +308,111 @@ def _render_registry_details(prepared, result, key, identity, *, finished):
                       n=len(proposals), ok=len(accepted), groups=len(result["groups"])))
         if not accepted:
             st.error(tr("Нет требований, прошедших все автоматические проверки."))
+        cols = st.columns(3)
+        cols[0].metric(tr("Предложения"), len(proposals))
+        cols[1].metric(tr("Поддержано моделью"), len(accepted))
+        cols[2].metric(tr("Открытые вопросы"), len(result["questions"]))
+    else:
+        st.caption(tr("Декомпозиция ещё не выполнена для выбранного набора. Исходные данные сохранены в текущем сеансе."))
+
+    views = {"functions": tr("Характеристики функций"), "metrics": tr("Показатели назначения"),
+             "sources": tr("Исходные записи и причины непереноса"), "questions": tr("Открытые вопросы"),
+             "diagnostics": tr("Диагностика и выгрузки")}
+    if finished:
+        views = {"proposals": tr("Предложения по функциям"), **views}
+    view = st.radio(tr("Раздел реестра"), list(views), format_func=views.__getitem__,
+                    horizontal=True, key=f"target_view_{finished}")
+    if view == "proposals":
+        groups = {g["id"]: g["function"] for g in result["groups"]}
+        choices = {None: tr("Все функции"), **groups}
+        gid = st.selectbox(tr("Функция"), list(choices), format_func=choices.__getitem__,
+                           key="target_proposal_group")
+        statuses = {None: tr("Все статусы"), True: tr("Поддержано моделью"), False: tr("Требует экспертной проверки")}
+        approved = st.selectbox(tr("Статусы обработки"), list(statuses), format_func=statuses.__getitem__,
+                                key="target_proposal_status")
+        accepted_ids = {p["id"] for p in accepted}
+        rows = [p for p in proposals if (gid is None or p["group"] == gid)
+                and (approved is None or (p["id"] in accepted_ids) == approved)]
+        for p in _page(rows, "target_proposal_page"):
+            st.caption(f"{p['id']} · {groups.get(p['group'], '')} · {_label(p['kind'])} · "
+                       + (tr("Поддержано моделью") if p["id"] in accepted_ids else tr("Требует экспертной проверки")))
+            st.write(p["text"])
+            with st.expander(tr("Показать исходные цитаты и основания") + " · " + p["id"]):
+                _show_refs(p["need_refs"] + p["state_refs"] + p["constraint_refs"], prepared, result)
+    elif view == "functions":
+        dossiers = result.get("dossiers", {})
+        if dossiers:
+            pid = st.selectbox(tr("Функция"), list(dossiers), format_func=lambda k: dossiers[k]["function"],
+                               key="target_dossier_function")
+            for facet, row in dossiers[pid]["facets"].items():
+                st.caption(f"{_label(facet)} · {_label(row['status'])} · {len(row['facts'])}")
+                for fact in row["facts"]:
+                    rid = fact.get("record_id", "")
+                    status = row.get("coverage", {}).get(rid)
+                    st.text(f"{rid} · {(_label(status) + ' · ') if status else ''}{fact['quote']}")
+        else:
+            st.caption(tr("Для выбранного фильтра записей нет."))
+    elif view == "metrics":
+        for rid, row in _page(list(result["metrics_registry"].items()), "target_metric_page"):
+            st.text(f"{rid} · {row['subject']} · {row['value']} {row['unit']} · {row['level']}")
+            st.text(row["conditions"])
+            st.text(f"{row['current_value']} → {row['target_value']}")
+            _show_refs([rid], prepared, result)
+    elif view == "sources":
+        dispositions = result["dispositions"]
+        choices = {None: tr("Все статусы"), **{code: _label(code) for code in sorted(set(dispositions.values()))}}
+        code = st.selectbox(tr("Статусы обработки"), list(choices), format_func=choices.__getitem__, key="target_disposition")
+        documents = {None: tr("Все документы"), **{r["source"]: r["source"] for r in result["requirements"].values()}}
+        source = st.selectbox(tr("Документ-основание"), list(documents), format_func=documents.__getitem__, key="target_source_filter")
+        ids = [rid for rid, value in dispositions.items() if (code is None or value == code)
+               and (source is None or result["requirements"][rid]["source"] == source)]
+        for rid in _page(ids, "target_source_page"):
+            row = result["requirements"][rid]
+            st.caption(f"{rid} · {_label(dispositions[rid])} · {row['source']} › {row['section']}")
+            st.text(row["quote"])
+            with st.expander(tr("Подтверждающие сведения") + " · " + rid):
+                d = result["decisions"].get(rid, {})
+                st.text(" · ".join(_label(d[k]) for k in ("change", "status") if d.get(k)))
+                st.text(d.get("reason", ""))
+                st.text(d.get("review_reason", ""))
+                _show_refs(d.get("state_refs", []), prepared, result)
+                related = result.get("linked_by_need", {}).get(rid, {})
+                if related:
+                    st.caption(tr("Связанные пункты оснований"))
+                    for item in related["items"]:
+                        st.caption(f"{item['source']} › {item['section']} · {item['reference']} · {' → '.join(item['path'])}")
+                        st.text(item["quote"])
+                    if related["gaps"]:
+                        st.json(related["gaps"])
+                for p in proposals:
+                    if rid in p["need_refs"] + p["state_refs"] + p["constraint_refs"]:
+                        st.text(f"{p['id']} · {p['text']}")
+    elif view == "questions":
+        for row in _page(result["questions"], "target_question_page"):
+            st.text(f"{row['need_id']} · {row['question']}")
+        if result["issues"]:
+            with st.expander(tr("Замечания формирования ({n})", n=len(result["issues"]))):
+                for issue in result["issues"]:
+                    st.text(issue)
+    else:
+        _render_diagnostics(prepared, result, key, identity, finished)
+
+
+def _page(rows, key, size=10):
+    if not rows:
+        st.caption(tr("Для выбранного фильтра записей нет."))
+        return []
+    pages = (len(rows) + size - 1) // size
+    if st.session_state.get(key, 1) > pages:
+        st.session_state[key] = 1
+    page = st.selectbox(tr("Страница"), list(range(1, pages + 1)), key=key) if pages > 1 else 1
+    first = (page - 1) * size
+    st.caption(tr("Отображено {n} из {total}.", n=min(first + size, len(rows)), total=len(rows)))
+    return rows[first:first + size]
+
+
+def _render_diagnostics(prepared, result, key, identity, finished):
+    session = st.session_state
     st.caption(tr("Полный реестр содержит исходные тексты. Храните его только внутри разрешённого контура."))
     workbook_key = (key, identity, result.get("metrics", {}).get("run_id"))
     workbook = session.get("target_full_workbook")
@@ -322,6 +427,11 @@ def _render_registry_details(prepared, result, key, identity, *, finished):
                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", key="target_full_export")
     else:
         st.warning(tr("Не удалось подготовить полный реестр Excel."))
+    export = target_registry_export(prepared, result)
+    st.download_button(tr("Скачать обезличенные данные для анализа"),
+                       json.dumps(export, ensure_ascii=False, indent=2, allow_nan=False),
+                       file_name="mint_draft_analysis.json", mime="application/json", key="target_diagnostic_export")
+    st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
     if finished:
         with st.expander(tr("Сравнение прогонов (локально)")):
             snapshot = regression_snapshot(prepared, result)
@@ -336,69 +446,5 @@ def _render_registry_details(prepared, result, key, identity, *, finished):
                 else:
                     st.json(delta)
                     st.caption(tr("Сравнение дословное: переформулированные требования проверяет эксперт."))
-    export = target_registry_export(prepared, result)
-    st.download_button(tr("Скачать обезличенные данные для анализа"),
-                       json.dumps(export, ensure_ascii=False, indent=2, allow_nan=False),
-                       file_name="mint_draft_analysis.json", mime="application/json",
-                       key="target_diagnostic_export")
-    st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
-    with st.expander(tr("Предложения по функциям")):
-        groups = {g["id"]: g["function"] for g in result["groups"]}
-        if proposals:
-            lookup = {p["id"]: p for p in proposals}
-            pid = st.selectbox(tr("Требование"), list(lookup),
-                               format_func=lambda k: f"{k} · {lookup[k]['text'][:100]}",
-                               key="target_proposal")
-            p = lookup[pid]
-            st.caption(f"{groups.get(p['group'], '')} · {p['kind']} · {p['assessment']}")
-            st.text(p["text"])
-            _show_refs(p["need_refs"] + p["state_refs"] + p["constraint_refs"], prepared, result)
-    with st.expander(tr("Характеристики функций")):
-        dossiers = result.get("dossiers", {})
-        if dossiers:
-            pid = st.selectbox(tr("Функция"), list(dossiers), format_func=lambda k: dossiers[k]["function"], key="target_dossier_function")
-            for facet, row in dossiers[pid]["facets"].items():
-                st.caption(f"{facet} · {row['status']} · {len(row['facts'])}")
-                for fact in row["facts"]:
-                    rid = fact.get("record_id", "")
-                    st.text(f"{rid} · {row.get('coverage', {}).get(rid, '')} · {fact['quote']}")
-    with st.expander(tr("Показатели назначения")):
-        for rid, row in result["metrics_registry"].items():
-            st.text(f"{rid} · {row['subject']} · {row['value']} {row['unit']} · {row['level']}")
-            st.text(row["conditions"])
-            st.text(f"{row['current_value']} → {row['target_value']}")
-            _show_refs([rid], prepared, result)
-    with st.expander(tr("Исходные записи и причины непереноса")):
-        dispositions = result["dispositions"]
-        codes = sorted(set(dispositions.values()))
-        if codes:
-            code = st.selectbox(tr("Статусы обработки"), codes, key="target_disposition")
-            ids = [rid for rid, value in dispositions.items() if value == code]
-            rid = st.selectbox(tr("Требование"), ids,
-                               format_func=lambda k: f"{k} · {result['requirements'][k]['quote'][:100]}",
-                               key="target_source_record")
-            _show_refs([rid], prepared, result)
-            d = result["decisions"].get(rid, {})
-            st.text(f"{d.get('category', '')} · {d.get('change', '')} · {d.get('status', '')}")
-            st.text(d.get("reason", ""))
-            st.text(d.get("review_reason", ""))
-            _show_refs(d.get("state_refs", []), prepared, result)
-            related = result.get("linked_by_need", {}).get(rid, {})
-            if related:
-                st.caption(tr("Связанные пункты оснований"))
-                for item in related["items"]:
-                    st.caption(f"{item['source']} › {item['section']} · {item['reference']} · {' → '.join(item['path'])}")
-                    st.text(item["quote"])
-                if related["gaps"]:
-                    st.json(related["gaps"])
-            for p in proposals:
-                if rid in p["need_refs"]:
-                    st.text(f"{p['id']} · {p['text']}")
-    with st.expander(tr("Открытые вопросы")):
-        for row in result["questions"]:
-            st.text(f"{row['need_id']} · {row['question']}")
-    with st.expander(tr("Замечания формирования ({n})", n=len(result["issues"]))):
-        for issue in result["issues"]:
-            st.text(issue)
     with st.expander(tr("Замеры этапов подготовки")):
         st.json(export)
