@@ -104,6 +104,7 @@ def _review_collection(collected, prepared, expert):
                       if decisions[rid]["change"] != "already_supported"})
     profile_names = {p["id"]: p["name"] for p in collected.get("approved_profile", [])}
     st.caption(tr("Функций: {n}; исходных потребностей для детализации: {count}.", n=len(collected["groups"]), count=candidates))
+    primary_names = {g["function"] for g in collected["groups"]}
     for group in collected["groups"]:
         gid = group["id"]
         ids = [rid for rid in group["requirement_ids"] if decisions[rid]["change"] != "already_supported"]
@@ -152,6 +153,14 @@ def _review_collection(collected, prepared, expert):
                 if metric:
                     st.text(f"{rid} · {metric['subject']} · {metric['value']} {metric['unit']} · {metric['level']}")
                     st.text(metric["conditions"])
+    # Show candidate-only associations even when no allocation could be verified.
+    # A shared record remains one selectable obligation in its primary group.
+    candidate_only = [p for p in collected.get("approved_profile", []) if p["name"] not in primary_names]
+    for p in candidate_only:
+        related = [rid for rid, ids in collected.get("function_links", {}).items() if p["id"] in ids]
+        with st.expander(p["name"] + " · " + tr("Требует экспертной проверки")):
+            for rid in _page(related, f"target_candidate_{run}_{p['id']}"):
+                _show_refs([rid], prepared, collected)
     unresolved = [rid for rid, d in decisions.items() if d["status"] != "model_supported"]
     if unresolved:
         st.warning(tr("Исходных требований, требующих дополнительного разбора: {n}. Они сохранены в реестре.", n=len(unresolved)))
