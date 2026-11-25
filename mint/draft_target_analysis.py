@@ -17,7 +17,7 @@ from .glossary import Glossary
 from .kb import load_kb_snapshot, source_path
 from .search import search_parent_child
 from .template_draft import (DraftError, _batches, _candidate_budget, _json,
-                             _load_draft_sources, _measure_draft, _normalized,
+                             _load_draft_sources, _measure_draft, _normalized, _candidates,
                              _numbers_supported, _record_draft_diagnostic,
                              _source_chunks, _text)
 from .i18n import tr
@@ -254,6 +254,14 @@ def _search_records(cfg, evidence, records, group, query):
             continue
         if any((span["source"], span["fragment"]) in positions for span in row.get("source_spans", [])):
             pool.append(_compact(row))
+    # Existing lexical fallback over the same original spans, not a new index.
+    # Use it even on degraded/legacy indices, so a missed retrieval is not a veto.
+    fallback = {sid: {"id": sid, "source": s["source"], "section": s["section"],
+                      "quote": s["text"]} for sid, s in evidence.spans.items()}
+    for row in _candidates(query, fallback, size=min(5000, _candidate_budget(cfg) // 3)):
+        if row["id"] not in hits:
+            hits.append(row["id"])
+            evidence.counts["fallback_spans"] += 1
     # Exact original fragments missed by extraction remain available as local
     # evidence with original span IDs, rather than being silently dropped.
     for sid in hits:
@@ -333,6 +341,9 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
             metric_refs = _valid_refs(item, "metric_refs", set(ids))
             if not text or len(text) > _MAX_TEXT or not need_refs or state_refs is None or metric_refs is None:
                 continue
+            kind = _text(item, "kind")
+            if kind not in {"functional", "interface", "metric", "constraint"} or not _text(item, "reason"):
+                continue
             if not is_target(_text(item, "actor"), context["target"]):
                 continue
             if any(records[k]["kind"] not in {"nonfunctional", "constraint"} for k in metric_refs):
@@ -353,7 +364,7 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
                                "mode": "explicit" if explicit else "derived",
                                "need_refs": need_refs, "state_refs": state_refs,
                                "constraint_refs": metric_refs, "reason": _text(item, "reason"),
-                               "group": group["id"], "kind": _text(item, "kind")})
+                               "group": group["id"], "kind": kind})
         proposed.extend(candidates)
         for rid in changes:
             outcomes[rid] = "pending_assessment" if any(rid in c["need_refs"] for c in candidates) else "coverage_gap"
@@ -367,6 +378,24 @@ def _proposals(cfg, groups, decisions, records, state, context, emit):
         if rows:
             outcomes[rid] = ("model_supported_candidates" if all(c["assessment"] == "model_supported" for c in rows)
                              else "needs_review")
+    # Independent group-level coverage check, not just candidate-level support.
+    for index, group in enumerate(groups, 1):
+        ids = [rid for rid in group["requirement_ids"] if outcomes.get(rid) == "model_supported_candidates"]
+        if not ids:
+            continue
+        rows = [c for c in proposed if c["group"] == group["id"] and c["assessment"] == "model_supported"]
+        refs = list(dict.fromkeys(k for row in rows for k in row["state_refs"] + row["constraint_refs"]))
+        payload = {"context": context, "items": [_compact(records[rid]) for rid in ids],
+                   "proposals": rows, "evidence": [_compact(({**records, **state})[k]) for k in refs]}
+        if _payload_size(payload) > budget:
+            outcomes.update(dict.fromkeys(ids, "review_context_limit"))
+            continue
+        emit("target_coverage", index)
+        answers, statuses, _ = _unique_answers(cfg, "target_coverage", payload, ids)
+        for rid in ids:
+            row = answers.get(rid, {})
+            outcomes[rid] = ("model_covered" if row.get("covered") is True and _text(row, "reason")
+                             else "coverage_gap" if rid in answers else statuses[rid])
     return proposed, questions, outcomes
 
 
@@ -384,7 +413,8 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         if current != digest:
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
     profile = {p["id"]: p for p in approved_profile}
-    if not set(profile) <= {p["id"] for p in prepared["profile"]}:
+    offered = {p["id"]: p for p in prepared["profile"]}
+    if any(offered.get(k) != p for k, p in profile.items()):
         raise ValueError("Invalid profile")
     spans, sections = prepared["spans"], prepared["sections"]
     chunks = {name: [] for name, _ in prepared["documents"]}
@@ -395,13 +425,15 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
     fragment_status = {}
     focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"],
                                                 "description": p["description"]} for p in profile.values()]}
-    registry = build_registry(cfg, prepared["documents"], prepared["roles"], issues, emit,
+    registry = build_registry(cfg, prepared["documents"], {k: v for k, v in prepared["roles"].items()
+                                                            if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=focus, prepared_chunks=chunks,
                               fragment_status=fragment_status)
     records = registry["requirements"]
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
     decisions, state = {}, {}
-    obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS]
+    obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
+                   and row["typing_status"] == "classified"]
     # Bounded per-record evidence, plus profile sources that are actual originals.
     # This intentionally prioritizes accuracy over call-count optimization.
     for index, row in enumerate(obligations, 1):
@@ -434,6 +466,7 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
         decision = decisions.get(rid)
         outcomes.setdefault(rid, (decision["change"] if decision["status"] == "model_supported"
                                   else decision["status"]) if decision else
+                            "open_question" if row["kind"] == "open_question" else
                             "context_only" if row["kind"] != "uncertain" else "untyped")
     diagnostics = {"section_roles": dict(Counter(r["role"] for r in sections.values())),
                    "fragment_status": dict(Counter(fragment_status.values())),
@@ -444,6 +477,9 @@ def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, r
                    "record_kinds": dict(Counter(r["kind"] for r in records.values())),
                    "index_revisions": dict(evidence.revisions),
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
+    diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
+    diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
+    diagnostics["source_read_errors"] = len(prepared["roles"].keys() - prepared["hashes"].keys())
     _record_draft_diagnostic("target_registry", diagnostics)
     return {"requirements": records, "state_evidence": state, "groups": groups,
             "decisions": decisions, "proposals": proposals, "questions": questions,
