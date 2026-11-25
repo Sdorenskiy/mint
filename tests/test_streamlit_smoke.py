@@ -45,7 +45,8 @@ try:
     res["tabs"] = len(at.tabs)
     res["new_chat_empty"] = has_button(at, "chat_clear_btn")
     res["draft_default_v2"] = at.radio(key="draft_engine").value == "v2"
-    res["draft_v2_disabled"] = at.checkbox(key="draft_registry_only").value and at.button(key="target_prepare").disabled
+    res["draft_v2_disabled"] = (at.checkbox(key="draft_registry_only").value and at.button(key="wizard_materials_next").disabled
+                                and not has_button(at, "target_prepare") and at.button(key="wizard_stage_5").disabled)
     at.checkbox(key="draft_registry_only").set_value(False).run()
     res["draft_v2_disabled"] = res["draft_v2_disabled"] and at.button(key="draft_start").disabled
     at.checkbox(key="draft_registry_only").set_value(True).run()
@@ -133,6 +134,66 @@ try:
         res["errors"] += errors(at)
         res["metrics"] = [[str(m.label), str(m.value)] for m in at.metric]
         res["docs_list"] = [str(m.value) for m in at.markdown if str(m.value).startswith('<ul class="mint-kbdocs"')]
+        # Guided V2 workflow: mocked model stages, real Streamlit reruns.
+        from unittest.mock import patch
+        from mint.ui import draft_target_ui as target_ui, draft_wizard_ui as wizard_ui
+        from mint.ui.draft_wizard_state import apply_materials
+        import hashlib
+        source_ = "Памятка_А.md"
+        roles_ = {source_: "need"}
+        raw_ = b"synthetic template"
+        signature_ = wizard_ui._signature(cfg_kb, raw_, [source_], roles_)
+        at.session_state["draft_wizard_materials"] = {"raw": raw_, "name": "fixture.docx",
+                                                      "sources": [source_], "roles": roles_, "signature": signature_}
+        at.session_state["draft_wizard_context"] = {"key": signature_, "suggestion": None,
+            "confirmed": {"target": "Fixture", "objective": "", "scope": "", "participants": ""}}
+        at.session_state["draft_wizard_step"] = 2
+        profile_ = [{"id": "C1", "name": "Fixture function", "description": "Synthetic", "refs": []}]
+        prepared_ = {"profile": profile_, "sections": {}, "spans": {}, "metrics": {"run_id": "wizard-profile"}}
+        collected_ = {"phase": "collected", "input_identity": "fixture", "approved_profile": profile_,
+                      "metrics": {"run_id": "wizard-run"}, "groups": [{"id": "G1", "function": "Fixture function",
+                      "requirement_ids": ["R1"]}], "requirements": {"R1": {"id": "R1", "quote": "Fixture need",
+                      "source": source_, "section": "1"}}, "decisions": {"R1": {"change": "new", "status": "model_supported"}},
+                      "proposals": [], "questions": [], "issues": [], "dossiers": {}, "metrics_registry": {},
+                      "summaries": {}, "dispositions": {"R1": "awaiting_decomposition"}, "state_evidence": {}}
+        derived_ = {**collected_, "phase": "decomposed", "metrics": {"run_id": "wizard-derived"},
+                    "review": {"mode": "expert", "included": ["R1"], "excluded": [], "notes": {"G1": "fixture note"}}}
+        with patch.object(wizard_ui, "input_identity", return_value="fixture"), \
+             patch.object(target_ui, "prepare_target_analysis", return_value=prepared_) as prep_, \
+             patch.object(target_ui, "collect_target_requirements", return_value=collected_) as collect_, \
+             patch.object(target_ui, "decompose_target_requirements", return_value=derived_) as derive_:
+            at.run()
+            at.button(key="target_prepare").click().run()
+            profile_widget = next(w for w in at.checkbox if w.label == "Fixture function")
+            profile_widget.check().run()
+            at.button(key="target_analyze").click().run()
+            res["wizard_collection"] = (at.session_state["draft_wizard_step"] == 3
+                and not has_button(at, "target_analyze") and collect_.call_count == 1 and derive_.call_count == 0)
+            at.text_area(key="target_review_note_wizard-run_G1").set_value("fixture note").run()
+            at.button(key="target_decompose").click().run()
+            res["wizard_result"] = at.session_state["draft_wizard_step"] == 4 and derive_.call_count == 1
+            at.button(key="wizard_stage_3").click().run()
+            res["wizard_review_retained"] = at.text_area(key="target_review_note_wizard-run_G1").value == "fixture note"
+            at.button(key="target_decompose").click().run()
+            at.button(key="wizard_stage_2").click().run()
+            res["wizard_profile_retained"] = next(w for w in at.checkbox if w.label == "Fixture function").value
+            at.button(key="target_analyze").click().run()
+            at.button(key="target_decompose").click().run()
+            res["wizard_no_repeat"] = prep_.call_count == collect_.call_count == derive_.call_count == 1
+            at.button(key="wizard_stage_1").click().run()
+            at.button(key="wizard_materials_next").click().run()
+            res["wizard_same_materials"] = ("target_registry_result" in at.session_state
+                                             and prep_.call_count == collect_.call_count == derive_.call_count == 1)
+            at.button(key="wizard_stage_1").click().run()
+            role_key = "wizard_role_" + hashlib.sha256(source_.encode("utf-8")).hexdigest()
+            at.selectbox(key=role_key).set_value("mixed").run()
+            at.button(key="wizard_materials_next").click().run()
+            res["wizard_invalidated"] = ("target_registry_collected" not in at.session_state
+                                           and "target_registry_result" not in at.session_state
+                                           and at.session_state["draft_wizard_step"] == 2)
+            res["errors"] += errors(at)
+        at.button(key="wizard_stage_1").click().run()
+
         # консультант: своё поле ввода и свой разговор; ход работы (st.status), ответ, «Что нашёл в вики»
         at.chat_input(key="consult_field").set_value("Нарисуй схему: как хранятся файлы и кто выдаёт доступ").run()
         res["errors"] += errors(at)
@@ -205,6 +266,10 @@ check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"ш
 check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
 check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v2_restored")),
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
+check(all(res.get(k) for k in ("wizard_collection", "wizard_result", "wizard_review_retained",
+                               "wizard_profile_retained", "wizard_no_repeat", "wizard_same_materials",
+                               "wizard_invalidated")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
+      str({k: v for k, v in res.items() if k.startswith("wizard_")}))
 
 check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
       "«Новый чат» есть всегда: в пустом чате и сразу после первого ответа")
