@@ -10,7 +10,7 @@ import json
 
 from .draft_progress import tracked
 from .i18n import get_lang
-from .template_draft import DraftError, _candidate_budget, _candidates, _normalized
+from .template_draft import DraftError, _candidate_budget, _candidates, _normalized, _quote_key
 
 # Each query covers a small, coherent group. All are investigation dimensions,
 # not required functionality; an empty result means not established.
@@ -43,7 +43,7 @@ def _size(value):
 
 def _row(span):
     return {"id": span["id"], "source": span["source"], "section": span["section"],
-            "text": span["text"]}
+            "text": span["text"], **({"table_context": span["table_context"]} if span.get("table_context") else {})}
 
 
 def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, reset_cache=False):
@@ -149,7 +149,7 @@ def merge_dossier_quotes(records, dossiers, spans, documents):
     original R-ID and quote, attach all provenance, and associate facts with IDs.
     """
     revisions = {name: hashlib.sha256(md.encode("utf-8")).hexdigest() for name, md in documents}
-    keys = {(r["source"], r["section"], _normalized(r["quote"])): rid for rid, r in records.items()}
+    keys = {_quote_key(r): rid for rid, r in records.items()}
     initial = len(records)
     for pid, dossier in dossiers.items():
         for facet, row in dossier["facets"].items():
@@ -160,13 +160,15 @@ def merge_dossier_quotes(records, dossiers, spans, documents):
                 if not quote.strip() or _normalized(quote) not in _normalized(span["text"]):
                     row["status"] = "error"
                     continue
-                key = (span["source"], span["section"], _normalized(quote))
+                row_data = {"source": span["source"], "section": span["section"], "quote": quote}
+                if span.get("table_context"):
+                    row_data["table_context"] = span["table_context"]
+                key = _quote_key(row_data)
                 rid = keys.get(key)
                 if rid is None:
                     rid = "R" + str(len(records) + 1)
                     keys[key] = rid
-                    records[rid] = {"id": rid, "source": span["source"], "section": span["section"],
-                                    "quote": quote, "source_spans": []}
+                    records[rid] = {"id": rid, **row_data, "source_spans": []}
                 record = records[rid]
                 location = {"source": span["source"], "revision": revisions[span["source"]],
                             "section": span["section"], "fragment": span["fragment"], "quote": record["quote"]}
