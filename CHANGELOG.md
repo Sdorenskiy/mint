@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 review screen: focus on explicitly selected functions, separate system-wide and unallocated requirements, explicit refinement scope, concise source table and on-demand deduplicated evidence, data categories and security evidence alongside metrics, private read-only JSON review snapshots. No analysis or prompt changes; version 21.4.23.
+
 - V2 pre-pilot stabilization: structural table occurrences and separate column context, conservative quantity/unit checks, explicit extraction failure and partial retry, corrected R/F/BF prompt contracts, bounded allocation retry, independent responsibility status, system-wide constraints, reference budget diagnostics and reopening scope for new candidates. Development version 21.4.22; real-model acceptance and architectural alternatives remain pending.
 
 - V2 pauses after the independent typed scan, proposes preliminary applicability, and lets the user select functions before dossier retrieval. Original records remain available, and resumed collection types only new citations. Reference evidence gets bounded reserved space after explicit links; review shows quotations on demand. Final allocation, architectural alternatives and real-model acceptance remain separate work. Development version 21.4.21.
