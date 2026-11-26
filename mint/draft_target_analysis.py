@@ -513,6 +513,7 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
             for rid, reason in cached.items():
                 d = decisions[rid]
                 d.update(status="model_supported", review_reason=reason, applicability_status="model_supported",
+                         function_status="model_supported" if d.get("function") and d.get("change") != "external" else "not_applicable",
                          change_status="unresolved" if d.get("change") == "explicit" else "model_supported",
                          implementation_status="unknown" if d.get("change") in {"explicit", "external"} else "model_supported")
             stats["cache_hits"] += len(items)
@@ -532,9 +533,22 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
                 change_ok = reply.get("change_supported") is True and d.get("change") != "unknown"
                 reference_gap = any(v for k, v in d.get("reference_gaps", {}).items() if k != "cycle")
                 d["applicability_status"] = "model_supported" if actor_ok else "needs_review"
-                d["change_status"] = "model_supported" if actor_ok and change_ok and conditions_ok and not reference_gap and not d.get("metric_gap") else "unresolved"
+                requires_function = bool(d.get("function")) and d.get("change") != "external"
+                function_ok = not requires_function or reply.get("correct_function") is True
+                d["function_status"] = ("not_applicable" if not requires_function else
+                                        "model_supported" if function_ok and actor_ok else "needs_review")
+                d["change_status"] = "model_supported" if actor_ok and function_ok and change_ok and conditions_ok and not reference_gap and not d.get("metric_gap") else "unresolved"
                 d["review_reason"] = reason
-                if d["change_status"] == "model_supported":
+                if actor_ok and not function_ok:
+                    # Ownership alone is not proof of the functional grouping.
+                    # Keep the original decision visible, but never send it to
+                    # the wrong group for derivation.
+                    d["status"] = "needs_review"
+                    d["proposed_change"] = d.get("change", "unknown")
+                    d["change"] = "unknown"
+                    d["component"] = ""
+                    d["implementation_status"] = "unknown"
+                elif d["change_status"] == "model_supported":
                     d["status"] = "model_supported"
                     d["implementation_status"] = "unknown" if d.get("change") in {"explicit", "external"} else "model_supported"
                     if d.get("change") == "explicit":
@@ -728,6 +742,52 @@ def _verify_originals(cfg, prepared):
         if current != digest:
             raise DraftError(tr("Одно из оснований изменилось. Запустите сборку заново."))
 
+def _recover_profile_batch(cfg, rows, context):
+    """One bounded recovery round, preserving every validated original link.
+
+    The shared JSON client already retries malformed JSON. For an exhausted
+    call, try two smaller independent inputs at most; for a valid but malformed
+    contract retry once. Never retry a legitimate empty answer or recurse.
+    """
+    noop = lambda *_: None
+    proposed, initial = _propose_profile(cfg, rows, context, noop, from_requirements=True)
+    counts = Counter()
+    if initial not in {"model_error", "invalid_response", "partial"}:
+        return proposed, initial, counts
+    counts["initial_" + initial] += 1
+    if initial == "model_error" and len(rows) < 2:
+        return proposed, initial, counts
+    counts["retry_attempted"] += 1
+    if initial == "model_error":
+        middle = len(rows) // 2
+        batches = [rows[:middle], rows[middle:]]
+    else:
+        batches = [rows]
+    statuses = []
+    combined = {}
+    def merge(items):
+        for p in items:
+            key = _normalized(p["name"]).casefold()
+            if key not in combined:
+                combined[key] = {**p, "refs": list(p["refs"])}
+            else:
+                refs = combined[key]["refs"]
+                refs.extend(rid for rid in p["refs"] if rid not in refs)
+    merge(proposed)
+    for batch in batches:
+        counts["retry_batches"] += 1
+        items, status = _propose_profile(cfg, batch, context, noop, from_requirements=True)
+        statuses.append(status)
+        merge(items)
+    if all(s in {"found", "no_functions"} for s in statuses) and (combined or initial != "partial"):
+        counts["retry_recovered"] += 1
+        final = "found" if combined else "no_functions"
+    else:
+        counts["retry_exhausted"] += 1
+        final = "partial" if combined else ("model_error" if "model_error" in statuses else "invalid_response")
+    return list(combined.values()), final, counts
+
+
 def _functions_from_records(cfg, records, references, spans, context, emit, *, existing=()):
     """Discover bounded functional hypotheses from the independent scan.
     Keep each original R-ID; one record can support several functions.
@@ -742,7 +802,8 @@ def _functions_from_records(cfg, records, references, spans, context, emit, *, e
     for batch in tracked(emit, "target_function_discovery", batches):
         bounded = _bounded_rows(batch, budget)
         counts["context_limit"] += len(batch) - len(bounded)
-        proposed, status = _propose_profile(cfg, bounded, context, lambda *_: None, from_requirements=True)
+        proposed, status, recovery = _recover_profile_batch(cfg, bounded, context)
+        counts.update(recovery)
         counts[status] += 1
         for p in proposed:
             key = _normalized(p["name"]).casefold()
@@ -947,6 +1008,12 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         pool = list(unique.values())
         base = {"context": context, "profile": list(focus["functions"]),
                 "items": [{**_compact(row), "section_role": row["section_role"]}]}
+        # Prior links are exact original IDs or dossier facts, not authority.
+        # Pass them as hints rather than silently forcing the selected function.
+        candidate_ids = [pid for pid, p in base_profile.items()
+                         if rid in p.get("record_refs", []) or rid in dossier_ids.get(pid, [])]
+        if candidate_ids:
+            base["items"][0]["candidate_function_ids"] = candidate_ids
         if linked or gaps:
             base["reference_status"] = {"linked_ids": [r["id"] for r in linked], "gaps": gaps}
         budget = _candidate_budget(cfg)
@@ -1120,6 +1187,24 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
     diagnostics["function_links"] = {"linked_records": sum(bool(ids) for ids in function_links.values()),
                                       "shared_records": sum(len(ids) > 1 for ids in function_links.values()),
                                       "unlinked_records": sum(not ids for ids in function_links.values())}
+    diagnostics["function_review"] = dict(Counter(d.get("function_status", "unresolved")
+                                                  for d in decisions.values()))
+    # Counts are over known candidate links, not a semantic recall estimate.
+    scope_counts = Counter()
+    for rid, ids in function_links.items():
+        if not selected.intersection(ids) or rid not in decisions:
+            continue
+        scope_counts["candidate_obligations"] += 1
+        d = decisions[rid]
+        if d.get("status") in {"model_supported", "applicability_supported"} and d.get("function") in selected:
+            scope_counts["selected_primary"] += 1
+        elif d.get("status") == "model_supported" and d.get("change") == "external":
+            scope_counts["external"] += 1
+        elif d.get("status") in {"model_supported", "applicability_supported"}:
+            scope_counts["other_primary"] += 1
+        else:
+            scope_counts["unresolved"] += 1
+    diagnostics["selected_link_coverage"] = dict(scope_counts)
     diagnostics["summaries"] = summary_counts
     diagnostics["verification"] = dict(verification_counts)
     diagnostics["allocation_retry"] = dict(retry_counts)
@@ -1164,6 +1249,7 @@ def extend_function_preview(cfg, prepared, preview, collected):
     updated["approved_profile"] = deepcopy(collected["approved_profile"])
     updated["requirements"] = deepcopy(collected["requirements"])
     updated["function_links"] = deepcopy(collected["function_links"])
+    updated["profile_status"] = deepcopy(collected.get("diagnostics", {}).get("profile_status", preview["profile_status"]))
     for rid, row in updated["requirements"].items():
         if row.get("kind") not in OBLIGATION_KINDS or rid in updated["applicability"]:
             continue

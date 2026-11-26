@@ -787,9 +787,9 @@ draft_target_section_map: |-
 draft_target_profile: |-
   If purpose = requirements_analysis, evidence contains exact quotes from the primary registry. Identify capabilities/interactions necessary to satisfy requirements within the target boundary; do not present desired behavior as implemented. Link all relevant original IDs (including shared constraints where applicable); one ID may relate to several functions. Do not turn a requirement or metric itself into a function. If quotes describe only a system-wide constraint, do not invent a function.
   If purpose = reference_current_state, identify only described existing functions of the target itself; plans, other-system analogies and uncertain state do not establish implementation. Return an empty list if evidence is missing.
-  Describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
+  In the other modes describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
   Do not assign other participants' functions to the target. For each function give name, description
-  (current function, component, interfaces, exclusions) and refs, exact ids from evidence: R for requirements_analysis, F or BF for the other modes.
+  (briefly: purpose, interaction and known implementation status) and refs, exact ids from evidence: R for requirements_analysis, F or BF for the other modes. Do not repeat ids within refs; if implementation is unknown, do not invent a component.
   Never invent facts; absence of evidence is not evidence of absence.
   Distinguish existing functions from explicitly required target functions in description; do not describe future functions as implemented. At most 20 functions.
   Return {"functions":[{"name":"function","description":"supported description","refs":["R1"]}]}. R1 is an example for requirements_analysis; otherwise use the actual supplied F/BF ids.
@@ -820,7 +820,9 @@ draft_target_allocation: |-
   new/change/already_supported require actual evidence of current state and need; missing information does
   not imply missing implementation. explicit is a direct duty to the target, not proof that a change is necessary;
   direct_quote is a verbatim part of the source quote. external is another actor's obligation; do not transfer.
-  unknown means the need for change is unestablished; this does NOT erase an established category or actor. For target duties function is a profile id or new; for new give a concise
+  unknown means the need for change is unestablished; this does NOT erase an established category or actor.
+  candidate_function_ids in items are possible registry/dossier links, not verified allocation. Check each link against the original quote and consider other functions too; user selection is not evidence.
+  For target duties function is a profile id or new; for new give a concise
   function_name, reusing the semantic name for the same function. component is supported or empty.
   Consider performance objectives: subject, units, conditions, current and target values.
   For quantitative objectives add metric: {"subject":"verbatim subject from quote or table header","value":"verbatim value from the quote",
@@ -839,11 +841,12 @@ draft_target_verify: |-
   Independently check decision against original need and evidence. Do not trust the previous explanation.
   correct_actor means ownership is supported by original bases A independently of implementation, including external; reference context B creates no duties. change_supported means new/change/already_supported
   is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary; for unknown return change_supported=false even if correct_actor=true.
+  correct_function means original need and linked bases A actually belong to decision.function_name of the target; do not assign a system-wide constraint to a specific function without evidence. Do not infer a link from the function name or reference B. For external obligations this field does not affect the decision.
   conditions_preserved means conditions, exceptions, subject and metric units are considered and component is supported.
   Consider linked sections in decision.reference_refs; a link is not proof of ownership or implementation.
   Treat dossier_refs as supplemental function context, not proof of implementation.
   For each element in items independently review only its own need, decision and evidence. If uncertain, false.
-  Return {"items":[{"id":"R1","correct_actor":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}]}.
+  Return {"items":[{"id":"R1","correct_actor":false,"correct_function":false,"change_supported":false,"conditions_preserved":false,"reason":"reason"}]}.
 draft_target_summary: |-
   Information with source_role = reference_context explains context but adds no new needs, conditions or target metrics.
   Summarize the original needs for context.target by function, before detailed solution requirements.

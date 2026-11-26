@@ -147,7 +147,7 @@ def test_metric_pairs_and_separate_review():
         d = target._validate_decision(proposal, "R1", records, {}, profile, CONTEXT["target"])
         assert d["category"] == "target" and d["change"] == "unknown" and d["component"] == ""
         decisions = {"R1": d}
-        with patch.object(function, "_json", return_value={"items": [{"id": "R1", "correct_actor": True,
+        with patch.object(function, "_json", return_value={"items": [{"id": "R1", "correct_actor": True, "correct_function": True,
                 "change_supported": False, "conditions_preserved": True, "reason": "owner only"}]}):
             target._verify_decisions(cfg, decisions, records, {}, CONTEXT, lambda *_: None)
         assert d["status"] == "applicability_supported" and d["applicability_status"] == "model_supported"
@@ -160,7 +160,7 @@ def test_metric_pairs_and_separate_review():
         d = target._validate_decision({**proposal, "change": "explicit", "direct_quote": DIRECT},
                                       "R1", records, {}, profile, CONTEXT["target"])
         d["reference_gaps"] = {"missing": 1}
-        with patch.object(function, "_json", return_value={"items": [{"id": "R1", "correct_actor": True,
+        with patch.object(function, "_json", return_value={"items": [{"id": "R1", "correct_actor": True, "correct_function": True,
                 "change_supported": True, "conditions_preserved": True, "reason": "owner only"}]}):
             target._verify_decisions(cfg, {"R1": d}, records, {}, CONTEXT, lambda *_: None)
         assert d["status"] == "applicability_supported" and d["change"] == "unknown"
@@ -197,6 +197,54 @@ def test_profile_status():
         assert target._propose_profile(cfg, candidates, CONTEXT, lambda *_: None) == ([], "model_error")
     with patch.object(target, "_json", side_effect=AssertionError("unexpected LLM call")):
         assert target._propose_profile(cfg, [], CONTEXT, lambda *_: None) == ([], "no_candidates")
+
+
+def test_profile_recovery_and_function_review():
+    cfg = config("/tmp")
+    rows = [{"id": "R1", "text": "One"}, {"id": "R2", "text": "Two"}]
+    a = {"functions": [{"name": "Exchange", "description": "Exchange", "refs": ["R1"]}]}
+    b = {"functions": [{"name": "exchange", "description": "Exchange", "refs": ["R2"]}]}
+    with patch.object(target, "_json", side_effect=[draft.DraftError("simulated"), a, b]) as ask:
+        found, status, counts = target._recover_profile_batch(cfg, rows, CONTEXT)
+    assert ask.call_count == 3 and status == "found" and found[0]["refs"] == ["R1", "R2"]
+    assert counts["retry_recovered"] == 1 and counts["retry_batches"] == 2
+    assert [len(call.args[2]["evidence"]) for call in ask.call_args_list] == [2, 1, 1]
+    partial = {"functions": a["functions"] + [{"name": "bad", "description": "bad", "refs": ["R99"]}]}
+    with patch.object(target, "_json", side_effect=[partial, draft.DraftError("simulated")]) as ask:
+        found, status, counts = target._recover_profile_batch(cfg, rows, CONTEXT)
+    assert ask.call_count == 2 and status == "partial" and found[0]["refs"] == ["R1"]
+    assert counts["retry_exhausted"] == 1
+    with patch.object(target, "_json", return_value={"functions": []}) as ask:
+        assert target._recover_profile_batch(cfg, rows, CONTEXT)[1] == "no_functions"
+        assert ask.call_count == 1
+    with patch.object(target, "_json", side_effect=[{}, b]) as ask:
+        found, status, counts = target._recover_profile_batch(cfg, rows, CONTEXT)
+    assert ask.call_count == 2 and status == "found" and found[0]["refs"] == ["R2"]
+    with TemporaryDirectory() as tmp:
+        cfg = config(tmp)
+        records = {"R1": {"id": "R1", "source": "a.md", "section": "A", "quote": DIRECT,
+                          "kind": "functional", "source_role": "need"}}
+        proposal = {"category": "target", "actor": "RS", "function": "C1", "change": "explicit",
+                    "direct_quote": DIRECT, "state_refs": [], "reason": "source duty"}
+        for answer in ({}, {"correct_function": False}, {"correct_function": "true"}, {"correct_function": True}):
+            d = target._validate_decision(proposal, "R1", records, {}, {"C1": {"name": "Messaging"}}, CONTEXT["target"])
+            verdict = {"id": "R1", "correct_actor": True, "change_supported": True,
+                       "conditions_preserved": True, "reason": "fixture", **answer}
+            with patch.object(function, "_json", return_value={"items": [verdict]}):
+                target._verify_decisions(cfg, {"R1": d}, records, {}, CONTEXT, lambda *_: None, reset_cache=True)
+            assert d["applicability_status"] == "model_supported"
+            if answer.get("correct_function") is True:
+                assert d["status"] == "model_supported" and target._group_decisions({"R1": d})
+            else:
+                assert d["status"] == "needs_review" and d["function_status"] == "needs_review"
+                assert not target._group_decisions({"R1": d})
+                assert d["function"] == "C1" and d["change"] == "unknown"
+        safe = target_registry_export({}, {"diagnostics": {"profile_status": {"retry_recovered": 1},
+            "function_review": {"needs_review": 2}, "selected_link_coverage": {"unresolved": 3, "private": 4}}})
+        assert safe["diagnostics"]["profile_status"]["retry_recovered"] == 1
+        assert safe["diagnostics"]["function_review"]["needs_review"] == 2
+        assert safe["diagnostics"]["selected_link_coverage"]["unresolved"] == 3
+        assert "private" not in json.dumps(safe)
 
 
 def test_registry_end_to_end():
@@ -248,6 +296,7 @@ def test_registry_end_to_end():
                                   for r in payload["requirements"]]}
             if stage == "target_allocation":
                 r = payload["items"][0]
+                assert set(r.get("candidate_function_ids", [])) <= {p["id"] for p in payload["profile"]}
                 state = next(x["id"] for x in payload["evidence"] if CURRENT in x["quote"])
                 if r["quote"] == NEED:
                     state = next((x["id"] for x in payload["evidence"] if x.get("source_role") == "reference_context"), state)
@@ -265,7 +314,7 @@ def test_registry_end_to_end():
                                         "level": "target", "target_value": "20"}
                 return {"items": [result]}
             if stage == "target_verify":
-                return {"items": [{"id": r["id"], "correct_actor": True, "change_supported": True,
+                return {"items": [{"id": r["id"], "correct_actor": True, "correct_function": True, "change_supported": True,
                                    "conditions_preserved": True, "reason": "verified"} for r in payload["items"]]}
             if stage == "target_summary":
                 return {"text": " ".join(r["quote"] for r in payload["needs"]),
@@ -422,6 +471,10 @@ def test_registry_end_to_end():
             assert scoped["selected_functions"] == [ids["Messaging"]]
             assert scoped["diagnostics"]["wiki_context"]["function_searches"] == 1
             assert scoped["diagnostics"]["scope_selection"] == {"selected": 1, "offered": 2}
+            counts = scoped["diagnostics"]["selected_link_coverage"]
+            assert counts["candidate_obligations"] == sum(counts.get(k, 0) for k in
+                ("selected_primary", "external", "other_primary", "unresolved"))
+            assert counts["selected_primary"] > 0
             assert set(preview["requirements"]) <= set(scoped["requirements"])
             assert all(scoped["requirements"][rid]["quote"] == row["quote"]
                        for rid, row in preview["requirements"].items())
@@ -527,6 +580,7 @@ if __name__ == "__main__":
     test_metric_pairs_and_separate_review()
     test_original_evidence()
     test_profile_status()
+    test_profile_recovery_and_function_review()
     test_registry_end_to_end()
     for lang in ("ru", "en"):
         prompts = default_prompts(lang)
