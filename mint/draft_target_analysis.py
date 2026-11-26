@@ -55,7 +55,7 @@ def _bounded_rows(rows, budget):
 def _map_sources(documents, roles, *, prefix=""):
     spans, sections = {}, {}
     for name, markdown in documents:
-        for index, (path, text) in enumerate(_source_chunks(markdown, full_path=True), 1):
+        for index, (path, text, table) in enumerate(_source_chunks(markdown, full_path=True, table_context=True), 1):
             key = (name, path)
             if key not in sections:
                 sections[key] = {"id": prefix + "S" + str(len(sections) + 1), "source": name,
@@ -64,6 +64,8 @@ def _map_sources(documents, roles, *, prefix=""):
             sid = prefix + "F" + str(len(spans) + 1)
             spans[sid] = {"id": sid, "source": name, "section": path, "fragment": index,
                           "text": text, "section_id": sections[key]["id"]}
+            if table:
+                spans[sid]["table_context"] = table
     return spans, {s["id"]: s for s in sections.values()}
 
 
@@ -381,7 +383,8 @@ def _search_records(cfg, evidence, records, group, query):
     for sid in hits:
         span = evidence.spans[sid]
         pool.append({"id": sid, "source": span["source"], "section": span["section"],
-                     "quote": span["text"], "kind": "uncertain", "source_role": "unspecified"})
+                     "quote": span["text"], "kind": "uncertain", "source_role": "unspecified",
+                     **({"table_context": span["table_context"]} if span.get("table_context") else {})})
     return pool
 
 
@@ -604,7 +607,7 @@ def _functions_from_records(cfg, records, references, spans, context, emit, *, e
     Keep each original R-ID; one record can support several functions.
     A capped or incomplete discovery is not a completeness claim.
     """
-    rows = [{"id": rid, "source": r["source"], "section": r["section"], "text": r["quote"]}
+    rows = [{"id": rid, "source": r["source"], "section": r["section"], "text": r["quote"], **({"table_context": r["table_context"]} if r.get("table_context") else {})}
             for rid, r in records.items()]
     budget = max(0, _candidate_budget(cfg) - _payload_size(context) - 1000)
     functions = {_normalized(p["name"]).casefold(): p for p in existing}
@@ -682,7 +685,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             _candidate_budget(cfg) - len(span["text"]) - _payload_size(extraction_focus) - 1000)))
         if related or gaps:
             reference_contexts[(span["source"], span["fragment"])] = {"items": related, "gaps": gaps}
-    revision = hashlib.sha256(json.dumps({"version": 1, "hashes": prepared["hashes"]}, sort_keys=True).encode()).hexdigest()
+    revision = hashlib.sha256(json.dumps({"version": 2, "hashes": prepared["hashes"]}, sort_keys=True).encode()).hexdigest()
     evidence = OriginalEvidence(cfg, spans, prepared["hashes"])
     dossiers, dossier_counts = {}, Counter()
     original_ids = set()
@@ -728,6 +731,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                               reset_cache=reset_cache, focus=extraction_focus, prepared_chunks=chunks,
                               fragment_status=fragment_status, reference_contexts=reference_contexts,
                               reference_revision=revision, supplement=supplement,
+                              table_contexts={(s["source"], s["fragment"]): s["table_context"]
+                                              for s in spans.values() if s.get("table_context")},
                               initial_records=preview["requirements"] if preview is not None else None)
     records = registry["requirements"]
     focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
@@ -759,7 +764,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
     if automatic_functions and prepared.get("reference_spans"):
         ref_evidence = OriginalEvidence(cfg, prepared["reference_spans"], prepared["reference_hashes"])
         ref_pool = {sid: {"id": sid, "source": row["source"], "section": row["section"],
-                          "quote": row["text"], "kind": "uncertain", "source_role": "reference_context"}
+                          "quote": row["text"], "kind": "uncertain", "source_role": "reference_context",
+                          **({"table_context": row["table_context"]} if row.get("table_context") else {})}
                     for sid, row in ref_evidence.spans.items()}
         for p in base_profile.values():
             if preview is not None and p["id"] not in selected:
@@ -792,7 +798,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         if linked or gaps:
             linked_by_need[rid] = {"items": linked, "gaps": gaps}
         linked_pool = [{"id": r["id"], "source": r["source"], "section": r["section"],
-                        "quote": r["quote"], "kind": "reference", "source_role": "unspecified"}
+                        "quote": r["quote"], "kind": "reference", "source_role": "unspecified",
+                        **({"table_context": r["table_context"]} if r.get("table_context") else {})}
                        for r in linked]
         # Preserve the original retrieval path. The dossier is supplemental.
         original_pool = _search_records(cfg, evidence, original_records, {rid}, query)
@@ -801,7 +808,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             for sid in p["refs"]:
                 s = spans[sid]
                 pool.append({"id": sid, "source": s["source"], "section": s["section"],
-                             "quote": s["text"], "kind": "uncertain", "source_role": "unspecified"})
+                             "quote": s["text"], "kind": "uncertain", "source_role": "unspecified",
+                             **({"table_context": s["table_context"]} if s.get("table_context") else {})})
         unique = {}
         for item in pool:
             unique.setdefault(item["id"], item)
