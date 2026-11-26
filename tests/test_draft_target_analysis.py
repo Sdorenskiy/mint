@@ -545,6 +545,27 @@ def test_registry_end_to_end():
             extended = target.extend_function_preview(cfg, automatic_prepared, preview, retry)
             assert new in extended["approved_profile"] and preview == original_preview
             assert set(retry["requirements"]) <= set(extended["requirements"])
+            # Wrong actor gets one retry; a proposed correction still needs review.
+            actor_attempts = []
+            def actor_model(cfg_, stage, payload):
+                if stage == "target_allocation" and payload["items"][0]["quote"] in (NEED, DIRECT):
+                    answer = model(cfg_, stage, payload)
+                    quote = payload["items"][0]["quote"]
+                    actor_attempts.append((quote, payload.get("retry_actor")))
+                    if quote == DIRECT or not payload.get("retry_actor"):
+                        answer["items"][0].update(category="target", actor="Desk")
+                    return answer
+                return model(cfg_, stage, payload)
+            with patch.object(function, "_json", side_effect=actor_model):
+                actor_result = target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
+                    selected_functions=[ids["Messaging"]], summaries=False)
+            assert actor_attempts.count((NEED, None)) == actor_attempts.count((NEED, "target_actor_mismatch")) == 1
+            assert actor_attempts.count((DIRECT, None)) == actor_attempts.count((DIRECT, "target_actor_mismatch")) == 1
+            assert actor_result["diagnostics"]["actor_validation"]["retry_proposed"] == 1
+            assert actor_result["diagnostics"]["actor_validation"]["retry_unresolved"] == 1
+            assert actor_result["decisions"][by_quote[DIRECT]]["status"] == "wrong_actor"
+            assert not any(by_quote[DIRECT] in group["requirement_ids"] for group in actor_result["groups"])
+
             with patch.object(target, "collect_dossiers", wraps=target.collect_dossiers) as deep:
                 target.collect_target_requirements(cfg, automatic_prepared, preview=extended,
                                                    selected_functions=[new["id"]], summaries=False)

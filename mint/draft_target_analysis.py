@@ -1000,8 +1000,6 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                                               for s in spans.values() if s.get("table_context")},
                               initial_records=preview["requirements"] if preview is not None else None)
     records = registry["requirements"]
-    focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
-                                                for p in base_profile.values()]}
     roles_by_section = {(s["source"], s["section"]): s["role"] for s in sections.values()}
     for row in records.values():
         row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
@@ -1099,7 +1097,10 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         if omitted:
             profile_budget_counts["limited_allocations"] += 1
             profile_budget_counts["omitted_profile_entries"] += omitted
-            profile_budget_counts["omitted_candidate_entries"] += len(set(candidate_ids) - {p["id"] for p in base["profile"]})
+            offered_ids = {p["id"] for p in base["profile"]}
+            profile_budget_counts["omitted_candidate_entries"] += len(set(candidate_ids) - offered_ids)
+            if candidate_ids:
+                base["items"][0]["candidate_function_ids"] = [pid for pid in candidate_ids if pid in offered_ids]
         if _payload_size(base) > budget:
             if prepared.get("reference_sources"):
                 wiki_counts["allocation_budget_limit"] += 1
