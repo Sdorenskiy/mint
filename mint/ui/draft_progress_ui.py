@@ -8,6 +8,7 @@ from ..i18n import N_, tr
 
 _STAGES = {
     "source_read": N_("Чтение оригиналов оснований"),
+    "atomic_extract": N_("Извлечение атомарных сведений"),
     "target_section_map": N_("Классификация разделов оснований"),
     "target_profile_search": N_("Поиск сведений о системе"),
     "target_profile": N_("Выделение функций и сведений"),
