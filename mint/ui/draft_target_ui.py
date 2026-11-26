@@ -1,5 +1,6 @@
 """Local STOP-1 review and explicit private registry export."""
 import json
+from hashlib import sha256
 from collections import Counter
 
 import streamlit as st
@@ -12,6 +13,7 @@ from ..draft_registry_workbook import registry_workbook, regression_snapshot, co
 from ..i18n import tr
 from .draft_progress_ui import render_progress
 from .draft_wizard_state import sync_target
+from .draft_review_view import review_view, evidence_rows, review_snapshot, load_review_snapshot
 from ..template_draft import DraftError
 
 def _label(code):
@@ -81,7 +83,7 @@ def _show_refs(refs, prepared, result):
     for rid in refs:
         row = result["requirements"].get(rid) or result["state_evidence"].get(rid)
         if row:
-            st.caption(f"{rid} · {row['source']} › {row['section']}")
+            st.caption(_safe_markdown(f"{rid} · {row['source']} › {row['section']}"))
             if row.get("source_role") == "reference_context":
                 st.caption(tr("Справочный контекст — не основание требования"))
             if row.get("table_context"):
@@ -97,118 +99,261 @@ def _show_refs(refs, prepared, result):
             st.text(row["text"])
 
 
-def _review_collection(collected, prepared, expert):
-    """Review individual original obligations, grouped by primary allocation."""
-    run = collected["metrics"]["run_id"]
-    decisions, records = collected["decisions"], collected["requirements"]
+def _safe_markdown(text):
+    # Never interpret imported source/model strings as links or remote images.
+    return "".join(("\\" + c) if c in "\\`*_{}[]()#+-.!<>|" else c for c in str(text))
+
+
+def _short(text, limit=160):
+    value = " ".join(str(text).split())
+    return value if len(value) <= limit else value[:limit - 1] + "…"
+
+
+def _source_names(records):
+    return {name: f"D{i}" for i, name in enumerate(dict.fromkeys(
+        row["source"] for row in records.values()), 1)}
+
+
+def _requirement_table(ids, result, names, *, selectable=(), chosen=()):
+    records, decisions = result["requirements"], result["decisions"]
+    profile = {p["id"]: p["name"] for p in result.get("approved_profile", [])}
+    rows = []
+    for rid in ids:
+        row, d = records[rid], decisions.get(rid, {})
+        status = (tr("Передаётся на детализацию") if rid in chosen else
+                  tr("Не выбрано") if rid in selectable else
+                  _label(d.get("status", "unknown")))
+        links = ", ".join(profile[pid] for pid in result.get("function_links", {}).get(rid, []) if pid in profile)
+        rows.append({"ID": rid, tr("Исходное требование (фрагмент)"): _short(row["quote"]),
+                     tr("Источник"): names[row["source"]] + " · " + _short(row["section"], 65),
+                     tr("Исполнитель"): d.get("actor", ""), tr("Изменение"): _label(d.get("change", "unknown")),
+                     tr("Статус"): status, tr("Связи с функциями"): links})
+    if rows:
+        st.dataframe(rows, hide_index=True, use_container_width=True)
+
+
+def _requirement_detail(ids, prepared, result, key):
+    """One requirement at a time; exact source and supporting citations on demand."""
+    if not ids:
+        return
+    rid = st.selectbox(tr("Открыть требование и основания"), [None, *ids],
+                       format_func=lambda v: v or tr("Выберите требование"), key=key)
+    if rid is None:
+        return
+    row = result["requirements"][rid]
+    d = result["decisions"].get(rid, {})
+    st.caption(f"{rid} · {row['source']} › {row['section']}")
+    if row.get("table_context"):
+        st.text(row["table_context"].get("caption", ""))
+        st.text(row["table_context"]["header"])
+    st.text(row["quote"])
+    st.caption(tr("Распределение ответственности"))
+    st.text(f"{d.get('actor', '')} · {_label(d.get('applicability_status', d.get('status', 'unknown')))}")
+    st.caption(tr("Необходимость доработки"))
+    st.text(_label(d.get("change", "unknown")))
+    for field, title in (("reason", tr("Обоснование")), ("review_reason", tr("Причина проверки"))):
+        if d.get(field):
+            st.caption(title)
+            st.text(d[field])
+    roles = {"state": tr("Сведения о реализации"), "reference": tr("Связанные пункты оснований"),
+             "dossier": tr("Характеристики функции"), "wiki": tr("Справочный контекст — не основание требования"),
+             "original": tr("Исходное требование")}
+    evidence = [e for e in evidence_rows(rid, prepared, result) if "original" not in e["roles"]]
+    if evidence and st.checkbox(tr("Показать подтверждающие сведения ({n})", n=len(evidence)), key=key + "_evidence_" + rid):
+        for e in _page(evidence, key + "_page_" + rid, size=5):
+            cited = e["row"]
+            st.caption(" · ".join(roles[r] for r in e["roles"]))
+            st.caption(_safe_markdown(f"{', '.join(e['ids'])} · {cited.get('source', '')} › {cited.get('section', '')}"))
+            if cited.get("table_context"):
+                st.text(cited["table_context"]["header"])
+            st.text(e["quote"])
+    if result.get("linked_by_need", {}).get(rid, {}).get("gaps"):
+        st.warning(tr("Некоторые перекрёстные ссылки не удалось раскрыть."))
+
+
+def _function_characteristics(pid, ids, prepared, result, key):
+    """Show existing facet evidence, not newly inferred security classifications."""
+    dossier = result.get("dossiers", {}).get(pid, {})
+    facets = dossier.get("facets", {})
+    metrics = result.get("metrics_registry", {})
+    relevant = set(ids)
+    relevant.update(rid for rid, links in result.get("function_links", {}).items() if pid in links)
+    verified = [(rid, metric) for rid, metric in metrics.items()
+                if rid in relevant and result["decisions"].get(rid, {}).get("function") == pid]
+    cols = st.columns(2)
+    with cols[0]:
+        st.caption(tr("Показатели назначения"))
+        if verified:
+            st.dataframe([{"ID": rid, tr("Объект"): m["subject"], tr("Значение"): m["value"] + " " + m["unit"],
+                           tr("Условия"): m["conditions"], tr("Уровень"): m["level"]} for rid, m in verified],
+                         hide_index=True, use_container_width=True)
+        else:
+            st.text(tr("Подтверждённые показатели не установлены."))
+    with cols[1]:
+        st.caption(tr("Категории передаваемых данных и защита"))
+        row = facets.get("data_categories", {})
+        st.text(tr("Категории данных") + " · " + _label(row.get("status", "not_searched")))
+        st.text(tr("Безопасность") + " · " + _label(facets.get("security", {}).get("status", "not_searched")))
+        st.caption(tr("Категория доступа и необходимая защита не выводятся автоматически из названия данных."))
+    rows, facts = [], {}
+    for facet in ("participants", "direction", "data_categories", "data_content", "data_format",
+                  "security", "data_constraints", "timing", "performance", "capacity", "interface",
+                  "trigger", "purpose", "reliability", "operations"):
+        row = facets.get(facet, {})
+        items = row.get("facts", [])
+        ids_ = list(dict.fromkeys(item.get("record_id", item.get("span_id", "")) for item in items))
+        rows.append({tr("Характеристика"): _label(facet), tr("Статус"): _label(row.get("status", "not_searched")),
+                     tr("Ссылки"): ", ".join(ids_)})
+        for item in items:
+            ref = item.get("record_id") or item.get("span_id")
+            if ref:
+                entry = facts.setdefault((ref, item.get("quote", "")), {"item": item, "facets": []})
+                if facet not in entry["facets"]:
+                    entry["facets"].append(facet)
+    priority = {}
+    for facet in ("data_categories", "data_content", "security", "data_constraints", "participants", "direction"):
+        for item in facets.get(facet, {}).get("facts", []):
+            ref = item.get("record_id") or item.get("span_id")
+            if ref:
+                fact_key = (ref, item.get("quote", ""))
+                entry = priority.setdefault(fact_key, [])
+                if facet not in entry:
+                    entry.append(facet)
+    if priority:
+        st.caption(tr("Сведения о данных, обмене и защите — требуют проверки"))
+        st.dataframe([{tr("Характеристика"): ", ".join(_label(f) for f in labels), "ID": ref,
+                       tr("Цитата"): _short(quote, 180)} for (ref, quote), labels in priority.items()],
+                     hide_index=True, use_container_width=True)
+    if st.checkbox(tr("Характеристики и найденные сведения"), key=key + "_facets"):
+        st.caption(tr("Найденные цитаты — кандидаты для проверки, а не подтверждённая классификация данных или требования к защите."))
+        st.dataframe(rows, hide_index=True, use_container_width=True)
+        if facts:
+            fact_key = st.selectbox(tr("Открыть найденное сведение"), [None, *facts],
+                               format_func=lambda v: f"{v[0]} · {_short(v[1], 90)}" if v else tr("Выберите требование"), key=key + "_fact")
+            if fact_key:
+                ref, quote = fact_key
+                entry = facts[fact_key]
+                st.caption(" · ".join(_label(f) for f in entry["facets"]))
+                source = result["requirements"].get(ref) or prepared.get("spans", {}).get(entry["item"].get("span_id"), {})
+                st.text(f"{ref} · {source.get('source', '')} › {source.get('section', '')}")
+                if source.get("table_context"):
+                    st.text(source["table_context"]["header"])
+                st.text(quote)
+    if not facets.get("data_categories", {}).get("facts"):
+        st.caption(tr("Открытый вопрос: установить категорию передаваемых данных по основаниям."))
+    if not facets.get("security", {}).get("facts"):
+        st.caption(tr("Открытый вопрос: установить применимые требования к защите данных."))
+
+
+def _review_collection(collected, prepared, expert, *, readonly=False, prefix=None):
+    """A scoped working view; no LLM calls or new classifications."""
+    run = prefix or collected["metrics"]["run_id"]
+    view = review_view(collected)
+    records, decisions = collected["requirements"], collected["decisions"]
+    names = _source_names(records)
     selected, notes = [], {}
     session = st.session_state
-    draft = session.get("target_registry_review_draft")
+    draft = session.get("target_registry_review_draft") if not readonly else None
     if not draft or draft["run"] != run:
         draft = {"run": run, "selected": {}, "notes": {}}
-        session["target_registry_review_draft"] = draft
-    st.subheader(tr("Собранные требования по функциям"))
-    st.caption(tr("Проверьте исходные требования и выберите те, которые нужно детализировать. Функция объединяет требования, но не заменяет их."))
-    wiki = collected.get("diagnostics", {}).get("wiki_context", {})
-    if wiki.get("sources"):
-        st.caption(tr("Справочные фрагменты в анализе: {n}; не поместились: {budget}; нет кандидатов: {missing}.",
-                      n=wiki.get("spans_supplied", 0), budget=wiki.get("allocation_budget_limit", 0),
-                      missing=wiki.get("allocation_no_candidates", 0)))
-    candidates = len({rid for group in collected["groups"] for rid in group["requirement_ids"]
-                      if decisions[rid]["change"] != "already_supported"})
-    profile_names = {p["id"]: p["name"] for p in collected.get("approved_profile", [])}
-    st.caption(tr("Функций: {n}; исходных потребностей для детализации: {count}.", n=len(collected["groups"]), count=candidates))
-    primary_names = {g["function"] for g in collected["groups"]}
-    for group in collected["groups"]:
-        gid = group["id"]
-        ids = [rid for rid in group["requirement_ids"] if decisions[rid]["change"] != "already_supported"]
-        with st.expander(f"{group['function']} · {len(ids)}", expanded=len(collected["groups"]) == 1):
-            if st.checkbox(tr("Показать исходные требования"), key=f"target_review_quotes_{run}_{gid}"):
-                for rid in _page(group["requirement_ids"], f"target_review_quotes_page_{run}_{gid}"):
-                    d = decisions[rid]
-                    st.caption(_label(d["change"]))
-                    if d.get("status") == "applicability_supported":
-                        st.caption(tr("Ответственность подтверждена моделью; необходимость доработки не установлена."))
-                    _show_refs([rid], prepared, collected)
-                    names = [profile_names[pid] for pid in collected.get("function_links", {}).get(rid, [])
-                             if pid in profile_names and profile_names[pid] != group["function"]]
-                    if names:
-                        st.caption(tr("Возможная связь с другими функциями: {names}", names=", ".join(names)))
-            if expert:
-                scope_key = f"target_review_scope_{run}_{gid}"
-                note_key = f"target_review_note_{run}_{gid}"
-                if scope_key not in session:
-                    chosen_functions = collected.get("selected_functions")
-                    defaults = ids
-                    if chosen_functions is not None:
-                        # Non-functional, constraint and unlinked obligations remain
-                        # visible; do not silently select a newly suggested function.
-                        defaults = [rid for rid in ids if records[rid].get("kind") in {"nonfunctional", "constraint"}
-                                    or (set(collected.get("function_links", {}).get(rid, [])) & set(chosen_functions))
-                                    or (not collected.get("function_links", {}).get(rid)
-                                        and decisions[rid].get("function") != "new")]
-                    session[scope_key] = draft["selected"].get(gid, defaults)
-                if note_key not in session:
-                    session[note_key] = draft["notes"].get(gid, "")
-                chosen = st.multiselect(tr("Включить требования в детализацию"),
-                                        ids, format_func=lambda rid: records[rid]["quote"][:180],
-                                        key=scope_key)
-                selected.extend(chosen)
-                note = st.text_area(tr("Уточнение эксперта (не источник)"), max_chars=MAX_NOTE,
-                                    key=note_key, disabled=not chosen)
-                draft["selected"][gid] = list(chosen)
-                draft["notes"][gid] = note
-                if chosen and note.strip():
-                    notes[gid] = note.strip()
-            show = st.checkbox(tr("Показать связанные пункты и сведения о реализации"), key=f"target_review_refs_{run}_{gid}")
-            if show:
-                for rid in _page(group["requirement_ids"], f"target_review_refs_page_{run}_{gid}"):
-                    d = decisions[rid]
-                    st.caption(f"{rid} · {_label(d['change'])} · {_label(d['status'])}")
-                    refs = list(dict.fromkeys(d.get("state_refs", []) + d.get("reference_refs", []) + d.get("dossier_refs", [])))
-                    _show_refs([r for r in refs if r != rid], prepared, collected)
-                    related = collected.get("linked_by_need", {}).get(rid, {})
-                    for item in related.get("items", []):
-                        st.caption(f"{item['source']} › {item['section']} · {item['reference']}")
-                        st.text(item["quote"])
-                    if related.get("gaps"):
-                        st.warning(tr("Некоторые перекрёстные ссылки не удалось раскрыть."))
-            for rid in group["requirement_ids"]:
-                metric = collected["metrics_registry"].get(rid)
-                if metric:
-                    st.text(f"{rid} · {metric['subject']} · {metric['value']} {metric['unit']} · {metric['level']}")
-                    st.text(metric["conditions"])
-    # Show candidate-only associations even when no allocation could be verified.
-    # A shared record remains one selectable obligation in its primary group.
-    candidate_only = [p for p in collected.get("approved_profile", []) if p["name"] not in primary_names]
-    for p in candidate_only:
-        related = [rid for rid, ids in collected.get("function_links", {}).items() if p["id"] in ids]
-        with st.expander(p["name"] + " · " + tr("Требует экспертной проверки")):
-            st.caption(tr("Связанных записей: {n}", n=len(related)))
-            if st.checkbox(tr("Показать исходные требования"), key=f"target_candidate_show_{run}_{p['id']}"):
-                for rid in _page(related, f"target_candidate_{run}_{p['id']}"):
-                    _show_refs([rid], prepared, collected)
-    technical = {"invalid_response", "missing_response", "duplicate_response", "batch_error",
-                 "review_error", "allocation_context_limit", "review_context_limit"}
-    technical_count = sum(d["status"] in technical for d in decisions.values())
-    pending_owner = sum(d["status"] == "applicability_supported" for d in decisions.values())
-    unresolved = [rid for rid, d in decisions.items() if d["status"] != "model_supported"]
-    if unresolved:
-        st.warning(tr("Исходных требований, требующих дополнительного разбора: {n}. Они сохранены в реестре.", n=len(unresolved)))
-        st.caption(tr("Технические сбои: {technical}; ответственность подтверждена, доработка не доказана: {pending}.",
-                      technical=technical_count, pending=pending_owner))
-        for code, count in Counter(decisions[rid]["status"] for rid in unresolved).most_common():
-            st.caption(f"{_label(code)}: {count}")
-        if st.checkbox(tr("Показать исходные требования"), key=f"target_unresolved_show_{run}"):
-            codes = sorted({decisions[rid]["status"] for rid in unresolved})
-            code = st.selectbox(tr("Причина"), codes, format_func=_label, key=f"target_unresolved_filter_{run}")
-            for rid in _page([rid for rid in unresolved if decisions[rid]["status"] == code],
-                             f"target_review_unresolved_{run}"):
-                _show_refs([rid], prepared, collected)
-    if expert:
-        st.caption(tr("Выбрано {n} из {total} требований. Исключённые записи остаются в реестре.",
-                      n=len(selected), total=candidates))
+        if not readonly:
+            session["target_registry_review_draft"] = draft
+    st.subheader(tr("Рабочий реестр выбранных функций"))
+    st.caption(tr("Основное распределение модели отделено от возможных связей. Только выбранные требования с подтверждённой необходимостью изменения или прямым требованием передаются на детализацию."))
+    if view["explicit"] and not view["selected"]:
+        st.info(tr("Функции для углублённого анализа не выбраны."))
+    ready_total = 0
+
+    def render_group(group, *, cross=False):
+        nonlocal ready_total
+        gid, ids, ready = group["id"], group["ids"], group["ready"]
+        ready_total += len(ready)
+        chosen = []
+        if expert and ready and not readonly:
+            scope_key = f"target_review_scope_{run}_{gid}"
+            note_key = f"target_review_note_{run}_{gid}"
+            if scope_key not in session:
+                session[scope_key] = [rid for rid in draft["selected"].get(gid, [] if cross else ready) if rid in ready]
+            chosen = st.multiselect(tr("Включить требования в детализацию"), ready, key=scope_key)
+            selected.extend(chosen)
+            if note_key not in session:
+                session[note_key] = draft["notes"].get(gid, "")
+            note = st.text_area(tr("Уточнение эксперта (не источник)"), max_chars=MAX_NOTE,
+                                key=note_key, disabled=not chosen)
+            draft["selected"][gid] = list(chosen)
+            draft["notes"][gid] = note
+            if chosen and note.strip():
+                notes[gid] = note.strip()
+        if readonly:
+            st.caption(tr("Исходных требований: {total}; доступно для детализации: {ready}.",
+                          total=len(ids), ready=len(ready)))
+        else:
+            st.caption(tr("Исходных требований: {total}; доступно для детализации: {ready}; выбрано: {selected}.",
+                          total=len(ids), ready=len(ready), selected=len(chosen)))
+        _requirement_table(ids, collected, names, selectable=ready, chosen=chosen)
+        if chosen and group["context"]:
+            st.caption(tr("Сведения об уже реализованных требованиях передаются как контекст: {ids}.",
+                          ids=", ".join(group["context"])))
+        _requirement_detail(ids, prepared, collected, f"target_detail_{run}_{gid}")
+
+    for pid, groups in view["sections"].items():
+        p = view["profile"].get(pid, {})
+        title = p.get("name") or (groups[0]["function"] if groups else pid)
+        st.subheader(_safe_markdown(title))
+        st.caption(tr("Выбрана область поиска") if view["explicit"] else tr("Обнаруженная функция"))
+        if p.get("description"):
+            st.caption(tr("Описание функции — гипотеза модели"))
+            st.text(p["description"])
+        ids = [rid for group in groups for rid in group["ids"]]
+        _function_characteristics(pid, ids, prepared, collected, f"target_characteristics_{run}_{pid}")
+        if not groups:
+            st.info(tr("Нет требований, распределённых моделью на эту функцию. Проверьте возможные связи ниже."))
+        for group in groups:
+            render_group(group)
+        st.divider()
+    with st.expander(tr("Общесистемные требования ({n})", n=sum(len(g["ids"]) for g in view["cross"]))):
+        st.caption(tr("Отдельное согласование: общесистемные ограничения не включаются автоматически."))
+        for group in view["cross"]:
+            render_group(group, cross=True)
+    for bucket, title in (("candidates", tr("Возможные связи с выбранными функциями")),
+                          ("unallocated", tr("Нераспределённые требования"))):
+        ids = view[bucket]
+        with st.expander(f"{title} ({len(ids)})"):
+            st.caption(tr("Записи сохранены для проверки и не передаются в текущую детализацию."))
+            page = _page(ids, f"target_{bucket}_page_{run}", size=20)
+            _requirement_table(page, collected, names)
+            _requirement_detail(page, prepared, collected, f"target_{bucket}_detail_{run}")
+    other = [rid for group in view["outside"] for rid in group["ids"]]
+    with st.expander(tr("Другие функции — вне выбранной области ({n})", n=len(other))):
+        st.caption(tr("Даже при возможной связи с выбранной функцией основное распределение модели не изменяется интерфейсом."))
+        for group in view["outside"]:
+            st.caption(_safe_markdown(group["function"]) + f" · {len(group['ids'])}")
+        page = _page(other, f"target_other_page_{run}", size=20)
+        _requirement_table(page, collected, names)
+        _requirement_detail(page, prepared, collected, f"target_other_detail_{run}")
+    with st.expander(tr("Обозначения документов")):
+        for name, label in names.items():
+            st.text(f"{label} · {name}")
+    if expert and not readonly:
+        st.caption(tr("Передаются на детализацию: {n} из {total} доступных в выбранной области.", n=len(selected), total=ready_total))
+        st.text(", ".join(selected) if selected else tr("Не выбрано"))
     return selected, notes
+
+
+def render_saved_review():
+    """Read-only local import, independent of the active wizard and its inputs."""
+    if st.checkbox(tr("Открыть сохранённый снимок реестра (только просмотр)"), key="target_saved_review_mode"):
+        st.caption(tr("Снимок содержит исходные тексты. Используйте только внутри разрешённого контура. Он не восстанавливает согласование и не запускает модель."))
+        upload = st.file_uploader(tr("Локальный снимок реестра"), type=["json"], key="target_saved_review_upload")
+        if upload is not None:
+            try:
+                raw = upload.getvalue()
+                prepared, result = load_review_snapshot(raw)
+                _review_collection(result, prepared, False, readonly=True, prefix="saved_review_" + sha256(raw).hexdigest()[:16])
+            except (ValueError, TypeError, KeyError, AttributeError, UnicodeError, RecursionError):
+                st.warning(tr("Не удалось открыть снимок реестра."))
+        return True
+    return False
 
 
 def _prepare(cfg, session, sources, roles, context, reference_sources=()):
@@ -410,13 +555,14 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
         label = tr("Открыть готовый реестр") if same else tr("Согласовать и детализировать")
         if any(collected["decisions"].get(rid, {}).get("change") == "unknown" for rid in chosen):
             st.caption(tr("Выбранные требования с неизвестной необходимостью доработки сохранятся без неподтверждённой детализации."))
-        if st.button(label, key="target_decompose", type="primary"):
+        if st.button(label, key="target_decompose", type="primary", disabled=expert and not chosen):
             if same or _decompose(cfg, session, prepared, identity, collected,
                                   selection=chosen if expert else None, notes=notes if expert else None):
                 advance(4)
                 return
+        _download_review_snapshot(prepared, collected)
         with st.expander(tr("Подробности сбора и выгрузки")):
-            _render_registry_details(prepared, collected, key, identity, finished=False)
+            _render_diagnostics(prepared, collected, key, identity, finished=False)
         return
     if not saved or saved[0] != identity:
         advance(3)
@@ -537,6 +683,17 @@ def _page(rows, key, size=10):
     first = (page - 1) * size
     st.caption(tr("Отображено {n} из {total}.", n=min(first + size, len(rows)), total=len(rows)))
     return rows[first:first + size]
+
+
+def _download_review_snapshot(prepared, result):
+    st.caption(tr("Снимок содержит исходные тексты. Используйте только внутри разрешённого контура."))
+    try:
+        snapshot = review_snapshot(prepared, result)
+    except (ValueError, TypeError):
+        st.caption(tr("Не удалось подготовить снимок реестра."))
+    else:
+        st.download_button(tr("Скачать локальный снимок для просмотра"), snapshot,
+                           file_name="mint_review_private.json", mime="application/json", key="target_review_snapshot")
 
 
 def _render_diagnostics(prepared, result, key, identity, finished):

@@ -8,7 +8,7 @@ from ..draft_target_review import input_identity
 from ..i18n import tr
 from ..kb import list_kb_documents, source_path
 from .draft_context_ui import render_draft_context
-from .draft_target_ui import render_target_registry
+from .draft_target_ui import render_target_registry, render_saved_review
 from .draft_wizard_state import apply_materials, clamp_step, clear_target, reachable_step, sync_target
 
 
@@ -85,6 +85,8 @@ def _materials(cfg):
 
 
 def render_draft_wizard(cfg, *, expert, reset_cache):
+    if render_saved_review():
+        return
     session = st.session_state
     saved = session.get("draft_wizard_materials")
     # Invalidate stale original revisions even if the material stage is hidden.
