@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 pauses after the independent typed scan, proposes preliminary applicability, and lets the user select functions before dossier retrieval. Original records remain available, and resumed collection types only new citations. Reference evidence gets bounded reserved space after explicit links; review shows quotations on demand. Final allocation, architectural alternatives and real-model acceptance remain separate work. Development version 21.4.21.
+
 - V2 requirements-first analysis: independent full scan, function discovery from original quotes, bounded additive dossier refinement and directed optional reference retrieval. Candidate many-to-many associations and reviewed primary allocation remain distinct. One collection action, individual requirement review by function, linked source clauses, clear stage labels, and local traceability workbook. Development version 21.4.20.
 
 - V2 separates original bases from optional wiki reference context (up to eight explicitly selected documents). Reference excerpts support interpretation but cannot become original needs or independent target metrics. Discovery failures are distinguished; section classification is shown in diagnostics, and repeat collection is hidden until a matching collection exists. Development version 21.4.19.

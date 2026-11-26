@@ -27,6 +27,10 @@ def registry_identity(prepared, result):
     if result.get("automatic_functions"):
         # Model-discovered names are outputs, not input selections.
         identity["profile"] = "automatic"
+    if result.get("selected_functions") is not None:
+        selected = set(result["selected_functions"])
+        identity["selected_functions"] = sorted(_normalized(p["name"]).casefold()
+                                                for p in result.get("approved_profile", []) if p["id"] in selected)
     if prepared.get("reference_sources"):
         identity["reference_sources"] = prepared["reference_sources"]
         identity["reference_hashes"] = prepared.get("reference_hashes", {})

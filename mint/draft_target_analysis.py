@@ -18,6 +18,7 @@ from .draft_dossiers import collect_dossiers, merge_dossier_quotes, dossier_cont
 from .draft_checkpoint import DraftStageCheckpoint
 from .draft_function_analysis import _compact, _unique_answers, _valid_refs, is_target, names_target
 from .draft_registry import build_registry, OBLIGATION_KINDS
+from .requirement_scope import classify as classify_scope
 from .draft_derivation import assess_candidates
 from .glossary import Glossary
 from .kb import load_kb_snapshot, source_path
@@ -634,8 +635,9 @@ def _functions_from_records(cfg, records, references, spans, context, emit, *, e
 
 
 @_measure_draft
-def collect_target_requirements(cfg, prepared, approved_profile=None, progress=None, *, reset_cache=False, summaries=True):
-    """Collect verified original needs and review summaries, without decomposition."""
+def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=None, *, reset_cache=False, summaries=True,
+                                preview_only=False, preview=None, selected_functions=None):
+    """Collect original needs; optionally pause after independent scan for scope selection."""
     emit = progress or (lambda *_: None)
     context = prepared["context"]
     _verify_originals(cfg, prepared)
@@ -644,24 +646,36 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
     offered = {p["id"]: p for p in prepared["profile"]}
     if any(offered.get(k) != p for k, p in profile.items()):
         raise ValueError("Invalid profile")
+    if preview_only and (not automatic_functions or preview is not None or selected_functions is not None):
+        raise ValueError("Invalid preview request")
+    if preview is not None:
+        if (not automatic_functions or preview.get("phase") != "function_preview"
+                or preview.get("input_identity") != input_identity(cfg, prepared, preview["approved_profile"])):
+            raise ValueError("Stale function preview")
+        profile = deepcopy({p["id"]: p for p in preview["approved_profile"]})
+        if selected_functions is None or not set(selected_functions) <= set(profile):
+            raise ValueError("Invalid function selection")
+    elif selected_functions is not None:
+        raise ValueError("Function selection requires a preview")
+    selected = set(selected_functions or [])
     spans, sections = prepared["spans"], prepared["sections"]
     chunks = {name: [] for name, _ in prepared["documents"]}
     priority = {"interface": 0, "need": 1, "metric": 2, "architecture": 3, "constraint": 4}
     for span in sorted(spans.values(), key=lambda s: priority.get(sections[s["section_id"]]["role"], 5)):
         chunks[span["source"]].append((span["fragment"], span["section"], span["text"]))
-    issues = list(prepared["issues"])
-    fragment_status = {}
+    issues = list(preview["issues"] if preview is not None else prepared["issues"])
+    fragment_status = dict(preview["fragment_status"]) if preview is not None else {}
     # Preliminary functions are supplemental retrieval hints, not an
     # input to the independent full scan of original requirements.
     base_profile = {pid: p for pid, p in profile.items() if p.get("origin") != "reference"}
-    function_counts = Counter()
+    function_counts = Counter(preview["profile_status"] if preview is not None else {})
     extraction_focus = {"context": context, "functions": []}
     references = prepared["references"]
     # Include referenced originals for comprehension, never as a source of
     # quotations attributed to the current fragment. Reuse source revision
     # hashes to invalidate extraction if any linked source changed.
     reference_contexts = {}
-    for sid, span in tracked(emit, "reference_context", spans.items()):
+    for sid, span in tracked(emit, "reference_context", spans.items() if preview is None else []):
         if not references.edges.get(sid):
             continue
         related, gaps = references.related([sid], budget=max(0, min(5000,
@@ -676,12 +690,16 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
         # build_registry calls this only after extracting original records.
         # Keep the existing merge/typing pipeline; never replace originals.
         original_ids.update(records)
-        if automatic_functions:
+        if automatic_functions and preview is None:
             discovered, counts = _functions_from_records(cfg, records, references, spans, context, emit)
             base_profile.update(discovered)
             profile.update(discovered)
             function_counts.update(counts)
-        found, counts = collect_dossiers(cfg, evidence, references, base_profile, context, emit, _json,
+        if preview_only:
+            return
+        search_profile = (base_profile if preview is None else
+                          {pid: p for pid, p in base_profile.items() if pid in selected})
+        found, counts = collect_dossiers(cfg, evidence, references, search_profile, context, emit, _json,
                                          reset_cache=reset_cache)
         dossiers.update(found)
         dossier_counts.update(counts)
@@ -698,7 +716,7 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
             profile.update(discovered)
             function_counts.update(counts)
             new_functions = {pid: p for pid, p in discovered.items() if pid not in prior}
-            if new_functions:
+            if new_functions and preview is None:
                 more, counts = collect_dossiers(cfg, evidence, references, new_functions, context, emit, _json,
                                                 reset_cache=reset_cache)
                 dossier_counts.update(counts)
@@ -709,13 +727,26 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
                                                             if k in prepared["hashes"]}, issues, emit,
                               reset_cache=reset_cache, focus=extraction_focus, prepared_chunks=chunks,
                               fragment_status=fragment_status, reference_contexts=reference_contexts,
-                              reference_revision=revision, supplement=supplement)
+                              reference_revision=revision, supplement=supplement,
+                              initial_records=preview["requirements"] if preview is not None else None)
     records = registry["requirements"]
     focus = {"context": context, "functions": [{"id": p["id"], "name": p["name"]}
                                                 for p in base_profile.values()]}
     roles_by_section = {(s["source"], s["section"]): s["role"] for s in sections.values()}
     for row in records.values():
         row["section_role"] = roles_by_section.get((row["source"], row["section"]), "unknown")
+    if preview_only:
+        obligations = {rid: _compact(row) for rid, row in records.items()
+                       if row["kind"] in OBLIGATION_KINDS and row["typing_status"] == "classified"}
+        preliminary = classify_scope(cfg, obligations, context, issues, emit)
+        applicability = {rid: row["applicability"] for rid, row in preliminary.items()}
+        links = {rid: [pid for pid, p in base_profile.items() if rid in p.get("record_refs", [])]
+                 for rid in records}
+        _verify_originals(cfg, prepared)
+        return {"phase": "function_preview", "requirements": records, "approved_profile": list(profile.values()),
+                "function_links": links, "applicability": applicability, "issues": issues,
+                "profile_status": dict(function_counts), "fragment_status": fragment_status,
+                "input_identity": input_identity(cfg, prepared, list(profile.values()))}
     original_records = {rid: row for rid, row in records.items() if rid in original_ids}
     dossier_positions, dossier_ids = dossier_context(records, dossiers)
     decisions, state = {}, {}
@@ -731,6 +762,8 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
                           "quote": row["text"], "kind": "uncertain", "source_role": "reference_context"}
                     for sid, row in ref_evidence.spans.items()}
         for p in base_profile.values():
+            if preview is not None and p["id"] not in selected:
+                continue
             query = context["target"] + " " + p["name"] + " " + p["description"]
             hits = ref_evidence.find(query)
             lexical = [r["id"] for r in _candidates(query, ref_pool, size=min(5000, _candidate_budget(cfg)//3))]
@@ -739,12 +772,14 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
             wiki_counts["function_searches"] += 1
         # If discovery failed, the same bounded lexical retrieval still
         # runs per requirement below, without introducing B obligations.
-        if not base_profile:
+        if not base_profile or (preview is not None and not selected):
             wiki_pool.update(ref_pool)
     reference_counts = Counter()
     linked_by_need = {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
                    and row["typing_status"] == "classified"]
+    # All original obligations are still assessed; selecting a function limits
+    # expensive dossier searches, not the integrity of the original registry.
     # Bounded per-record evidence, plus profile sources that are actual originals.
     # This intentionally prioritizes accuracy over call-count optimization.
     for index, row in enumerate(tracked(emit, "target_allocation", obligations), 1):
@@ -786,22 +821,28 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
             matched_functions.update(dossier_positions.get((pos["source"], pos["fragment"]), set()))
         # Supplemental quotes must not displace evidence already selected by
         # the original search. Append only in genuinely unused context.
-        pool = _bounded_rows(pool, remaining)
+        # Reserve room for actual B evidence before unrelated A hits fill the
+        # payload. Explicit linked originals take precedence over B.
+        linked_rows = _bounded_rows(linked_pool, remaining)
+        linked_cost = sum(_payload_size(r) + 2 for r in linked_rows)
+        wiki_budget = min(max(0, remaining - linked_cost), budget // 5) if wiki_pool else 0
+        reserved_wiki = _bounded_rows(_candidates(query, wiki_pool, size=wiki_budget), wiki_budget) if wiki_budget else []
+        wiki_cost = sum(_payload_size(r) + 2 for r in reserved_wiki)
+        pool = _bounded_rows(pool, remaining - wiki_cost)
         selected_ids = {r["id"] for r in pool} | {rid}
         extras = [_compact(records[k]) for pid in sorted(matched_functions)
                   for k in dossier_ids[pid] if k not in selected_ids]
         unique_extras = {r["id"]: r for r in extras}
-        free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
+        free = max(0, remaining - wiki_cost - sum(_payload_size(r) + 2 for r in pool))
         pool.extend(_bounded_rows(unique_extras.values(), free))
         # Evidence is a view over existing registry/source spans; no second search index.
-        # Preserve A and linked evidence first. Only use unused budget for B.
+        # Keep B explicitly labelled and separate from obligations.
         allocation_profile = dict(base_profile)
         if wiki_pool:
             free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
-            # Add B hints only together with supporting spans, after A has its
-            # original budget. Neither a B label nor its evidence displaces A.
+            # Add B hints only together with supporting spans.
             extra_budget = min(free, budget // 5)
-            wiki = _bounded_rows(_candidates(query, wiki_pool, size=extra_budget), extra_budget)
+            wiki = reserved_wiki or _bounded_rows(_candidates(query, wiki_pool, size=extra_budget), extra_budget)
             wiki_ids = {r["id"] for r in wiki}
             spare = max(0, extra_budget - sum(_payload_size(r) + 2 for r in wiki))
             hints = _bounded_rows(({"id": p["id"], "name": p["name"]} for p in profile.values()
@@ -891,6 +932,8 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
     diagnostics["wiki_status"] = {wiki_status: 1}
     diagnostics["wiki_context"] = {**wiki_counts, "sources": len(prepared.get("reference_hashes", {})),
                                    "read_errors": len(prepared.get("reference_issues", []))}
+    diagnostics["scope_selection"] = {"selected": len(selected), "offered": len(preview["approved_profile"])} if preview is not None else {}
+    diagnostics["preliminary_applicability"] = dict(Counter(a["category"] for a in preview["applicability"].values())) if preview is not None else {}
     diagnostics["function_links"] = {"linked_records": sum(bool(ids) for ids in function_links.values()),
                                       "shared_records": sum(len(ids) > 1 for ids in function_links.values()),
                                       "unlinked_records": sum(not ids for ids in function_links.values())}
@@ -911,11 +954,33 @@ def collect_target_requirements(cfg, prepared, approved_profile=None, progress=N
             "decisions": decisions, "proposals": proposals, "questions": questions,
             "linked_by_need": linked_by_need, "dossiers": dossiers, "approved_profile": list(profile.values()),
             "automatic_functions": automatic_functions, "function_links": function_links,
+            "selected_functions": sorted(selected) if preview is not None else None,
+            "preliminary_applicability": preview["applicability"] if preview is not None else {},
             "reference_candidates": [r for r in state.values() if r.get("source_role") == "reference_context"],
             "dispositions": outcomes, "fragment_status": fragment_status, "issues": issues,
             "diagnostics": diagnostics, "requires_expert_review": True,
             "phase": "collected", "summaries": review_summaries,
             "input_identity": input_identity(cfg, prepared, list(profile.values()))}
+
+def _combine_metrics(prior, result):
+    previous, current = prior["metrics"], result["metrics"]
+    stages = deepcopy(previous["stages"])
+    for name, row in current["stages"].items():
+        stats = stages.setdefault(name, {"llm_calls": 0, "llm_seconds": 0.0})
+        for field in ("llm_calls", "llm_seconds"):
+            stats[field] += row[field]
+    current["stages"] = stages
+    current["total_seconds"] += previous["total_seconds"]
+    current["diagnostics"] = {**previous["diagnostics"], **current["diagnostics"]}
+    return result
+
+def collect_target_requirements(cfg, prepared, approved_profile=None, progress=None, *, reset_cache=False,
+                                summaries=True, preview_only=False, preview=None, selected_functions=None):
+    result = _collect_target_requirements(cfg, prepared, approved_profile, progress, reset_cache=reset_cache,
+                                          summaries=summaries, preview_only=preview_only, preview=preview,
+                                          selected_functions=selected_functions)
+    return _combine_metrics(preview, result) if preview is not None else result
+
 
 @_measure_draft
 def _decompose_target_requirements(cfg, prepared, collected, selection, notes, progress):
@@ -959,16 +1024,7 @@ def _decompose_target_requirements(cfg, prepared, collected, selection, notes, p
 def decompose_target_requirements(cfg, prepared, collected, progress=None, *, selection=None, notes=None):
     """Resume without rescanning or allocating. Combine compute time only."""
     result = _decompose_target_requirements(cfg, prepared, collected, selection, notes, progress)
-    previous, current = collected["metrics"], result["metrics"]
-    stages = deepcopy(previous["stages"])
-    for name, row in current["stages"].items():
-        stats = stages.setdefault(name, {"llm_calls": 0, "llm_seconds": 0.0})
-        for field in ("llm_calls", "llm_seconds"):
-            stats[field] += row[field]
-    current["stages"] = stages
-    current["total_seconds"] += previous["total_seconds"]
-    current["diagnostics"] = {**previous["diagnostics"], **current["diagnostics"]}
-    return result
+    return _combine_metrics(collected, result)
 
 
 def analyze_target_registry(cfg, prepared, approved_profile, progress=None, *, reset_cache=False):

@@ -128,8 +128,9 @@ def render_draft_wizard(cfg, *, expert, reset_cache):
     sync_target(session, key)
     prepared = session.get("target_registry_prepared")
     item = session.get("target_registry_collected")
-    if prepared and item:
-        collection = item[1]
+    preview = session.get("target_registry_preview")
+    if prepared and (item or preview):
+        collection = item[1] if item else preview
         if collection.get("input_identity") != input_identity(cfg, prepared, collection["approved_profile"]):
             clear_target(session)
             session["draft_wizard_stale_settings"] = True

@@ -1,5 +1,6 @@
 """Local STOP-1 review and explicit private registry export."""
 import json
+from collections import Counter
 
 import streamlit as st
 
@@ -109,20 +110,29 @@ def _review_collection(collected, prepared, expert):
         gid = group["id"]
         ids = [rid for rid in group["requirement_ids"] if decisions[rid]["change"] != "already_supported"]
         with st.expander(f"{group['function']} · {len(ids)}", expanded=len(collected["groups"]) == 1):
-            st.markdown("**" + tr("Исходные требования") + "**")
-            for rid in group["requirement_ids"]:
-                d = decisions[rid]
-                st.caption(_label(d["change"]))
-                _show_refs([rid], prepared, collected)
-                names = [profile_names[pid] for pid in collected.get("function_links", {}).get(rid, [])
-                         if pid in profile_names and profile_names[pid] != group["function"]]
-                if names:
-                    st.caption(tr("Возможная связь с другими функциями: {names}", names=", ".join(names)))
+            if st.checkbox(tr("Показать исходные требования"), key=f"target_review_quotes_{run}_{gid}"):
+                for rid in _page(group["requirement_ids"], f"target_review_quotes_page_{run}_{gid}"):
+                    d = decisions[rid]
+                    st.caption(_label(d["change"]))
+                    _show_refs([rid], prepared, collected)
+                    names = [profile_names[pid] for pid in collected.get("function_links", {}).get(rid, [])
+                             if pid in profile_names and profile_names[pid] != group["function"]]
+                    if names:
+                        st.caption(tr("Возможная связь с другими функциями: {names}", names=", ".join(names)))
             if expert:
                 scope_key = f"target_review_scope_{run}_{gid}"
                 note_key = f"target_review_note_{run}_{gid}"
                 if scope_key not in session:
-                    session[scope_key] = draft["selected"].get(gid, ids)
+                    chosen_functions = collected.get("selected_functions")
+                    defaults = ids
+                    if chosen_functions is not None:
+                        # Non-functional, constraint and unlinked obligations remain
+                        # visible; do not silently select a newly suggested function.
+                        defaults = [rid for rid in ids if records[rid].get("kind") in {"nonfunctional", "constraint"}
+                                    or (set(collected.get("function_links", {}).get(rid, [])) & set(chosen_functions))
+                                    or (not collected.get("function_links", {}).get(rid)
+                                        and decisions[rid].get("function") != "new")]
+                    session[scope_key] = draft["selected"].get(gid, defaults)
                 if note_key not in session:
                     session[note_key] = draft["notes"].get(gid, "")
                 chosen = st.multiselect(tr("Включить требования в детализацию"),
@@ -137,7 +147,7 @@ def _review_collection(collected, prepared, expert):
                     notes[gid] = note.strip()
             show = st.checkbox(tr("Показать связанные пункты и сведения о реализации"), key=f"target_review_refs_{run}_{gid}")
             if show:
-                for rid in group["requirement_ids"]:
+                for rid in _page(group["requirement_ids"], f"target_review_refs_page_{run}_{gid}"):
                     d = decisions[rid]
                     st.caption(f"{rid} · {_label(d['change'])} · {_label(d['status'])}")
                     refs = list(dict.fromkeys(d.get("state_refs", []) + d.get("reference_refs", []) + d.get("dossier_refs", [])))
@@ -159,14 +169,21 @@ def _review_collection(collected, prepared, expert):
     for p in candidate_only:
         related = [rid for rid, ids in collected.get("function_links", {}).items() if p["id"] in ids]
         with st.expander(p["name"] + " · " + tr("Требует экспертной проверки")):
-            for rid in _page(related, f"target_candidate_{run}_{p['id']}"):
-                _show_refs([rid], prepared, collected)
+            st.caption(tr("Связанных записей: {n}", n=len(related)))
+            if st.checkbox(tr("Показать исходные требования"), key=f"target_candidate_show_{run}_{p['id']}"):
+                for rid in _page(related, f"target_candidate_{run}_{p['id']}"):
+                    _show_refs([rid], prepared, collected)
     unresolved = [rid for rid, d in decisions.items() if d["status"] != "model_supported"]
     if unresolved:
         st.warning(tr("Исходных требований, требующих дополнительного разбора: {n}. Они сохранены в реестре.", n=len(unresolved)))
-        for rid in _page(unresolved, "target_review_unresolved"):
-            st.caption(_label(decisions[rid]["status"]))
-            _show_refs([rid], prepared, collected)
+        for code, count in Counter(decisions[rid]["status"] for rid in unresolved).most_common():
+            st.caption(f"{_label(code)}: {count}")
+        if st.checkbox(tr("Показать исходные требования"), key=f"target_unresolved_show_{run}"):
+            codes = sorted({decisions[rid]["status"] for rid in unresolved})
+            code = st.selectbox(tr("Причина"), codes, format_func=_label, key=f"target_unresolved_filter_{run}")
+            for rid in _page([rid for rid in unresolved if decisions[rid]["status"] == code],
+                             f"target_review_unresolved_{run}"):
+                _show_refs([rid], prepared, collected)
     if expert:
         st.caption(tr("Выбрано {n} из {total} требований. Исключённые записи остаются в реестре.",
                       n=len(selected), total=candidates))
@@ -201,6 +218,55 @@ def _decompose(cfg, session, prepared, identity, collected, selection=None, note
         return True
 
 
+def _select_functions(preview):
+    """Compact user checkpoint; hypotheses do not decide which quotes survive."""
+    st.subheader(tr("Выберите функции для дальнейшего анализа"))
+    st.caption(tr("Выбор ограничивает углублённый поиск. Все исходные требования сохраняются; применимость пока предварительная."))
+    profile = {p["id"]: p for p in preview["approved_profile"]}
+    records = preview["requirements"]
+    applicability = preview["applicability"]
+    links = preview["function_links"]
+    run = preview["metrics"]["run_id"]
+    draft = st.session_state.get("target_registry_profile_draft")
+    if not draft or draft["run"] != run:
+        draft = {"run": run, "selected": []}
+        st.session_state["target_registry_profile_draft"] = draft
+    labels = {"target": tr("Целевая система"), "shared": tr("Совместная ответственность"),
+              "interaction": tr("Внешнее взаимодействие"), "other": tr("Другой участник"),
+              "uncertain": tr("Не определено")}
+    counts = Counter(a["category"] for a in applicability.values())
+    st.caption(" · ".join(f"{labels.get(code, code)}: {counts[code]}" for code in labels))
+    selected = []
+    for pid, p in profile.items():
+        ids = [rid for rid in applicability if pid in links.get(rid, [])]
+        key = f"target_function_pick_{run}_{pid}"
+        if key not in st.session_state:
+            st.session_state[key] = pid in draft["selected"]
+        if st.checkbox(f"{p['name']} · {len(ids)}", key=key):
+            selected.append(pid)
+    draft["selected"] = selected
+    cross = [rid for rid in applicability if records[rid].get("kind") in {"nonfunctional", "constraint"}]
+    unlinked = [rid for rid in applicability if not links.get(rid)]
+    st.caption(tr("Сквозные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.",
+                  n=len(cross), m=len(unlinked)))
+    if preview.get("profile_status", {}).get("context_limit"):
+        st.warning(tr("Выявление функций ограничено контекстом; проверьте также нераспределённые требования."))
+    if st.checkbox(tr("Показать исходные требования"), key=f"target_preview_show_{run}"):
+        options = ["all", "cross", "unlinked", *profile]
+        names = {"all": tr("Все требования"), "cross": tr("Сквозные требования"),
+                 "unlinked": tr("Не распределено по функциям")}
+        which = st.selectbox(tr("Функция"), options,
+                             format_func=lambda pid: names.get(pid, profile.get(pid, {}).get("name", pid)),
+                             key=f"target_preview_filter_{run}")
+        ids = (list(applicability) if which == "all" else cross if which == "cross" else unlinked
+               if which == "unlinked" else [rid for rid in applicability if which in links.get(rid, [])])
+        for rid in _page(ids, f"target_preview_page_{run}"):
+            a = applicability[rid]
+            st.caption(f"{labels.get(a['category'], a['category'])} · {a['actor']} · {a['reason']}")
+            _show_refs([rid], {}, {"requirements": records, "state_evidence": {}})
+    return selected
+
+
 def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cache, *, step, expert, advance, reference_sources=()):
     """Render the active stage only. Navigation never starts an LLM operation."""
     session = st.session_state
@@ -208,45 +274,54 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     prepared = session.get("target_registry_prepared")
     if step == 2:
         st.subheader(tr("Сбор исходных требований"))
-        st.caption(tr("MINT разберёт все выбранные основания, выявит связанные функции, уточнит недостающие сведения и представит требования для согласования."))
-        previous = session.get("target_registry_collected")
-        same = bool(prepared and previous)
-        again = False
-        if same:
-            with st.expander(tr("Расширенные действия")):
-                again = st.button(tr("Повторно собрать требования"), key="target_collect_again")
-        label = tr("Продолжить к собранным требованиям") if same else tr("Собрать исходные требования")
-        proceed = st.button(label, key="target_analyze", type="primary", disabled=not enabled)
-        if not (proceed or again):
-            return
-        if not same or again:
-            for name in ("target_registry_collected", "target_registry_result", "target_full_workbook",
-                         "target_registry_review_draft"):
-                session.pop(name, None)
-            if prepared is None or again:
+        st.caption(tr("Сначала MINT разбирает все основания и определяет функции и предварительную применимость. Затем вы выбираете область углублённого поиска."))
+        preview = session.get("target_registry_preview")
+        if preview is None:
+            if not st.button(tr("Собрать исходные требования"), key="target_analyze", type="primary", disabled=not enabled):
+                return
+            if prepared is None:
                 prepared = _prepare(cfg, session, sources, roles, context, reference_sources)
             if prepared is None:
                 return
             with st.status(tr("Сбор исходных требований"), expanded=False) as status:
                 try:
+                    preview = collect_target_requirements(cfg, prepared, None, render_progress(status),
+                                                          reset_cache=reset_cache, summaries=False, preview_only=True)
+                except (DraftError, OSError, ValueError, KeyError, RuntimeError):
+                    status.update(label=tr("Не удалось собрать исходные требования."), state="error")
+                    return
+                session["target_registry_preview"] = preview
+                status.update(label=tr("Исходные требования собраны"), state="complete")
+            st.rerun()
+            return
+        with st.expander(tr("Расширенные действия")):
+            if st.button(tr("Повторно собрать требования"), key="target_collect_again"):
+                for name in ("target_registry_preview", "target_registry_prepared", "target_registry_collected",
+                             "target_registry_result", "target_full_workbook", "target_registry_review_draft",
+                             "target_registry_profile_draft"):
+                    session.pop(name, None)
+                st.rerun()
+                return
+        selected = _select_functions(preview)
+        previous = session.get("target_registry_collected")
+        same = bool(previous and previous[1].get("selected_functions") == sorted(selected))
+        label = tr("Продолжить к собранным требованиям") if same else tr("Уточнить требования по выбранным функциям")
+        if not st.button(label, key="target_analyze", type="primary", disabled=not enabled):
+            return
+        if not same:
+            for name in ("target_registry_collected", "target_registry_result", "target_full_workbook",
+                         "target_registry_review_draft"):
+                session.pop(name, None)
+            with st.status(tr("Сбор исходных требований"), expanded=False) as status:
+                try:
                     collected = collect_target_requirements(cfg, prepared, None, render_progress(status),
-                                                           reset_cache=reset_cache, summaries=False)
+                        reset_cache=reset_cache, summaries=False, preview=preview, selected_functions=selected)
                 except (DraftError, OSError, ValueError, KeyError, RuntimeError):
                     status.update(label=tr("Не удалось собрать исходные требования."), state="error")
                     return
                 identity = collected["input_identity"]
                 session["target_registry_collected"] = identity, collected
                 status.update(label=tr("Исходные требования собраны"), state="complete")
-        else:
-            identity, collected = previous
-        if not expert:
-            saved = session.get("target_registry_result")
-            if saved and saved[0] == identity and saved[1].get("review", {}).get("mode") == "automatic":
-                advance(4)
-                return
-            if _decompose(cfg, session, prepared, identity, collected):
-                advance(4)
-                return
         advance(3)
         return
 
@@ -257,6 +332,8 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
     identity, collected = item
     saved = session.get("target_registry_result")
     if step == 3:
+        # A function-scope decision is followed by explicit individual review.
+        expert = expert or collected.get("selected_functions") is not None
         chosen, notes = _review_collection(collected, prepared, expert) if expert else ([], {})
         review = saved[1].get("review", {}) if saved and saved[0] == identity else {}
         same = review.get("mode") == ("expert" if expert else "automatic") and (
