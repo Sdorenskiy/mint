@@ -4,6 +4,15 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Включить в выборку": "Include in sample",
+    "Выбранные фрагменты: {ids}": "Selected fragments: {ids}",
+    "Выбрано фрагментов: {n} из {limit}.": "Selected fragments: {n} of {limit}.",
+    "Снять выбор всех фрагментов": "Clear all fragment selections",
+    "Только выбранные фрагменты": "Selected fragments only",
+    "Без заголовка": "Untitled section",
+    "Все разделы": "All sections",
+    "Поиск по тексту фрагментов": "Search fragment text",
+    "Поиск выполняется по полному тексту, заголовкам разделов и шапкам таблиц.": "Search covers the full text, section headings and table headers.",
     "Объект показателя": "Metric subject",
     "Категория доступа": "Access classification",
     "Модальность исходного текста": "Source modality",

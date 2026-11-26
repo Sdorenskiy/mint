@@ -138,6 +138,54 @@ try:
         res["errors"] += errors(at)
         res["metrics"] = [[str(m.label), str(m.value)] for m in at.metric]
         res["docs_list"] = [str(m.value) for m in at.markdown if str(m.value).startswith('<ul class="mint-kbdocs"')]
+        # V3: a real Streamlit picker with synthetic prepared fragments, no gateway calls.
+        from unittest.mock import patch
+        from mint.ui import draft_atomic_ui as atomic_ui
+        from mint.draft_atomic import MAX_SAMPLE
+        sample_source = "Памятка_А.md"
+        sample_spans = {f"F{i}": {"id": f"F{i}", "source": sample_source,
+                                  "section": "1" if i < 7 else "2",
+                                  "text": "Shared beginning. " * 35 + ("Unique needle" if i == 7 else f"Text {i}")}
+                        for i in range(1, MAX_SAMPLE + 3)}
+        sample_spans["F8"]["table_context"] = {"header": "| Header only token |"}
+        prepared_sample = {"spans": sample_spans, "issues": []}
+        at.radio(key="draft_engine").set_value("v3_sample").run()
+        at.multiselect(key="atomic_sources").set_value([sample_source]).run()
+        with patch.object(atomic_ui, "prepare_atomic_sources", return_value=prepared_sample):
+            at.button(key="atomic_prepare").click().run()
+        at.checkbox(key="atomic_pick_F1").check().run()
+        at.selectbox(key="atomic_sample_page").set_value(2).run()
+        at.checkbox(key="atomic_pick_F6").check().run()
+        at.text_input(key="atomic_query").set_value("Unique needle").run()
+        res["atomic_full_search"] = (any(w.key == "atomic_pick_F7" for w in at.checkbox)
+                                      and not any(w.key == "atomic_pick_F1" for w in at.checkbox)
+                                      and any("Unique needle" in str(m.value) for m in at.markdown))
+        at.checkbox(key="atomic_pick_F7").check().run()
+        at.text_input(key="atomic_query").set_value("Header only token").run()
+        res["atomic_table_search"] = any(w.key == "atomic_pick_F8" for w in at.checkbox)
+        at.text_input(key="atomic_query").set_value("").run()
+        at.selectbox(key="atomic_section_filter").set_value((sample_source, "2")).run()
+        res["atomic_section_filter"] = (not any(w.key == "atomic_pick_F1" for w in at.checkbox)
+                                        and any(w.key == "atomic_pick_F7" for w in at.checkbox))
+        at.selectbox(key="atomic_section_filter").set_value(None).run()
+        at.checkbox(key="atomic_selected_only").check().run()
+        res["atomic_selection_retained"] = all(at.checkbox(key=f"atomic_pick_F{i}").value for i in (1, 6, 7))
+        at.checkbox(key="atomic_pick_F6").uncheck().run()
+        fake_sample_result = {"counts": {}, "fragments": [dict(sample_spans["F1"], status="processed", facts=[])],
+                              "requires_expert_review": True}
+        with patch.object(atomic_ui, "extract_atomic_sample", return_value=fake_sample_result) as atomic_run:
+            at.button(key="atomic_run").click().run()
+            res["atomic_exact_scope"] = atomic_run.call_args.args[2] == ["F1", "F7"]
+        at.button(key="atomic_clear_selection").click().run()
+        res["atomic_clear"] = at.button(key="atomic_run").disabled
+        at.checkbox(key="atomic_selected_only").uncheck().run()
+        at.session_state["atomic_selected_ids"] = [f"F{i}" for i in range(1, MAX_SAMPLE + 1)]
+        at.text_input(key="atomic_query").set_value("Text 21").run()
+        res["atomic_cap"] = at.checkbox(key="atomic_pick_F21").disabled
+        at.text_input(key="atomic_query").set_value("").run()
+        at.button(key="atomic_clear_selection").click().run()
+        res["errors"] += errors(at)
+        at.radio(key="draft_engine").set_value("v2").run()
         # Guided V2 workflow: mocked model stages, real Streamlit reruns.
         from unittest.mock import patch
         from mint.ui import draft_target_ui as target_ui, draft_wizard_ui as wizard_ui
@@ -290,6 +338,9 @@ check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"ш
 check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
 check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v3_available", "draft_v2_restored")),
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
+check(all(res.get(k) for k in ("atomic_full_search", "atomic_table_search", "atomic_section_filter",
+                               "atomic_selection_retained", "atomic_exact_scope", "atomic_clear", "atomic_cap")),
+      "V3: full-text/table search, section filter, persistent selection, exact scope and cap", str(res))
 check(all(res.get(k) for k in ("wizard_preview", "wizard_collection", "wizard_result", "wizard_review_retained",
                                "wizard_profile_retained", "wizard_no_repeat", "wizard_same_materials",
                                "wizard_invalidated", "wizard_no_preliminary_profile", "wizard_no_early_repeat", "wizard_no_section_map", "wizard_repeat_visible", "wizard_scoped_review", "wizard_exact_scope")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
