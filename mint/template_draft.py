@@ -135,7 +135,7 @@ def _batches(items, key, size=MAX_CHARS):
         yield batch
 
 
-def _source_chunks(markdown, *, full_path=False, table_context=False):
+def _source_chunks(markdown, *, full_path=False, table_context=False, max_chars=MAX_CHARS):
     section = ""
     headings = []
     lines = []
@@ -145,7 +145,7 @@ def _source_chunks(markdown, *, full_path=False, table_context=False):
     def split():
         nonlocal occurrence
         if not table_context:
-            yield from _split_section(section, lines)
+            yield from _split_section(section, lines, max_chars=max_chars)
             return
         ordinary, i = [], 0
         while i < len(lines):
@@ -156,7 +156,7 @@ def _source_chunks(markdown, *, full_path=False, table_context=False):
                 caption = next((line.strip() for line in reversed(ordinary) if line.strip()), "")
                 if not re.match(r"^\s*\**\s*(?:таблица|table)\s*№?\s*\d", caption, re.I):
                     caption = ""
-                for path, text in _split_section(section, ordinary):
+                for path, text in _split_section(section, ordinary, max_chars=max_chars):
                     yield path, text, None
                 ordinary = []
                 j = i + 2
@@ -166,13 +166,13 @@ def _source_chunks(markdown, *, full_path=False, table_context=False):
                            "header": lines[i].strip(), "separator": lines[i + 1].strip()}
                 # Keep the original text unchanged; repeated header is separate
                 # context, not a fabricated continuous quote.
-                for path, text in _split_section(section, lines[i:j]):
+                for path, text in _split_section(section, lines[i:j], max_chars=max_chars):
                     yield path, text, context
                 i = j
             else:
                 ordinary.append(lines[i])
                 i += 1
-        for path, text in _split_section(section, ordinary):
+        for path, text in _split_section(section, ordinary, max_chars=max_chars):
             yield path, text, None
 
     for line in markdown.splitlines():
@@ -192,15 +192,15 @@ def _source_chunks(markdown, *, full_path=False, table_context=False):
         yield from split()
 
 
-def _split_section(section, lines):
-    for batch in _batches(lines, str):
+def _split_section(section, lines, *, max_chars=MAX_CHARS):
+    for batch in _batches(lines, str, size=max_chars):
         text = "\n".join(batch).strip()
-        while len(text) > MAX_CHARS:
-            cut = text.rfind(" ", MAX_CHARS // 2, MAX_CHARS)
+        while len(text) > max_chars:
+            cut = text.rfind(" ", max_chars // 2, max_chars)
             if cut < 0:
-                cut = MAX_CHARS
+                cut = max_chars
             yield section, text[:cut]
-            text = text[max(0, cut - 300):]
+            text = text[max(1, cut - min(300, max_chars // 4)):]
         if text:
             yield section, text
 
