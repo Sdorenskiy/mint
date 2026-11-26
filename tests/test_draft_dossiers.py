@@ -63,6 +63,11 @@ def test_additive_and_privacy():
         assert cached["cache_hits"] == 5 and len(calls) == 1
         safe = target_registry_export({}, {"diagnostics": {"dossiers": dict(counts)}})
         assert "letters" not in json.dumps(safe) and "foreign" not in json.dumps(safe)
+        safe_priority = target_registry_export({}, {"diagnostics": {"dossier_priority":
+            {"data_categories_found_partial": 1, "security_not_found": 1, "private source": 9}}})
+        assert safe_priority["diagnostics"]["dossier_priority"]["data_categories_found_partial"] == 1
+        assert safe_priority["diagnostics"]["dossier_priority"]["security_not_found"] == 1
+        assert "private source" not in json.dumps(safe_priority)
 
 
 def test_strict_quality_and_batch():

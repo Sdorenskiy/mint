@@ -111,6 +111,32 @@ def test_metric_pairs_and_separate_review():
     row = {"quote": "| 50 | 150 |", "table_context": {"header": "| Adapter A, ms | Adapter B, ms |"}}
     assert target._metric_pair(row, "Adapter A", "50", "ms")
     assert not target._metric_pair(row, "Adapter A", "150", "ms")
+    # Separate quantity and unit columns, including repeated rows and RU/EN.
+    header = {"header": "| Показатель | Значение | Ед. изм. |"}
+    split = {"quote": "| Задержка | 150 | мс |\n| Пропускная способность | 50 | запрос/с |",
+             "table_context": header}
+    assert target._metric_pair(split, "Задержка", "150", "мс")
+    assert not target._metric_pair(split, "Задержка", "50", "запрос/с")
+    assert not target._metric_pair(split, "Задержка", "150", "с")
+    assert not target._metric_pair(split, "Пропускная способность", "150", "мс")
+    assert target._metric_pair({"quote": "| Rate | 20 | messages/s |",
+                                "table_context": {"header": "| Metric | Value | Unit |"}},
+                               "Rate", "20", "messages/s")
+    ambiguous = {"quote": "| Rate | 20 | 30 | messages/s |",
+                 "table_context": {"header": "| Metric | Value | Value | Unit |"}}
+    assert not target._metric_pair(ambiguous, "Rate", "20", "messages/s")
+    records_for_metrics = {"R1": {"section_role": "metric"}, "R2": {"section_role": "metric"},
+                           "R3": {"dossier_facets": [{"facet": "capacity"}]}, "R4": {}, "R5": {}, "R6": {}}
+    decisions_for_metrics = {"R1": {"metric": {}, "status": "model_supported"},
+                             "R2": {"metric_gap": True, "metric_validation": "invalid"},
+                             "R4": {"metric": {}, "status": "applicability_supported"},
+                             "R5": {"metric_gap": True, "metric_validation": "missing"}}
+    funnel = target._metric_diagnostics(records_for_metrics, decisions_for_metrics)
+    assert funnel == {"candidate_records": 5, "mechanically_supported": 2, "verified": 1,
+                      "rejected": 1, "not_allocated": 1, "review_unconfirmed": 1, "missing": 1}
+    safe = target_registry_export({}, {"diagnostics": {"metric_funnel": {**funnel, "private text": 42}}})
+    assert safe["diagnostics"]["metric_funnel"]["rejected"] == 1
+    assert "private text" not in json.dumps(safe)
     with TemporaryDirectory() as tmp:
         cfg = config(tmp)
         records = {"R1": {"id": "R1", "source": "a.md", "section": "A", "quote": DIRECT,
@@ -327,6 +353,8 @@ def test_registry_end_to_end():
             payload = json.dumps(safe, ensure_ascii=False, allow_nan=False)
             assert all(private not in payload for private in (NEED, CURRENT, METRIC, "needs.md", "Messaging", "Relay Service"))
             assert safe["counts"]["verified_metrics"] == 1
+            assert safe["diagnostics"]["metric_funnel"]["verified"] == 1
+            assert safe["diagnostics"]["dossier_priority"]["performance_found"] >= 0
             with patch.object(target, "summarize_needs", side_effect=AssertionError("unnecessary summary call")):
                 automatic = target.analyze_target_registry(cfg, prepared, prepared["profile"])
             assert automatic["phase"] == "decomposed" and automatic["review"]["mode"] == "automatic"
