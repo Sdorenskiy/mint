@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 quality: bounded recovery of failed function discovery batches, additive candidate links in allocation, independent function-assignment review and anonymized selected-link diagnostics. Version 21.4.25; real-model acceptance pending.
+
 - V2 quality: literal metric value/unit pairs in separate labelled table columns, anonymized metric-stage and priority dossier diagnostics, clearer distinction between transferred content and explicit access/protection classification. Version 21.4.24; no real-model acceptance yet.
 
 - V2 review screen: focus on explicitly selected functions, separate system-wide and unallocated requirements, explicit refinement scope, concise source table and on-demand deduplicated evidence, data categories and security evidence alongside metrics, private read-only JSON review snapshots. No analysis or prompt changes; version 21.4.23.

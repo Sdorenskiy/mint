@@ -162,7 +162,11 @@ TARGET_STAGES = ("target_section_map", "target_profile", "target_function_discov
                  "target_allocation", "target_verify", "target_summary", "target_derivation",
                  "requirement_assessment", "target_coverage")
 _TARGET_COUNTERS = {
-    "profile_status": ("no_candidates", "model_error", "invalid_response", "no_functions", "partial", "found", "context_limit"),
+    "profile_status": ("no_candidates", "model_error", "invalid_response", "no_functions", "partial", "found", "context_limit",
+                       "initial_model_error", "initial_invalid_response", "initial_partial",
+                       "retry_attempted", "retry_batches", "retry_recovered", "retry_exhausted"),
+    "function_review": ("not_applicable", "model_supported", "needs_review", "unresolved"),
+    "selected_link_coverage": ("candidate_obligations", "selected_primary", "external", "other_primary", "unresolved"),
     "wiki_status": ("disabled", "source_error", "no_candidates", "model_error", "invalid_response", "no_functions", "partial", "found"),
     "wiki_context": ("sources", "read_errors", "needs_with_context", "spans_supplied", "function_searches", "allocation_budget_limit", "allocation_no_candidates"),
     "allocation_retry": ("attempted", "recovered", "exhausted"),
