@@ -789,22 +789,22 @@ draft_target_profile: |-
   If purpose = reference_current_state, identify only described existing functions of the target itself; plans, other-system analogies and uncertain state do not establish implementation. Return an empty list if evidence is missing.
   Describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
   Do not assign other participants' functions to the target. For each function give name, description
-  (current function, component, interfaces, exclusions) and refs, original fragment ids.
+  (current function, component, interfaces, exclusions) and refs, exact ids from evidence: R for requirements_analysis, F or BF for the other modes.
   Never invent facts; absence of evidence is not evidence of absence.
   Distinguish existing functions from explicitly required target functions in description; do not describe future functions as implemented. At most 20 functions.
-  Return {"functions":[{"name":"function","description":"supported description","refs":["F1"]}]}.
+  Return {"functions":[{"name":"function","description":"supported description","refs":["R1"]}]}. R1 is an example for requirements_analysis; otherwise use the actual supplied F/BF ids.
 draft_target_extract: |-
   Extract verbatim contiguous quotes from text using section and focus. Preserve target-side requirements,
   including implicit interface duties, other actors' duties for attribution, existing capabilities,
   performance objectives, conditions, negations, constraints, exceptions, failures and units.
-  Consider headings and table rows. Never rewrite quotes or discard ambiguous obligations.
+  table_context contains the original table header and caption separately from text. Consider headings and table rows. Never rewrite quotes or discard ambiguous obligations.
   related_evidence contains linked original sections and gaps for understanding. Extract quotes only from text, not from linked sections.
   Do not convert existing behaviour to new requirements. Return [] when no substantive information exists.
   Return {"requirements":[{"quote":"verbatim quote"}]}.
 draft_target_dossier: |-
   Find verbatim contiguous quotations in evidence describing facets of the specific function and its interactions.
   Seek conditions, participants, information content and categories, quantitative objectives with value, unit, subject and conditions, not just names.
-  Consider headings, tables and linked sections. Quote enough of the fragment to convey its meaning.
+  table_context explains columns but quote only text. Consider headings, tables and linked sections. Quote enough of the fragment to convey its meaning.
   Relevance to a function is not proof of target ownership. Retain other participants' information as context.
   Never invent characteristics or treat missing information as evidence of absence. Return nothing for dimensions not found.
   Use only ids from evidence and facet codes from facets. At most 12 material quotations, without repeats.
@@ -813,13 +813,13 @@ draft_target_dossier: |-
 draft_target_allocation: |-
   Sources with source_role = reference_context are informational, not independent obligations. Use only explicitly applicable current state of the target; plans, analogies and disputed revisions do not establish implementation. Target metrics must follow from original bases.
   Determine the obligation of context.target specifically, not mere mention of its name. evidence contains original
-  quotes and fragments; profile is a user-confirmed hypothesis about functions, NOT independent evidence.
+  quotes and fragments; profile contains functional hypotheses, NOT evidence or approved decisions. A user's selection only scopes retrieval.
   category: target, shared, interaction, other, uncertain. actor is the actual responsible participant.
   change: new, change, already_supported, external, unknown, explicit.
   new/change/already_supported require actual evidence of current state and need; missing information does
   not imply missing implementation. explicit is a direct duty to the target, not proof that a change is necessary;
   direct_quote is a verbatim part of the source quote. external is another actor's obligation; do not transfer.
-  unknown means insufficient evidence. For target duties function is a profile id or new; for new give a concise
+  unknown means the need for change is unestablished; this does NOT erase an established category or actor. For target duties function is a profile id or new; for new give a concise
   function_name, reusing the semantic name for the same function. component is supported or empty.
   Consider performance objectives: subject, units, conditions, current and target values.
   For quantitative objectives add metric: {"subject":"subject","value":"verbatim value from the quote",
@@ -828,16 +828,16 @@ draft_target_allocation: |-
   For other requirements metric: null.
   reference_status identifies exact linked sections. Use them to clarify conditions, but do not assign other actors' obligations to the target. A link alone is not proof of existing implementation.
   For new, change, already_supported cite actual current-state evidence, not merely related material.
-  function must be an id from profile (not a name) or new; for new function_name is mandatory. For external/unknown function may be empty.
+  function must be an id from profile (not a name) or new; for new function_name is mandatory. For external or category=uncertain function may be empty.
   state_refs must always be an array of ids from evidence, including an empty array if appropriate; source filename alone is not proof.
-  Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
+  If retry_contract=true, repair the contract only: one response per supplied id, refs only from evidence, valid codes. Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
   "state_refs":[],"reason":"reason"}]}.
 draft_target_verify: |-
   Sources with source_role = reference_context create no duties and do not establish implementation without explicit applicability to current target state. If target metrics come only from reference context, set conditions_preserved = false.
   Independently check decision against original need and evidence. Do not trust the previous explanation.
-  correct_actor means ownership is correct, including external; change_supported means new/change/already_supported
-  is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary.
+  correct_actor means ownership is correct independently of implementation, including external; change_supported means new/change/already_supported
+  is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary; for unknown return change_supported=false even if correct_actor=true.
   conditions_preserved means conditions, exceptions, subject and metric units are considered and component is supported.
   Consider linked sections in decision.reference_refs; a link is not proof of ownership or implementation.
   Treat dossier_refs as supplemental function context, not proof of implementation.
