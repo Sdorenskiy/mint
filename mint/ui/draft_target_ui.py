@@ -182,7 +182,7 @@ def _requirement_evidence(rid, prepared, result, key):
 
 
 def _function_characteristics(pid, ids, prepared, result, key):
-    """Show existing facet evidence, not newly inferred security classifications."""
+    """Show search, independent characteristic review and obligation coverage separately."""
     dossier = result.get("dossiers", {}).get(pid, {})
     facets = dossier.get("facets", {})
     metrics = result.get("metrics_registry", {})
@@ -193,6 +193,7 @@ def _function_characteristics(pid, ids, prepared, result, key):
     cols = st.columns(2)
     with cols[0]:
         st.caption(tr("Показатели назначения"))
+        st.caption(tr("Показатели в согласуемом реестре требований; характеристики ниже проверяются отдельно."))
         if verified:
             st.dataframe([{"ID": rid, tr("Объект"): m["subject"], tr("Значение"): m["value"] + " " + m["unit"],
                            tr("Условия"): m["conditions"], tr("Уровень"): m["level"]} for rid, m in verified],
@@ -201,9 +202,11 @@ def _function_characteristics(pid, ids, prepared, result, key):
             st.text(tr("Подтверждённые показатели не установлены."))
     with cols[1]:
         st.caption(tr("Категории передаваемых данных и защита"))
-        row = facets.get("data_categories", {})
-        st.text(tr("Категории данных") + " · " + _label(row.get("status", "not_searched")))
-        st.text(tr("Безопасность") + " · " + _label(facets.get("security", {}).get("status", "not_searched")))
+        for facet in ("data_categories", "security"):
+            row = facets.get(facet, {})
+            supported = sum(f.get("review", {}).get("status") == "model_supported" for f in row.get("facts", []))
+            st.text(_label(facet) + " · " + _label(row.get("status", "not_searched")))
+            st.caption(tr("Поддержано моделью: {n} из {total}", n=supported, total=len(row.get("facts", []))))
         st.caption(tr("Категория доступа и необходимая защита не выводятся автоматически из названия данных."))
     rows, facts = [], {}
     for facet in ("participants", "direction", "data_categories", "data_content", "data_format",
@@ -221,23 +224,55 @@ def _function_characteristics(pid, ids, prepared, result, key):
                 if facet not in entry["facets"]:
                     entry["facets"].append(facet)
     priority = {}
-    for facet in ("data_categories", "data_content", "security", "data_constraints", "participants", "direction"):
+    for facet in ("data_categories", "data_content", "security", "data_constraints", "participants", "direction",
+                  "performance", "capacity", "interface", "timing", "trigger", "data_format", "purpose", "reliability", "operations"):
         for item in facets.get(facet, {}).get("facts", []):
             ref = item.get("record_id") or item.get("span_id")
             if ref:
                 fact_key = (ref, item.get("quote", ""))
-                entry = priority.setdefault(fact_key, [])
-                if facet not in entry:
-                    entry.append(facet)
+                entry = priority.setdefault(fact_key, {})
+                entry[facet] = item.get("review", {"status": "not_searched"})
     if priority:
-        st.caption(tr("Сведения о данных, обмене и защите — требуют проверки"))
-        for (ref, quote), labels in _page(list(priority.items()), key + "_priority_page", size=5):
+        st.caption(tr("Характеристики функции — проверка модели не является согласованием требований."))
+        ordered = sorted(priority.items(), key=lambda pair: not any(
+            r.get("status") == "model_supported" for r in pair[1].values()))
+        for (ref, quote), reviews in _page(ordered, key + "_priority_page", size=5):
             with st.container(border=True):
-                st.caption(_safe_markdown(ref + " · " + ", ".join(_label(f) for f in labels)))
+                st.caption(_safe_markdown(ref))
                 _wrapped(quote)
                 source = result["requirements"].get(ref) or prepared.get("spans", {}).get(ref, {})
                 if source:
                     st.caption(_safe_markdown(f"{source.get('source', '')} › {source.get('section', '')}"))
+                    if source.get("table_context"):
+                        st.text(source["table_context"].get("header", ""))
+                for facet, review in reviews.items():
+                    st.caption(_label(facet) + " · " + _label(review.get("status", "not_searched")))
+                    if review.get("status") == "model_supported":
+                        relation = review.get("relation")
+                        if relation == "interaction":
+                            st.caption(tr("Контекст взаимодействия — не обязательно обязанность цели"))
+                        for field, label in (("flow", tr("Поток данных")),
+                                             ("source_party", tr("Источник данных")),
+                                             ("destination_party", tr("Получатель данных"))):
+                            if review.get(field):
+                                _wrapped(label + ": " + review[field])
+                        metric = review.get("metric")
+                        if metric:
+                            _wrapped(metric["subject"] + ": " + metric["value"] + " " + metric["unit"]
+                                     + " · " + metric["level"])
+                            if metric.get("conditions"):
+                                _wrapped(metric["conditions"])
+                    if review.get("reason"):
+                        _wrapped(review["reason"])
+                    if review.get("anchor_refs"):
+                        with st.expander(tr("Опорные ссылки") + ": " + ", ".join(review["anchor_refs"])):
+                            for anchor in review["anchor_refs"]:
+                                row = result["requirements"].get(anchor)
+                                if row:
+                                    st.caption(_safe_markdown(f"{anchor} · {row['source']} › {row['section']}"))
+                                    if row.get("table_context"):
+                                        st.text(row["table_context"].get("header", ""))
+                                    _wrapped(row["quote"])
     if st.checkbox(tr("Характеристики и найденные сведения"), key=key + "_facets"):
         st.caption(tr("Найденные цитаты — кандидаты для проверки, а не подтверждённая классификация данных или требования к защите."))
         st.dataframe(rows, hide_index=True, use_container_width=True)
@@ -253,9 +288,11 @@ def _function_characteristics(pid, ids, prepared, result, key):
                 if source.get("table_context"):
                     st.text(source["table_context"]["header"])
                 _wrapped(quote)
-    if not facets.get("data_categories", {}).get("facts"):
+    if not any(f.get("review", {}).get("status") == "model_supported"
+               for f in facets.get("data_categories", {}).get("facts", [])):
         st.caption(tr("Открытый вопрос: установить категорию передаваемых данных по основаниям."))
-    if not facets.get("security", {}).get("facts"):
+    if not any(f.get("review", {}).get("status") == "model_supported"
+               for f in facets.get("security", {}).get("facts", [])):
         st.caption(tr("Открытый вопрос: установить применимые требования к защите данных."))
 
 

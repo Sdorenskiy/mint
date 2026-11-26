@@ -4,6 +4,18 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Поток данных": "Data flow",
+    "Опорные ссылки": "Anchor references",
+    "Обоснование проверки": "Review rationale",
+    "Связь с целью": "Target relation",
+    "Статус проверки характеристики": "Characteristic review status",
+    "Проверка характеристик функций": "Function characteristic review",
+    "Получатель данных": "Data recipient",
+    "Источник данных": "Data source",
+    "Контекст взаимодействия — не обязательно обязанность цели": "Interaction context — not necessarily a target duty",
+    "Характеристики функции — проверка модели не является согласованием требований.": "Function characteristics — model review is not requirement approval.",
+    "Поддержано моделью: {n} из {total}": "Model-supported: {n} of {total}",
+    "Показатели в согласуемом реестре требований; характеристики ниже проверяются отдельно.": "Metrics in the requirement registry under review; characteristics below are checked separately.",
     "Нефункциональные требования и ограничения": "Nonfunctional requirements and constraints",
     "Нефункциональные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.": "Nonfunctional requirements and constraints: {n}; not linked to functions: {m}. They remain under review.",
     "Иерархия функций — гипотеза модели. Выбор родителя не выбирает подфункции автоматически.": "Function hierarchy is a model hypothesis. Selecting a parent does not automatically select subfunctions.",
@@ -26,7 +38,6 @@ EN = {
     "Подтверждённые показатели не установлены.": "No verified metrics established.",
     "Категории передаваемых данных и защита": "Transferred data categories and protection",
     "Категория доступа и необходимая защита не выводятся автоматически из названия данных.": "Access classification and required protection are not inferred from the data name.",
-    "Сведения о данных, обмене и защите — требуют проверки": "Data, exchange and protection evidence — review required",
     "Характеристики и найденные сведения": "Characteristics and retrieved evidence",
     "Найденные цитаты — кандидаты для проверки, а не подтверждённая классификация данных или требования к защите.": "Retrieved quotations are candidates for review, not verified data classifications or protection requirements.",
     "Открыть найденное сведение": "Open retrieved evidence",

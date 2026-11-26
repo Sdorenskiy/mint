@@ -15,6 +15,7 @@ _STAGES = {
     "reference_map": N_("Разрешение перекрёстных ссылок"),
     "reference_context": N_("Сбор связанных фрагментов"),
     "target_dossier": N_("Целевой поиск характеристик функций"),
+    "target_characteristic_review": N_("Проверка характеристик функций"),
     "extract": N_("Разбор оснований"),
     "registry_type": N_("Типизация исходных сведений"),
     "target_allocation": N_("Распределение ответственности"),

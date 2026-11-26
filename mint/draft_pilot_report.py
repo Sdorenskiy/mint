@@ -159,7 +159,7 @@ def diagnostic_package(result, *, pilot, input_key, review=None):
 
 # The registry has no Word anchors yet. Export only aggregate codes and numbers.
 TARGET_STAGES = ("target_section_map", "target_profile", "target_function_discovery", "target_dossier", "target_extract", "registry_type", "scope",
-                 "target_allocation", "target_verify", "target_summary", "target_derivation",
+                 "target_characteristic_review", "target_allocation", "target_verify", "target_summary", "target_derivation",
                  "requirement_assessment", "target_coverage")
 _TARGET_COUNTERS = {
     "profile_status": ("no_candidates", "model_error", "invalid_response", "no_functions", "partial", "found", "context_limit",
@@ -209,6 +209,14 @@ _TARGET_COUNTERS = {
                  "reference_limited_searches", "reference_root_limit", "supplied_spans",
                  "facts", "supplemental_records", "cache_hits", "not_searched", "found",
                  "found_partial", "not_found", "context_limit", "error", "unresolved_facts", "covered_facts"),
+    "characteristic_review": ("candidates", "batches", "anchor_limit", "unexpected_responses", "model_supported",
+                              "needs_review", "invalid_response", "missing_evidence", "missing_metric_evidence",
+                              "context_limit", "missing_response", "duplicate_response", "batch_error", "supported_metrics",
+                              "supported_purpose", "supported_participants", "supported_direction",
+                              "supported_data_categories", "supported_data_content", "supported_data_format",
+                              "supported_interface", "supported_trigger", "supported_timing", "supported_performance",
+                              "supported_capacity", "supported_security", "supported_data_constraints",
+                              "supported_reliability", "supported_operations"),
     "metric_funnel": ("candidate_records", "not_allocated", "mechanically_supported", "verified",
                       "review_unconfirmed", "rejected", "missing", "no_metric_decision"),
     "dossier_priority": tuple(f"{facet}_{status}" for facet in

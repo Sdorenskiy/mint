@@ -313,6 +313,17 @@ def test_registry_end_to_end():
                                   for facet, quote in (("performance", METRIC), ("data_categories", DATA))
                                   for r in payload["evidence"] for part in r["parts"]
                                   if quote == part["text"] and facet in payload["facets"]]}
+            if stage == "target_characteristic_review":
+                items = []
+                for item in payload["items"]:
+                    r = item["record"]
+                    assert r["source_role"] != "reference_context"
+                    metric = {"subject": "Relay Service", "value": "20", "unit": "messages per second",
+                              "level": "target", "target_value": "20"} if r["quote"] == METRIC else None
+                    items.append({"id": item["id"], "facet_supported": True, "function_supported": True,
+                                  "target_involved": True, "conditions_preserved": True, "relation": "target",
+                                  "anchor_refs": [], "metric": metric, "reason": "fictional review"})
+                return {"items": items}
             if stage == "target_extract":
                 assert payload["focus"]["context"]["target"] == CONTEXT["target"]
                 assert payload["focus"]["functions"] == []
@@ -422,6 +433,10 @@ def test_registry_end_to_end():
             assert len(result["groups"]) == 1
             assert len(result["requirements"]) == len(TYPES)
             assert result["diagnostics"]["dossiers"]["supplemental_records"] == 2
+            assert result["diagnostics"]["characteristic_review"]["supported_metrics"] == 1
+            assert result["diagnostics"]["characteristic_review"]["supported_data_categories"] == 1
+            assert stages.index("target_characteristic_review") < stages.index("target_allocation")
+            assert collected["dossiers"]["C1"]["facets"]["performance"]["facts"][0]["review"]["metric"]["value"] == "20"
             assert result["dossiers"]["C1"]["facets"]["data_categories"]["facts"]
             assert result["dossiers"]["C1"]["facets"]["performance"]["coverage"][by_quote[METRIC]] == "model_covered"
             assert result["diagnostics"]["verification"]["batches"] < len(result["decisions"])
