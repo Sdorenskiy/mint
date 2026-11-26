@@ -79,7 +79,6 @@ EN = {
     "Внешнее взаимодействие": "External interaction",
     "Выявление функций ограничено контекстом; проверьте также нераспределённые требования.": "Function discovery was limited by context; also check unassigned requirements.",
     "Все требования": "All requirements",
-    "Сквозные требования": "Cross-cutting requirements",
     "Не распределено по функциям": "Unassigned to functions",
     "Сначала MINT разбирает все основания и определяет функции и предварительную применимость. Затем вы выбираете область углублённого поиска.": "MINT first analyzes all source bases, identifies functions and preliminary applicability. Then you choose the deep retrieval scope.",
     "Уточнить требования по выбранным функциям": "Refine requirements for selected functions",
