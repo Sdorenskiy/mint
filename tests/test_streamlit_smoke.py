@@ -179,9 +179,13 @@ try:
             res["wizard_collection"] = (at.session_state["draft_wizard_step"] == 3
                 and not has_button(at, "target_analyze") and collect_.call_count == 2 and derive_.call_count == 0
                 and collect_.call_args.kwargs["selected_functions"] == ["C1"])
-            res["wizard_scoped_review"] = (at.multiselect(key="target_review_scope_wizard-run_G1").value == ["R1"]
+            res["wizard_scoped_review"] = (at.checkbox(key="target_review_scope_wizard-run_G1_pick_R1").value
+                and any("Fixture need" in str(m.value) for m in at.markdown)
                 and any("Категории передаваемых данных и защита" in str(c.value) for c in at.caption)
                 and collect_.call_count == 2 and derive_.call_count == 0)
+            at.checkbox(key="target_review_scope_wizard-run_G1_pick_R1").uncheck().run()
+            res["wizard_scoped_review"] = res["wizard_scoped_review"] and at.button(key="target_decompose").disabled
+            at.checkbox(key="target_review_scope_wizard-run_G1_pick_R1").check().run()
             at.text_area(key="target_review_note_wizard-run_G1").set_value("fixture note").run()
             at.button(key="target_decompose").click().run()
             res["wizard_result"] = at.session_state["draft_wizard_step"] == 4 and derive_.call_count == 1

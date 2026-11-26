@@ -5,7 +5,8 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from mint.ui.draft_review_view import review_view, evidence_rows, review_snapshot, load_review_snapshot
+from mint.ui.draft_review_view import (review_view, evidence_rows, review_snapshot, load_review_snapshot,
+                                       update_review_selection, review_request_export)
 
 
 def fixture():
@@ -59,6 +60,20 @@ def test_scope():
     assert not both["outside"]
 
 
+def test_review_selection_and_requests():
+    ready = ["R1", "R2", "R3"]
+    assert update_review_selection(ready, ["R1", "R3", "R99"], ["R1", "R2"], ["R2", "R99"]) == ["R2", "R3"]
+    assert update_review_selection(ready, ["R2", "R3"], ["R3"], []) == ["R2"]
+    result = fixture()
+    before = copy.deepcopy(result)
+    exported = json.loads(review_request_export(result, {"R2": "C1", "R5": "C1", "R6": "C1",
+                                                         "R1": "C1", "R9": "C2", "R99": "C1"}))
+    assert exported["requires_verification"] is True
+    assert [r["requirement_id"] for r in exported["requests"]] == ["R2", "R5", "R6"]
+    assert exported["requests"][0]["quote"] == result["requirements"]["R2"]["quote"]
+    assert result == before
+
+
 def test_evidence_and_snapshot():
     result = fixture()
     prepared = {"context": {"target": "Fixture"}, "spans": {}, "secret": "not exported"}
@@ -83,5 +98,6 @@ def test_evidence_and_snapshot():
 
 if __name__ == "__main__":
     test_scope()
+    test_review_selection_and_requests()
     test_evidence_and_snapshot()
     print("OK: selected-function view, independent cross-cutting/candidate buckets, evidence deduplication, inert snapshot")
