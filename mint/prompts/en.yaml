@@ -802,14 +802,14 @@ draft_target_extract: |-
   Do not convert existing behaviour to new requirements. Return [] when no substantive information exists.
   Return {"requirements":[{"quote":"verbatim quote"}]}.
 draft_target_dossier: |-
-  Find verbatim contiguous quotations in evidence describing facets of the specific function and its interactions.
+  Select verbatim original evidence about facets of the specific function and its interactions. Each fragment has parts with n numbers and original text.
   Seek conditions, participants, information content and categories, quantitative objectives with value, unit, subject and conditions, not just names.
-  Distinguish data_categories (explicit types of transferred information), data_content (specific fields and content) and security/data_constraints (explicit access classification and protection measures); never infer access classification from a data name. Retain the specific flow and participants in the quote when present.
-  table_context explains columns but quote only text. Consider headings, tables and linked sections. For table metrics quote the full row with subject, value and unit if they occupy separate columns.
+  Distinguish data_categories (explicit types of transferred information), data_content (specific fields and content) and security/data_constraints (explicit access classification and protection measures); never infer access classification from a data name. Retain the specific flow and participants when present.
+  table_context explains columns; select the whole table row. For a condition spanning multiple lines select up to four consecutive parts from one fragment.
   Relevance to a function is not proof of target ownership. Retain other participants' information as context.
   Never invent characteristics or treat missing information as evidence of absence. Return nothing for dimensions not found.
-  Use only ids from evidence and facet codes from facets. At most 12 material quotations, without repeats.
-  Return {"items":[{"span_id":"F1","facet":"data_content","quote":"verbatim quote"}]}.
+  Use only span_id from evidence and facet codes from facets; first and last are inclusive integer n values, equal for one line. Do not copy text or combine different fragments. At most 12 material selections, without repeats.
+  Return {"items":[{"span_id":"F1","facet":"data_content","first":1,"last":1}]}.
 
 draft_target_allocation: |-
   Sources with source_role = reference_context are informational, not independent obligations. Use only explicitly applicable current state of the target; plans, analogies and disputed revisions do not establish implementation. Target metrics must follow from original bases.
