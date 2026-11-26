@@ -6,7 +6,7 @@ from collections import Counter
 import streamlit as st
 
 from ..draft_target_analysis import (prepare_target_analysis, collect_target_requirements,
-                                     decompose_target_requirements, extend_function_preview)
+                                     decompose_target_requirements, extend_function_preview, function_hierarchy)
 from ..draft_target_review import MAX_NOTE
 from ..draft_pilot_report import target_registry_export
 from ..draft_registry_workbook import registry_workbook, regression_snapshot, compare_registries
@@ -440,17 +440,31 @@ def _select_functions(preview):
     counts = Counter(a["category"] for a in applicability.values())
     st.caption(" · ".join(f"{labels.get(code, code)}: {counts[code]}" for code in labels))
     selected = []
-    for pid, p in profile.items():
+    parents, _ = function_hierarchy(profile)
+    order = []
+    def add_branch(pid, depth=0):
+        order.append((pid, depth))
+        for child in profile:
+            if parents.get(child) == pid:
+                add_branch(child, depth + 1)
+    for pid in profile:
+        if pid not in parents:
+            add_branch(pid)
+    if parents:
+        st.caption(tr("Иерархия функций — гипотеза модели. Выбор родителя не выбирает подфункции автоматически."))
+    for pid, depth in order:
+        p = profile[pid]
         ids = [rid for rid in applicability if pid in links.get(rid, [])]
         key = f"target_function_pick_{run}_{pid}"
         if key not in st.session_state:
             st.session_state[key] = pid in draft["selected"]
-        if st.checkbox(f"{p['name']} · {len(ids)}", key=key):
+        prefix = "↳ " if depth else ""
+        if st.checkbox(prefix + f"{p['name']} · {len(ids)}", key=key):
             selected.append(pid)
     draft["selected"] = selected
     cross = [rid for rid in applicability if records[rid].get("kind") in {"nonfunctional", "constraint"}]
     unlinked = [rid for rid in applicability if not links.get(rid)]
-    st.caption(tr("Сквозные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.",
+    st.caption(tr("Нефункциональные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.",
                   n=len(cross), m=len(unlinked)))
     profile_status = preview.get("profile_status", {})
     if any(profile_status.get(code) for code in ("model_error", "invalid_response", "partial")):
@@ -459,7 +473,7 @@ def _select_functions(preview):
         st.warning(tr("Выявление функций ограничено контекстом; проверьте также нераспределённые требования."))
     if st.checkbox(tr("Показать исходные требования"), key=f"target_preview_show_{run}"):
         options = ["all", "cross", "unlinked", *profile]
-        names = {"all": tr("Все требования"), "cross": tr("Сквозные требования"),
+        names = {"all": tr("Все требования"), "cross": tr("Нефункциональные требования и ограничения"),
                  "unlinked": tr("Не распределено по функциям")}
         which = st.selectbox(tr("Функция"), options,
                              format_func=lambda pid: names.get(pid, profile.get(pid, {}).get("name", pid)),

@@ -4,6 +4,9 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Нефункциональные требования и ограничения": "Nonfunctional requirements and constraints",
+    "Нефункциональные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.": "Nonfunctional requirements and constraints: {n}; not linked to functions: {m}. They remain under review.",
+    "Иерархия функций — гипотеза модели. Выбор родителя не выбирает подфункции автоматически.": "Function hierarchy is a model hypothesis. Selecting a parent does not automatically select subfunctions.",
     "Файл содержит исходные тексты. Используйте только внутри разрешённого контура.": "The file contains source text. Use only inside the authorized environment.",
     "Скачать предложения о связях (локально)": "Download link suggestions (local)",
     "Предложения о связях сохранены в сеансе для проверки: {n}. Они не меняют распределение и не передаются в детализацию.": "Link suggestions saved in this session for review: {n}. They do not change allocation or enter refinement.",
@@ -74,10 +77,8 @@ EN = {
     "Выбор ограничивает углублённый поиск. Все исходные требования сохраняются; применимость пока предварительная.": "The selection limits deep retrieval. All original requirements are retained; applicability is preliminary.",
     "Совместная ответственность": "Shared responsibility",
     "Внешнее взаимодействие": "External interaction",
-    "Сквозные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.": "Cross-cutting requirements and constraints: {n}; unassigned to functions: {m}. They remain in scope for review.",
     "Выявление функций ограничено контекстом; проверьте также нераспределённые требования.": "Function discovery was limited by context; also check unassigned requirements.",
     "Все требования": "All requirements",
-    "Сквозные требования": "Cross-cutting requirements",
     "Не распределено по функциям": "Unassigned to functions",
     "Сначала MINT разбирает все основания и определяет функции и предварительную применимость. Затем вы выбираете область углублённого поиска.": "MINT first analyzes all source bases, identifies functions and preliminary applicability. Then you choose the deep retrieval scope.",
     "Уточнить требования по выбранным функциям": "Refine requirements for selected functions",
