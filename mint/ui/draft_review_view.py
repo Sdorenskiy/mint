@@ -63,7 +63,7 @@ def review_view(result):
     # Candidate links that were not confirmed as primary for this scope.
     # Outside primary allocations stay outside, even if also linked to selection.
     for rid in records:
-        if rid not in decisions or rid in primary_ids:
+        if (rid not in decisions and records[rid].get("kind") not in {"uncertain", "functional", "nonfunctional", "constraint"}) or rid in primary_ids:
             continue
         linked = selected_set.intersection(result.get("function_links", {}).get(rid, []))
         if rid in assigned:
