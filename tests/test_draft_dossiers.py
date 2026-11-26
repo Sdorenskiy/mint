@@ -10,7 +10,8 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from mint import draft_target_analysis as target
 from mint import draft_function_analysis as function
-from mint.draft_dossiers import collect_dossiers, merge_dossier_quotes, summarize_dossiers, FACETS
+from mint.draft_dossiers import (collect_dossiers, merge_dossier_quotes, summarize_dossiers, FACETS,
+                                 _candidate_rows, _validated_facts)
 from mint.draft_derivation import _assessment_verdict
 from mint.draft_references import ReferenceMap
 from mint.draft_registry_workbook import registry_workbook, regression_snapshot, compare_registries
@@ -36,16 +37,17 @@ def test_additive_and_privacy():
         calls.append(stage)
         rows = []
         if "data_categories" in payload["facets"]:
-            rows = [{"span_id": "F1", "facet": "data_categories", "quote": "Message categories: letters and numbers."},
-                    {"span_id": "F1", "facet": "data_categories", "quote": "invented"},
-                    {"span_id": "F999", "facet": "data_categories", "quote": "foreign"}]
+            rows = [{"span_id": "F1", "facet": "data_categories", "first": 2, "last": 2},
+                    {"span_id": "F1", "facet": "data_categories", "first": 99, "last": 99},
+                    {"span_id": "F999", "facet": "data_categories", "first": 1, "last": 1}]
         if "performance" in payload["facets"]:
-            rows = [{"span_id": "F2", "facet": "performance", "quote": "Rate: 15 messages per second."}]
+            rows = [{"span_id": "F2", "facet": "performance", "first": 1, "last": 1}]
         return {"items": rows}
     with TemporaryDirectory() as tmp, use_lang("en"):
         cfg = config(tmp)
         dossiers, counts = collect_dossiers(cfg, evidence, refs, profile, {"target": "Relay"}, lambda *_: None, model)
         assert counts["invalid_quotes"] == 2
+        assert counts["invalid_range"] == 1 and counts["invalid_span"] == 1
         assert dossiers["C1"]["facets"]["data_categories"]["status"] == "found_partial"
         assert dossiers["C1"]["facets"]["performance"]["status"] == "found"
         assert set(dossiers["C1"]["facets"]) == set(FACETS)
@@ -68,6 +70,39 @@ def test_additive_and_privacy():
         assert safe_priority["diagnostics"]["dossier_priority"]["data_categories_found_partial"] == 1
         assert safe_priority["diagnostics"]["dossier_priority"]["security_not_found"] == 1
         assert "private source" not in json.dumps(safe_priority)
+
+
+def test_numbered_original_parts_and_diverse_budget():
+    from collections import Counter
+    spans = {
+        "F1": {"id": "F1", "source": "a.md", "section": "1", "text": "First condition.\nSecond condition."},
+        "F2": {"id": "F2", "source": "b.md", "section": "2", "text": "| Rate | 20 | msg/s |",
+               "table_context": {"header": "| Metric | Value | Unit |", "occurrence": 1}},
+        "F3": {"id": "F3", "source": "c.md", "section": "3", "text": "Other context."},
+    }
+    rows, limits = _candidate_rows(spans, [["F1"], ["F3", "F1"], ["F2"]], 10000, {}, limit=3)
+    assert [r["id"] for r in rows] == ["F1", "F3", "F2"] and not limits
+    assert rows[2]["table_context"] == spans["F2"]["table_context"]
+    counts = Counter()
+    reply = {"items": [
+        {"span_id": "F1", "facet": "purpose", "first": 1, "last": 2},
+        {"span_id": "F2", "facet": "purpose", "first": 1, "last": 1},
+        {"span_id": "F3", "facet": "other", "first": 1, "last": 1},
+        {"span_id": "F1", "facet": "purpose", "first": True, "last": 1},
+        {"span_id": "F1", "facet": "purpose", "first": 2, "last": 1},
+        {"span_id": "F9", "facet": "purpose", "first": 1, "last": 1},
+        {"span_id": "F1", "facet": "purpose", "first": 1, "last": 2},
+    ]}
+    valid, malformed = _validated_facts(reply, rows, ("purpose",), spans, counts)
+    assert malformed and len(valid) == 2
+    assert valid[0]["quote"] == spans["F1"]["text"]
+    assert valid[1]["quote"] == spans["F2"]["text"]
+    assert counts["invalid_quotes"] == 4 and counts["duplicate_facts"] == 1
+    assert counts["invalid_range"] == 2 and counts["invalid_facet"] == 1 and counts["invalid_span"] == 1
+    bounded, limits = _candidate_rows(spans, [["F1"], ["F3"], ["F2"]], 10000, {}, limit=2)
+    assert [r["id"] for r in bounded] == ["F1", "F3"] and limits["row_limit_omitted"] == 1
+    bounded, limits = _candidate_rows(spans, [["F1"], ["F3"], ["F2"]], 100, {})
+    assert not bounded and limits["budget_omitted"] == 3
 
 
 def test_strict_quality_and_batch():
@@ -124,6 +159,7 @@ def test_workbook_and_comparison():
 
 if __name__ == "__main__":
     test_additive_and_privacy()
+    test_numbered_original_parts_and_diverse_budget()
     test_strict_quality_and_batch()
     test_workbook_and_comparison()
     print("ИТОГ: additive function evidence, strict review, independent batch verdicts, private workbook and regression")

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 dossier quality: numbered original line selection, balanced bounded retrieval routes, detailed rejection and budget diagnostics. Version 21.4.27; real-model acceptance pending.
+
 - V2 review: wrapping original requirements, inline refinement checkboxes, paginated selection retained across pages, expandable source evidence and local unverified link suggestions. Version 21.4.26; no analysis changes.
 
 - V2 quality: bounded recovery of failed function discovery batches, additive candidate links in allocation, independent function-assignment review and anonymized selected-link diagnostics. Version 21.4.25; real-model acceptance pending.

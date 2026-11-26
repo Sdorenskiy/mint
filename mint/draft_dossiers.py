@@ -46,11 +46,77 @@ def _row(span):
             "text": span["text"], **({"table_context": span["table_context"]} if span.get("table_context") else {})}
 
 
+def _candidate_rows(spans, lanes, budget, base, limit=12):
+    """Balance existing ranked routes, preserving entire original spans."""
+    order, seen = [], set()
+    for i in range(max((len(lane) for lane in lanes), default=0)):
+        for lane in lanes:
+            if i < len(lane) and lane[i] not in seen:
+                seen.add(lane[i])
+                order.append(lane[i])
+    rows, used = [], _size(base) + 100
+    limits = Counter()
+    for sid in order:
+        row = _row(spans[sid])
+        row["parts"] = [{"n": i, "text": line} for i, line in
+                        enumerate(row.pop("text").splitlines(), 1)]
+        if not any(part["text"].strip() for part in row["parts"]):
+            continue
+        cost = _size(row) + 2
+        if len(rows) >= limit:
+            limits["row_limit_omitted"] += 1
+        elif used + cost > budget:
+            limits["budget_omitted"] += 1
+        else:
+            rows.append(row)
+            used += cost
+    return rows, limits
+
+
+def _validated_facts(reply, rows, facets, spans, counts):
+    """Resolve numbered original line ranges; never accept generated quotes."""
+    allowed = {row["id"]: row for row in rows}
+    valid, seen = [], set()
+    items = reply.get("items") if isinstance(reply, dict) else None
+    malformed = not isinstance(items, list)
+    if malformed:
+        counts["invalid_payload"] += 1
+    if isinstance(items, list) and len(items) >= 12:
+        counts["response_limit"] += 1
+        malformed = len(items) > 12
+    for item in items[:12] if isinstance(items, list) else []:
+        if not isinstance(item, dict):
+            code = "invalid_item"
+        else:
+            sid, facet = item.get("span_id"), item.get("facet")
+            first, last = item.get("first"), item.get("last")
+            if not isinstance(sid, str) or sid not in allowed:
+                code = "invalid_span"
+            elif not isinstance(facet, str) or facet not in facets:
+                code = "invalid_facet"
+            elif (type(first) is not int or type(last) is not int or
+                  not 1 <= first <= last <= len(allowed[sid]["parts"]) or last - first >= 4):
+                code = "invalid_range"
+            else:
+                quote = "\n".join(p["text"] for p in allowed[sid]["parts"][first - 1:last])
+                if not quote.strip() or _normalized(quote) not in _normalized(spans[sid]["text"]):
+                    code = "nonliteral_selection"
+                else:
+                    key = (sid, facet, _normalized(quote))
+                    if key in seen:
+                        counts["duplicate_facts"] += 1
+                        continue
+                    seen.add(key)
+                    valid.append({"span_id": sid, "facet": facet, "quote": quote})
+                    continue
+        counts[code] += 1
+        counts["invalid_quotes"] += 1
+        malformed = True
+    return valid, malformed
+
+
 def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, reset_cache=False):
-    """Use the existing scoped hybrid search and lexical fallback. Select only
-    bounded original fragments, following explicit links. No candidate may
-    remove an original record. Statuses expose absence and context limits.
-    """
+    """Use existing hybrid/lexical retrieval and exact original selections."""
     from .draft_checkpoint import DraftStageCheckpoint
     jobs = [(pid, facets, ru if get_lang() == "ru" else en)
             for pid in profile for facets, ru, en in FACET_QUERIES]
@@ -63,32 +129,31 @@ def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, 
     cache = DraftStageCheckpoint(cfg, "target_dossier")
     for pid, facets, terms in tracked(emit, "target_dossier", jobs):
         p = profile[pid]
-        # Put the distinguishing terms first so a long function description
-        # cannot erase the search facet when the existing query limit applies.
         query = terms + " " + context["target"] + " " + p["name"]
         hits = evidence.find(query, k=6)
         fallback = [row["id"] for row in _candidates(query, pool,
                                                     size=min(5000, _candidate_budget(cfg) // 3))]
-        roots = list(dict.fromkeys(hits + fallback + p["refs"]))
+        anchors = [sid for sid in p["refs"] if sid in spans]
+        roots = list(dict.fromkeys(anchors[:6] + hits[:6] + fallback[:6]))
         linked, gaps = references.related(roots, budget=min(6000, _candidate_budget(cfg) // 3))
         counts.update({"searches": 1, "hybrid_hits": len(hits), "fallback_hits": len(fallback)})
         counts["reference_gaps"] += sum(gaps.values())
-        candidates = list(dict.fromkeys(roots + [r["id"] for r in linked]))
         base = {"context": context, "function": {k: p[k] for k in ("id", "name", "description")},
-                "facets": list(facets)}
-        budget = _candidate_budget(cfg)
-        rows, used = [], _size(base) + 100
-        for sid in candidates:
-            row = _row(spans[sid])
-            cost = _size(row) + 2
-            if len(rows) < 12 and used + cost <= budget:
-                rows.append(row)
-                used += cost
-        limited = len(rows) < len(candidates) or any(v for k, v in gaps.items() if k != "cycle")
-        counts["limited_searches"] += int(limited)
+                "facets": list(facets), "selection_format": "original_parts_v1"}
+        rows, limits = _candidate_rows(spans, [anchors, hits, [r["id"] for r in linked], fallback],
+                                       _candidate_budget(cfg), base)
+        counts.update(limits)
+        counts["supplied_spans"] += len(rows)
+        limited = bool(limits) or any(v for k, v in gaps.items() if k != "cycle")
+        if any(v for k, v in gaps.items() if k != "cycle"):
+            counts["reference_limited_searches"] += 1
+        if set(anchors + hits + fallback) - set(roots):
+            counts["reference_root_limit"] += 1
+            limited = True
         if not rows:
+            counts["limited_searches"] += int(limited)
             for facet in facets:
-                dossiers[pid]["facets"][facet]["status"] = "context_limit" if candidates else "not_found"
+                dossiers[pid]["facets"][facet]["status"] = "context_limit" if limited else "not_found"
             continue
         payload = {**base, "evidence": rows}
         if reset_cache:
@@ -106,41 +171,23 @@ def collect_dossiers(cfg, evidence, references, profile, context, emit, ask, *, 
                 reply = ask(cfg, "target_dossier", payload)
             except DraftError:
                 counts["batch_errors"] += 1
+                counts["limited_searches"] += int(limited)
                 for facet in facets:
                     dossiers[pid]["facets"][facet]["status"] = "error"
                 continue
-        allowed = {r["id"]: r for r in rows}
-        valid, seen = [], set()
-        items = reply.get("items") if isinstance(reply, dict) else None
-        malformed = not isinstance(items, list)
-        if isinstance(items, list) and len(items) > 12:
-            malformed = True
-            counts["limited_searches"] += 1
-        for item in items[:12] if isinstance(items, list) else []:
-            if not isinstance(item, dict):
-                malformed = True
-                continue
-            sid, facet, quote = item.get("span_id"), item.get("facet"), item.get("quote")
-            if (not isinstance(sid, str) or sid not in allowed or not isinstance(facet, str)
-                    or facet not in facets or not isinstance(quote, str) or not quote.strip()
-                    or _normalized(quote) not in _normalized(allowed[sid]["text"])):
-                counts["invalid_quotes"] += 1
-                malformed = True
-                continue
-            key = (sid, facet, _normalized(quote))
-            if key in seen:
-                continue
-            seen.add(key)
-            fact = {"span_id": sid, "facet": facet, "quote": quote}
-            valid.append(fact)
-            dossiers[pid]["facets"][facet]["facts"].append(fact)
+        valid, malformed = _validated_facts(reply, rows, facets, spans, counts)
         if not malformed:
-            cache.save(payload, {"validated": json.dumps({"items": valid}, ensure_ascii=False)})
+            cache.save(payload, {"validated": json.dumps(reply, ensure_ascii=False)})
+        for fact in valid:
+            dossiers[pid]["facets"][fact["facet"]]["facts"].append(fact)
+        counts["facts"] += len(valid)
+        items = reply.get("items") if isinstance(reply, dict) else None
+        limited = limited or (isinstance(items, list) and len(items) >= 12)
+        counts["limited_searches"] += int(limited)
         for facet in facets:
             row = dossiers[pid]["facets"][facet]
             row["status"] = ("found_partial" if limited or malformed else "found") if row["facts"] else (
                 "context_limit" if limited else "error" if malformed else "not_found")
-        counts["facts"] += len(valid)
     return dossiers, counts
 
 

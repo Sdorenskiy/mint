@@ -280,9 +280,10 @@ def test_registry_end_to_end():
                 return {"functions": [{"name": "Messaging", "description": CURRENT, "refs": [state["id"]]}]}
             if stage == "target_dossier":
                 # Simulate a precise secondary retrieval result, without replacing full scan.
-                return {"items": [{"span_id": r["id"], "facet": facet, "quote": quote}
+                return {"items": [{"span_id": r["id"], "facet": facet, "first": part["n"], "last": part["n"]}
                                   for facet, quote in (("performance", METRIC), ("data_categories", DATA))
-                                  for r in payload["evidence"] if quote in r["text"] and facet in payload["facets"]]}
+                                  for r in payload["evidence"] for part in r["parts"]
+                                  if quote == part["text"] and facet in payload["facets"]]}
             if stage == "target_extract":
                 assert payload["focus"]["context"]["target"] == CONTEXT["target"]
                 assert payload["focus"]["functions"] == []
