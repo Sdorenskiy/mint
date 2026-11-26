@@ -822,13 +822,13 @@ draft_target_allocation: |-
   unknown means the need for change is unestablished; this does NOT erase an established category or actor. For target duties function is a profile id or new; for new give a concise
   function_name, reusing the semantic name for the same function. component is supported or empty.
   Consider performance objectives: subject, units, conditions, current and target values.
-  For quantitative objectives add metric: {"subject":"subject","value":"verbatim value from the quote",
+  For quantitative objectives add metric: {"subject":"verbatim subject from quote or table header","value":"verbatim value from the quote",
   "unit":"verbatim unit from the quote","conditions":"conditions","level":"current|target|unknown",
   "current_value":"","target_value":""}. Leave absent values empty; never infer numbers.
   For other requirements metric: null.
   reference_status identifies exact linked sections. Use them to clarify conditions, but do not assign other actors' obligations to the target. A link alone is not proof of existing implementation.
   For new, change, already_supported cite actual current-state evidence, not merely related material.
-  function must be an id from profile (not a name) or new; for new function_name is mandatory. For external or category=uncertain function may be empty.
+  function must be an id from profile (not a name) or new; for new function_name is mandatory. Use system_wide for a system-wide nonfunctional requirement or constraint without a specific function. For external or category=uncertain function may be empty.
   state_refs must always be an array of ids from evidence, including an empty array if appropriate; source filename alone is not proof.
   If retry_contract=true, repair the contract only: one response per supplied id, refs only from evidence, valid codes. Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
@@ -836,7 +836,7 @@ draft_target_allocation: |-
 draft_target_verify: |-
   Sources with source_role = reference_context create no duties and do not establish implementation without explicit applicability to current target state. If target metrics come only from reference context, set conditions_preserved = false.
   Independently check decision against original need and evidence. Do not trust the previous explanation.
-  correct_actor means ownership is correct independently of implementation, including external; change_supported means new/change/already_supported
+  correct_actor means ownership is supported by original bases A independently of implementation, including external; reference context B creates no duties. change_supported means new/change/already_supported
   is grounded in current state and need, or explicit is a direct target duty without claiming a change is necessary; for unknown return change_supported=false even if correct_actor=true.
   conditions_preserved means conditions, exceptions, subject and metric units are considered and component is supported.
   Consider linked sections in decision.reference_refs; a link is not proof of ownership or implementation.
