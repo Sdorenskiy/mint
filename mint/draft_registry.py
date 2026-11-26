@@ -41,13 +41,13 @@ def _type_records(cfg, records, emit, *, reset_cache=False):
             row.update(kind="non_requirement", typing_status="structural")
         else:
             pending.append({key: row[key] for key in
-                            ("id", "source", "section", "quote", "source_role")})
+                            ("id", "source", "section", "quote", "source_role", "table_context") if key in row})
 
     groups = failed_groups = unknown_rows = duplicate_rows = cache_hits = 0
     checkpoint = DraftStageCheckpoint(cfg, "registry_type")
     batches = [batch for offset in range(0, len(pending), _BATCH_LIMIT)
                for batch in _batches(pending[offset:offset + _BATCH_LIMIT],
-                                     lambda r: r["quote"] + r["section"] + r["source"])]
+                                     lambda r: r["quote"] + r["section"] + r["source"] + str(r.get("table_context", "")))]
     for batch in tracked(emit, "registry_type", batches):
         groups += 1
         emit("registry_type", groups)
@@ -101,7 +101,7 @@ def _type_records(cfg, records, emit, *, reset_cache=False):
 def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=False,
                    focus=None, prepared_chunks=None, fragment_status=None,
                    reference_contexts=None, reference_revision=None, supplement=None,
-                   initial_records=None):
+                   initial_records=None, table_contexts=None):
     """Build the minimal V2 registry from parsed selected originals.
 
     Source roles are supplied by the caller (not inferred from filenames).
@@ -119,7 +119,8 @@ def build_registry(cfg, documents, source_roles, issues, emit, *, reset_cache=Fa
         raise ValueError("Invalid registry source role")
     kwargs = {} if focus is None else dict(focus=focus, prepared_chunks=prepared_chunks,
                                            fragment_status=fragment_status,
-                                           reference_contexts=reference_contexts, reference_revision=reference_revision)
+                                           reference_contexts=reference_contexts, reference_revision=reference_revision,
+                                           table_contexts=table_contexts)
     if initial_records is None:
         records, chunks = _requirements(cfg, documents, issues, emit,
                                         reset_cache=reset_cache, include_provenance=True, **kwargs)
