@@ -109,6 +109,11 @@ def _review_collection(collected, prepared, expert):
         session["target_registry_review_draft"] = draft
     st.subheader(tr("Собранные требования по функциям"))
     st.caption(tr("Проверьте исходные требования и выберите те, которые нужно детализировать. Функция объединяет требования, но не заменяет их."))
+    wiki = collected.get("diagnostics", {}).get("wiki_context", {})
+    if wiki.get("sources"):
+        st.caption(tr("Справочные фрагменты в анализе: {n}; не поместились: {budget}; нет кандидатов: {missing}.",
+                      n=wiki.get("spans_supplied", 0), budget=wiki.get("allocation_budget_limit", 0),
+                      missing=wiki.get("allocation_no_candidates", 0)))
     candidates = len({rid for group in collected["groups"] for rid in group["requirement_ids"]
                       if decisions[rid]["change"] != "already_supported"})
     profile_names = {p["id"]: p["name"] for p in collected.get("approved_profile", [])}
