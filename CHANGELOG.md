@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 review: wrapping original requirements, inline refinement checkboxes, paginated selection retained across pages, expandable source evidence and local unverified link suggestions. Version 21.4.26; no analysis changes.
+
 - V2 quality: bounded recovery of failed function discovery batches, additive candidate links in allocation, independent function-assignment review and anonymized selected-link diagnostics. Version 21.4.25; real-model acceptance pending.
 
 - V2 quality: literal metric value/unit pairs in separate labelled table columns, anonymized metric-stage and priority dossier diagnostics, clearer distinction between transferred content and explicit access/protection classification. Version 21.4.24; no real-model acceptance yet.

@@ -4,6 +4,14 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Файл содержит исходные тексты. Используйте только внутри разрешённого контура.": "The file contains source text. Use only inside the authorized environment.",
+    "Скачать предложения о связях (локально)": "Download link suggestions (local)",
+    "Предложения о связях сохранены в сеансе для проверки: {n}. Они не меняют распределение и не передаются в детализацию.": "Link suggestions saved in this session for review: {n}. They do not change allocation or enter refinement.",
+    "Предложить связь для проверки — {id}": "Suggest a link for review — {id}",
+    "Выбрано для детализации: {n}.": "Selected for refinement: {n}.",
+    "Обоснование и источники": "Reasoning and sources",
+    "Доступно для детализации": "Available for refinement",
+    "Включить в детализацию — {id}": "Include in refinement — {id}",
     "Передаётся на детализацию": "Selected for refinement",
     "Не выбрано": "Not selected",
     "Исходное требование (фрагмент)": "Original requirement (excerpt)",

@@ -77,6 +77,33 @@ def review_view(result):
             "primary_ids": primary_ids, "explicit": explicit}
 
 
+def update_review_selection(ready, previous, visible, checked):
+    """Update only visible eligible IDs; preserve selections on other pages."""
+    ready_set = set(ready)
+    visible_set = set(visible) & ready_set
+    selected = (set(previous) & ready_set) - visible_set
+    selected.update(set(checked) & visible_set)
+    return [rid for rid in ready if rid in selected]
+
+
+def review_request_export(result, requests):
+    """Private review suggestions only: no new allocation, approval or model call."""
+    view = review_view(result)
+    allowed = set(view["candidates"]) | set(view["unallocated"]) | {
+        rid for group in view["outside"] for rid in group["ids"]}
+    targets = set(view["selected"]) & set(view["profile"])
+    rows = []
+    for rid, pid in requests.items():
+        if rid not in allowed or pid not in targets:
+            continue
+        row = result["requirements"][rid]
+        rows.append({"requirement_id": rid, "proposed_function_id": pid,
+                     "proposed_function": view["profile"][pid]["name"],
+                     "source": row["source"], "section": row["section"], "quote": row["quote"]})
+    return json.dumps({"format": "mint-review-requests/1", "requires_verification": True,
+                       "requests": rows}, ensure_ascii=False, indent=2)
+
+
 def evidence_rows(rid, prepared, result):
     """Deduplicate only exact citations from the same source/section/table.
     Preserve roles, distinct table occurrences and all reference IDs.
