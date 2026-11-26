@@ -3,7 +3,8 @@ import json
 
 import streamlit as st
 
-from ..draft_atomic import MAX_SAMPLE, atomic_diagnostics, extract_atomic_sample, prepare_atomic_sources
+from ..draft_atomic import (MAX_SAMPLE, atomic_diagnostics, extract_atomic_sample, prepare_atomic_sources,
+                            fact_rows, fact_in_group)
 from ..draft_checkpoint import _identity
 from ..i18n import tr
 from ..kb import list_kb_documents, source_path
@@ -46,7 +47,7 @@ _PICK_PREFIX = "atomic_pick_"
 
 def _search_text(row):
     table = row.get("table_context") or {}
-    return " ".join(" ".join(str(row.get(k, "")) for k in ("source", "section", "text"))
+    return " ".join(" ".join(str(row.get(k, "")) for k in ("section", "text"))
                     .split()) + " " + " ".join(str(table.get(k, "")) for k in ("caption", "header"))
 
 
@@ -82,7 +83,8 @@ def _reset_sample_widgets():
     for key in list(session):
         if key.startswith(_PICK_PREFIX) or key in (
                 _SELECTION, "atomic_selection", "atomic_preview", "atomic_result_fragment",
-                "atomic_query", "atomic_section_filter", "atomic_selected_only", "atomic_sample_page"):
+                "atomic_query", "atomic_section_filter", "atomic_selected_only", "atomic_sample_page",
+                "atomic_category", "atomic_fact_query", "atomic_fact_page", "atomic_problem_page"):
             session.pop(key, None)
 
 
@@ -136,24 +138,101 @@ def _render_sample_picker(spans):
     return selected
 
 
+def _result_key(cfg, signature, selected):
+    return (signature, None if selected is None else tuple(sorted(selected)),
+            _identity(cfg, "", "", stage="atomic_extract"), str(getattr(cfg, "llm_model", "")))
+
+
+def _render_result(result):
+    counts = result["counts"]
+    st.subheader(tr("Реестр исходных сведений"))
+    st.caption(tr("Кандидаты прошли только программную проверку. Смысловая точность и полнота требуют экспертной оценки."))
+    st.text(tr("Принято кандидатов: {n}; обработано фрагментов: {done} из {total}.",
+               n=counts.get("accepted", 0), done=counts.get("fragments_processed", 0),
+               total=counts.get("fragments_selected", 0)))
+    st.caption(tr("Без зарегистрированных ошибок: {complete}; частичные: {partial}; не обработаны: {failed}; пустые ответы: {empty}.",
+                  complete=counts.get("fragments_complete", 0), partial=counts.get("partial_fragments", 0),
+                  failed=counts.get("fragments_failed", 0), empty=counts.get("empty_response", 0)))
+    if counts.get("source_read_errors") or counts.get("partial_fragments") or counts.get("fragments_failed"):
+        st.warning(tr("Есть ограничения или ошибки разбора. Полный проход не означает полноту извлечённых сведений."))
+    if result.get("scope") != "all":
+        st.caption(tr("Техническая выборка, не весь документ."))
+    rows = fact_rows(result)
+    categories = {
+        "all": tr("Все сведения"), "interactions": tr("Информационные взаимодействия"),
+        "participants": tr("Участники и системы"), "data": tr("Состав и виды данных"),
+        "security": tr("Категории доступа и защита"), "metrics": tr("Показатели назначения"),
+        "timing": tr("Периодичность и сроки"), "actions": tr("Действия и модальность"),
+        "constraints": tr("Ограничения и условия"),
+    }
+    totals = {g: sum(fact_in_group(fact, g) for _, fact in rows) for g in categories}
+    group = st.selectbox(tr("Категория сведений"), list(categories),
+                         format_func=lambda g: f"{categories[g]} ({totals[g]})", key="atomic_category")
+    st.caption(tr("Одно сведение может относиться к нескольким категориям; его идентификатор сохраняется."))
+    query = st.text_input(tr("Поиск по извлечённым сведениям"), key="atomic_fact_query")
+    tokens = query.casefold().split()
+    filtered = [(span, fact) for span, fact in rows if fact_in_group(fact, group) and
+                all(t in (fact["quote"] + " " + " ".join(fact["fields"].values())).casefold() for t in tokens)]
+    st.caption(tr("Найдено: {n} из {total}", n=len(filtered), total=totals[group]))
+    labels = _field_labels()
+    for span, fact in _page(filtered, "atomic_fact_page", size=10):
+        with st.container(border=True):
+            st.caption(fact["id"])
+            for field, value in fact["fields"].items():
+                _wrapped(labels[field] + ": " + value)
+            with st.expander(tr("Просмотр исходного фрагмента") + " · " + fact["id"]):
+                _wrapped(span["source"] + " › " + span["section"])
+                table = span.get("table_context") or {}
+                if table.get("header"):
+                    _wrapped(table["header"])
+                _wrapped(fact["quote"])
+                st.caption(f'{span["id"]} · {fact["start"]}:{fact["end"]}')
+    problems = [row for row in result["fragments"] if row["status"] != "processed" or not row["facts"]]
+    with st.expander(tr("Диагностика фрагментов ({n})", n=len(problems))):
+        st.caption(tr("Пустой ответ не доказывает отсутствие существенных сведений."))
+        status_labels = {"processed": tr("Пустой ответ"), "partial": tr("Неполный результат"),
+                         "invalid_payload": tr("Некорректный ответ модели")}
+        for row in _page(problems, "atomic_problem_page", size=5):
+            st.caption(row["id"] + " · " + (status_labels.get(row["status"]) or _label(row["status"])))
+            _wrapped(row["source"] + " › " + row["section"])
+            _wrapped(row["text"])
+    st.caption(tr("Локальная выгрузка содержит исходные тексты. Не передавайте её за пределы контура."))
+    st.download_button(tr("Скачать локальную выборку фактов"),
+                       json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False),
+                       file_name="mint_atomic_sample_private.json", mime="application/json", key="atomic_private")
+    st.download_button(tr("Скачать обезличенные данные для анализа"),
+                       json.dumps(atomic_diagnostics(result), ensure_ascii=False, indent=2, allow_nan=False),
+                       file_name="mint_atomic_analysis.json", mime="application/json", key="atomic_safe")
+    st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
+
+
 def render_atomic_sample(cfg):
     st.subheader(tr("V3 — эксперимент извлечения фактов"))
     st.caption(tr("Выберите только исходные основания A. Вики B, поиск функций, распределение требований и Word не используются."))
     names, _ = list_kb_documents(cfg)
     sources = st.multiselect(tr("Документы-основания из вики"), names, key="atomic_sources")
     signature = _signature(cfg, sources)
-    if st.button(tr("Подготовить выборку фрагментов"), key="atomic_prepare", disabled=not sources):
+    manual = st.checkbox(tr("Техническая диагностика: ручная выборка"), key="atomic_manual")
+    if not manual:
+        st.caption(tr("Mint автоматически обработает все фрагменты выбранных оригиналов."))
+    button_label = tr("Подготовить выборку фрагментов") if manual else tr("Извлечь сведения из документов")
+    if st.button(button_label, key="atomic_prepare", disabled=not sources):
         st.session_state.pop("atomic_prepared", None)
         st.session_state.pop("atomic_result", None)
         _reset_sample_widgets()
         with st.status(tr("Чтение оригиналов оснований"), expanded=False) as status:
+            progress = render_progress(status)
             try:
-                prepared = prepare_atomic_sources(cfg, sources, render_progress(status))
-            except (DraftError, OSError, ValueError, RuntimeError):
-                status.update(label=tr("Не удалось подготовить выборку."), state="error")
-            else:
+                prepared = prepare_atomic_sources(cfg, sources, progress)
                 st.session_state["atomic_prepared"] = signature, prepared
-                status.update(label=tr("Выборка подготовлена"), state="complete")
+                if not manual:
+                    result = extract_atomic_sample(cfg, prepared, None, progress)
+                    st.session_state["atomic_result"] = _result_key(cfg, signature, None), result
+            except (DraftError, OSError, ValueError, RuntimeError):
+                status.update(label=tr("Не удалось обработать выборку."), state="error")
+            else:
+                status.update(label=tr("Выборка подготовлена") if manual else tr("Эксперимент завершён"),
+                              state="complete")
     saved = st.session_state.get("atomic_prepared")
     if not saved or saved[0] != signature:
         return
@@ -164,54 +243,20 @@ def render_atomic_sample(cfg):
     if not spans:
         st.warning(tr("Нет доступных фрагментов для эксперимента."))
         return
-    st.caption(tr("Выберите до {n} фрагментов для одинакового контрольного прогона на каждой модели.", n=MAX_SAMPLE))
-    def title(sid):
-        row = spans[sid]
-        return f"{sid} · {row['source']} › {row['section']}"
-    selected = _render_sample_picker(spans)
-    key = (signature, tuple(sorted(selected)), _identity(cfg, "", "", stage="atomic_extract"),
-           str(getattr(cfg, "llm_model", "")))
-    if st.button(tr("Извлечь факты из выборки"), key="atomic_run", disabled=not selected):
-        st.session_state.pop("atomic_result", None)
-        with st.status(tr("Извлечение атомарных сведений"), expanded=False) as status:
-            try:
-                result = extract_atomic_sample(cfg, prepared, selected, render_progress(status))
-            except (DraftError, OSError, ValueError, RuntimeError):
-                status.update(label=tr("Не удалось обработать выборку."), state="error")
-            else:
-                st.session_state["atomic_result"] = key, result
-                status.update(label=tr("Эксперимент завершён"), state="complete")
+    selected = None
+    if manual:
+        st.caption(tr("Выберите до {n} фрагментов для одинакового контрольного прогона на каждой модели.", n=MAX_SAMPLE))
+        selected = _render_sample_picker(spans)
+        if st.button(tr("Извлечь факты из выборки"), key="atomic_run", disabled=not selected):
+            st.session_state.pop("atomic_result", None)
+            with st.status(tr("Извлечение атомарных сведений"), expanded=False) as status:
+                try:
+                    result = extract_atomic_sample(cfg, prepared, selected, render_progress(status))
+                except (DraftError, OSError, ValueError, RuntimeError):
+                    status.update(label=tr("Не удалось обработать выборку."), state="error")
+                else:
+                    st.session_state["atomic_result"] = _result_key(cfg, signature, selected), result
+                    status.update(label=tr("Эксперимент завершён"), state="complete")
     saved = st.session_state.get("atomic_result")
-    if not saved or saved[0] != key:
-        return
-    result = saved[1]
-    counts = result["counts"]
-    st.caption(tr("Кандидаты прошли только программную проверку. Смысловая точность и полнота требуют экспертной оценки."))
-    st.text(tr("Принято кандидатов: {n}; обработано фрагментов: {done} из {total}.",
-               n=counts.get("accepted", 0), done=counts.get("fragments_processed", 0),
-               total=counts.get("fragments_selected", 0)))
-    rows = {r["id"]: r for r in result["fragments"]}
-    sid = st.selectbox(tr("Результат по фрагменту"), list(rows), format_func=title, key="atomic_result_fragment")
-    row = rows[sid]
-    status_labels = {"processed": tr("Обработано"), "partial": tr("Неполный результат"),
-                     "invalid_payload": tr("Некорректный ответ модели")}
-    st.caption(status_labels.get(row["status"]) or _label(row["status"]))
-    with st.expander(tr("Просмотр исходного фрагмента")):
-        _wrapped(row["text"])
-    if row.get("table_context"):
-        _wrapped(row["table_context"]["header"])
-    labels = _field_labels()
-    for fact in row["facts"]:
-        with st.container(border=True):
-            st.caption(f'{fact["id"]} · {fact["start"]}:{fact["end"]}')
-            _wrapped(fact["quote"])
-            for field, value in fact["fields"].items():
-                _wrapped(labels[field] + ": " + value)
-    st.caption(tr("Локальная выгрузка содержит исходные тексты. Не передавайте её за пределы контура."))
-    st.download_button(tr("Скачать локальную выборку фактов"),
-                       json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False),
-                       file_name="mint_atomic_sample_private.json", mime="application/json", key="atomic_private")
-    st.download_button(tr("Скачать обезличенные данные для анализа"),
-                       json.dumps(atomic_diagnostics(result), ensure_ascii=False, indent=2, allow_nan=False),
-                       file_name="mint_atomic_analysis.json", mime="application/json", key="atomic_safe")
-    st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
+    if saved and saved[0] == _result_key(cfg, signature, selected):
+        _render_result(saved[1])

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V3: whole-original scan by default, optional technical sample, numbered source-line evidence instead of regenerated quotes, bounded recovery on input/output limits, categorized local fact registry and explicit fragment diagnostics. Version 21.4.32; semantic acceptance pending, V2 unchanged.
+
 - V3 sample UI: local full-text and table-header search, section filter, paginated readable fragment cards, persistent selection, selected-only view and clear selection. Version 21.4.31; extraction unchanged.
 
 - V3 opt-in cold sample experiment: literal atomic candidates with strict Pydantic structure, exact fragment offsets and existing table metric checks; private sample and anonymous diagnostics, no new installed packages or changes to V2. Version 21.4.30; real acceptance pending.
