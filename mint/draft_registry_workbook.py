@@ -46,7 +46,10 @@ def registry_identity(prepared, result):
 
 
 def record_key(row):
-    return _digest([row["source"], row["section"], _normalized(row["quote"])])
+    data = [row["source"], row["section"], _normalized(row["quote"])]
+    if row.get("table_context"):
+        data.append(row["table_context"]["occurrence"])
+    return _digest(data)
 
 
 def _accepted(p, result):
