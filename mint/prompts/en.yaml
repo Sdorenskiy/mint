@@ -811,6 +811,15 @@ draft_target_dossier: |-
   Use only span_id from evidence and facet codes from facets; first and last are inclusive integer n values, equal for one line. Do not copy text or combine different fragments. At most 12 material selections, without repeats.
   Return {"items":[{"span_id":"F1","facet":"data_content","first":1,"last":1}]}.
 
+draft_target_characteristic_review: |-
+  Independently review each candidate in items against its record, original anchors, function and context.target. The function name/description is a hypothesis, not evidence; anchors are original quotations for establishing a link, not an approved decision.
+  facet_supported means record actually contains the characteristic of the specified facet, not merely similar words; function_supported means a link to the specific function is supported; target_involved means target participation in this flow or applicability to the target is supported; conditions_preserved means material conditions and exceptions are retained. If uncertain, false.
+  relation: target (target characteristic), interaction (flow involving the target, not necessarily a target duty), other (only another participant), uncertain. Never transfer external ownership or treat a characteristic as proof that implementation changes are necessary.
+  data_categories are explicitly named information types; data_content is content and fields; security/data_constraints are explicitly established access restrictions/protection measures, never infer them from data names. Distinguish transferred data from data in other processes.
+  flow, source_party, destination_party are short verbatim parts of record or used anchors referring to this exact flow; leave absent fields empty. anchor_refs contains only IDs of actually used anchors, [] if record suffices; do not link different flows based on similar words.
+  For performance/capacity extract metric from record: subject, value, unit, conditions verbatim from the quote or table header, level: current|target|unknown, current_value and target_value only if explicit in this row, otherwise empty. Never calculate, borrow values or invent level. For other facets metric: null.
+  Return exactly one answer for each id; do not rewrite quotations; reason briefly supports the verdict. Return {"items":[{"id":"D1","facet_supported":false,"function_supported":false,"target_involved":false,"conditions_preserved":false,"relation":"uncertain","anchor_refs":[],"flow":"","source_party":"","destination_party":"","metric":null,"reason":"reason"}]}.
+
 draft_target_allocation: |-
   Sources with source_role = reference_context are informational, not independent obligations. Use only explicitly applicable current state of the target; plans, analogies and disputed revisions do not establish implementation. Target metrics must follow from original bases.
   Determine the obligation of context.target specifically, not mere mention of its name. evidence contains original

@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2: independently review existing dossier characteristics against original evidence, including literal metric validation, separate target/interaction context, readable evidence cards and private workbook review columns. Version 21.4.29; real acceptance pending.
+
 - V2 function review: optional non-authoritative hierarchy, bounded larger aggregate profile, prioritized allocation profile and separate actor-contract diagnostics with one retry. Version 21.4.28; real acceptance pending.
 
 - V2 dossier quality: numbered original line selection, balanced bounded retrieval routes, detailed rejection and budget diagnostics. Version 21.4.27; real-model acceptance pending.

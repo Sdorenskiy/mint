@@ -371,6 +371,120 @@ def _metric_fields(reply, row, state, refs):
     return metric
 
 
+def _characteristic_verdict(reply, record, facet, anchors):
+    """Validate a characteristic separately from obligations and implementation.
+
+    The original R record remains the only statement. Structured values may
+    only be literal selections from it or explicitly cited original anchors.
+    """
+    result = {"status": "needs_review"}
+    reason = _text(reply, "reason")[:_MAX_TEXT]
+    if reason:
+        result["reason"] = reason
+    refs = _valid_refs(reply, "anchor_refs", anchors)
+    relation = _text(reply, "relation")
+    if (not reason or refs is None or relation not in {"target", "interaction", "other", "uncertain"}
+            or any(type(reply.get(k)) is not bool for k in
+                   ("facet_supported", "function_supported", "target_involved", "conditions_preserved"))):
+        return {**result, "status": "invalid_response"}
+    if (relation not in {"target", "interaction"} or not all(reply[k] for k in
+            ("facet_supported", "function_supported", "target_involved", "conditions_preserved"))):
+        return result
+    if record.get("source_role") == "reference_context":
+        return result
+    evidence = [record] + [anchors[k] for k in refs]
+    fields = {}
+    for key in ("flow", "source_party", "destination_party"):
+        value = reply.get(key, "")
+        if not isinstance(value, str) or len(value) > 300:
+            return {**result, "status": "invalid_response"}
+        value = value.strip()
+        if value and not any(_normalized(value) in _normalized(
+                r["quote"] + "\n" + (r.get("table_context") or {}).get("header", "")) for r in evidence):
+            return {**result, "status": "invalid_response"}
+        if value:
+            fields[key] = value
+    if facet in {"performance", "capacity"}:
+        metric = _metric_fields(reply, record, {}, [])
+        if metric is False or metric is None:
+            return {**result, "status": "missing_metric_evidence"}
+        # No current/target value can be borrowed from another flow.
+        if metric["conditions"] and _normalized(metric["conditions"]) not in _normalized(
+                record["quote"] + "\n" + (record.get("table_context") or {}).get("header", "")):
+            return {**result, "status": "missing_metric_evidence"}
+        fields["metric"] = metric
+    return {**result, "status": "model_supported", "relation": relation, "anchor_refs": refs, **fields}
+
+
+def _review_characteristics(cfg, dossiers, records, profile, spans, context, emit):
+    """Review existing dossier facts in bounded batches; no extra registry/index.
+
+    Only A originals enter this stage. A supported characteristic is not a
+    supported requirement, implementation claim or expert decision.
+    """
+    budget = _candidate_budget(cfg)
+    counts = Counter()
+    jobs = []
+    for pid, dossier in dossiers.items():
+        p = profile[pid]
+        anchors = {}
+        for rid in p.get("record_refs", []):
+            if rid in records and records[rid].get("source_role") != "reference_context":
+                anchors[rid] = _compact(records[rid])
+        for sid in p.get("refs", []):
+            if sid in spans:
+                s = spans[sid]
+                anchors[sid] = {"id": sid, "source": s["source"], "section": s["section"],
+                                "quote": s["text"],
+                                **({"table_context": s["table_context"]} if s.get("table_context") else {})}
+        base = {"context": context, "function": {"id": pid, "name": p["name"], "description": p["description"]}}
+        rows = _bounded_rows(anchors.values(), min(4000, budget // 4))[:4]
+        if len(rows) < len(anchors):
+            counts["anchor_limit"] += len(anchors) - len(rows)
+        base["anchors"] = rows
+        allowed = {r["id"]: r for r in rows}
+        pending = []
+        for facet, entry in dossier["facets"].items():
+            for fact in entry["facts"]:
+                counts["candidates"] += 1
+                rid = fact.get("record_id")
+                record = records.get(rid)
+                if (record is None or record.get("source_role") == "reference_context"
+                        or _normalized(fact.get("quote", "")) != _normalized(record["quote"])):
+                    fact["review"] = {"status": "missing_evidence"}
+                    counts["missing_evidence"] += 1
+                    continue
+                # Local response ID only, never a new source record.
+                item = {"id": "D" + str(counts["candidates"]), "facet": facet, "record": _compact(record)}
+                if _payload_size({**base, "items": [item]}) > budget:
+                    fact["review"] = {"status": "context_limit"}
+                    counts["context_limit"] += 1
+                    continue
+                if pending and (len(pending) >= 6 or _payload_size({**base, "items": [x[0] for x in pending] + [item]}) > budget):
+                    jobs.append((base, allowed, pending))
+                    pending = []
+                pending.append((item, fact))
+        if pending:
+            jobs.append((base, allowed, pending))
+    for base, anchors, batch in tracked(emit, "target_characteristic_review", jobs):
+        payload = {**base, "items": [item for item, _ in batch]}
+        replies, statuses, unexpected = _unique_answers(cfg, "target_characteristic_review", payload,
+                                                       [item["id"] for item, _ in batch])
+        counts["batches"] += 1
+        counts["unexpected_responses"] += unexpected
+        for item, fact in batch:
+            key = item["id"]
+            review = (_characteristic_verdict(replies[key], item["record"], item["facet"], anchors)
+                      if key in replies else {"status": statuses[key]})
+            fact["review"] = review
+            counts[review["status"]] += 1
+            if review["status"] == "model_supported":
+                counts["supported_" + item["facet"]] += 1
+                if "metric" in review:
+                    counts["supported_metrics"] += 1
+    return counts
+
+
 def _validate_decision(reply, rid, records, allowed, profile, target):
     """A target claim needs explicit original need evidence; derived change needs state."""
     row = records[rid]
@@ -1017,6 +1131,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                 "input_identity": input_identity(cfg, prepared, list(profile.values()))}
     original_records = {rid: row for rid, row in records.items() if rid in original_ids}
     dossier_positions, dossier_ids = dossier_context(records, dossiers)
+    characteristic_counts = _review_characteristics(cfg, dossiers, records, base_profile, spans, context, emit)
     decisions, state = {}, {}
     # B candidates are exact original spans, never inserted into records.
     # Rank only the already retrieved bounded pool; no extra query per need.
@@ -1270,6 +1385,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
     dossier_counts.update(summarize_dossiers(dossiers, decisions, outcomes, proposals))
     diagnostics["dossiers"] = dict(dossier_counts)
+    diagnostics["characteristic_review"] = dict(characteristic_counts)
     diagnostics["dossier_priority"] = dict(Counter(
         f"{facet}_{row['status']}" for dossier in dossiers.values()
         for facet, row in dossier["facets"].items()

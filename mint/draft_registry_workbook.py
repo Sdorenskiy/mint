@@ -208,14 +208,23 @@ def registry_workbook(prepared, result):
         for pid, dossier in result.get("dossiers", {}).items():
             for facet, row in dossier["facets"].items():
                 if not row["facts"]:
-                    yield (pid, dossier["function"], facet, row["status"], "", "", "", "")
+                    yield (pid, dossier["function"], facet, row["status"], *[""] * 16)
                 for fact in row["facts"]:
                     rid = fact.get("record_id", "")
+                    review = fact.get("review", {})
+                    metric = review.get("metric", {})
                     yield (pid, dossier["function"], facet, row["status"], rid, fact["span_id"],
-                           fact["quote"], row.get("coverage", {}).get(rid, ""))
+                           fact["quote"], row.get("coverage", {}).get(rid, ""), review.get("status", "not_searched"),
+                           review.get("relation", ""), review.get("flow", ""), review.get("source_party", ""),
+                           review.get("destination_party", ""), metric.get("subject", ""), metric.get("value", ""),
+                           metric.get("unit", ""), metric.get("level", ""), metric.get("conditions", ""),
+                           review.get("reason", ""), ", ".join(review.get("anchor_refs", [])))
     sheet(tr("Характеристики функций"), ["ID", tr("Функция"), tr("Характеристика"),
-          tr("Статус поиска"), tr("Исходная запись"), tr("Фрагмент"), tr("Цитата"), tr("Статус отражения")],
-          dossiers(), [12, 42, 28, 24, 16, 16, 100, 24])
+          tr("Статус поиска"), tr("Исходная запись"), tr("Фрагмент"), tr("Цитата"), tr("Статус отражения"),
+          tr("Статус проверки характеристики"), tr("Связь с целью"), tr("Направление обмена"),
+          tr("Источник данных"), tr("Получатель данных"), tr("Объект"), tr("Значение"), tr("Единица"),
+          tr("Уровень"), tr("Условия"), tr("Обоснование проверки"), tr("Опорные ссылки")],
+          dossiers(), [12, 42, 28, 24, 16, 16, 100, 24, 28, 20, 38, 28, 28, 32, 18, 18, 18, 48, 70, 24])
     def reference_rows():
         for rid, info in result.get("linked_by_need", {}).items():
             for item in info["items"]:

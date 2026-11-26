@@ -105,6 +105,47 @@ def test_numbered_original_parts_and_diverse_budget():
     assert not bounded and limits["budget_omitted"] == 3
 
 
+def test_independent_characteristic_review():
+    record = {"id": "R1", "source": "a.md", "section": "Flow",
+              "quote": "Relay receives identifiers from Desk.", "source_role": "need", "kind": "definition"}
+    metric = {"id": "R2", "source": "a.md", "section": "Metric",
+              "quote": "| Rate | 20 | msg/s |", "source_role": "need", "kind": "nonfunctional",
+              "table_context": {"header": "| Metric | Value | Unit |"}}
+    records = {"R1": record, "R2": metric}
+    profile = {"C1": {"id": "C1", "name": "Receive", "description": "Candidate", "refs": [], "record_refs": ["R1"]}}
+    dossiers = {"C1": {"function": "Receive", "facets": {
+        "data_content": {"facts": [{"record_id": "R1", "quote": record["quote"]}]},
+        "security": {"facts": [{"record_id": "R1", "quote": record["quote"]}]},
+        "performance": {"facts": [{"record_id": "R2", "quote": metric["quote"]}]},
+    }}}
+    before = json.dumps(records)
+    yes = {"facet_supported": True, "function_supported": True, "target_involved": True,
+           "conditions_preserved": True, "relation": "interaction", "anchor_refs": [],
+           "source_party": "Desk", "destination_party": "Relay", "reason": "fixture"}
+    assert target._characteristic_verdict(yes, record, "data_content", {})["status"] == "model_supported"
+    for change in ({"source_party": "invented"}, {"anchor_refs": ["R99"]}, {"target_involved": "true"}):
+        assert target._characteristic_verdict({**yes, **change}, record, "data_content", {})["status"] == "invalid_response"
+    assert target._characteristic_verdict({**yes, "relation": "other"}, record, "data_content", {})["status"] == "needs_review"
+    assert target._characteristic_verdict(yes, {**record, "source_role": "reference_context"}, "data_content", {})["status"] == "needs_review"
+    metric_reply = {**yes, "source_party": "", "destination_party": "", "metric": {
+        "subject": "Rate", "value": "20", "unit": "msg/s", "level": "target", "target_value": "20"}}
+    assert target._characteristic_verdict(metric_reply, metric, "performance", {})["status"] == "model_supported"
+    assert target._characteristic_verdict({**metric_reply, "metric": {**metric_reply["metric"], "value": "200"}},
+                                         metric, "performance", {})["status"] == "missing_metric_evidence"
+    def model(cfg, stage, payload):
+        assert stage == "target_characteristic_review"
+        return {"items": [{"id": i["id"], **(metric_reply if i["facet"] == "performance" else
+                    {**yes, "facet_supported": i["facet"] != "security"})} for i in payload["items"]]}
+    with TemporaryDirectory() as tmp, patch.object(function, "_json", side_effect=model):
+        counts = target._review_characteristics(config(tmp), dossiers, records, profile, {}, {"target": "Relay"}, lambda *_: None)
+    assert counts["model_supported"] == 2 and counts["needs_review"] == 1 and counts["supported_metrics"] == 1
+    assert dossiers["C1"]["facets"]["security"]["facts"][0]["review"]["status"] == "needs_review"
+    assert json.dumps(records) == before
+    safe = target_registry_export({}, {"diagnostics": {"characteristic_review": {**counts, "private quote": 1}}})
+    assert safe["diagnostics"]["characteristic_review"]["supported_metrics"] == 1
+    assert "private quote" not in json.dumps(safe)
+
+
 def test_strict_quality_and_batch():
     good = {"supported": True, "correct_actor": True, "no_new_decisions": True, "reason": "ok"}
     assert _assessment_verdict({}, good) == "model_supported"
@@ -160,6 +201,7 @@ def test_workbook_and_comparison():
 if __name__ == "__main__":
     test_additive_and_privacy()
     test_numbered_original_parts_and_diverse_budget()
+    test_independent_characteristic_review()
     test_strict_quality_and_batch()
     test_workbook_and_comparison()
     print("ИТОГ: additive function evidence, strict review, independent batch verdicts, private workbook and regression")
