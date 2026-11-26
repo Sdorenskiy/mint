@@ -205,6 +205,12 @@ def _split_section(section, lines):
             yield section, text
 
 
+def _quote_key(row):
+    """Identical row text in different tables may describe different duties."""
+    return (row["source"], row["section"], _normalized(row["quote"]),
+            (row.get("table_context") or {}).get("occurrence"))
+
+
 def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_provenance=False,
                   focus=None, prepared_chunks=None, fragment_status=None, reference_contexts=None, reference_revision=None, table_contexts=None):
     """Verified extraction with bounded parallel requests and stable source ordering.
@@ -301,11 +307,15 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
             issues.append(tr("В основании «{source}» не найдена цитата, указанная моделью.",
                              source=bad_source))
         for quote in quotes:
-            key = (name, section, _normalized(quote))
+            record = {"source": name, "section": section, "quote": quote}
+            table = (table_contexts or {}).get((name, _index))
+            if table:
+                record["table_context"] = table
+            key = _quote_key(record)
             if key not in seen:
                 rid = f"R{len(requirements) + 1}"
                 seen[key] = rid
-                requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
+                requirements[rid] = {"id": rid, **record}
                 if include_provenance:
                     requirements[rid]["source_spans"] = []
             else:
