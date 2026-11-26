@@ -4,6 +4,8 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Общесистемные требования": "System-wide requirements",
+    "Справочные фрагменты в анализе: {n}; не поместились: {budget}; нет кандидатов: {missing}.": "Reference excerpts in analysis: {n}; did not fit: {budget}; no candidates: {missing}.",
     "Не удалось извлечь ни одной достоверной записи: повторите разбор оснований.": "No reliable records could be extracted; retry the source analysis.",
     "Ответственность подтверждена моделью": "Responsibility supported by model",
     "Необходимость доработки не установлена": "Need for change not established",
