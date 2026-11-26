@@ -206,7 +206,7 @@ def _function_characteristics(pid, ids, prepared, result, key):
             row = facets.get(facet, {})
             supported = sum(f.get("review", {}).get("status") == "model_supported" for f in row.get("facts", []))
             st.text(_label(facet) + " · " + _label(row.get("status", "not_searched")))
-            st.caption(tr("Проверено моделью: {n} из {total}", n=supported, total=len(row.get("facts", []))))
+            st.caption(tr("Поддержано моделью: {n} из {total}", n=supported, total=len(row.get("facts", []))))
         st.caption(tr("Категория доступа и необходимая защита не выводятся автоматически из названия данных."))
     rows, facts = [], {}
     for facet in ("participants", "direction", "data_categories", "data_content", "data_format",
@@ -251,7 +251,7 @@ def _function_characteristics(pid, ids, prepared, result, key):
                         relation = review.get("relation")
                         if relation == "interaction":
                             st.caption(tr("Контекст взаимодействия — не обязательно обязанность цели"))
-                        for field, label in (("flow", tr("Направление обмена")),
+                        for field, label in (("flow", tr("Поток данных")),
                                              ("source_party", tr("Источник данных")),
                                              ("destination_party", tr("Получатель данных"))):
                             if review.get(field):
@@ -265,7 +265,14 @@ def _function_characteristics(pid, ids, prepared, result, key):
                     if review.get("reason"):
                         _wrapped(review["reason"])
                     if review.get("anchor_refs"):
-                        st.caption(_safe_markdown(tr("Ссылки") + ": " + ", ".join(review["anchor_refs"])))
+                        with st.expander(tr("Опорные ссылки") + ": " + ", ".join(review["anchor_refs"])):
+                            for anchor in review["anchor_refs"]:
+                                row = result["requirements"].get(anchor)
+                                if row:
+                                    st.caption(_safe_markdown(f"{anchor} · {row['source']} › {row['section']}"))
+                                    if row.get("table_context"):
+                                        st.text(row["table_context"].get("header", ""))
+                                    _wrapped(row["quote"])
     if st.checkbox(tr("Характеристики и найденные сведения"), key=key + "_facets"):
         st.caption(tr("Найденные цитаты — кандидаты для проверки, а не подтверждённая классификация данных или требования к защите."))
         st.dataframe(rows, hide_index=True, use_container_width=True)

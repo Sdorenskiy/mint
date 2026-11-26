@@ -431,12 +431,11 @@ def _review_characteristics(cfg, dossiers, records, profile, spans, context, emi
         for rid in p.get("record_refs", []):
             if rid in records and records[rid].get("source_role") != "reference_context":
                 anchors[rid] = _compact(records[rid])
-        for sid in p.get("refs", []):
-            if sid in spans:
-                s = spans[sid]
-                anchors[sid] = {"id": sid, "source": s["source"], "section": s["section"],
-                                "quote": s["text"],
-                                **({"table_context": s["table_context"]} if s.get("table_context") else {})}
+        positions = {(spans[sid]["source"], spans[sid]["fragment"]) for sid in p.get("refs", []) if sid in spans}
+        for rid, record in records.items():
+            if rid not in anchors and record.get("source_role") != "reference_context" and any(
+                    (loc["source"], loc["fragment"]) in positions for loc in record.get("source_spans", [])):
+                anchors[rid] = _compact(record)
         base = {"context": context, "function": {"id": pid, "name": p["name"], "description": p["description"]}}
         rows = _bounded_rows(anchors.values(), min(4000, budget // 4))[:4]
         if len(rows) < len(anchors):

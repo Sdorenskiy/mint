@@ -123,6 +123,8 @@ def test_independent_characteristic_review():
            "conditions_preserved": True, "relation": "interaction", "anchor_refs": [],
            "source_party": "Desk", "destination_party": "Relay", "reason": "fixture"}
     assert target._characteristic_verdict(yes, record, "data_content", {})["status"] == "model_supported"
+    linked = target._characteristic_verdict({**yes, "anchor_refs": ["R1"]}, record, "data_content", {"R1": record})
+    assert linked["status"] == "model_supported" and linked["anchor_refs"] == ["R1"]
     for change in ({"source_party": "invented"}, {"anchor_refs": ["R99"]}, {"target_involved": "true"}):
         assert target._characteristic_verdict({**yes, **change}, record, "data_content", {})["status"] == "invalid_response"
     assert target._characteristic_verdict({**yes, "relation": "other"}, record, "data_content", {})["status"] == "needs_review"

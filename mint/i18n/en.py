@@ -4,6 +4,7 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Поток данных": "Data flow",
     "Опорные ссылки": "Anchor references",
     "Обоснование проверки": "Review rationale",
     "Связь с целью": "Target relation",
@@ -13,7 +14,7 @@ EN = {
     "Источник данных": "Data source",
     "Контекст взаимодействия — не обязательно обязанность цели": "Interaction context — not necessarily a target duty",
     "Характеристики функции — проверка модели не является согласованием требований.": "Function characteristics — model review is not requirement approval.",
-    "Проверено моделью: {n} из {total}": "Model-supported: {n} of {total}",
+    "Поддержано моделью: {n} из {total}": "Model-supported: {n} of {total}",
     "Показатели в согласуемом реестре требований; характеристики ниже проверяются отдельно.": "Metrics in the requirement registry under review; characteristics below are checked separately.",
     "Нефункциональные требования и ограничения": "Nonfunctional requirements and constraints",
     "Нефункциональные требования и ограничения: {n}; не распределено по функциям: {m}. Они остаются на контроле.": "Nonfunctional requirements and constraints: {n}; not linked to functions: {m}. They remain under review.",
