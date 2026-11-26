@@ -26,7 +26,7 @@ from .search import search_parent_child
 from .template_draft import (DraftError, _batches, _candidate_budget, _json,
                              _load_draft_sources, _measure_draft, _normalized, _candidates,
                              _numbers_supported, _record_draft_diagnostic,
-                             _source_chunks, _text)
+                             _source_chunks, _text, MAX_CHARS)
 from .i18n import tr
 
 SECTION_ROLES = frozenset({"need", "interface", "metric", "architecture", "constraint",
@@ -52,10 +52,10 @@ def _bounded_rows(rows, budget):
     return selected
 
 
-def _map_sources(documents, roles, *, prefix=""):
+def _map_sources(documents, roles, *, prefix="", max_chars=MAX_CHARS):
     spans, sections = {}, {}
     for name, markdown in documents:
-        for index, (path, text, table) in enumerate(_source_chunks(markdown, full_path=True, table_context=True), 1):
+        for index, (path, text, table) in enumerate(_source_chunks(markdown, full_path=True, table_context=True, max_chars=max_chars), 1):
             key = (name, path)
             if key not in sections:
                 sections[key] = {"id": prefix + "S" + str(len(sections) + 1), "source": name,
@@ -263,7 +263,8 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None, *, refe
         except DraftError:
             reference_status = "source_error"
         else:
-            reference_spans, reference_sections = _map_sources(reference_documents, {}, prefix="B")
+            reference_spans, reference_sections = _map_sources(reference_documents, {}, prefix="B",
+                max_chars=max(500, min(MAX_CHARS, _candidate_budget(cfg) // 5 - 600)))
             ref_evidence = OriginalEvidence(cfg, reference_spans, reference_hashes)
             reference_candidates = (_profile_candidates(cfg, reference_spans, reference_sections, {},
                                                        ref_evidence, context, emit) if discover_profile else [])
@@ -396,6 +397,7 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
                 "reason": reason, "function": function, "function_name": label,
                 "component": component if status != "unknown" else "", "state_refs": refs,
                 "applicability_status": "proposed", "change_status": "unresolved" if status == "unknown" else "proposed"}
+    decision["implementation_status"] = "unknown" if status in {"unknown", "explicit"} else "proposed"
     if change_gap:
         decision["change_gap"] = "missing_evidence"
     if metric_gap:
@@ -457,8 +459,10 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
         cached = None if reset_cache else cache.load(payload)
         if cached and set(cached) == allowed and all(v.strip() for v in cached.values()):
             for rid, reason in cached.items():
-                decisions[rid].update(status="model_supported", review_reason=reason,
-                                      applicability_status="model_supported", change_status="model_supported")
+                d = decisions[rid]
+                d.update(status="model_supported", review_reason=reason, applicability_status="model_supported",
+                         change_status="unresolved" if d.get("change") == "explicit" else "model_supported",
+                         implementation_status="unknown" if d.get("change") in {"explicit", "external"} else "model_supported")
             stats["cache_hits"] += len(items)
         else:
             replies, statuses, _ = _unique_answers(cfg, "target_verify", payload, allowed)
@@ -480,6 +484,9 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
                 d["review_reason"] = reason
                 if d["change_status"] == "model_supported":
                     d["status"] = "model_supported"
+                    d["implementation_status"] = "unknown" if d.get("change") in {"explicit", "external"} else "model_supported"
+                    if d.get("change") == "explicit":
+                        d["change_status"] = "unresolved"
                     accepted[rid] = reason
                 elif actor_ok and d.get("category") in {"target", "shared", "interaction"}:
                     # Keep supported responsibility but block claims about implementation.
@@ -487,6 +494,7 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
                     d["proposed_change"] = d.get("change", "unknown")
                     d["change"] = "unknown"
                     d["component"] = ""
+                    d["implementation_status"] = "unknown"
                 else:
                     d["status"] = "needs_review"
             if set(accepted) == allowed:
@@ -759,6 +767,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         # build_registry calls this only after extracting original records.
         # Keep the existing merge/typing pipeline; never replace originals.
         original_ids.update(records)
+        if not records and fragment_status and all(v in {"failed", "invalid_quote"} for v in fragment_status.values()):
+            raise DraftError(tr("Не удалось извлечь ни одной достоверной записи: повторите разбор оснований."))
         if automatic_functions and preview is None:
             discovered, counts = _functions_from_records(cfg, records, references, spans, context, emit)
             base_profile.update(discovered)
@@ -844,9 +854,11 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             wiki_counts["function_searches"] += 1
         # If discovery failed, the same bounded lexical retrieval still
         # runs per requirement below, without introducing B obligations.
-        if not base_profile or (preview is not None and not selected):
+        if not wiki_pool:
+            # Degraded lexical route even when function-level retrieval found no fit.
             wiki_pool.update(ref_pool)
     reference_counts = Counter()
+    retry_counts = Counter()
     linked_by_need = {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
                    and row["typing_status"] == "classified"]
@@ -886,6 +898,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             base["reference_status"] = {"linked_ids": [r["id"] for r in linked], "gaps": gaps}
         budget = _candidate_budget(cfg)
         if _payload_size(base) > budget:
+            if prepared.get("reference_sources"):
+                wiki_counts["allocation_budget_limit"] += 1
             decisions[rid] = {"status": "allocation_context_limit", "change": "unknown",
                               "category": "uncertain", "state_refs": [], "reason": ""}
             continue
@@ -926,6 +940,10 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             pool.extend(wiki)
             wiki_counts["needs_with_context"] += int(bool(wiki))
             wiki_counts["spans_supplied"] += len(wiki)
+            if not wiki:
+                wiki_counts["allocation_budget_limit"] += 1
+        elif prepared.get("reference_sources"):
+            wiki_counts["allocation_no_candidates"] += 1
         supplied = {r["id"] for r in pool}
         if linked or gaps:
             omitted = sum(r["id"] not in supplied for r in linked)
@@ -937,14 +955,24 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         # attribution. The independent reviewer cannot certify change/coverage
         # while a required linked clause is unresolved.
         state.update({r["id"]: r for r in pool})
-        answers, statuses, _ = _unique_answers(cfg, "target_allocation", {**base, "evidence": pool}, [rid])
-        if rid not in answers:
-            decisions[rid] = {"status": statuses[rid], "change": "unknown", "category": "uncertain",
-                              "state_refs": [], "reason": ""}
-            continue
-        decisions[rid] = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool}, allocation_profile,
-                                            context["target"])
-        decision = decisions[rid]
+        # Retry an invalid ID/schema once, not a semantic uncertainty or gateway outage.
+        payload = {**base, "evidence": pool}
+        for attempt in range(2):
+            answers, statuses, _ = _unique_answers(cfg, "target_allocation",
+                payload if not attempt else {**payload, "retry_contract": True}, [rid])
+            if rid not in answers:
+                decision = {"status": statuses[rid], "change": "unknown", "category": "uncertain",
+                            "state_refs": [], "reason": ""}
+            else:
+                decision = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool},
+                                              allocation_profile, context["target"])
+            malformed = decision["status"] in {"invalid_response", "missing_response", "duplicate_response"}
+            if attempt:
+                retry_counts["recovered" if not malformed and decision["status"] != "batch_error" else "exhausted"] += 1
+            if not malformed or attempt:
+                break
+            retry_counts["attempted"] += 1
+        decisions[rid] = decision
         if decision["status"] == "proposed" and decision.get("function") in dossier_ids:
             # Keep additional function evidence separate from current-state assertions.
             fact_rows = [_compact(records[k]) for k in dossier_ids[decision["function"]]
@@ -1010,6 +1038,9 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                                       "unlinked_records": sum(not ids for ids in function_links.values())}
     diagnostics["summaries"] = summary_counts
     diagnostics["verification"] = dict(verification_counts)
+    diagnostics["allocation_retry"] = dict(retry_counts)
+    diagnostics["applicability"] = dict(Counter(d.get("applicability_status", "unresolved") for d in decisions.values()))
+    diagnostics["implementation"] = dict(Counter(d.get("implementation_status", "unknown") for d in decisions.values()))
     diagnostics["allocation_validation"] = dict(Counter(d["validation_code"] for d in decisions.values() if "validation_code" in d))
     diagnostics["references"] = dict(references.counts)
     diagnostics["reference_gaps"] = dict(reference_counts)
