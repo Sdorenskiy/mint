@@ -198,6 +198,13 @@ _TARGET_COUNTERS = {
     "dossiers": ("searches", "hybrid_hits", "fallback_hits", "reference_gaps", "limited_searches", "batch_errors",
                  "invalid_quotes", "facts", "supplemental_records", "cache_hits", "not_searched", "found",
                  "found_partial", "not_found", "context_limit", "error", "unresolved_facts", "covered_facts"),
+    "metric_funnel": ("candidate_records", "not_allocated", "mechanically_supported", "verified",
+                      "review_unconfirmed", "rejected", "missing", "no_metric_decision"),
+    "dossier_priority": tuple(f"{facet}_{status}" for facet in
+                              ("data_categories", "data_content", "direction", "security", "data_constraints",
+                               "performance", "capacity")
+                              for status in ("not_searched", "found", "found_partial", "not_found",
+                                             "context_limit", "error")),
     "proposal_kinds": ("functional", "interface", "metric", "constraint"),
     "proposal_assessments": tuple(sorted(ASSESSMENT_STATUSES)),
 }

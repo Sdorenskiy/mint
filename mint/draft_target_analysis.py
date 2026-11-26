@@ -306,6 +306,21 @@ def _metric_pair(row, subject, value, unit):
         if header and line.strip().startswith("|"):
             labels, values = cells(header), cells(line)
             if len(labels) == len(values):
+                # A common layout stores the quantity and unit in separate cells.
+                # Accept only an unambiguous, explicitly labelled pair in this row;
+                # never borrow the unit from another row or infer a target level.
+                value_labels = {"значение", "величина", "value", "quantity"}
+                unit_labels = {"единица", "единица измерения", "ед. изм.", "ед. изм",
+                               "ед. измерения", "unit", "unit of measure", "measurement unit"}
+                value_cols = [i for i, label in enumerate(labels) if _normalized(label).casefold() in value_labels]
+                unit_cols = [i for i, label in enumerate(labels) if _normalized(label).casefold() in unit_labels]
+                if len(value_cols) == len(unit_cols) == 1:
+                    vi, ui = value_cols[0], unit_cols[0]
+                    subject_cells = [cell for i, cell in enumerate(values)
+                                     if i not in (vi, ui) and subject_pattern.search(cell)]
+                    if (len(subject_cells) == 1 and _normalized(values[vi]) == value
+                            and _normalized(values[ui]).casefold() == unit.casefold()):
+                        return True
                 subject_in_header = any(subject_pattern.search(label) for label in labels)
                 for label, cell in zip(labels, values):
                     if not (subject_pattern.search(label) if subject_in_header else subject_pattern.search(line)):
@@ -412,9 +427,36 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
         decision["change_gap"] = "missing_evidence"
     if metric_gap:
         decision["metric_gap"] = True
+        decision["metric_validation"] = "invalid" if metric is False else "missing"
     elif metric is not None:
         decision["metric"] = metric
     return decision
+
+
+def _metric_diagnostics(records, decisions):
+    """Numeric stage funnel; candidates are not verified metrics or measured recall."""
+    counts = Counter()
+    for rid, row in records.items():
+        d = decisions.get(rid)
+        candidate = (row.get("section_role") == "metric"
+                     or any(f.get("facet") in {"performance", "capacity"}
+                            for f in row.get("dossier_facets", []))
+                     or bool(d and ("metric" in d or d.get("metric_gap"))))
+        if not candidate:
+            continue
+        counts["candidate_records"] += 1
+        if d is None:
+            counts["not_allocated"] += 1
+        elif "metric" in d:
+            counts["mechanically_supported"] += 1
+            counts["verified" if d.get("status") == "model_supported" else "review_unconfirmed"] += 1
+        elif d.get("metric_validation") == "invalid":
+            counts["rejected"] += 1
+        elif d.get("metric_validation") == "missing":
+            counts["missing"] += 1
+        else:
+            counts["no_metric_decision"] += 1
+    return dict(counts)
 
 
 def _search_records(cfg, evidence, records, group, query):
@@ -1060,6 +1102,11 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                    "retrieval": dict(evidence.counts), "profile_retrieval": prepared["profile_retrieval"]}
     dossier_counts.update(summarize_dossiers(dossiers, decisions, outcomes, proposals))
     diagnostics["dossiers"] = dict(dossier_counts)
+    diagnostics["dossier_priority"] = dict(Counter(
+        f"{facet}_{row['status']}" for dossier in dossiers.values()
+        for facet, row in dossier["facets"].items()
+        if facet in {"data_categories", "data_content", "direction", "security", "data_constraints",
+                     "performance", "capacity"}))
     diagnostics["profile_status"] = (dict(function_counts) if automatic_functions else
                                      {prepared.get("profile_status", "no_candidates"): 1})
     wiki_status = prepared.get("reference_status", "disabled")
@@ -1082,6 +1129,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
     diagnostics["references"] = dict(references.counts)
     diagnostics["reference_gaps"] = dict(reference_counts)
     diagnostics["verified_metrics"] = sum(d["status"] == "model_supported" and "metric" in d for d in decisions.values())
+    diagnostics["metric_funnel"] = _metric_diagnostics(records, decisions)
     diagnostics["proposal_kinds"] = dict(Counter(p["kind"] for p in proposals))
     diagnostics["proposal_assessments"] = dict(Counter(p["assessment"] for p in proposals))
     diagnostics["source_read_errors"] = len(prepared["issues"])

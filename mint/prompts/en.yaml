@@ -804,7 +804,8 @@ draft_target_extract: |-
 draft_target_dossier: |-
   Find verbatim contiguous quotations in evidence describing facets of the specific function and its interactions.
   Seek conditions, participants, information content and categories, quantitative objectives with value, unit, subject and conditions, not just names.
-  table_context explains columns but quote only text. Consider headings, tables and linked sections. Quote enough of the fragment to convey its meaning.
+  Distinguish data_categories (explicit types of transferred information), data_content (specific fields and content) and security/data_constraints (explicit access classification and protection measures); never infer access classification from a data name. Retain the specific flow and participants in the quote when present.
+  table_context explains columns but quote only text. Consider headings, tables and linked sections. For table metrics quote the full row with subject, value and unit if they occupy separate columns.
   Relevance to a function is not proof of target ownership. Retain other participants' information as context.
   Never invent characteristics or treat missing information as evidence of absence. Return nothing for dimensions not found.
   Use only ids from evidence and facet codes from facets. At most 12 material quotations, without repeats.
@@ -823,7 +824,7 @@ draft_target_allocation: |-
   function_name, reusing the semantic name for the same function. component is supported or empty.
   Consider performance objectives: subject, units, conditions, current and target values.
   For quantitative objectives add metric: {"subject":"verbatim subject from quote or table header","value":"verbatim value from the quote",
-  "unit":"verbatim unit from the quote","conditions":"conditions","level":"current|target|unknown",
+  "unit":"verbatim unit from the quote or table header","conditions":"conditions","level":"current|target|unknown",
   "current_value":"","target_value":""}. Leave absent values empty; never infer numbers.
   For other requirements metric: null.
   reference_status identifies exact linked sections. Use them to clarify conditions, but do not assign other actors' obligations to the target. A link alone is not proof of existing implementation.

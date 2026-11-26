@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 quality: literal metric value/unit pairs in separate labelled table columns, anonymized metric-stage and priority dossier diagnostics, clearer distinction between transferred content and explicit access/protection classification. Version 21.4.24; no real-model acceptance yet.
+
 - V2 review screen: focus on explicitly selected functions, separate system-wide and unallocated requirements, explicit refinement scope, concise source table and on-demand deduplicated evidence, data categories and security evidence alongside metrics, private read-only JSON review snapshots. No analysis or prompt changes; version 21.4.23.
 
 - V2 pre-pilot stabilization: structural table occurrences and separate column context, conservative quantity/unit checks, explicit extraction failure and partial retry, corrected R/F/BF prompt contracts, bounded allocation retry, independent responsibility status, system-wide constraints, reference budget diagnostics and reopening scope for new candidates. Development version 21.4.22; real-model acceptance and architectural alternatives remain pending.
