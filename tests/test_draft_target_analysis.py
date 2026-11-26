@@ -342,7 +342,7 @@ def test_registry_end_to_end():
             assert preview["applicability"][by_quote[EXTERNAL]]["category"] == "other"
             ids = {p["name"]: p["id"] for p in preview["approved_profile"]}
             assert set(ids) == {"Messaging", "Data exchange"}
-            original_preview = json.dumps(preview, sort_keys=True)
+            original_preview = deepcopy(preview)
             stages.clear()
             with patch.object(target, "collect_dossiers", wraps=target.collect_dossiers) as deep:
                 scoped = target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
@@ -357,7 +357,7 @@ def test_registry_end_to_end():
             assert all(scoped["requirements"][rid]["quote"] == row["quote"]
                        for rid, row in preview["requirements"].items())
             assert scoped["preliminary_applicability"] == preview["applicability"]
-            assert json.dumps(preview, sort_keys=True) == original_preview
+            assert preview == original_preview
             assert set(preview["metrics"]["stages"]) <= set(scoped["metrics"]["stages"])
             try:
                 target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
