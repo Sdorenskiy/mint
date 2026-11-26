@@ -4,6 +4,22 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Не удалось извлечь ни одной достоверной записи: повторите разбор оснований.": "No reliable records could be extracted; retry the source analysis.",
+    "Ответственность подтверждена моделью": "Responsibility supported by model",
+    "Необходимость доработки не установлена": "Need for change not established",
+    "Ответственность подтверждена моделью; необходимость доработки не установлена.": "Responsibility supported by model; need for change not established.",
+    "Технические сбои: {technical}; ответственность подтверждена, доработка не доказана: {pending}.": "Technical failures: {technical}; responsibility supported, change unproven: {pending}.",
+    "Часть функций не удалось определить: ошибка модели или формата ответа.": "Some functions could not be identified: model or response format error.",
+    "Разбор неполный: {n} фрагментов требуют повторной обработки.": "Analysis incomplete: {n} fragments need reprocessing.",
+    "Необработанные фрагменты": "Unprocessed fragments",
+    "Повторить неполный разбор": "Retry incomplete analysis",
+    "В обработанных основаниях не найдено существенных записей.": "No substantive records were found in the processed source bases.",
+    "Дополнительный поиск выявил новые функции: {names}. Они не выбраны автоматически.": "Additional retrieval identified new functions: {names}. They are not selected automatically.",
+    "Вернуться к выбору функций": "Return to function selection",
+    "Выбранные требования с неизвестной необходимостью доработки сохранятся без неподтверждённой детализации.": "Selected requirements with unestablished need for change will be retained without unsupported refinement.",
+    "Состояние реализации": "Implementation status",
+    "Необходимость доработки": "Need for change",
+    "Контекст таблицы": "Table context",
     "Показать исходные требования": "Show original requirements",
     "Связанных записей: {n}": "Related records: {n}",
     "Выберите функции для дальнейшего анализа": "Choose functions for further analysis",
