@@ -184,6 +184,35 @@ def test_original_evidence():
         assert kwargs["quiet"] is True
 
 
+def test_hierarchy_and_actor_diagnostics():
+    profile = {
+        "C1": {"id": "C1", "name": "Exchange"},
+        "C2": {"id": "C2", "name": "Receive", "parent_name": "exchange"},
+        "C3": {"id": "C3", "name": "A", "parent_name": "B"},
+        "C4": {"id": "C4", "name": "B", "parent_name": "A"},
+        "C5": {"id": "C5", "name": "Send", "parent_name": "missing"},
+        "C6": {"id": "C6", "name": "Other", "parent_conflict": True},
+    }
+    before = json.dumps(profile)
+    parents, counts = target.function_hierarchy(profile)
+    assert parents == {"C2": "C1"} and counts["cycle_parent"] == 2
+    assert counts["unresolved_parent"] == counts["conflicting_parent"] == 1
+    assert json.dumps(profile) == before
+    large = {f"C{i}": {"id": f"C{i}", "name": "Function " + str(i) + "x" * 100} for i in range(1, 41)}
+    rows = target._allocation_profile_rows(large, ["C40"], 3000, {"context": CONTEXT})
+    assert 0 < len(rows) < 40 and rows[0]["id"] == "C40"
+    assert len(target._allocation_profile_rows(profile, [], 24000, {})) == 6
+    proposal = {"category": "target", "actor": "Desk", "change": "unknown", "function": "C1",
+                "state_refs": [], "reason": "unverified"}
+    decision = target._validate_decision(proposal, "R1", {"R1": {"quote": NEED, "kind": "functional"}},
+                                         {}, profile, CONTEXT["target"])
+    assert decision["status"] == "wrong_actor" and decision["actor_validation"] == "target_actor_mismatch"
+    assert decision["category"] == "uncertain" and decision["change"] == "unknown"
+    safe = target_registry_export({}, {"diagnostics": {"actor_validation": {"target_actor_mismatch": 1, "private text": 7}}})
+    assert safe["diagnostics"]["actor_validation"]["target_actor_mismatch"] == 1
+    assert "private text" not in json.dumps(safe)
+
+
 def test_profile_status():
     cfg = config("/tmp")
     candidates = [{"id": "F1", "text": CURRENT}]
@@ -580,6 +609,7 @@ if __name__ == "__main__":
     test_validators()
     test_metric_pairs_and_separate_review()
     test_original_evidence()
+    test_hierarchy_and_actor_diagnostics()
     test_profile_status()
     test_profile_recovery_and_function_review()
     test_registry_end_to_end()

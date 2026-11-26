@@ -785,14 +785,14 @@ draft_target_section_map: |-
   arch (current design), constraint (limits), business (business process), reference (background), unknown.
   Return {"items":[{"id":"S1","role":"unknown"}]}. Exactly one answer per id.
 draft_target_profile: |-
-  If purpose = requirements_analysis, evidence contains exact quotes from the primary registry. Identify capabilities/interactions necessary to satisfy requirements within the target boundary; do not present desired behavior as implemented. Link all relevant original IDs (including shared constraints where applicable); one ID may relate to several functions. Do not turn a requirement or metric itself into a function. If quotes describe only a system-wide constraint, do not invent a function.
+  If purpose = requirements_analysis, evidence contains exact quotes from the primary registry. Identify capabilities/interactions necessary to satisfy requirements within the target boundary; do not present desired behavior as implemented. Link all relevant original IDs (including shared constraints where applicable); one ID may relate to several functions. Do not turn a field, step, frequency, metric or protection measure into a function. Group actions with the same purpose and flow; identify a subfunction only if it has a distinct purpose, input/output or responsibility. If quotes describe only a system-wide constraint, do not invent a function.
   If purpose = reference_current_state, identify only described existing functions of the target itself; plans, other-system analogies and uncertain state do not establish implementation. Return an empty list if evidence is missing.
   In the other modes describe existing functions, components, inputs/outputs and responsibility boundaries of context.target only.
   Do not assign other participants' functions to the target. For each function give name, description
   (briefly: purpose, interaction and known implementation status) and refs, exact ids from evidence: R for requirements_analysis, F or BF for the other modes. Do not repeat ids within refs; if implementation is unknown, do not invent a component.
   Never invent facts; absence of evidence is not evidence of absence.
-  Distinguish existing functions from explicitly required target functions in description; do not describe future functions as implemented. At most 20 functions.
-  Return {"functions":[{"name":"function","description":"supported description","refs":["R1"]}]}. R1 is an example for requirements_analysis; otherwise use the actual supplied F/BF ids.
+  Distinguish existing functions from explicitly required target functions in description; do not describe future functions as implemented. At most 20 functions per answer; parent_name is the exact name of a broader function in this answer if supported, otherwise empty. Do not invent a parent.
+  Return {"functions":[{"name":"function","description":"supported description","refs":["R1"],"parent_name":""}]}. R1 is an example for requirements_analysis; otherwise use the actual supplied F/BF ids.
 draft_target_extract: |-
   Extract verbatim contiguous quotes from text using section and focus. Preserve target-side requirements,
   including implicit interface duties, other actors' duties for attribution, existing capabilities,
@@ -815,7 +815,7 @@ draft_target_allocation: |-
   Sources with source_role = reference_context are informational, not independent obligations. Use only explicitly applicable current state of the target; plans, analogies and disputed revisions do not establish implementation. Target metrics must follow from original bases.
   Determine the obligation of context.target specifically, not mere mention of its name. evidence contains original
   quotes and fragments; profile contains functional hypotheses, NOT evidence or approved decisions. A user's selection only scopes retrieval.
-  category: target, shared, interaction, other, uncertain. actor is the actual responsible participant.
+  category: target, shared, interaction, other, uncertain. actor is the actual participant responsible for this duty: use exact context.target for a target duty, the other participant's name for an external duty, uncertain if unclear. For shared/interaction distinguish the target duty from the counterparty duty. Never replace an external actor with the target name.
   change: new, change, already_supported, external, unknown, explicit.
   new/change/already_supported require actual evidence of current state and need; missing information does
   not imply missing implementation. explicit is a direct duty to the target, not proof that a change is necessary;
@@ -833,6 +833,7 @@ draft_target_allocation: |-
   For new, change, already_supported cite actual current-state evidence, not merely related material.
   function must be an id from profile (not a name) or new; for new function_name is mandatory. Use system_wide for a system-wide nonfunctional requirement or constraint without a specific function. For external or category=uncertain function may be empty.
   state_refs must always be an array of ids from evidence, including an empty array if appropriate; source filename alone is not proof.
+  If retry_actor is present, the previous answer contradicted actor/category/change rules. Reassess the original duty; never change the actor merely to pass validation. If uncertain use category=uncertain and change=unknown.
   If retry_contract=true, repair the contract only: one response per supplied id, refs only from evidence, valid codes. Exactly one response per id. Return {"items":[{"id":"R1","category":"uncertain","actor":"",
   "change":"unknown","function":"","function_name":"","component":"","direct_quote":"",
   "state_refs":[],"reason":"reason"}]}.

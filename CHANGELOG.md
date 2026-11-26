@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 function review: optional non-authoritative hierarchy, bounded larger aggregate profile, prioritized allocation profile and separate actor-contract diagnostics with one retry. Version 21.4.28; real acceptance pending.
+
 - V2 dossier quality: numbered original line selection, balanced bounded retrieval routes, detailed rejection and budget diagnostics. Version 21.4.27; real-model acceptance pending.
 
 - V2 review: wrapping original requirements, inline refinement checkboxes, paginated selection retained across pages, expandable source evidence and local unverified link suggestions. Version 21.4.26; no analysis changes.

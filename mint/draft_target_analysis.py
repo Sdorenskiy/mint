@@ -33,7 +33,8 @@ SECTION_ROLES = frozenset({"need", "interface", "metric", "architecture", "const
                            "business", "reference", "unknown"})
 DECISIONS = frozenset({"new", "change", "already_supported", "external", "unknown",
                        "explicit"})
-_MAX_PROFILE = 20
+_MAX_PROFILE_BATCH = 20
+_MAX_PROFILE = 40
 _MAX_TEXT = 1200
 
 
@@ -192,9 +193,13 @@ def _validate_profile(answer, allowed):
             continue
         if any(p["name"].casefold() == name.casefold() for p in result):
             continue
-        result.append({"id": "C" + str(len(result) + 1), "name": name,
-                       "description": description, "refs": refs})
-        if len(result) >= _MAX_PROFILE:
+        item = {"id": "C" + str(len(result) + 1), "name": name,
+                "description": description, "refs": refs}
+        parent = _text(row, "parent_name")[:180]
+        if parent and _normalized(parent).casefold() != _normalized(name).casefold():
+            item["parent_name"] = parent
+        result.append(item)
+        if len(result) >= _MAX_PROFILE_BATCH:
             break
     return result
 
@@ -392,9 +397,13 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
         if status == "external" and actor and not is_target(actor, target):
             return {**result, "status": "proposed", "category": category,
                     "change": "external", "actor": actor, "state_refs": refs}
-        return {**result, "status": "wrong_actor"}
+        return {**result, "status": "wrong_actor", "actor_validation": (
+            "external_actor_is_target" if is_target(actor, target) else
+            "missing_actor" if not actor else "external_change_mismatch")}
     if not is_target(actor, target) or status == "external":
-        return {**result, "status": "wrong_actor"}
+        return {**result, "status": "wrong_actor", "actor_validation": (
+            "missing_actor" if not actor else "target_actor_mismatch" if not is_target(actor, target)
+            else "target_change_external")}
     # A system-wide constraint is not a functional capability.
     if not function and row["kind"] in {"nonfunctional", "constraint"}:
         function = "system_wide"
@@ -529,6 +538,8 @@ def _verify_decisions(cfg, decisions, records, state, context, emit, *, reset_ca
                     continue
                 reason = _text(reply, "reason")[:_MAX_TEXT]
                 actor_ok = reply.get("correct_actor") is True and bool(reason)
+                if not actor_ok:
+                    stats["actor_rejected" if reply.get("correct_actor") is False else "actor_verdict_incomplete"] += 1
                 conditions_ok = reply.get("conditions_preserved") is True
                 change_ok = reply.get("change_supported") is True and d.get("change") != "unknown"
                 reference_gap = any(v for k, v in d.get("reference_gaps", {}).items() if k != "cycle")
@@ -773,6 +784,13 @@ def _recover_profile_batch(cfg, rows, context):
             else:
                 refs = combined[key]["refs"]
                 refs.extend(rid for rid in p["refs"] if rid not in refs)
+                old = combined[key]
+                if p.get("parent_name") and not old.get("parent_conflict"):
+                    if old.get("parent_name") and _normalized(old["parent_name"]).casefold() != _normalized(p["parent_name"]).casefold():
+                        old.pop("parent_name", None)
+                        old["parent_conflict"] = True
+                    else:
+                        old["parent_name"] = p["parent_name"]
     merge(proposed)
     for batch in batches:
         counts["retry_batches"] += 1
@@ -810,10 +828,20 @@ def _functions_from_records(cfg, records, references, spans, context, emit, *, e
             if key not in functions:
                 if len(functions) >= _MAX_PROFILE:
                     counts["context_limit"] += 1
+                    counts["profile_cap_omitted"] += 1
                     continue
                 functions[key] = {"id": "C" + str(len(functions) + 1), "name": p["name"],
                                   "description": p["description"], "refs": [], "record_refs": []}
             item = functions[key]
+            if p.get("parent_conflict"):
+                item.pop("parent_name", None)
+                item["parent_conflict"] = True
+            elif p.get("parent_name") and not item.get("parent_conflict"):
+                if item.get("parent_name") and _normalized(item["parent_name"]).casefold() != _normalized(p["parent_name"]).casefold():
+                    item.pop("parent_name", None)
+                    item["parent_conflict"] = True
+                else:
+                    item["parent_name"] = p["parent_name"]
             for rid in p["refs"]:
                 if rid not in item["record_refs"]:
                     item["record_refs"].append(rid)
@@ -822,6 +850,54 @@ def _functions_from_records(cfg, records, references, spans, context, emit, *, e
                     if sid in spans and sid not in item["refs"]:
                         item["refs"].append(sid)
     return {p["id"]: p for p in functions.values()}, counts
+
+
+def function_hierarchy(profile):
+    """Display-only parent hypotheses: exact unambiguous name, no self/cycles.
+    Never change primary allocation, original IDs or scope selection.
+    """
+    by_name = {}
+    for pid, p in profile.items():
+        if p.get("origin") != "reference":
+            by_name.setdefault(_normalized(p["name"]).casefold(), []).append(pid)
+    parents, counts = {}, Counter()
+    for pid, p in profile.items():
+        if p.get("origin") == "reference":
+            continue
+        if p.get("parent_conflict"):
+            counts["conflicting_parent"] += 1
+            continue
+        if not p.get("parent_name"):
+            continue
+        matches = by_name.get(_normalized(p["parent_name"]).casefold(), [])
+        if len(matches) != 1 or matches[0] == pid:
+            counts["unresolved_parent"] += 1
+            continue
+        parents[pid] = matches[0]
+    cyclic = set()
+    for pid in parents:
+        path, cur = [], pid
+        while cur in parents and cur not in path:
+            path.append(cur)
+            cur = parents[cur]
+        if cur in path:
+            cyclic.update(path[path.index(cur):])
+    for pid in cyclic:
+        parents.pop(pid, None)
+    counts["cycle_parent"] = len(cyclic)
+    counts["linked_subfunctions"] = len(parents)
+    return parents, counts
+
+
+def _allocation_profile_rows(profile, candidate_ids, budget, base):
+    """Reserve evidence space when a large profile would crowd out originals."""
+    rows = [{"id": p["id"], "name": p["name"]} for p in profile.values()]
+    if _payload_size({**base, "profile": rows}) <= budget // 2:
+        return rows
+    candidates = set(candidate_ids)
+    ordered = [r for r in rows if r["id"] in candidates] + [r for r in rows if r["id"] not in candidates]
+    available = max(0, budget // 2 - _payload_size({**base, "profile": []}) - 100)
+    return _bounded_rows(ordered, available)
 
 
 @_measure_draft
@@ -973,6 +1049,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             wiki_pool.update(ref_pool)
     reference_counts = Counter()
     retry_counts = Counter()
+    actor_counts = Counter()
+    profile_budget_counts = Counter()
     linked_by_need = {}
     obligations = [row for row in records.values() if row["kind"] in OBLIGATION_KINDS
                    and row["typing_status"] == "classified"]
@@ -1006,8 +1084,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         for item in pool:
             unique.setdefault(item["id"], item)
         pool = list(unique.values())
-        base = {"context": context, "profile": list(focus["functions"]),
-                "items": [{**_compact(row), "section_role": row["section_role"]}]}
+        base = {"context": context, "items": [{**_compact(row), "section_role": row["section_role"]}]}
         # Prior links are exact original IDs or dossier facts, not authority.
         # Pass them as hints rather than silently forcing the selected function.
         candidate_ids = [pid for pid, p in base_profile.items()
@@ -1017,6 +1094,12 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         if linked or gaps:
             base["reference_status"] = {"linked_ids": [r["id"] for r in linked], "gaps": gaps}
         budget = _candidate_budget(cfg)
+        base["profile"] = _allocation_profile_rows(base_profile, candidate_ids, budget, base)
+        omitted = len(base_profile) - len(base["profile"])
+        if omitted:
+            profile_budget_counts["limited_allocations"] += 1
+            profile_budget_counts["omitted_profile_entries"] += omitted
+            profile_budget_counts["omitted_candidate_entries"] += len(set(candidate_ids) - {p["id"] for p in base["profile"]})
         if _payload_size(base) > budget:
             if prepared.get("reference_sources"):
                 wiki_counts["allocation_budget_limit"] += 1
@@ -1045,7 +1128,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         pool.extend(_bounded_rows(unique_extras.values(), free))
         # Evidence is a view over existing registry/source spans; no second search index.
         # Keep B explicitly labelled and separate from obligations.
-        allocation_profile = dict(base_profile)
+        allocation_profile = {p["id"]: base_profile[p["id"]] for p in base["profile"]}
         if wiki_pool:
             free = max(0, remaining - sum(_payload_size(r) + 2 for r in pool))
             # Add B hints only together with supporting spans.
@@ -1077,9 +1160,12 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
         state.update({r["id"]: r for r in pool})
         # Retry an invalid ID/schema once, not a semantic uncertainty or gateway outage.
         payload = {**base, "evidence": pool}
+        retry_kind = ""
         for attempt in range(2):
+            retry_payload = ({"retry_actor": retry_kind} if retry_kind and retry_kind != "contract"
+                             else {"retry_contract": True})
             answers, statuses, _ = _unique_answers(cfg, "target_allocation",
-                payload if not attempt else {**payload, "retry_contract": True}, [rid])
+                payload if not attempt else {**payload, **retry_payload}, [rid])
             if rid not in answers:
                 decision = {"status": statuses[rid], "change": "unknown", "category": "uncertain",
                             "state_refs": [], "reason": ""}
@@ -1087,11 +1173,24 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
                 decision = _validate_decision(answers[rid], rid, records, {r["id"]: r for r in pool},
                                               allocation_profile, context["target"])
             malformed = decision["status"] in {"invalid_response", "missing_response", "duplicate_response"}
+            actor_issue = decision.get("actor_validation")
+            if actor_issue:
+                actor_counts[actor_issue] += 1
             if attempt:
-                retry_counts["recovered" if not malformed and decision["status"] != "batch_error" else "exhausted"] += 1
-            if not malformed or attempt:
+                if retry_kind == "contract":
+                    retry_counts["recovered" if not malformed and decision["status"] != "batch_error" else "exhausted"] += 1
+                else:
+                    actor_counts["retry_proposed" if decision["status"] == "proposed" else
+                                 "retry_unresolved"] += 1
                 break
-            retry_counts["attempted"] += 1
+            if malformed:
+                retry_kind = "contract"
+                retry_counts["attempted"] += 1
+            elif actor_issue:
+                retry_kind = actor_issue
+                actor_counts["retry_attempted"] += 1
+            else:
+                break
         decisions[rid] = decision
         if decision["status"] == "proposed" and decision.get("function") in dossier_ids:
             # Keep additional function evidence separate from current-state assertions.
@@ -1116,6 +1215,7 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             if p is None:
                 if len(base_profile) >= _MAX_PROFILE:
                     function_counts["context_limit"] += 1
+                    function_counts["profile_cap_omitted"] += 1
                     continue
                 pid = "C" + str(len(base_profile) + 1)
                 p = {"id": pid, "name": name, "description": name, "refs": [], "record_refs": []}
@@ -1208,6 +1308,9 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
     diagnostics["summaries"] = summary_counts
     diagnostics["verification"] = dict(verification_counts)
     diagnostics["allocation_retry"] = dict(retry_counts)
+    diagnostics["actor_validation"] = dict(actor_counts)
+    diagnostics["profile_budget"] = dict(profile_budget_counts)
+    diagnostics["function_hierarchy"] = dict(function_hierarchy(profile)[1])
     diagnostics["applicability"] = dict(Counter(d.get("applicability_status", "unresolved") for d in decisions.values()))
     diagnostics["implementation"] = dict(Counter(d.get("implementation_status", "unknown") for d in decisions.values()))
     diagnostics["allocation_validation"] = dict(Counter(d["validation_code"] for d in decisions.values() if "validation_code" in d))
