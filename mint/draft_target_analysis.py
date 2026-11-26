@@ -380,16 +380,25 @@ def _validate_decision(reply, rid, records, allowed, profile, target):
         return {**result, "status": "wrong_actor"}
     if not is_target(actor, target) or status == "external":
         return {**result, "status": "wrong_actor"}
-    if not function or (function not in profile and function != "new"):
+    # A system-wide constraint is not a functional capability.
+    if not function and row["kind"] in {"nonfunctional", "constraint"}:
+        function = "system_wide"
+    if function == "system_wide" and row["kind"] not in {"nonfunctional", "constraint"}:
+        return {**result, "validation_code": "function"}
+    if function not in profile and function not in {"new", "system_wide"}:
         return {**result, "validation_code": "function"}
     # A missing current-state citation must not erase the proposed owner.
     change_gap = status in {"change", "new", "already_supported"} and not refs
     if change_gap:
         status = "unknown"
+    # Direct textual evidence must be exact. If the direct claim is malformed,
+    # leave the responsibility hypothesis for separate verification instead of
+    # certifying the explicit requirement as ready for derivation.
     if status == "explicit" and (category != "target" or not names_target(row["quote"], target) or not _text(reply, "direct_quote")
                                  or _normalized(_text(reply, "direct_quote")) not in _normalized(row["quote"])):
         return {**result, "status": "missing_evidence"}
-    label = _text(reply, "function_name")[:180] if function == "new" else profile[function]["name"]
+    label = (tr("Общесистемные требования") if function == "system_wide" else
+             _text(reply, "function_name")[:180] if function == "new" else profile[function]["name"])
     if not label:
         return {**result, "validation_code": "function_name"}
     metric = _metric_fields(reply, row, allowed, refs)
@@ -984,6 +993,32 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             decisions[rid]["reference_refs"] = base["reference_status"]["linked_ids"]
             decisions[rid]["reference_gaps"] = gaps
     verification_counts = _verify_decisions(cfg, decisions, records, state, context, emit, reset_cache=reset_cache)
+    # Allocation can identify another function missed by discovery. Make it
+    # an unselected scope candidate using only verified original R/F links.
+    if preview is not None:
+        by_name = {_normalized(p["name"]).casefold(): p for p in base_profile.values()}
+        for rid, decision in decisions.items():
+            if (decision.get("status") not in {"model_supported", "applicability_supported"}
+                    or decision.get("function") != "new"):
+                continue
+            name = decision["function_name"]
+            key = _normalized(name).casefold()
+            p = by_name.get(key)
+            if p is None:
+                if len(base_profile) >= _MAX_PROFILE:
+                    function_counts["context_limit"] += 1
+                    continue
+                pid = "C" + str(len(base_profile) + 1)
+                p = {"id": pid, "name": name, "description": name, "refs": [], "record_refs": []}
+                base_profile[pid] = profile[pid] = by_name[key] = p
+            if rid not in p["record_refs"]:
+                p["record_refs"].append(rid)
+            for pos in records[rid].get("source_spans", []):
+                sid = references.positions.get((pos["source"], pos["fragment"]))
+                if sid in spans and sid not in p["refs"]:
+                    p["refs"].append(sid)
+            decision["function"] = p["id"]
+            decision["function_name"] = p["name"]
     groups = _group_decisions(decisions)
     # Independent evidence-backed candidate links; primary verified allocation
     # still governs derivation. Shared records are not copied into other groups.
