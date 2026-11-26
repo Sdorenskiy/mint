@@ -137,6 +137,18 @@ class ReferenceMap:
                            or self.spans[sid]["section"].startswith(path + " › ")])
         # Require an actual caption immediately before a Markdown table. Match
         # complete rows in original spans, never an unrelated table number.
+        table_spans = defaultdict(list)
+        for sid in ids:
+            table = self.spans[sid].get("table_context")
+            if table:
+                table_spans[table["occurrence"]].append(sid)
+        if table_spans:
+            for occurrence_ids in table_spans.values():
+                table = self.spans[occurrence_ids[0]]["table_context"]
+                caption = _TABLE_TITLE.match(table["caption"].strip("* "))
+                if caption:
+                    self._add(source, "table", caption[1], occurrence_ids)
+            return
         lines = markdown.splitlines()
         row_index = defaultdict(list)
         for sid in ids:
@@ -224,12 +236,13 @@ class ReferenceMap:
             sid, path, level, edge_ref = queue.popleft()
             if level:
                 span = self.spans[sid]
-                cost = len(span["text"]) + len(span["section"]) + len(span["source"]) + 200
+                cost = len(span["text"]) + len(span["section"]) + len(span["source"]) + len(str(span.get("table_context", ""))) + 200
                 if len(result) >= max_spans or spent + cost > budget:
                     gaps["budget_limit"] += 1
                     continue
                 result.append({"id": sid, "source": span["source"], "section": span["section"],
-                               "quote": span["text"], "path": list(path), "reference": edge_ref})
+                               "quote": span["text"], "path": list(path), "reference": edge_ref,
+                               **({"table_context": span["table_context"]} if span.get("table_context") else {})})
                 spent += cost
             edges = self.edges.get(sid, [])
             if level == 0 and quote is not None:

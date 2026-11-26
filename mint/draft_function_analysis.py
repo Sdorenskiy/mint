@@ -43,7 +43,7 @@ def _unique_answers(cfg, stage, payload, allowed):
 
 
 def _compact(row):
-    return {key: row[key] for key in ("id", "source", "section", "quote", "kind", "source_role")}
+    return {key: row[key] for key in ("id", "source", "section", "quote", "kind", "source_role", "table_context") if key in row}
 
 
 def _group_functions(cfg, functional, context, emit, budget, *, reset_cache=False):

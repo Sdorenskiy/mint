@@ -135,14 +135,50 @@ def _batches(items, key, size=MAX_CHARS):
         yield batch
 
 
-def _source_chunks(markdown, *, full_path=False):
+def _source_chunks(markdown, *, full_path=False, table_context=False, max_chars=MAX_CHARS):
     section = ""
     headings = []
     lines = []
+    # Table identity is a source-local occurrence, not a hash of repeated rows.
+    occurrence = 0
+
+    def split():
+        nonlocal occurrence
+        if not table_context:
+            yield from _split_section(section, lines, max_chars=max_chars)
+            return
+        ordinary, i = [], 0
+        while i < len(lines):
+            if (i + 1 < len(lines) and lines[i].strip().startswith("|")
+                    and re.fullmatch(r"[\s|:\-]+", lines[i + 1])
+                    and "-" in lines[i + 1]):
+                occurrence += 1
+                caption = next((line.strip() for line in reversed(ordinary) if line.strip()), "")
+                if not re.match(r"^\s*\**\s*(?:таблица|table)\s*№?\s*\d", caption, re.I):
+                    caption = ""
+                for path, text in _split_section(section, ordinary, max_chars=max_chars):
+                    yield path, text, None
+                ordinary = []
+                j = i + 2
+                while j < len(lines) and lines[j].strip().startswith("|"):
+                    j += 1
+                context = {"occurrence": occurrence, "caption": caption,
+                           "header": lines[i].strip(), "separator": lines[i + 1].strip()}
+                # Keep the original text unchanged; repeated header is separate
+                # context, not a fabricated continuous quote.
+                for path, text in _split_section(section, lines[i:j], max_chars=max_chars):
+                    yield path, text, context
+                i = j
+            else:
+                ordinary.append(lines[i])
+                i += 1
+        for path, text in _split_section(section, ordinary, max_chars=max_chars):
+            yield path, text, None
+
     for line in markdown.splitlines():
         if re.match(r"^#{1,6}\s", line):
             if lines:
-                yield from _split_section(section, lines)
+                yield from split()
             title = line.lstrip("# ").strip()
             if full_path:
                 level = len(line) - len(line.lstrip("#"))
@@ -153,24 +189,30 @@ def _source_chunks(markdown, *, full_path=False):
         else:
             lines.append(line)
     if lines:
-        yield from _split_section(section, lines)
+        yield from split()
 
 
-def _split_section(section, lines):
-    for batch in _batches(lines, str):
+def _split_section(section, lines, *, max_chars=MAX_CHARS):
+    for batch in _batches(lines, str, size=max_chars):
         text = "\n".join(batch).strip()
-        while len(text) > MAX_CHARS:
-            cut = text.rfind(" ", MAX_CHARS // 2, MAX_CHARS)
+        while len(text) > max_chars:
+            cut = text.rfind(" ", max_chars // 2, max_chars)
             if cut < 0:
-                cut = MAX_CHARS
+                cut = max_chars
             yield section, text[:cut]
-            text = text[max(0, cut - 300):]
+            text = text[max(1, cut - min(300, max_chars // 4)):]
         if text:
             yield section, text
 
 
+def _quote_key(row):
+    """Identical row text in different tables may describe different duties."""
+    return (row["source"], row["section"], _normalized(row["quote"]),
+            (row.get("table_context") or {}).get("occurrence"))
+
+
 def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_provenance=False,
-                  focus=None, prepared_chunks=None, fragment_status=None, reference_contexts=None, reference_revision=None):
+                  focus=None, prepared_chunks=None, fragment_status=None, reference_contexts=None, reference_revision=None, table_contexts=None):
     """Verified extraction with bounded parallel requests and stable source ordering.
 
     Only workers read/write individual checkpoint files and call the model.
@@ -214,6 +256,9 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
                 related = reference_contexts.get((name, local_index), {})
                 if related:
                     payload["related_evidence"] = related
+            table = (table_contexts or {}).get((name, local_index))
+            if table:
+                payload["table_context"] = table
             rows = _records(_json(cfg, "target_extract" if focus is not None else "extract", payload),
                             "requirements")
         except DraftError:
@@ -262,11 +307,15 @@ def _requirements(cfg, documents, issues, emit, *, reset_cache=False, include_pr
             issues.append(tr("В основании «{source}» не найдена цитата, указанная моделью.",
                              source=bad_source))
         for quote in quotes:
-            key = (name, section, _normalized(quote))
+            record = {"source": name, "section": section, "quote": quote}
+            table = (table_contexts or {}).get((name, _index))
+            if table:
+                record["table_context"] = table
+            key = _quote_key(record)
             if key not in seen:
                 rid = f"R{len(requirements) + 1}"
                 seen[key] = rid
-                requirements[rid] = {"id": rid, "source": name, "section": section, "quote": quote}
+                requirements[rid] = {"id": rid, **record}
                 if include_provenance:
                     requirements[rid]["source_spans"] = []
             else:

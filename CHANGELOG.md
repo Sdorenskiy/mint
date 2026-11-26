@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V2 pre-pilot stabilization: structural table occurrences and separate column context, conservative quantity/unit checks, explicit extraction failure and partial retry, corrected R/F/BF prompt contracts, bounded allocation retry, independent responsibility status, system-wide constraints, reference budget diagnostics and reopening scope for new candidates. Development version 21.4.22; real-model acceptance and architectural alternatives remain pending.
+
 - V2 pauses after the independent typed scan, proposes preliminary applicability, and lets the user select functions before dossier retrieval. Original records remain available, and resumed collection types only new citations. Reference evidence gets bounded reserved space after explicit links; review shows quotations on demand. Final allocation, architectural alternatives and real-model acceptance remain separate work. Development version 21.4.21.
 
 - V2 requirements-first analysis: independent full scan, function discovery from original quotes, bounded additive dossier refinement and directed optional reference retrieval. Candidate many-to-many associations and reviewed primary allocation remain distinct. One collection action, individual requirement review by function, linked source clauses, clear stage labels, and local traceability workbook. Development version 21.4.20.

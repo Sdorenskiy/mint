@@ -58,15 +58,15 @@ def test_validators():
         ({"actor": "Desk"}, "wrong_actor"),
         ({"category": "bogus"}, "invalid_response"),
         ({"category": "uncertain"}, "missing_evidence"),
-        ({"change": "unknown"}, "missing_evidence"),
+        ({"change": "unknown"}, "proposed"),
         ({"change": "bogus"}, "invalid_response"),
         ({"state_refs": ["F999"]}, "invalid_response"),
         ({"state_refs": ["F1", "F1"]}, "invalid_response"),
         ({"state_refs": "F1"}, "invalid_response"),
-        ({"state_refs": []}, "missing_evidence"),
+        ({"state_refs": []}, "proposed"),
         ({"reason": ""}, "invalid_response"),
         ({"function": "C99"}, "invalid_response"),
-        ({"function": ""}, "invalid_response"),
+        ({"function": ""}, "proposed"),
         ({"function": "new"}, "invalid_response"),
         ({"function": "new", "function_name": "New messaging"}, "proposed"),
         ({"change": "already_supported"}, "proposed"),
@@ -80,23 +80,64 @@ def test_validators():
         ({"change": "explicit", "state_refs": [], "direct_quote": METRIC}, "proposed"),
         ({"change": "explicit", "state_refs": [], "direct_quote": "invented"}, "missing_evidence"),
         ({"change": "explicit", "state_refs": []}, "missing_evidence"),
-        ({"metric": None}, "missing_metric_evidence"),
-        ({"metric": "bad"}, "missing_metric_evidence"),
+        ({"metric": None}, "proposed"),
+        ({"metric": "bad"}, "proposed"),
     ]
     for change, expected in cases:
         actual = target._validate_decision({**base, **change}, "R1", records, state, profile, CONTEXT["target"])
         assert actual["status"] == expected, (change, actual, expected)
+        if "metric" in change:
+            assert actual.get("metric_gap") is True and "metric" not in actual
     for change in ({"value": "99"}, {"unit": "seconds per request"}, {"subject": ""},
                    {"target_value": "9999"}, {"level": "future"}, {"current_value": "777"}):
         actual = target._validate_decision({**base, "metric": {**base["metric"], **change}},
                                            "R1", records, state, profile, CONTEXT["target"])
-        assert actual["status"] == "missing_metric_evidence", actual
+        assert actual["status"] == "proposed" and actual.get("metric_gap") is True and "metric" not in actual, actual
     assert len(cases) + 6 == 36
     # A reference-only numerical value must not become a new target value.
     wiki = {"BF1": {"quote": "Historical service capacity: 999 messages per second.",
                     "source_role": "reference_context"}}
     proposed = {**base, "state_refs": ["BF1"], "metric": {**base["metric"], "target_value": "999"}}
-    assert target._validate_decision(proposed, "R1", records, wiki, profile, CONTEXT["target"])["status"] == "missing_metric_evidence"
+    assert target._validate_decision(proposed, "R1", records, wiki, profile, CONTEXT["target"]).get("metric_gap") is True
+
+
+def test_metric_pairs_and_separate_review():
+    # The old substring test accepted 50 s from 150 ms.
+    assert target._metric_pair({"quote": "Допустимая задержка 150 мс"}, "задержка", "150", "мс")
+    assert not target._metric_pair({"quote": "Допустимая задержка 150 мс"}, "задержка", "50", "с")
+    row = {"quote": "Adapter A 50 ms; Adapter B 150 ms."}
+    assert target._metric_pair(row, "Adapter A", "50", "ms")
+    assert not target._metric_pair(row, "Adapter A", "150", "ms")
+    row = {"quote": "| 50 | 150 |", "table_context": {"header": "| Adapter A, ms | Adapter B, ms |"}}
+    assert target._metric_pair(row, "Adapter A", "50", "ms")
+    assert not target._metric_pair(row, "Adapter A", "150", "ms")
+    with TemporaryDirectory() as tmp:
+        cfg = config(tmp)
+        records = {"R1": {"id": "R1", "source": "a.md", "section": "A", "quote": DIRECT,
+                          "kind": "functional", "source_role": "need"}}
+        profile = {"C1": {"name": "Messaging"}}
+        proposal = {"category": "target", "actor": "RS", "function": "C1", "change": "unknown",
+                    "state_refs": [], "reason": "source duty", "component": "not established"}
+        d = target._validate_decision(proposal, "R1", records, {}, profile, CONTEXT["target"])
+        assert d["category"] == "target" and d["change"] == "unknown" and d["component"] == ""
+        decisions = {"R1": d}
+        with patch.object(function, "_json", return_value={"items": [{"id": "R1", "correct_actor": True,
+                "change_supported": False, "conditions_preserved": True, "reason": "owner only"}]}):
+            target._verify_decisions(cfg, decisions, records, {}, CONTEXT, lambda *_: None)
+        assert d["status"] == "applicability_supported" and d["applicability_status"] == "model_supported"
+        assert d["implementation_status"] == "unknown" and d["change_status"] == "unresolved"
+        groups = target._group_decisions(decisions)
+        assert groups[0]["requirement_ids"] == ["R1"]
+        proposals, _, outcomes = target._proposals(cfg, groups, decisions, records, {}, CONTEXT, lambda *_: None)
+        assert not proposals and outcomes["R1"] == "implementation_unknown"
+        # Even a positive reviewer cannot clear a missing explicit reference.
+        d = target._validate_decision({**proposal, "change": "explicit", "direct_quote": DIRECT},
+                                      "R1", records, {}, profile, CONTEXT["target"])
+        d["reference_gaps"] = {"missing": 1}
+        with patch.object(function, "_json", return_value={"items": [{"id": "R1", "correct_actor": True,
+                "change_supported": True, "conditions_preserved": True, "reason": "owner only"}]}):
+            target._verify_decisions(cfg, {"R1": d}, records, {}, CONTEXT, lambda *_: None)
+        assert d["status"] == "applicability_supported" and d["change"] == "unknown"
 
 
 def test_original_evidence():
@@ -371,6 +412,56 @@ def test_registry_end_to_end():
             assert "target_extract" not in stages and "target_dossier" not in stages
             assert set(empty["requirements"]) == set(preview["requirements"])
             assert not empty["dossiers"] and empty["selected_functions"] == []
+            # A contract retry can recover once; persistent invalid IDs stay unresolved.
+            def retry_model(cfg_, stage, payload):
+                if stage == "target_allocation":
+                    row = payload["items"][0]
+                    if row["quote"] == DIRECT or (row["quote"] == NEED and not payload.get("retry_contract")):
+                        return {"items": [{"id": "R999"}]}
+                    if row["quote"] == NEED2:
+                        answer = model(cfg_, stage, payload)
+                        answer["items"][0].update(function="new", function_name="Receipt identity")
+                        return answer
+                return model(cfg_, stage, payload)
+            with patch.object(function, "_json", side_effect=retry_model):
+                retry = target.collect_target_requirements(cfg, automatic_prepared, preview=preview,
+                                                           selected_functions=[ids["Messaging"]], summaries=False)
+            assert retry["diagnostics"]["allocation_retry"] == {"attempted": 2, "recovered": 1, "exhausted": 1}
+            assert retry["decisions"][by_quote[DIRECT]]["status"] == "missing_response"
+            assert retry["diagnostics"]["wiki_context"]["spans_supplied"] > 0
+            new = next(p for p in retry["approved_profile"] if p["name"] == "Receipt identity")
+            assert new["id"] not in retry["selected_functions"]
+            extended = target.extend_function_preview(cfg, automatic_prepared, preview, retry)
+            assert new in extended["approved_profile"] and preview == original_preview
+            assert set(retry["requirements"]) <= set(extended["requirements"])
+            with patch.object(target, "collect_dossiers", wraps=target.collect_dossiers) as deep:
+                target.collect_target_requirements(cfg, automatic_prepared, preview=extended,
+                                                   selected_functions=[new["id"]], summaries=False)
+            assert set(deep.call_args.args[3]) == {new["id"]}
+
+            def extraction_failure(cfg_, stage, payload):
+                if stage == "target_extract":
+                    raise draft.DraftError("simulated")
+                return model(cfg_, stage, payload)
+            with patch.object(draft, "_json", side_effect=extraction_failure):
+                try:
+                    target.collect_target_requirements(cfg, automatic_prepared, reset_cache=True, preview_only=True)
+                    raise AssertionError("total extraction failure accepted")
+                except draft.DraftError:
+                    pass
+            def extraction_empty(cfg_, stage, payload):
+                return {"requirements": []} if stage == "target_extract" else model(cfg_, stage, payload)
+            with patch.object(draft, "_json", side_effect=extraction_empty):
+                no_records = target.collect_target_requirements(cfg, automatic_prepared, reset_cache=True, preview_only=True)
+            assert not no_records["requirements"] and set(no_records["fragment_status"].values()) == {"processed"}
+            def extraction_partial(cfg_, stage, payload):
+                if stage == "target_extract" and payload["source"] == "design.md":
+                    raise draft.DraftError("simulated")
+                return model(cfg_, stage, payload)
+            with patch.object(draft, "_json", side_effect=extraction_partial):
+                partial = target.collect_target_requirements(cfg, automatic_prepared, reset_cache=True, preview_only=True)
+            assert partial["requirements"] and "failed" in partial["fragment_status"].values()
+
             wiki_path.write_text("changed", encoding="utf-8")
             try:
                 target.decompose_target_requirements(cfg, wiki_prepared, wiki_collected)
@@ -405,6 +496,7 @@ def test_registry_end_to_end():
 
 if __name__ == "__main__":
     test_validators()
+    test_metric_pairs_and_separate_review()
     test_original_evidence()
     test_profile_status()
     test_registry_end_to_end()

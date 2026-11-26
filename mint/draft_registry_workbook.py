@@ -46,7 +46,10 @@ def registry_identity(prepared, result):
 
 
 def record_key(row):
-    return _digest([row["source"], row["section"], _normalized(row["quote"])])
+    data = [row["source"], row["section"], _normalized(row["quote"])]
+    if row.get("table_context"):
+        data.append(row["table_context"]["occurrence"])
+    return _digest(data)
 
 
 def _accepted(p, result):
@@ -169,13 +172,15 @@ def registry_workbook(prepared, result):
                 decisions.get(rid, {}).get("component", "") for rid in p["need_refs"] if decisions.get(rid, {}).get("component"))))
            for p in proposals], [12, 36, 30, 20, 100, 26, 60, 60, 36])
     headers = ["ID", tr("Источник"), tr("Раздел"), tr("Цитата"), tr("Тип"), tr("Статус"),
-               tr("Исполнитель"), tr("Изменение"), tr("Обоснование"), tr("Причина проверки"), tr("Предложения"), tr("Ключ сравнения")]
+               tr("Исполнитель"), tr("Изменение"), tr("Обоснование"), tr("Причина проверки"), tr("Предложения"), tr("Ключ сравнения"), tr("Применимость требований"), tr("Состояние реализации"), tr("Необходимость доработки"), tr("Контекст таблицы")]
     def source_row(rid, row):
         d = decisions.get(rid, {})
         return (rid, row["source"], row["section"], row["quote"], row.get("kind", ""),
                 result["dispositions"].get(rid, ""), d.get("actor", ""), d.get("change", ""),
-                d.get("reason", ""), d.get("review_reason", ""), ", ".join(by_need[rid]), record_key(row))
-    widths = [12, 36, 46, 100, 20, 28, 30, 20, 60, 60, 24, 70]
+                d.get("reason", ""), d.get("review_reason", ""), ", ".join(by_need[rid]), record_key(row), d.get("applicability_status", ""),
+                d.get("implementation_status", ""), d.get("change_status", ""),
+                "\n".join(row["table_context"].get(k, "") for k in ("caption", "header")) if row.get("table_context") else "")
+    widths = [12, 36, 46, 100, 20, 28, 30, 20, 60, 60, 24, 70, 28, 28, 28, 60]
     sheet(tr("Исходные записи"), headers, (source_row(rid, r) for rid, r in records.items()), widths)
     sheet(tr("Неотражённые записи"), headers, (source_row(rid, r) for rid, r in records.items()
           if result["dispositions"].get(rid) not in {"model_covered", "already_supported", "external"}), widths)
