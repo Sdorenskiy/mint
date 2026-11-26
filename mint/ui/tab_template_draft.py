@@ -16,12 +16,14 @@ from .document_edit_chat import render_draft_edit_chat
 from .draft_context_ui import render_draft_context
 from .draft_traceability_ui import render_draft_traceability
 from .draft_wizard_ui import render_draft_wizard
+from .draft_atomic_ui import render_atomic_sample
 from .draft_progress_ui import render_progress
 
 
 def render_template_draft_tab(cfg, glossary):
     with st.expander(tr("Расширенные настройки")):
-        engines = {"v2": tr("V2 — экспериментальный"), "legacy": tr("Прежний генератор (временно)")}
+        engines = {"v2": tr("V2 — экспериментальный"), "legacy": tr("Прежний генератор (временно)"),
+                   "v3_sample": tr("V3 — эксперимент извлечения фактов")}
         engine = st.radio(tr("Режим формирования"), list(engines), horizontal=True,
                           key="draft_engine", format_func=engines.__getitem__)
         pilot = engine == "v2"
@@ -33,6 +35,9 @@ def render_template_draft_tab(cfg, glossary):
             st.session_state["target_expert_review"] = True
         expert = st.checkbox(tr("Согласование требований перед декомпозицией"),
                              key="target_expert_review", disabled=not registry_only)
+    if engine == "v3_sample":
+        render_atomic_sample(cfg)
+        return
     if registry_only:
         render_draft_wizard(cfg, expert=expert, reset_cache=reset_extract_cache)
         return

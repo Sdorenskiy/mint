@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V3 opt-in cold sample experiment: literal atomic candidates with strict Pydantic structure, exact fragment offsets and existing table metric checks; private sample and anonymous diagnostics, no new installed packages or changes to V2. Version 21.4.30; real acceptance pending.
+
 - V2: independently review existing dossier characteristics against original evidence, including literal metric validation, separate target/interaction context, readable evidence cards and private workbook review columns. Version 21.4.29; real acceptance pending.
 
 - V2 function review: optional non-authoritative hierarchy, bounded larger aggregate profile, prioritized allocation profile and separate actor-contract diagnostics with one retry. Version 21.4.28; real acceptance pending.

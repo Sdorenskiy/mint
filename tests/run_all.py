@@ -12,6 +12,7 @@ from pathlib import Path
 
 TESTS = Path(__file__).resolve().parent
 SUITES = [
+    ("MINT V3: эксперимент атомарных сведений", ["test_draft_atomic.py"]),
     ("Черновик Word из шаблона или образца", ["test_template_draft.py"]),
     ("Эталонная генерация раздела Word и сохранение оформления", ["test_draft_golden.py"]),
     ("MINT V2: исходный замер ограничений и диагностика", ["test_draft_v2_baseline.py"]),

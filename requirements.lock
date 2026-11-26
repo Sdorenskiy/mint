@@ -156,6 +156,7 @@ pycparser==3.12 ; python_full_version >= '3.11' and implementation_name != 'PyPy
     # via cffi
 pydantic==2.14.1
     # via
+    #   -r requirements.txt
     #   docling-core
     #   docling-slim
     #   pydantic-settings

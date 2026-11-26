@@ -12,4 +12,5 @@ python-docx>=1.2      # 1.2+: замечания в Word добавляются 
 pdfplumber>=0.11.10   # .pdf по текстовому слою, без моделей (pdfminer.six, pypdfium2)
 python-dotenv>=1.0
 PyYAML>=6.0
+pydantic==2.14.1    # already installed via Docling; explicit V3 strict validation
 truststore>=0.9       # Windows: корпоративные сертификаты из хранилища ОС

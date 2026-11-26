@@ -50,6 +50,10 @@ try:
     at.checkbox(key="draft_registry_only").set_value(False).run()
     res["draft_v2_disabled"] = res["draft_v2_disabled"] and at.button(key="draft_start").disabled
     at.checkbox(key="draft_registry_only").set_value(True).run()
+    at.radio(key="draft_engine").set_value("v3_sample").run()
+    res["errors"] += errors(at)
+    res["draft_v3_available"] = (at.button(key="atomic_prepare").disabled and not has_button(at, "draft_start")
+                                 and not has_button(at, "wizard_materials_next"))
     at.radio(key="draft_engine").set_value("legacy").run()
     res["errors"] += errors(at)
     res["draft_legacy_available"] = at.radio(key="draft_mode").value is False
@@ -284,7 +288,7 @@ print(f"  Streamlit {ver}")
 check(not res["errors"], "страница и действия без исключений", " ⏎ ".join(res["errors"]).replace("\n", " ⏎ ")[-3000:])
 check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"шапка MINT и стили на странице: {str(res.get('titles'))[:200]}")
 check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
-check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v2_restored")),
+check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v3_available", "draft_v2_restored")),
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
 check(all(res.get(k) for k in ("wizard_preview", "wizard_collection", "wizard_result", "wizard_review_retained",
                                "wizard_profile_retained", "wizard_no_repeat", "wizard_same_materials",
