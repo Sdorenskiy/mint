@@ -1,5 +1,6 @@
 """Local STOP-1 review and explicit private registry export."""
 import json
+from hashlib import sha256
 from collections import Counter
 
 import streamlit as st
@@ -82,7 +83,7 @@ def _show_refs(refs, prepared, result):
     for rid in refs:
         row = result["requirements"].get(rid) or result["state_evidence"].get(rid)
         if row:
-            st.caption(f"{rid} · {row['source']} › {row['section']}")
+            st.caption(_safe_markdown(f"{rid} · {row['source']} › {row['section']}"))
             if row.get("source_role") == "reference_context":
                 st.caption(tr("Справочный контекст — не основание требования"))
             if row.get("table_context"):
@@ -96,6 +97,11 @@ def _show_refs(refs, prepared, result):
                 st.caption(row["table_context"].get("caption", ""))
                 st.text(row["table_context"]["header"])
             st.text(row["text"])
+
+
+def _safe_markdown(text):
+    # Never interpret imported source/model strings as links or remote images.
+    return "".join(("\\" + c) if c in "\\`*_{}[]()#+-.!<>|" else c for c in str(text))
 
 
 def _short(text, limit=160):
@@ -157,7 +163,7 @@ def _requirement_detail(ids, prepared, result, key):
         for e in _page(evidence, key + "_page_" + rid, size=5):
             cited = e["row"]
             st.caption(" · ".join(roles[r] for r in e["roles"]))
-            st.caption(f"{', '.join(e['ids'])} · {cited.get('source', '')} › {cited.get('section', '')}")
+            st.caption(_safe_markdown(f"{', '.join(e['ids'])} · {cited.get('source', '')} › {cited.get('section', '')}"))
             if cited.get("table_context"):
                 st.text(cited["table_context"]["header"])
             st.text(e["quote"])
@@ -201,19 +207,38 @@ def _function_characteristics(pid, ids, prepared, result, key):
         for item in items:
             ref = item.get("record_id") or item.get("span_id")
             if ref:
-                entry = facts.setdefault(ref, {"item": item, "facets": []})
+                entry = facts.setdefault((ref, item.get("quote", "")), {"item": item, "facets": []})
                 if facet not in entry["facets"]:
                     entry["facets"].append(facet)
+    priority = {}
+    for facet in ("data_categories", "data_content", "security", "data_constraints", "participants", "direction"):
+        for item in facets.get(facet, {}).get("facts", []):
+            ref = item.get("record_id") or item.get("span_id")
+            if ref:
+                fact_key = (ref, item.get("quote", ""))
+                entry = priority.setdefault(fact_key, [])
+                if facet not in entry:
+                    entry.append(facet)
+    if priority:
+        st.caption(tr("Сведения о данных, обмене и защите — требуют проверки"))
+        st.dataframe([{tr("Характеристика"): ", ".join(_label(f) for f in labels), "ID": ref,
+                       tr("Цитата"): _short(quote, 180)} for (ref, quote), labels in priority.items()],
+                     hide_index=True, use_container_width=True)
     if st.checkbox(tr("Характеристики и найденные сведения"), key=key + "_facets"):
         st.caption(tr("Найденные цитаты — кандидаты для проверки, а не подтверждённая классификация данных или требования к защите."))
         st.dataframe(rows, hide_index=True, use_container_width=True)
         if facts:
-            ref = st.selectbox(tr("Открыть найденное сведение"), [None, *facts],
-                               format_func=lambda v: v or tr("Выберите требование"), key=key + "_fact")
-            if ref:
-                entry = facts[ref]
+            fact_key = st.selectbox(tr("Открыть найденное сведение"), [None, *facts],
+                               format_func=lambda v: f"{v[0]} · {_short(v[1], 90)}" if v else tr("Выберите требование"), key=key + "_fact")
+            if fact_key:
+                ref, quote = fact_key
+                entry = facts[fact_key]
                 st.caption(" · ".join(_label(f) for f in entry["facets"]))
-                _show_refs([ref], prepared, result)
+                source = result["requirements"].get(ref) or prepared.get("spans", {}).get(entry["item"].get("span_id"), {})
+                st.text(f"{ref} · {source.get('source', '')} › {source.get('section', '')}")
+                if source.get("table_context"):
+                    st.text(source["table_context"]["header"])
+                st.text(quote)
     if not facets.get("data_categories", {}).get("facts"):
         st.caption(tr("Открытый вопрос: установить категорию передаваемых данных по основаниям."))
     if not facets.get("security", {}).get("facts"):
@@ -259,8 +284,12 @@ def _review_collection(collected, prepared, expert, *, readonly=False, prefix=No
             draft["notes"][gid] = note
             if chosen and note.strip():
                 notes[gid] = note.strip()
-        st.caption(tr("Исходных требований: {total}; доступно для детализации: {ready}; выбрано: {selected}.",
-                      total=len(ids), ready=len(ready), selected=len(chosen)))
+        if readonly:
+            st.caption(tr("Исходных требований: {total}; доступно для детализации: {ready}.",
+                          total=len(ids), ready=len(ready)))
+        else:
+            st.caption(tr("Исходных требований: {total}; доступно для детализации: {ready}; выбрано: {selected}.",
+                          total=len(ids), ready=len(ready), selected=len(chosen)))
         _requirement_table(ids, collected, names, selectable=ready, chosen=chosen)
         if chosen and group["context"]:
             st.caption(tr("Сведения об уже реализованных требованиях передаются как контекст: {ids}.",
@@ -270,7 +299,7 @@ def _review_collection(collected, prepared, expert, *, readonly=False, prefix=No
     for pid, groups in view["sections"].items():
         p = view["profile"].get(pid, {})
         title = p.get("name") or (groups[0]["function"] if groups else pid)
-        st.subheader(title)
+        st.subheader(_safe_markdown(title))
         st.caption(tr("Выбрана область поиска") if view["explicit"] else tr("Обнаруженная функция"))
         if p.get("description"):
             st.caption(tr("Описание функции — гипотеза модели"))
@@ -298,7 +327,7 @@ def _review_collection(collected, prepared, expert, *, readonly=False, prefix=No
     with st.expander(tr("Другие функции — вне выбранной области ({n})", n=len(other))):
         st.caption(tr("Даже при возможной связи с выбранной функцией основное распределение модели не изменяется интерфейсом."))
         for group in view["outside"]:
-            st.caption(group["function"] + f" · {len(group['ids'])}")
+            st.caption(_safe_markdown(group["function"]) + f" · {len(group['ids'])}")
         page = _page(other, f"target_other_page_{run}", size=20)
         _requirement_table(page, collected, names)
         _requirement_detail(page, prepared, collected, f"target_other_detail_{run}")
@@ -313,15 +342,18 @@ def _review_collection(collected, prepared, expert, *, readonly=False, prefix=No
 
 def render_saved_review():
     """Read-only local import, independent of the active wizard and its inputs."""
-    with st.expander(tr("Открыть сохранённый снимок реестра (только просмотр)")):
+    if st.checkbox(tr("Открыть сохранённый снимок реестра (только просмотр)"), key="target_saved_review_mode"):
         st.caption(tr("Снимок содержит исходные тексты. Используйте только внутри разрешённого контура. Он не восстанавливает согласование и не запускает модель."))
         upload = st.file_uploader(tr("Локальный снимок реестра"), type=["json"], key="target_saved_review_upload")
         if upload is not None:
             try:
-                prepared, result = load_review_snapshot(upload.getvalue())
-                _review_collection(result, prepared, False, readonly=True, prefix="saved_review")
+                raw = upload.getvalue()
+                prepared, result = load_review_snapshot(raw)
+                _review_collection(result, prepared, False, readonly=True, prefix="saved_review_" + sha256(raw).hexdigest()[:16])
             except (ValueError, TypeError, KeyError, AttributeError, UnicodeError, RecursionError):
                 st.warning(tr("Не удалось открыть снимок реестра."))
+        return True
+    return False
 
 
 def _prepare(cfg, session, sources, roles, context, reference_sources=()):
@@ -528,8 +560,9 @@ def render_target_registry(cfg, key, sources, roles, context, enabled, reset_cac
                                   selection=chosen if expert else None, notes=notes if expert else None):
                 advance(4)
                 return
+        _download_review_snapshot(prepared, collected)
         with st.expander(tr("Подробности сбора и выгрузки")):
-            _render_registry_details(prepared, collected, key, identity, finished=False)
+            _render_diagnostics(prepared, collected, key, identity, finished=False)
         return
     if not saved or saved[0] != identity:
         advance(3)
@@ -652,6 +685,17 @@ def _page(rows, key, size=10):
     return rows[first:first + size]
 
 
+def _download_review_snapshot(prepared, result):
+    st.caption(tr("Снимок содержит исходные тексты. Используйте только внутри разрешённого контура."))
+    try:
+        snapshot = review_snapshot(prepared, result)
+    except (ValueError, TypeError):
+        st.caption(tr("Не удалось подготовить снимок реестра."))
+    else:
+        st.download_button(tr("Скачать локальный снимок для просмотра"), snapshot,
+                           file_name="mint_review_private.json", mime="application/json", key="target_review_snapshot")
+
+
 def _render_diagnostics(prepared, result, key, identity, finished):
     session = st.session_state
     st.caption(tr("Полный реестр содержит исходные тексты. Храните его только внутри разрешённого контура."))
@@ -668,14 +712,6 @@ def _render_diagnostics(prepared, result, key, identity, finished):
                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", key="target_full_export")
     else:
         st.warning(tr("Не удалось подготовить полный реестр Excel."))
-    if not finished:
-        try:
-            snapshot = review_snapshot(prepared, result)
-        except (ValueError, TypeError):
-            st.caption(tr("Не удалось подготовить снимок реестра."))
-        else:
-            st.download_button(tr("Скачать локальный снимок для просмотра"), snapshot,
-                               file_name="mint_review_private.json", mime="application/json", key="target_review_snapshot")
     export = target_registry_export(prepared, result)
     st.download_button(tr("Скачать обезличенные данные для анализа"),
                        json.dumps(export, ensure_ascii=False, indent=2, allow_nan=False),
