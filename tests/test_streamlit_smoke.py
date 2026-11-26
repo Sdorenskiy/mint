@@ -179,9 +179,13 @@ try:
             res["wizard_collection"] = (at.session_state["draft_wizard_step"] == 3
                 and not has_button(at, "target_analyze") and collect_.call_count == 2 and derive_.call_count == 0
                 and collect_.call_args.kwargs["selected_functions"] == ["C1"])
+            res["wizard_scoped_review"] = (at.multiselect(key="target_review_scope_wizard-run_G1").value == ["R1"]
+                and any("Категории передаваемых данных и защита" in str(c.value) for c in at.caption)
+                and collect_.call_count == 2 and derive_.call_count == 0)
             at.text_area(key="target_review_note_wizard-run_G1").set_value("fixture note").run()
             at.button(key="target_decompose").click().run()
             res["wizard_result"] = at.session_state["draft_wizard_step"] == 4 and derive_.call_count == 1
+            res["wizard_exact_scope"] = derive_.call_args.kwargs["selection"] == ["R1"]
             at.button(key="wizard_stage_3").click().run()
             res["wizard_review_retained"] = at.text_area(key="target_review_note_wizard-run_G1").value == "fixture note"
             at.button(key="target_decompose").click().run()
@@ -280,7 +284,7 @@ check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_l
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
 check(all(res.get(k) for k in ("wizard_preview", "wizard_collection", "wizard_result", "wizard_review_retained",
                                "wizard_profile_retained", "wizard_no_repeat", "wizard_same_materials",
-                               "wizard_invalidated", "wizard_no_preliminary_profile", "wizard_no_early_repeat", "wizard_no_section_map", "wizard_repeat_visible")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
+                               "wizard_invalidated", "wizard_no_preliminary_profile", "wizard_no_early_repeat", "wizard_no_section_map", "wizard_repeat_visible", "wizard_scoped_review", "wizard_exact_scope")), "V2 wizard: navigation, preserved review, no repeated model calls, invalidation",
       str({k: v for k, v in res.items() if k.startswith("wizard_")}))
 
 check(res.get("new_chat_empty") and res.get("new_chat_after_answer"),
