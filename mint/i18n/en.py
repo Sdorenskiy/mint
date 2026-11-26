@@ -4,6 +4,7 @@ Generated from the tr() / N_() calls in the code and edited by hand. tests/test_
 string has a translation with the same {placeholders}."""
 
 EN = {
+    "Полный контекст исходного фрагмента": "Full original fragment context",
     "Извлечь сведения из документов": "Extract facts from documents",
     "Mint автоматически обработает все фрагменты выбранных оригиналов.": "Mint automatically processes all fragments of the selected originals.",
     "Техническая диагностика: ручная выборка": "Technical diagnostics: manual sample",

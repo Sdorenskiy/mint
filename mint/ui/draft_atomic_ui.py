@@ -187,6 +187,10 @@ def _render_result(result):
                     _wrapped(table["header"])
                 _wrapped(fact["quote"])
                 st.caption(f'{span["id"]} · {fact["start"]}:{fact["end"]}')
+                if span["text"] != fact["quote"]:
+                    st.divider()
+                    st.caption(tr("Полный контекст исходного фрагмента"))
+                    _wrapped(span["text"])
     problems = [row for row in result["fragments"] if row["status"] != "processed" or not row["facts"]]
     with st.expander(tr("Диагностика фрагментов ({n})", n=len(problems))):
         st.caption(tr("Пустой ответ не доказывает отсутствие существенных сведений."))

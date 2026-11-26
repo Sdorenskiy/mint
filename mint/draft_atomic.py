@@ -55,9 +55,9 @@ class Candidate(BaseModel):
 METRIC_KEYS = ("metric_subject", "metric_value", "metric_unit")
 COUNTERS = ("fragments_total", "fragments_selected", "fragments_attempted", "fragments_processed",
             "fragments_complete", "fragments_failed", "source_read_errors", "source_count",
-            "invalid_range", "recovery_attempted", "recovery_calls", "recovery_added",
+            "invalid_range", "recovery_attempted", "recovery_windows", "recovery_added",
             "batch_error", "context_limit", "invalid_payload", "response_limit",
-            "invalid_shape", "invalid_quote", "ambiguous_quote", "empty_fields",
+            "invalid_shape", "empty_fields",
             "invalid_field", "invalid_metric", "duplicate", "accepted",
             "empty_response", "partial_fragments")
 
@@ -172,7 +172,7 @@ def _extract_fragment(cfg, span, counts):
         middle = len(parts) // 2
         children = []
         for window in (parts[:middle], parts[middle:]):
-            counts["recovery_calls"] += 1
+            counts["recovery_windows"] += 1
             more, child_status, _ = _extract_window(cfg, span, window, counts)
             children.append(child_status)
             for fact in more:
