@@ -83,6 +83,28 @@ def test_references():
     assert dup.related([root])[1] == {"ambiguous": 1}
 
 
+def test_table_occurrences_and_headers():
+    header = "| Sender | Receiver |"
+    separator = "| --- | --- |"
+    repeated = "| shared | shared |"
+    first = "\n".join([header, separator, repeated] + [
+        "| sender-" + str(i) + " " + "x" * 180 + " | receiver-one |" for i in range(70)])
+    second = "\n".join([header, separator, repeated, "| sender-two | receiver-two |"])
+    text = "# 1 Duties\nSee table 1.\n# 2 Tables\nTable 1 — exchange\n\n" + first + "\n\nTable 2 — exchange\n\n" + second
+    refs, spans = make_map([("tables.md", text)])
+    root = next(iter(spans))
+    related, gaps = refs.related([root], quote="See table 1.", budget=50000)
+    assert not gaps and len(related) > 1
+    assert all(r["table_context"]["occurrence"] == 1 and r["table_context"]["header"] == header for r in related)
+    assert all("receiver-two" not in r["quote"] and r["quote"] in text for r in related)
+    assert any(header not in r["quote"] for r in related), "separate header must survive later fragments"
+    targets = refs._lookup("tables.md", "table", "2", "table 2")
+    assert targets["status"] == "resolved" and all(spans[s]["table_context"]["occurrence"] == 2 for s in targets["targets"])
+    from mint.template_draft import _quote_key
+    assert _quote_key({"source": "tables.md", "section": "2 Tables", "quote": repeated, "table_context": {"occurrence": 1}}) != _quote_key(
+        {"source": "tables.md", "section": "2 Tables", "quote": repeated, "table_context": {"occurrence": 2}})
+
+
 def test_word_numbering_and_bookmark():
     ns = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
     doc = f'<w:document xmlns:w="{ns}"><w:body>' + """
@@ -126,6 +148,7 @@ def test_sanitized_export():
 if __name__ == "__main__":
     test_progress()
     test_references()
+    test_table_occurrences_and_headers()
     test_word_numbering_and_bookmark()
     test_sanitized_export()
     print("OK: progress counters, scoped references, nested traversal, Word addresses, safe export")
