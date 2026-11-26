@@ -306,11 +306,15 @@ def _metric_pair(row, subject, value, unit):
         if header and line.strip().startswith("|"):
             labels, values = cells(header), cells(line)
             if len(labels) == len(values):
+                subject_in_header = any(subject_pattern.search(label) for label in labels)
                 for label, cell in zip(labels, values):
-                    if (re.search(number, cell) and
-                            re.search(r"(?<!\w)" + re.escape(unit) + r"(?!\w)", label, re.I)
-                            and (subject_pattern.search(line) or subject_pattern.search(label))):
+                    if not (subject_pattern.search(label) if subject_in_header else subject_pattern.search(line)):
+                        continue
+                    if measure.search(cell) or (re.search(number, cell) and
+                            re.search(r"(?<!\w)" + re.escape(unit) + r"(?!\w)", label, re.I)):
                         return True
+                # Do not reinterpret the whole table row as a prose clause.
+                continue
         for clause in re.split(r";|(?<=[.!?])\s+", _normalized(line)):
             for match in measure.finditer(clause):
                 # Subject and quantity must be in the same clause; a different
@@ -321,9 +325,6 @@ def _metric_pair(row, subject, value, unit):
                     other = re.search(r"\d+(?:[.,]\d+)?\s*" + re.escape(unit) + r"(?!\w)", between, re.I)
                     if not other:
                         return True
-                # A table may express the object in its corresponding header.
-                if header and subject_pattern.search(header) and len(list(measure.finditer(clause))) == 1:
-                    return True
     return False
 
 
@@ -834,7 +835,8 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
     # B candidates are exact original spans, never inserted into records.
     # Rank only the already retrieved bounded pool; no extra query per need.
     wiki_pool = {r["id"]: {"id": r["id"], "source": r["source"], "section": r["section"],
-                           "quote": r["text"], "kind": "uncertain", "source_role": "reference_context"}
+                           "quote": r["text"], "kind": "uncertain", "source_role": "reference_context",
+                           **({"table_context": r["table_context"]} if r.get("table_context") else {})}
                  for r in prepared.get("reference_candidates", [])}
     wiki_counts = Counter()
     if automatic_functions and prepared.get("reference_spans"):
@@ -1063,6 +1065,33 @@ def _collect_target_requirements(cfg, prepared, approved_profile=None, progress=
             "diagnostics": diagnostics, "requires_expert_review": True,
             "phase": "collected", "summaries": review_summaries,
             "input_identity": input_identity(cfg, prepared, list(profile.values()))}
+
+def extend_function_preview(cfg, prepared, preview, collected):
+    """Reopen function scope with additive citations, never approve new functions."""
+    _verify_originals(cfg, prepared)
+    if (preview.get("phase") != "function_preview" or collected.get("phase") != "collected"
+            or preview["input_identity"] != input_identity(cfg, prepared, preview["approved_profile"])
+            or collected["input_identity"] != input_identity(cfg, prepared, collected["approved_profile"])):
+        raise ValueError("Stale function scope")
+    if any(rid not in collected["requirements"] or
+           any(row[k] != collected["requirements"][rid][k] for k in ("source", "section", "quote"))
+           for rid, row in preview["requirements"].items()):
+        raise ValueError("Original scope records changed")
+    updated = deepcopy(preview)
+    updated["approved_profile"] = deepcopy(collected["approved_profile"])
+    updated["requirements"] = deepcopy(collected["requirements"])
+    updated["function_links"] = deepcopy(collected["function_links"])
+    for rid, row in updated["requirements"].items():
+        if row.get("kind") not in OBLIGATION_KINDS or rid in updated["applicability"]:
+            continue
+        d = collected["decisions"].get(rid, {})
+        known = d.get("applicability_status") == "model_supported"
+        updated["applicability"][rid] = {"category": d.get("category", "uncertain") if known else "uncertain",
+                                         "actor": d.get("actor", "") if known else "",
+                                         "reason": d.get("review_reason", "") if known else ""}
+    updated["input_identity"] = input_identity(cfg, prepared, updated["approved_profile"])
+    return updated
+
 
 def _combine_metrics(prior, result):
     previous, current = prior["metrics"], result["metrics"]
