@@ -171,6 +171,22 @@ try:
         at.selectbox(key="atomic_category").set_value("data").run()
         res["atomic_category_view"] = (in_data and absent_in_metrics
                                        and any(str(m.value) == expected_field for m in at.markdown))
+        # Switching contracts must hide the previous result, not relabel it.
+        at.radio(key="atomic_mode").set_value("assertions").run()
+        hidden_slots = not any(str(m.value) == expected_field for m in at.markdown)
+        simple_fact = dict(full_fact, fields={}, origin="assertion")
+        simple_result = dict(full_result, mode="assertions",
+                             fragments=[dict(sample_spans["F1"], status="processed", facts=[simple_fact])])
+        with patch.object(atomic_ui, "prepare_atomic_sources", return_value=prepared_sample), \
+                patch.object(atomic_ui, "extract_atomic_sample", return_value=simple_result) as simple_run:
+            at.button(key="atomic_prepare").click().run()
+            simple_mode = simple_run.call_args.kwargs.get("mode") == "assertions"
+        simple_visible = any(str(m.value) == r"Shared beginning\." for m in at.markdown)
+        categories = at.selectbox(key="atomic_category").options
+        only_two = len(categories) == 2
+        at.radio(key="atomic_mode").set_value("slots").run()
+        hidden_simple = not any(w.key == "atomic_category" for w in at.selectbox)
+        res["atomic_assertion_mode"] = hidden_slots and simple_mode and simple_visible and only_two and hidden_simple
         at.checkbox(key="atomic_manual").check().run()
         with patch.object(atomic_ui, "prepare_atomic_sources", return_value=prepared_sample):
             at.button(key="atomic_prepare").click().run()
@@ -359,7 +375,7 @@ check(any("MINT" in t for t in res.get("titles", [])) and res.get("theme"), f"ш
 check(res.get("tabs") == 5, f"пять вкладок: {res.get('tabs')}")
 check(all(res.get(k) for k in ("draft_default_v2", "draft_v2_disabled", "draft_legacy_available", "draft_v3_available", "draft_v2_restored")),
       "V2 по умолчанию, запуск без данных запрещён, прежний режим доступен, переключение обратимо")
-check(all(res.get(k) for k in ("atomic_full_scope", "atomic_category_view", "atomic_full_search", "atomic_table_search", "atomic_section_filter",
+check(all(res.get(k) for k in ("atomic_full_scope", "atomic_category_view", "atomic_assertion_mode", "atomic_full_search", "atomic_table_search", "atomic_section_filter",
                                "atomic_selection_retained", "atomic_exact_scope", "atomic_clear", "atomic_cap")),
       "V3: full-text/table search, section filter, persistent selection, exact scope and cap", str(res))
 check(all(res.get(k) for k in ("wizard_preview", "wizard_collection", "wizard_result", "wizard_review_retained",
