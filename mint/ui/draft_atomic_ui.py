@@ -153,6 +153,10 @@ def _render_result(result):
     st.caption(tr("Без зарегистрированных ошибок: {complete}; частичные: {partial}; не обработаны: {failed}; пустые ответы: {empty}.",
                   complete=counts.get("fragments_complete", 0), partial=counts.get("partial_fragments", 0),
                   failed=counts.get("fragments_failed", 0), empty=counts.get("empty_response", 0)))
+    if counts.get("metric_table_fragments") or counts.get("metric_table_fallbacks"):
+        st.caption(tr("Программно извлечено строк показателей: {rows}; фрагментов таблиц: {tables}; передано модели из-за неоднозначности: {fallback}.",
+                      rows=counts.get("metric_table_rows", 0), tables=counts.get("metric_table_fragments", 0),
+                      fallback=counts.get("metric_table_fallbacks", 0)))
     if counts.get("source_read_errors") or counts.get("partial_fragments") or counts.get("fragments_failed"):
         st.warning(tr("Есть ограничения или ошибки разбора. Полный проход не означает полноту извлечённых сведений."))
     if result.get("scope") != "all":
