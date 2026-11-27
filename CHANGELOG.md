@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- Fix the shared V2/V3 metric validator for bold Markdown table headers with separate value and unit columns. Regression checks preserve original rows and conditions and reject cross-row or incorrect values. Version 21.4.33; no semantic extraction changes, live-model acceptance pending.
+
 - V3: whole-original scan by default, optional technical sample, numbered source-line evidence instead of regenerated quotes, bounded recovery on input/output limits, categorized local fact registry and explicit fragment diagnostics. Version 21.4.32; semantic acceptance pending, V2 unchanged.
 
 - V3 sample UI: local full-text and table-header search, section filter, paginated readable fragment cards, persistent selection, selected-only view and clear selection. Version 21.4.31; extraction unchanged.
