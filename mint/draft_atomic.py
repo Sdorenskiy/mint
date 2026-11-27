@@ -212,7 +212,8 @@ def _record_rejection(trace, counts, code, detail=None, raw=None):
     candidates are captured only by explicit local opt-in, with a shared cap."""
     if trace is None:
         return
-    event = {"code": code, "window": trace["windows"]}
+    event = {"code": code, "window": trace["windows"],
+             "first_line": trace.get("first_line", 0), "last_line": trace.get("last_line", 0)}
     detail = detail or {}
     if detail.get("field") in _REJECTION_FIELDS:
         event["field"] = detail["field"]
@@ -249,6 +250,8 @@ def _extract_window(cfg, span, parts, counts, *, mode="slots", trace=None):
         payload["table_context"] = span["table_context"]
     if trace is not None:
         trace["windows"] += 1
+        trace["first_line"] = parts[0]["n"] if parts else 0
+        trace["last_line"] = parts[-1]["n"] if parts else 0
     if len(json.dumps(payload, ensure_ascii=False)) > _candidate_budget(cfg):
         counts["context_limit"] += 1
         _record_rejection(trace, counts, "context_limit")
@@ -574,6 +577,8 @@ def atomic_private_diagnostics(result):
     spans = {s["id"]: s for s in result["fragments"]}
     return {"format": "mint-atomic-private-diagnostics/1", "mint": MINT_VERSION,
             "mode": result["mode"], "omitted": detail["omitted"],
+            "contract": MODE_STAGES[result["mode"]],
+            "capture": "parsed_rejected_candidates_only",
             "fragments": [{**row, "text": spans[row["fragment"]]["text"],
                            "table_context": spans[row["fragment"]].get("table_context")}
                           for row in detail["fragments"]]}
@@ -589,7 +594,8 @@ def _safe_fragment_diagnostics(result):
             code = event.get("code")
             if code not in _REJECTION_CODES:
                 continue
-            clean = {"code": code, "window": _number(event.get("window"))}
+            clean = {"code": code, "window": _number(event.get("window")),
+                     "first_line": _number(event.get("first_line")), "last_line": _number(event.get("last_line"))}
             if event.get("field") in _REJECTION_FIELDS:
                 clean["field"] = event["field"]
             if event.get("cause") in _REJECTION_CAUSES:
