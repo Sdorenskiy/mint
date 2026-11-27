@@ -4,7 +4,7 @@ import json
 import streamlit as st
 
 from ..draft_atomic import (MAX_SAMPLE, MODE_STAGES, atomic_diagnostics, extract_atomic_sample, prepare_atomic_sources,
-                            fact_rows, fact_in_group)
+                            fact_rows, fact_in_group, atomic_private_diagnostics)
 from ..draft_checkpoint import _identity
 from ..i18n import tr
 from ..kb import list_kb_documents, source_path
@@ -161,9 +161,13 @@ def _render_result(result):
                   complete=counts.get("fragments_complete", 0), partial=counts.get("partial_fragments", 0),
                   failed=counts.get("fragments_failed", 0), empty=counts.get("empty_response", 0)))
     if counts.get("metric_table_fragments") or counts.get("metric_table_fallbacks"):
-        st.caption(tr("Программно извлечено строк показателей: {rows}; фрагментов таблиц: {tables}; передано модели из-за неоднозначности: {fallback}.",
+        st.caption(tr("Программно извлечено строк показателей: {rows}; фрагментов таблиц: {tables}; неоднозначных табличных фрагментов: {fallback}.",
                       rows=counts.get("metric_table_rows", 0), tables=counts.get("metric_table_fragments", 0),
                       fallback=counts.get("metric_table_fallbacks", 0)))
+    if mode == "assertions":
+        st.caption(tr("Строк обычных таблиц: {rows}; неоднозначных: {uncertain}; служебный контекст: {context}; содержательных кандидатов: {candidates}.",
+                      rows=counts.get("ordinary_table_rows", 0), uncertain=counts.get("uncertain_table_rows", 0),
+                      context=counts.get("context_records", 0), candidates=counts.get("candidate_records", 0)))
     if counts.get("source_read_errors") or counts.get("partial_fragments") or counts.get("fragments_failed"):
         st.warning(tr("Есть ограничения или ошибки разбора. Полный проход не означает полноту извлечённых сведений."))
     if result.get("scope") != "all":
@@ -177,7 +181,8 @@ def _render_result(result):
         "constraints": tr("Ограничения и условия"),
     }
     if mode == "assertions":
-        categories = {g: categories[g] for g in ("all", "metrics")}
+        categories = {"all": tr("Содержательные кандидаты"), "metrics": categories["metrics"],
+                      "context": tr("Служебный контекст"), "unresolved": tr("Неоднозначные строки")}
         st.caption(tr("Классификация не выполнялась; в показателях только программно разобранные таблицы."))
     totals = {g: sum(fact_in_group(fact, g) for _, fact in rows) for g in categories}
     group = st.selectbox(tr("Категория сведений"), list(categories),
@@ -192,7 +197,14 @@ def _render_result(result):
     for span, fact in _page(filtered, "atomic_fact_page", size=10):
         with st.container(border=True):
             st.caption(fact["id"])
-            if not fact["fields"]:
+            if fact.get("table_row"):
+                row = fact["table_row"]
+                if row["layout"] == "aligned":
+                    for header, value in zip(row["headers"], row["values"]):
+                        _wrapped(header + ": " + value)
+                else:
+                    _wrapped(fact["quote"])
+            elif not fact["fields"]:
                 _wrapped(fact["quote"])
             for field, value in fact["fields"].items():
                 _wrapped(labels[field] + ": " + value)
@@ -218,12 +230,21 @@ def _render_result(result):
             _wrapped(row["text"])
     st.caption(tr("Локальная выгрузка содержит исходные тексты. Не передавайте её за пределы контура."))
     st.download_button(tr("Скачать локальную выборку фактов"),
-                       json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False),
+                       json.dumps({k: v for k, v in result.items() if k != "private_diagnostics"},
+                                  ensure_ascii=False, indent=2, allow_nan=False),
                        file_name=f"mint_atomic_{mode}_private.json", mime="application/json", key="atomic_private")
     st.download_button(tr("Скачать обезличенные данные для анализа"),
                        json.dumps(atomic_diagnostics(result), ensure_ascii=False, indent=2, allow_nan=False),
                        file_name=f"mint_atomic_{mode}_analysis.json", mime="application/json", key="atomic_safe")
     st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
+    detail = atomic_private_diagnostics(result)
+    if detail is not None:
+        st.warning(tr("Расширенная диагностика содержит исходный текст и отклонённые ответы модели. Только для разрешённых синтетических испытаний; проверьте файл перед передачей."))
+        st.caption(tr("Пропущено записей расширенной диагностики из-за лимита: {n}.", n=detail["omitted"]))
+        st.download_button(tr("Скачать расширенную диагностику (локально)"),
+                           json.dumps(detail, ensure_ascii=False, indent=2, allow_nan=False),
+                           file_name=f"mint_atomic_{mode}_diagnostics_private.json",
+                           mime="application/json", key="atomic_diagnostics_private")
 
 
 def render_atomic_sample(cfg):
@@ -235,6 +256,13 @@ def render_atomic_sample(cfg):
     mode = st.radio(tr("Режим извлечения V3"), list(MODE_STAGES),
                     format_func=_mode_labels().get, key="atomic_mode")
     manual = st.checkbox(tr("Техническая диагностика: ручная выборка"), key="atomic_manual")
+    extended = st.checkbox(tr("Расширенная диагностика — только синтетические испытания"), key="atomic_extended")
+    if extended:
+        st.caption(tr("При следующем запуске локально сохраняются отклонённые JSON-кандидаты и исходные фрагменты. Не включайте на рабочих документах."))
+    else:
+        saved_result = st.session_state.get("atomic_result")
+        if saved_result:
+            saved_result[1].pop("private_diagnostics", None)
     if not manual:
         st.caption(tr("Mint автоматически обработает все фрагменты выбранных оригиналов."))
     button_label = tr("Подготовить выборку фрагментов") if manual else tr("Извлечь сведения из документов")
@@ -248,7 +276,7 @@ def render_atomic_sample(cfg):
                 prepared = prepare_atomic_sources(cfg, sources, progress)
                 st.session_state["atomic_prepared"] = signature, prepared
                 if not manual:
-                    result = extract_atomic_sample(cfg, prepared, None, progress, mode=mode)
+                    result = extract_atomic_sample(cfg, prepared, None, progress, mode=mode, extended=extended)
                     st.session_state["atomic_result"] = _result_key(cfg, signature, None, mode), result
             except (DraftError, OSError, ValueError, RuntimeError):
                 status.update(label=tr("Не удалось обработать выборку."), state="error")
@@ -273,7 +301,8 @@ def render_atomic_sample(cfg):
             st.session_state.pop("atomic_result", None)
             with st.status(tr("Извлечение атомарных сведений"), expanded=False) as status:
                 try:
-                    result = extract_atomic_sample(cfg, prepared, selected, render_progress(status), mode=mode)
+                    result = extract_atomic_sample(cfg, prepared, selected, render_progress(status), mode=mode,
+                                                   extended=extended)
                 except (DraftError, OSError, ValueError, RuntimeError):
                     status.update(label=tr("Не удалось обработать выборку."), state="error")
                 else:
