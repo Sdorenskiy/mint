@@ -296,7 +296,14 @@ _METRIC_UNIT_LABELS = {"единица", "единица измерения", "�
 
 
 def _metric_cells(line):
-    return [cell.strip() for cell in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+    # Remove exactly the outside delimiters; adjacent pipes may represent
+    # a genuinely empty edge cell. Preserve it for uncertainty checks.
+    content = line.strip()
+    if content.startswith("|"):
+        content = content[1:]
+    if content.endswith("|") and not content.endswith(r"\|"):
+        content = content[:-1]
+    return [cell.strip() for cell in re.split(r"(?<!\\)\|", content)]
 
 
 def _metric_header_label(cell):
