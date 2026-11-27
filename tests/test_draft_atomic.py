@@ -159,6 +159,75 @@ def test_structured_metric_tables():
         assert ask.call_count == 1
 
 
+def test_assertion_extraction():
+    from collections import Counter
+    cfg = SimpleNamespace(max_tokens=1800, llm_context_tokens=16000, chars_per_token=2.5)
+    first = "System A stores records for 30 days."
+    second = "System B must not modify records."
+    span = {"section": "Fixture", "text": first + " " + second}
+    def item(text, first=1, last=1):
+        return {"first": first, "last": last, "text": text}
+    counts = Counter()
+    with patch.object(atomic, "_json", return_value={"items": [item(first), item(second),
+            item(first), item("System B must modify records.")]}) as ask:
+        facts, status = atomic._extract_fragment(cfg, span, counts, mode="assertions")
+    assert ask.call_args.args[1] == "atomic_assertions"
+    assert status == "partial" and counts["invalid_field"] == counts["duplicate"] == 1
+    assert [fact["quote"] for fact in facts] == [first, second]
+    assert counts["accepted"] == 2
+    for fact in facts:
+        assert not fact["fields"] and fact["origin"] == "assertion"
+        assert span["text"][fact["start"]:fact["end"]] == fact["quote"]
+    assert facts[0]["end"] < facts[1]["start"]
+    assert atomic._validated_assertion(item(first, 1, 2), span)[1] == "invalid_range"
+    assert atomic._validated_assertion({"first": True, "last": 1, "text": first}, span)[1] == "invalid_shape"
+    assert atomic._validated_assertion(candidate(actor="System A"), span)[1] == "invalid_shape"
+    assert atomic._validated_assertion(item("yst"), span)[1] == "invalid_field"
+    assert atomic._validated_assertion(item(""), span)[1] == "invalid_field"
+    repeated = {"text": first + " " + first}
+    assert atomic._validated_assertion(item(first), repeated)[1] == "invalid_field"
+    repeated_lines = {"text": first + "\r\n" + first}
+    fact, status = atomic._validated_assertion(item(first, 2, 2), repeated_lines)
+    assert status == "accepted" and fact["start"] == len(first) + 2
+    cross = {"text": "Do not deliver\r\n  until accepted.\r\nOther."}
+    fact, status = atomic._validated_assertion(item("Do not deliver until accepted.", 1, 2), cross)
+    assert status == "accepted" and fact["quote"] == "Do not deliver\r\n  until accepted."
+    assert cross["text"][fact["start"]:fact["end"]] == fact["quote"]
+    # A table row is selected by number, without reproducing text or guessing cells.
+    header = "| Field | Description |"
+    table = {"section": "Fields", "text": header + "\n| --- | --- |\n| A | Required |",
+             "table_context": {"header": header, "separator": "| --- | --- |"}}
+    for n in (1, 2):
+        assert atomic._validated_assertion({"first": n, "last": n}, table)[1] == "invalid_range"
+    fact, status = atomic._validated_assertion({"first": 3, "last": 3}, table)
+    assert status == "accepted" and fact["quote"] == "| A | Required |"
+    assert atomic._validated_assertion(item("A", 3, 3), table)[1] == "invalid_field"
+    # Both modes reuse deterministic metric extraction unchanged.
+    metric = {"section": "Metrics", "text": TABLE, "table_context": {"header": HEADER}}
+    with patch.object(atomic, "_json") as ask:
+        left = atomic._extract_fragment(cfg, metric, Counter(), mode="slots")
+        right = atomic._extract_fragment(cfg, metric, Counter(), mode="assertions")
+    assert left == right and not ask.called
+    assert left[0][0]["origin"] == "structured_table"
+    # Recovery keeps the chosen contract, including when narrowing the window.
+    split = {"section": "Fixture", "text": first + "\n" + second}
+    with patch.object(atomic, "_json", side_effect=[{"items": [item(first)] * 12},
+                     {"items": [item(first)]}, {"items": [item(second, 2, 2)]}]) as ask:
+        recovered, status = atomic._extract_fragment(cfg, split, Counter(), mode="assertions")
+    assert status == "partial" and len(recovered) == 2
+    assert all(call.args[1] == "atomic_assertions" for call in ask.call_args_list)
+    # The safe export identifies the mode, but does not imply that categories
+    # absent from an unclassified result have zero recall.
+    diagnostic = atomic.atomic_diagnostics({"mode": "assertions", "fragments": [
+        {"facts": facts + left[0]}], "counts": {"accepted": 3},
+        "metrics": {"stages": {"atomic_assertions": {"llm_calls": 1, "llm_seconds": 2},
+                               "secret": {"llm_calls": 9}}}})
+    assert diagnostic["mode"] == "assertions"
+    assert diagnostic["category_counts"] == {"metrics": 1}
+    assert set(diagnostic["stages"]) == {"atomic_assertions"}
+    assert first not in json.dumps(diagnostic)
+
+
 def test_scope_and_privacy():
     with TemporaryDirectory() as tmp:
         cfg = SimpleNamespace(kb_path=Path(tmp) / "kb", log_path=Path(tmp) / "logs", llm_model="fixture",
@@ -189,6 +258,12 @@ def test_scope_and_privacy():
         assert ("atomic_extract_done", atomic.MAX_SAMPLE + 2) in events
         report = atomic.atomic_diagnostics(result)
         assert report["expert_review"] is None and report["counts"]["accepted"] == 1
+        assert result["mode"] == report["mode"] == "slots"
+        with patch.object(atomic, "_json", return_value={"items": [{"first": 1, "last": 1, "text": CLAUSE}]}) as ask:
+            simple = atomic.extract_atomic_sample(cfg, prepared, [selected], mode="assertions")
+        assert simple["mode"] == "assertions" and ask.call_args.args[1] == "atomic_assertions"
+        assert simple["fragments"][0]["facts"][0]["quote"] == CLAUSE
+        assert simple["fragments"][0]["facts"][0]["id"] == selected + ".1"
         assert report["category_counts"]["interactions"] == report["category_counts"]["participants"] == 1
         for secret in ("private_source", "Desk", "Relay", selected, "fixture"):
             assert secret not in json.dumps(report)
@@ -227,6 +302,7 @@ def test_bounded_recovery():
 if __name__ == "__main__":
     test_contract()
     test_structured_metric_tables()
+    test_assertion_extraction()
     test_scope_and_privacy()
     test_bounded_recovery()
     print("ИТОГ: V3 whole-document scan, numbered evidence, bounded recovery, categories and safe diagnostics")
