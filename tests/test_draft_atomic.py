@@ -202,6 +202,7 @@ def test_assertion_extraction():
     fact, status = atomic._validated_assertion({"first": 3, "last": 3}, table)
     assert status == "accepted" and fact["quote"] == "| A | Required |"
     assert atomic._validated_assertion(item("A", 3, 3), table)[1] == "invalid_field"
+    assert atomic._validated_assertion(item("| A | Required |", 3, 3), table)[1] == "accepted"
     # Both modes reuse deterministic metric extraction unchanged.
     metric = {"section": "Metrics", "text": TABLE, "table_context": {"header": HEADER}}
     with patch.object(atomic, "_json") as ask:
@@ -226,6 +227,133 @@ def test_assertion_extraction():
     assert diagnostic["category_counts"] == {"metrics": 1}
     assert set(diagnostic["stages"]) == {"atomic_assertions"}
     assert first not in json.dumps(diagnostic)
+
+
+def test_preserve_table_rows_and_context():
+    from collections import Counter
+    cfg = SimpleNamespace(max_tokens=1800, llm_context_tokens=16000, chars_per_token=2.5)
+    specs = [
+        ("Revision history", ["Revision", "Description"], 1, True),
+        ("Terms", ["Term", "Definition"], 4, True),
+        ("Participants", ["Party", "Responsibility"], 4, False),
+        ("Recipient data", ["Field", "Description", "Required"], 6, False),
+        ("Payment data", ["Field", "Description", "Required"], 5, False),
+        ("Revision history", ["Version", "Description"], 1, True),
+        ("Components", ["System", "Role"], 4, False),
+        ("Links", ["From", "To", "Purpose"], 3, False),
+        ("Contracts", ["From", "To", "Format", "Protocol"], 6, False),
+        ("Envelope", ["Attribute", "Description", "Required"], 6, False),
+    ]
+    total = 0
+    for section, headers, n, context in specs:
+        header = "| " + " | ".join("**" + h + "**" for h in headers) + " |"
+        sep = "| " + " | ".join("---" for _ in headers) + " |"
+        data = ["| " + " | ".join(f"value {i}-{j}" for j in range(len(headers))) + " |"
+                for i in range(n)]
+        span = {"section": section, "text": "\r\n".join([header, sep, *data]),
+                "table_context": {"header": header, "separator": sep}}
+        counts = Counter()
+        with patch.object(atomic, "_json") as ask:
+            rows, status = atomic._extract_fragment(cfg, span, counts, mode="assertions")
+        assert not ask.called and status == "processed"
+        assert len(rows) == n and counts["ordinary_table_rows"] == n
+        assert counts["accepted"] == n and not counts["uncertain_table_rows"]
+        for i, row in enumerate(rows):
+            assert row["quote"] == data[i] == span["text"][row["start"]:row["end"]]
+            assert row["first"] == row["last"] == i + 3
+            assert row["origin"] == "table_row" and not row["fields"]
+            assert row["table_row"]["headers"] == ["**" + h + "**" for h in headers]
+            assert row["table_row"]["values"] == [f"value {i}-{j}" for j in range(len(headers))]
+            assert atomic._record_role(span, row) == ("context" if context else "candidate")
+        total += n
+    assert total == 40
+    header = "| A | B | C |"
+    data = [r"| alpha \| beta | x | yes |", "| | x | yes |",
+            "| alpha | x ||", "| alpha | x |", "unparsed cell"]
+    span = {"section": "Fields", "text": "\n".join(data),
+            "table_context": {"header": header}}
+    with patch.object(atomic, "_json") as ask:
+        rows, status = atomic._extract_fragment(cfg, span, Counter(), mode="assertions")
+    assert not ask.called and status == "partial" and len(rows) == len(data)
+    assert rows[0]["table_row"]["values"] == [r"alpha \| beta", "x", "yes"]
+    assert rows[1]["table_row"]["values"] == ["", "x", "yes"]
+    assert rows[2]["table_row"]["values"] == ["alpha", "x", ""]
+    assert all(r["record_role"] == "unresolved" for r in rows[1:])
+    assert all(r["quote"] == line for r, line in zip(rows, data))
+    assert atomic.fact_in_group(rows[1], "unresolved") and not atomic.fact_in_group(rows[1], "all")
+    span = {"section": "Fields", "text": "| a | b | c |", "table_context": {"header": "| A | A | C |"}}
+    rows, status = atomic._extract_fragment(cfg, span, Counter(), mode="assertions")
+    assert status == "partial" and rows[0]["record_role"] == "unresolved"
+    span = {"section": "Metrics", "text": "| Latency | 10–20 | ms |",
+            "table_context": {"header": "| Metric | Value | Unit |"}}
+    with patch.object(atomic, "_json", return_value={"items": []}) as ask:
+        rows, status = atomic._extract_fragment(cfg, span, Counter(), mode="assertions")
+        atomic._extract_fragment(cfg, span, Counter(), mode="slots")
+    assert ask.call_count == 1 and status == "partial" and not rows[0]["fields"]
+    assert rows[0]["record_role"] == "unresolved"
+    span = {"fragment": 1, "section": "", "text": "**PROJECT**\n\nDocument title"}
+    for quote in ("**PROJECT**", "Document title"):
+        assert atomic._record_role(span, {"quote": quote}) == "context"
+    span = {"fragment": 2, "section": "ФУНКЦИОНАЛЬНЫЕ ТРЕБОВАНИЯ",
+            "text": "Название документа\nОбозначение: FT-01\nРедакция 1.0\nСтатус: согласован\nСистема хранит данные."}
+    for quote in ("Название документа", "Обозначение: FT-01", "Редакция 1.0", "Статус: согласован"):
+        assert atomic._record_role(span, {"quote": quote}) == "context"
+    assert atomic._record_role(span, {"quote": "Система хранит данные."}) == "candidate"
+    for quote in ("Версия пакета обязательна.", "На дату обследования обмен ручной.",
+                  "Алгоритм шифрования уточняется.", "Повтор не создаёт новых записей."):
+        assert atomic._record_role({"section": "1. Scope"}, {"quote": quote}) == "candidate"
+    assert atomic._record_role({"section": "Scope"}, {"quote": "Условный пример кода: X."}) == "context"
+
+
+def test_diagnostic_trace_and_literal_recovery():
+    from collections import Counter
+    cfg = SimpleNamespace(max_tokens=1800, llm_context_tokens=16000, chars_per_token=2.5)
+    span = {"id": "private-id", "section": "private-section", "text": "System A stores records.\nSystem B does not modify records."}
+    valid = {"first": 1, "last": 1, "text": "System A stores records."}
+    invalid = {"first": 2, "last": 2, "text": "private-secret"}
+    second = {"first": 2, "last": 2, "text": "System B does not modify records."}
+    budget = {"events": 0, "extended": True, "private_events": 0,
+              "private_chars": 0, "private_omitted": 0}
+    trace = {"windows": 0, "rejections": [], "private": [], "budget": budget}
+    counts = Counter()
+    with patch.object(atomic, "_json", side_effect=[{"items": [valid, invalid]},
+                     {"items": [valid]}, {"items": [second]}]) as ask:
+        facts, status = atomic._extract_fragment(cfg, span, counts, mode="assertions", trace=trace)
+    assert ask.call_count == 3 and status == "partial" and len(facts) == 2
+    assert counts["recovery_attempted"] == counts["recovery_added"] == 1
+    assert trace["rejections"][0]["code"] == "invalid_field"
+    assert trace["rejections"][0]["field"] == "text"
+    assert trace["rejections"][0]["cause"] == "not_literal"
+    assert json.loads(trace["private"][0]["candidate_json"]) == invalid
+    result = {"mode": "assertions", "fragments": [dict(span, facts=facts)],
+              "counts": dict(counts), "fragment_diagnostics": [
+                  {"status": status, "structure": "text", "windows": trace["windows"],
+                   "counts": dict(counts), "seconds": 1.2,
+                   "rejections": trace["rejections"] + [
+                       {"code": "private-secret", "field": "private-field", "cause": "private-error"},
+                       {"code": "invalid_field", "field": "private-field", "cause": "private-error",
+                        "candidate_json": "private-secret"}]}],
+              "private_diagnostics": {"fragments": [{"fragment": "private-id", "rejections": trace["private"]}],
+                                      "omitted": 0}}
+    safe = atomic.atomic_diagnostics(result)
+    assert safe["fragment_diagnostics"][0]["fragment"] == 1
+    assert safe["fragment_diagnostics"][0]["rejections"][0]["cause"] == "not_literal"
+    assert "private-" not in json.dumps(safe)
+    private = atomic.atomic_private_diagnostics(result)
+    assert private["fragments"][0]["text"] == span["text"]
+    assert json.loads(private["fragments"][0]["rejections"][0]["candidate_json"]) == invalid
+    budget["extended"] = False
+    trace["private"].clear()
+    atomic._record_rejection(trace, counts, "invalid_payload", raw={"secret": "private-secret"})
+    assert not trace["private"]
+    budget["extended"] = True
+    budget["private_events"] = atomic.MAX_PRIVATE_EVENTS
+    atomic._record_rejection(trace, counts, "invalid_field", raw=invalid)
+    assert budget["private_omitted"] == 1 and not trace["private"]
+    budget["events"] = atomic.MAX_TRACE_EVENTS
+    atomic._record_rejection(trace, counts, "batch_error")
+    assert counts["trace_omitted"] == 1
+    assert atomic.atomic_private_diagnostics({"fragments": []}) is None
 
 
 def test_scope_and_privacy():
@@ -259,6 +387,14 @@ def test_scope_and_privacy():
         report = atomic.atomic_diagnostics(result)
         assert report["expert_review"] is None and report["counts"]["accepted"] == 1
         assert result["mode"] == report["mode"] == "slots"
+        assert "private_diagnostics" not in result
+        assert report["fragment_diagnostics"][0]["rejections"][0]["field"] == "actor"
+        assert report["fragment_diagnostics"][0]["rejections"][0]["cause"] == "not_literal"
+        with patch.object(atomic, "_json", side_effect=fake):
+            detailed = atomic.extract_atomic_sample(cfg, prepared, [selected], extended=True)
+        assert atomic.atomic_private_diagnostics(detailed)["fragments"][0]["fragment"] == selected
+        assert atomic.atomic_diagnostics(detailed)["fragment_diagnostics"][0]["rejections"][0]["code"] == "invalid_field"
+        assert "invented" not in json.dumps(atomic.atomic_diagnostics(detailed))
         with patch.object(atomic, "_json", return_value={"items": [{"first": 1, "last": 1, "text": CLAUSE}]}) as ask:
             simple = atomic.extract_atomic_sample(cfg, prepared, [selected], mode="assertions")
         assert simple["mode"] == "assertions" and ask.call_args.args[1] == "atomic_assertions"
@@ -303,6 +439,8 @@ if __name__ == "__main__":
     test_contract()
     test_structured_metric_tables()
     test_assertion_extraction()
+    test_preserve_table_rows_and_context()
+    test_diagnostic_trace_and_literal_recovery()
     test_scope_and_privacy()
     test_bounded_recovery()
     print("ИТОГ: V3 whole-document scan, numbered evidence, bounded recovery, categories and safe diagnostics")
