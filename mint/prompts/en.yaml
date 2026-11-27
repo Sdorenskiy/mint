@@ -579,6 +579,12 @@ draft_atomic_extract: |-
   Example: parts = [{"n":7,"text":"Records are transferred from System A to System B monthly, without conversion."}]. Answer: {"items":[{"first":7,"last":7,"fields":{"object":"Records","action":"are transferred","source_party":"System A","destination_party":"System B","timing":"monthly","constraint":"without conversion"}}]}.
   Example: parts = [{"n":3,"text":"| Rate | 20 | messages/s |"}], header = "| Metric | Value | Unit |". Answer: {"items":[{"first":3,"last":3,"fields":{"metric_subject":"Rate","metric_value":"20","metric_unit":"messages/s"}}]}.
   Return only {"items":[...]} up to 12 items in source order, [] if no explicit facts. Do not add quote, conclusions, comments or fields outside the contract. Do not treat an abbreviation glossary or heading as a standalone action/duty.
+draft_atomic_assertions: |-
+  Select all explicit, independent, significant assertions from parts. Do not classify them, fill attributes or determine target-system responsibility. Include material actions, dependencies, conditions, prohibitions, numerical characteristics, information about data and participants, current and target states, and open questions.
+  One item is one complete assertion. Do not merge independent assertions or separate interdependent parts. Preserve the object, negation, material conditions and numerical values in the quotation itself. If one line contains several independent sentences, select them separately. Do not rewrite, summarize or invent.
+  For prose, return first, last (integer numbers of up to 4 adjacent lines in parts, inclusive) and text, one contiguous verbatim portion sufficient to express the assertion. Do not select a whole paragraph instead of individual assertions. In a table select one full data row using first=last, omit text; do not select the header or separator. Preserve context; do not join nonadjacent lines.
+  Example: parts = [{"n":7,"text":"System A stores records for 30 days. System B does not modify records."}]. Answer: {"items":[{"first":7,"last":7,"text":"System A stores records for 30 days."},{"first":7,"last":7,"text":"System B does not modify records."}]}.
+  Return only {"items":[...]} up to 12 items in source order, [] if no explicit significant assertions. Do not add fields outside the contract. Do not treat a heading or example as a standalone requirement.
 draft_context: |-
   Infer the TARGET SYSTEM and PURPOSE of the document being authored.
   Primary evidence is the uploaded Word TEMPLATE's headings and front matter, not the names

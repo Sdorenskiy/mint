@@ -24,6 +24,7 @@ from .version import MINT_VERSION
 MAX_SAMPLE = 20
 MAX_ITEMS = 12
 STAGE = "atomic_extract"
+MODE_STAGES = {"slots": STAGE, "assertions": "atomic_assertions"}
 
 
 class Slots(BaseModel):
@@ -53,6 +54,13 @@ class Candidate(BaseModel):
     first: int = Field(ge=1)
     last: int = Field(ge=1)
     fields: Slots
+
+
+class AssertionCandidate(BaseModel):
+    model_config = ConfigDict(strict=True, extra="forbid")
+    first: int = Field(ge=1)
+    last: int = Field(ge=1)
+    text: Optional[str] = None
 
 
 METRIC_KEYS = ("metric_subject", "metric_value", "metric_unit")
@@ -86,30 +94,41 @@ def _line_parts(text):
     return parts
 
 
+def _selected_evidence(first, last, span, parts=None):
+    """Shared source selection for both experimental model contracts."""
+    parts = _line_parts(span["text"]) if parts is None else parts
+    allowed = {p["n"]: p for p in parts}
+    if (last < first or last - first >= 4
+            or any(n not in allowed for n in range(first, last + 1))):
+        return None
+    start, end = allowed[first]["start"], allowed[last]["end"]
+    quote = span["text"][start:end]
+    if not quote.strip():
+        return None
+    table = span.get("table_context") or {}
+    header = table.get("header", "")
+    if header and (first != last or quote.strip() == header.strip()
+                   or quote.strip() == table.get("separator", "").strip()
+                   or not quote.strip().startswith("|")):
+        return None
+    return {"quote": quote, "start": start, "end": end, "first": first, "last": last}
+
+
 def _validated_candidate(raw, span, parts=None):
     """Select numbered original lines; the model never generates the quotation."""
     try:
         item = Candidate.model_validate(raw, strict=True)
     except ValidationError:
         return None, "invalid_shape"
-    parts = _line_parts(span["text"]) if parts is None else parts
-    allowed = {p["n"]: p for p in parts}
-    if (item.last < item.first or item.last - item.first >= 4
-            or any(n not in allowed for n in range(item.first, item.last + 1))):
+    evidence = _selected_evidence(item.first, item.last, span, parts)
+    if evidence is None:
         return None, "invalid_range"
-    start, end = allowed[item.first]["start"], allowed[item.last]["end"]
-    quote = span["text"][start:end]
-    if not quote.strip():
-        return None, "invalid_range"
+    quote = evidence["quote"]
     fields = item.fields.model_dump(exclude_none=True)
     if not fields:
         return None, "empty_fields"
     table = span.get("table_context") or {}
     header = table.get("header", "")
-    if header and (item.first != item.last or quote.strip() == header.strip()
-                   or quote.strip() == table.get("separator", "").strip()
-                   or not quote.strip().startswith("|")):
-        return None, "invalid_range"
     if any(not v.strip() or len(v) > 600 or
            (v not in quote and not (k in ("metric_subject", "metric_unit") and v in header))
            for k, v in fields.items()):
@@ -119,15 +138,53 @@ def _validated_candidate(raw, span, parts=None):
                 or not _metric_pair({"quote": quote, "table_context": table},
                                     *(fields[k] for k in METRIC_KEYS))):
             return None, "invalid_metric"
-    return {"quote": quote, "start": start, "end": end,
-            "first": item.first, "last": item.last, "fields": fields}, "accepted"
+    return {**evidence, "fields": fields}, "accepted"
+
+
+def _validated_assertion(raw, span, parts=None):
+    """Select one literal contiguous assertion; no semantic fields required.
+
+    Accept only a unique match within selected lines. Whitespace differences
+    (e.g. CRLF) are tolerated; return the untouched original slice.
+    """
+    try:
+        item = AssertionCandidate.model_validate(raw, strict=True)
+    except ValidationError:
+        return None, "invalid_shape"
+    parts = _line_parts(span["text"]) if parts is None else parts
+    evidence = _selected_evidence(item.first, item.last, span, parts)
+    if evidence is None:
+        return None, "invalid_range"
+    if (span.get("table_context") or {}).get("header"):
+        # The numbered row is the assertion, with its table context retained.
+        if item.text is not None:
+            return None, "invalid_field"
+    else:
+        text = (item.text or "").strip()
+        if not text or len(text) > 4000:
+            return None, "invalid_field"
+        pattern = r"\s+".join(re.escape(word) for word in text.split())
+        if text[0].isalnum() or text[0] == "_":
+            pattern = r"(?<!\w)" + pattern
+        if text[-1].isalnum() or text[-1] == "_":
+            pattern += r"(?!\w)"
+        matches = list(re.finditer(r"(?=(" + pattern + r"))", evidence["quote"]))
+        if len(matches) != 1:
+            return None, "invalid_field"
+        start = evidence["start"] + matches[0].start(1)
+        end = evidence["start"] + matches[0].end(1)
+        first = next(p["n"] for p in parts if p["start"] <= start < p["end"])
+        last = next(p["n"] for p in parts if p["start"] < end <= p["end"])
+        evidence = {"quote": span["text"][start:end], "start": start, "end": end,
+                    "first": first, "last": last}
+    return {**evidence, "fields": {}, "origin": "assertion"}, "accepted"
 
 
 def _fact_key(fact):
     return fact["start"], fact["end"], tuple(sorted(fact["fields"].items()))
 
 
-def _extract_window(cfg, span, parts, counts):
+def _extract_window(cfg, span, parts, counts, *, mode="slots"):
     payload = {"section": span["section"],
                "parts": [{"n": p["n"], "text": p["text"]} for p in parts]}
     if span.get("table_context"):
@@ -136,7 +193,7 @@ def _extract_window(cfg, span, parts, counts):
         counts["context_limit"] += 1
         return [], "context_limit", True
     try:
-        reply = _json(cfg, STAGE, payload)
+        reply = _json(cfg, MODE_STAGES[mode], payload)
     except DraftError:
         counts["batch_error"] += 1
         return [], "batch_error", False
@@ -150,7 +207,8 @@ def _extract_window(cfg, span, parts, counts):
     facts, seen = [], set()
     partial = limited
     for raw in items[:MAX_ITEMS]:
-        fact, status = _validated_candidate(raw, span, parts)
+        validate = _validated_assertion if mode == "assertions" else _validated_candidate
+        fact, status = validate(raw, span, parts)
         if fact is None:
             counts[status] += 1
             partial = True
@@ -216,7 +274,7 @@ def _structured_metrics(span, parts):
     return facts
 
 
-def _extract_fragment(cfg, span, counts):
+def _extract_fragment(cfg, span, counts, *, mode="slots"):
     parts = _line_parts(span["text"])
     table_facts = _structured_metrics(span, parts)
     if table_facts:
@@ -226,7 +284,7 @@ def _extract_fragment(cfg, span, counts):
         return table_facts, "processed"
     if table_facts is not None:
         counts["metric_table_fallbacks"] += 1
-    facts, status, limited = _extract_window(cfg, span, parts, counts)
+    facts, status, limited = _extract_window(cfg, span, parts, counts, mode=mode)
     # Recover once with smaller disjoint windows when the original input or
     # output hits a limit. Keep all original candidates; never silently claim
     # completeness after splitting across a possible semantic boundary.
@@ -237,7 +295,7 @@ def _extract_fragment(cfg, span, counts):
         children = []
         for window in (parts[:middle], parts[middle:]):
             counts["recovery_windows"] += 1
-            more, child_status, _ = _extract_window(cfg, span, window, counts)
+            more, child_status, _ = _extract_window(cfg, span, window, counts, mode=mode)
             children.append(child_status)
             for fact in more:
                 key = _fact_key(fact)
@@ -282,8 +340,10 @@ def fact_in_group(fact, group):
 
 
 @_measure_draft
-def extract_atomic_sample(cfg, prepared, selected=None, progress=None):
-    """Cold scan of all prepared A originals by default; bounded manual diagnostic."""
+def extract_atomic_sample(cfg, prepared, selected=None, progress=None, *, mode="slots"):
+    """Cold scan using one of two contracts and the same source/table path."""
+    if mode not in MODE_STAGES:
+        raise ValueError("Invalid atomic extraction mode")
     spans = prepared["spans"]
     scope = "all" if selected is None else "sample"
     selected = list(spans) if selected is None else list(dict.fromkeys(selected))
@@ -298,7 +358,7 @@ def extract_atomic_sample(cfg, prepared, selected=None, progress=None):
     jobs = [span for sid, span in spans.items() if sid in selected_set]
     for span in tracked(emit, STAGE, jobs):
         counts["fragments_attempted"] += 1
-        facts, status = _extract_fragment(cfg, span, counts)
+        facts, status = _extract_fragment(cfg, span, counts, mode=mode)
         counts["fragments_processed"] += int(status in {"processed", "partial"})
         counts["fragments_complete"] += int(status == "processed")
         counts["fragments_failed"] += int(status not in {"processed", "partial"})
@@ -307,7 +367,7 @@ def extract_atomic_sample(cfg, prepared, selected=None, progress=None):
         result.append({**span, "revision": prepared["revisions"][span["source"]],
                        "status": status, "facts": facts})
     _verify_originals(cfg, prepared)
-    return {"format": "mint-atomic-sample/2", "scope": scope, "fragments": result,
+    return {"format": "mint-atomic-sample/2", "scope": scope, "mode": mode, "fragments": result,
             "counts": dict(counts), "requires_expert_review": True}
 
 
@@ -315,12 +375,14 @@ def atomic_diagnostics(result):
     """Only fixed numeric counters; no filenames, text, IDs, model or raw errors."""
     metrics = result.get("metrics", {})
     counts = result.get("counts", {})
-    return {"format": "mint-atomic-analysis/2", "mint": MINT_VERSION,
+    mode = "assertions" if result.get("mode") == "assertions" else "slots"
+    groups = ("metrics",) if mode == "assertions" else FACT_GROUPS
+    return {"format": "mint-atomic-analysis/2", "mint": MINT_VERSION, "mode": mode,
             "scope": "all" if result.get("scope") == "all" else "sample",
             "category_counts": {g: sum(fact_in_group(f, g) for _, f in fact_rows(result))
-                                for g in FACT_GROUPS},
+                                for g in groups},
             "requires_expert_review": True, "cold_run": True,
             "counts": {k: _number(counts.get(k)) for k in COUNTERS},
             "total_seconds": _number(metrics.get("total_seconds")),
-            "stages": safe_stage_metrics(metrics, (STAGE,)),
+            "stages": safe_stage_metrics(metrics, (MODE_STAGES[mode],)),
             "expert_review": None}
