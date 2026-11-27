@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V3 comparison experiment: choose the existing 18-field extraction or independent verbatim assertion selection without classification. Both share original scope, deterministic table metrics, evidence coordinates, limits and bounded recovery. Separate mode-labelled exports and UI identity; unclassified categories are not reported as zero. Version 21.4.35; live comparative acceptance pending.
+
 - V3: extract literal metric rows programmatically from unambiguous tables with explicit metric, value, unit and optional conditions columns; fall back to the existing model for unsafe layouts/rows. Reuse the shared metric guard, preserve evidence and expose numeric counters. No semantic ownership decision or V2 extraction changes. Version 21.4.34; live acceptance pending.
 
 - Fix the shared V2/V3 metric validator for bold Markdown table headers with separate value and unit columns. Regression checks preserve original rows and conditions and reject cross-row or incorrect values. Version 21.4.33; no semantic extraction changes, live-model acceptance pending.
