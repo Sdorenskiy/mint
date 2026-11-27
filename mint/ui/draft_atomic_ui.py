@@ -3,7 +3,7 @@ import json
 
 import streamlit as st
 
-from ..draft_atomic import (MAX_SAMPLE, atomic_diagnostics, extract_atomic_sample, prepare_atomic_sources,
+from ..draft_atomic import (MAX_SAMPLE, MODE_STAGES, atomic_diagnostics, extract_atomic_sample, prepare_atomic_sources,
                             fact_rows, fact_in_group)
 from ..draft_checkpoint import _identity
 from ..i18n import tr
@@ -138,14 +138,21 @@ def _render_sample_picker(spans):
     return selected
 
 
-def _result_key(cfg, signature, selected):
-    return (signature, None if selected is None else tuple(sorted(selected)),
-            _identity(cfg, "", "", stage="atomic_extract"), str(getattr(cfg, "llm_model", "")))
+def _result_key(cfg, signature, selected, mode="slots"):
+    return (signature, None if selected is None else tuple(sorted(selected)), mode,
+            _identity(cfg, "", "", stage=MODE_STAGES[mode]), str(getattr(cfg, "llm_model", "")))
+
+
+def _mode_labels():
+    return {"slots": tr("Извлечение с классификацией (18 полей)"),
+            "assertions": tr("Только исходные утверждения (без классификации)")}
 
 
 def _render_result(result):
     counts = result["counts"]
+    mode = "assertions" if result.get("mode") == "assertions" else "slots"
     st.subheader(tr("Реестр исходных сведений"))
+    st.caption(_mode_labels()[mode])
     st.caption(tr("Кандидаты прошли только программную проверку. Смысловая точность и полнота требуют экспертной оценки."))
     st.text(tr("Принято кандидатов: {n}; обработано фрагментов: {done} из {total}.",
                n=counts.get("accepted", 0), done=counts.get("fragments_processed", 0),
@@ -169,6 +176,9 @@ def _render_result(result):
         "timing": tr("Периодичность и сроки"), "actions": tr("Действия и модальность"),
         "constraints": tr("Ограничения и условия"),
     }
+    if mode == "assertions":
+        categories = {g: categories[g] for g in ("all", "metrics")}
+        st.caption(tr("Классификация не выполнялась; в показателях только программно разобранные таблицы."))
     totals = {g: sum(fact_in_group(fact, g) for _, fact in rows) for g in categories}
     group = st.selectbox(tr("Категория сведений"), list(categories),
                          format_func=lambda g: f"{categories[g]} ({totals[g]})", key="atomic_category")
@@ -182,6 +192,8 @@ def _render_result(result):
     for span, fact in _page(filtered, "atomic_fact_page", size=10):
         with st.container(border=True):
             st.caption(fact["id"])
+            if not fact["fields"]:
+                _wrapped(fact["quote"])
             for field, value in fact["fields"].items():
                 _wrapped(labels[field] + ": " + value)
             with st.expander(tr("Просмотр исходного фрагмента") + " · " + fact["id"]):
@@ -207,10 +219,10 @@ def _render_result(result):
     st.caption(tr("Локальная выгрузка содержит исходные тексты. Не передавайте её за пределы контура."))
     st.download_button(tr("Скачать локальную выборку фактов"),
                        json.dumps(result, ensure_ascii=False, indent=2, allow_nan=False),
-                       file_name="mint_atomic_sample_private.json", mime="application/json", key="atomic_private")
+                       file_name=f"mint_atomic_{mode}_private.json", mime="application/json", key="atomic_private")
     st.download_button(tr("Скачать обезличенные данные для анализа"),
                        json.dumps(atomic_diagnostics(result), ensure_ascii=False, indent=2, allow_nan=False),
-                       file_name="mint_atomic_analysis.json", mime="application/json", key="atomic_safe")
+                       file_name=f"mint_atomic_{mode}_analysis.json", mime="application/json", key="atomic_safe")
     st.caption(tr("В диагностике нет текстов, имён файлов, названий моделей и идентификаторов источников. Проверьте файл перед передачей."))
 
 
@@ -220,6 +232,8 @@ def render_atomic_sample(cfg):
     names, _ = list_kb_documents(cfg)
     sources = st.multiselect(tr("Документы-основания из вики"), names, key="atomic_sources")
     signature = _signature(cfg, sources)
+    mode = st.radio(tr("Режим извлечения V3"), list(MODE_STAGES),
+                    format_func=_mode_labels().get, key="atomic_mode")
     manual = st.checkbox(tr("Техническая диагностика: ручная выборка"), key="atomic_manual")
     if not manual:
         st.caption(tr("Mint автоматически обработает все фрагменты выбранных оригиналов."))
@@ -234,8 +248,8 @@ def render_atomic_sample(cfg):
                 prepared = prepare_atomic_sources(cfg, sources, progress)
                 st.session_state["atomic_prepared"] = signature, prepared
                 if not manual:
-                    result = extract_atomic_sample(cfg, prepared, None, progress)
-                    st.session_state["atomic_result"] = _result_key(cfg, signature, None), result
+                    result = extract_atomic_sample(cfg, prepared, None, progress, mode=mode)
+                    st.session_state["atomic_result"] = _result_key(cfg, signature, None, mode), result
             except (DraftError, OSError, ValueError, RuntimeError):
                 status.update(label=tr("Не удалось обработать выборку."), state="error")
             else:
@@ -259,12 +273,12 @@ def render_atomic_sample(cfg):
             st.session_state.pop("atomic_result", None)
             with st.status(tr("Извлечение атомарных сведений"), expanded=False) as status:
                 try:
-                    result = extract_atomic_sample(cfg, prepared, selected, render_progress(status))
+                    result = extract_atomic_sample(cfg, prepared, selected, render_progress(status), mode=mode)
                 except (DraftError, OSError, ValueError, RuntimeError):
                     status.update(label=tr("Не удалось обработать выборку."), state="error")
                 else:
-                    st.session_state["atomic_result"] = _result_key(cfg, signature, selected), result
+                    st.session_state["atomic_result"] = _result_key(cfg, signature, selected, mode), result
                     status.update(label=tr("Эксперимент завершён"), state="complete")
     saved = st.session_state.get("atomic_result")
-    if saved and saved[0] == _result_key(cfg, signature, selected):
+    if saved and saved[0] == _result_key(cfg, signature, selected, mode):
         _render_result(saved[1])
