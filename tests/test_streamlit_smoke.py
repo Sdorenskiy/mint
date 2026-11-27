@@ -162,7 +162,15 @@ try:
                                         and not has_button(at, "atomic_run")
                                         and not any(w.key == "atomic_pick_F1" for w in at.checkbox))
         at.selectbox(key="atomic_category").set_value("data").run()
-        res["atomic_category_view"] = any("Shared beginning." in str(m.value) for m in at.markdown)
+        # AppTest exposes the Markdown source, not the rendered browser text.
+        # Preserve the literal-text safety escaping and check both inclusion and exclusion.
+        expected_field = r"Состав данных: Shared beginning\."
+        in_data = any(str(m.value) == expected_field for m in at.markdown)
+        at.selectbox(key="atomic_category").set_value("metrics").run()
+        absent_in_metrics = not any(str(m.value) == expected_field for m in at.markdown)
+        at.selectbox(key="atomic_category").set_value("data").run()
+        res["atomic_category_view"] = (in_data and absent_in_metrics
+                                       and any(str(m.value) == expected_field for m in at.markdown))
         at.checkbox(key="atomic_manual").check().run()
         with patch.object(atomic_ui, "prepare_atomic_sources", return_value=prepared_sample):
             at.button(key="atomic_prepare").click().run()
