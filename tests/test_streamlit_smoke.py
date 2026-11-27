@@ -174,19 +174,30 @@ try:
         # Switching contracts must hide the previous result, not relabel it.
         at.radio(key="atomic_mode").set_value("assertions").run()
         hidden_slots = not any(str(m.value) == expected_field for m in at.markdown)
+        assert not at.checkbox(key="atomic_extended").value
+        at.checkbox(key="atomic_extended").check().run()
         simple_fact = dict(full_fact, fields={}, origin="assertion")
+        context_fact = dict(simple_fact, id="F1.2", quote="Document title", record_role="context")
         simple_result = dict(full_result, mode="assertions",
-                             fragments=[dict(sample_spans["F1"], status="processed", facts=[simple_fact])])
+                             fragments=[dict(sample_spans["F1"], status="processed", facts=[simple_fact, context_fact])],
+                             private_diagnostics={"omitted": 0, "fragments": []})
         with patch.object(atomic_ui, "prepare_atomic_sources", return_value=prepared_sample), \
                 patch.object(atomic_ui, "extract_atomic_sample", return_value=simple_result) as simple_run:
             at.button(key="atomic_prepare").click().run()
-            simple_mode = simple_run.call_args.kwargs.get("mode") == "assertions"
+            simple_mode = (simple_run.call_args.kwargs.get("mode") == "assertions"
+                           and simple_run.call_args.kwargs.get("extended") is True)
         simple_visible = any(str(m.value) == r"Shared beginning\." for m in at.markdown)
         categories = at.selectbox(key="atomic_category").options
-        only_two = len(categories) == 2
+        four_categories = len(categories) == 4
+        context_hidden = not any(str(m.value) == "Document title" for m in at.markdown)
+        at.selectbox(key="atomic_category").set_value("context").run()
+        context_visible = any(str(m.value) == "Document title" for m in at.markdown)
+        at.checkbox(key="atomic_extended").uncheck().run()
+        detail_cleared = "private_diagnostics" not in at.session_state["atomic_result"][1]
         at.radio(key="atomic_mode").set_value("slots").run()
         hidden_simple = not any(w.key == "atomic_category" for w in at.selectbox)
-        res["atomic_assertion_mode"] = hidden_slots and simple_mode and simple_visible and only_two and hidden_simple
+        res["atomic_assertion_mode"] = (hidden_slots and simple_mode and simple_visible and four_categories
+                                        and context_hidden and context_visible and detail_cleared and hidden_simple)
         at.checkbox(key="atomic_manual").check().run()
         with patch.object(atomic_ui, "prepare_atomic_sources", return_value=prepared_sample):
             at.button(key="atomic_prepare").click().run()
