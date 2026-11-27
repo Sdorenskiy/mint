@@ -88,6 +88,77 @@ def test_contract():
             assert fact["fields"]["condition"] == condition
 
 
+def test_structured_metric_tables():
+    from collections import Counter
+    cfg = SimpleNamespace(max_tokens=1800, llm_context_tokens=16000, chars_per_token=2.5)
+    header = "| **Показатель** | **Значение** | **Единица** | **Условия** |"
+    separator = "| --- | --- | --- | --- |"
+    # Synthetic data with independently scoped process and component tables.
+    for section, rows in (
+        ("Process", [
+            ("Размер A", "250 000", "записей", "Один регион и период"),
+            ("Размер B", "500 000", "записей", "Один регион и период"),
+            ("Консолидация", "4", "ч", "Не более; полный пакет"),
+            ("Приём", "60", "с", "Не более"),
+            ("Доступность", "99,5", "%", "За месяц"),
+            ("Хранение событий", "90", "суток", "Не менее"),
+            ("Параллельная нагрузка", "12", "пакетов", "Одновременно"),
+        ]),
+        ("Component", [
+            ("Размер A", "250 000", "записей", "Не менее"),
+            ("Размер B", "500 000", "записей", "Не менее"),
+            ("Приём", "60", "с", "Полный пакет"),
+            ("Доставка", "30", "мин", "Без ожидания зависимости"),
+            ("Ответ", "2", "с", "При 20 запросах"),
+            ("Доступность", "99,5", "%", "Без согласованных работ"),
+            ("Параллельный приём", "12", "пакетов", "Одновременно"),
+            ("Хранение событий", "90", "суток", "Не менее"),
+            ("Хранение сведений", "30", "суток", "Календарные дни"),
+        ]),
+    ):
+        lines = [header, separator] + ["| " + " | ".join(row) + " |" for row in rows]
+        span = {"section": section, "text": "\r\n".join(lines),
+                "table_context": {"header": header, "separator": separator}}
+        counts = Counter()
+        with patch.object(atomic, "_json") as ask:
+            facts, status = atomic._extract_fragment(cfg, span, counts)
+        assert not ask.called and status == "processed"
+        assert counts["accepted"] == counts["metric_table_rows"] == len(rows)
+        assert counts["metric_table_fragments"] == 1
+        for i, (fact, row) in enumerate(zip(facts, rows), 3):
+            assert fact["first"] == fact["last"] == i
+            assert fact["quote"] == lines[i - 1]
+            assert span["text"][fact["start"]:fact["end"]] == fact["quote"]
+            assert fact["origin"] == "structured_table"
+            assert tuple(fact["fields"][k] for k in (*atomic.METRIC_KEYS, "condition")) == row
+    # Continuation chunks need not repeat the header. Reordered columns work.
+    header_en = "| Unit | **Metric** | Value |"
+    span = {"section": "Continuation", "text": "| ms | Latency | 25 |",
+            "table_context": {"header": header_en}}
+    with patch.object(atomic, "_json") as ask:
+        facts, status = atomic._extract_fragment(cfg, span, Counter())
+    assert not ask.called and status == "processed"
+    assert facts[0]["fields"] == {"metric_subject": "Latency", "metric_value": "25", "metric_unit": "ms"}
+    for bad in ("| A | 10–20 | ms | bounded |", "| A | 10 | | bounded |",
+                "| A | 10 | ms | bounded | extra |", "Free text",
+                "| A | 10 | - | bounded |"):
+        span = {"section": "Fallback", "text": header + "\n" + separator + "\n"
+                + "| Valid | 2 | ms | bounded |\n" + bad,
+                "table_context": {"header": header, "separator": separator}}
+        counts = Counter()
+        with patch.object(atomic, "_json", return_value={"items": []}) as ask:
+            facts, status = atomic._extract_fragment(cfg, span, counts)
+        assert ask.call_count == 1 and counts["metric_table_fallbacks"] == 1
+        assert counts["metric_table_rows"] == 0 and not facts
+    # Ambiguous/other tables never become deterministic metric candidates.
+    for header in ("| Metric | Value | Value | Unit |", "| Field | Description |"):
+        span = {"section": "Other", "text": "| A | 10 | 20 | ms |",
+                "table_context": {"header": header}}
+        with patch.object(atomic, "_json", return_value={"items": []}) as ask:
+            atomic._extract_fragment(cfg, span, Counter())
+        assert ask.call_count == 1
+
+
 def test_scope_and_privacy():
     with TemporaryDirectory() as tmp:
         cfg = SimpleNamespace(kb_path=Path(tmp) / "kb", log_path=Path(tmp) / "logs", llm_model="fixture",
@@ -155,6 +226,7 @@ def test_bounded_recovery():
 
 if __name__ == "__main__":
     test_contract()
+    test_structured_metric_tables()
     test_scope_and_privacy()
     test_bounded_recovery()
     print("ИТОГ: V3 whole-document scan, numbered evidence, bounded recovery, categories and safe diagnostics")

@@ -7,12 +7,15 @@ Mechanical validation is not semantic verification.
 from collections import Counter
 import hashlib
 import json
+import re
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict, Field, ValidationError
 
 from .draft_progress import tracked
-from .draft_target_analysis import _map_sources, _metric_pair, _verify_originals
+from .draft_target_analysis import (_map_sources, _metric_pair, _verify_originals,
+                                    _metric_cells, _metric_header_label,
+                                    _METRIC_VALUE_LABELS, _METRIC_UNIT_LABELS)
 from .draft_pilot_report import _number, safe_stage_metrics
 from .template_draft import (DraftError, _candidate_budget, _json, _load_draft_sources,
                              _measure_draft)
@@ -59,7 +62,8 @@ COUNTERS = ("fragments_total", "fragments_selected", "fragments_attempted", "fra
             "batch_error", "context_limit", "invalid_payload", "response_limit",
             "invalid_shape", "empty_fields",
             "invalid_field", "invalid_metric", "duplicate", "accepted",
-            "empty_response", "partial_fragments")
+            "empty_response", "partial_fragments", "metric_table_fragments",
+            "metric_table_rows", "metric_table_fallbacks")
 
 
 def prepare_atomic_sources(cfg, sources, progress=None):
@@ -160,8 +164,68 @@ def _extract_window(cfg, span, parts, counts):
     return facts, "partial" if partial else "processed", limited
 
 
+_SUBJECT_LABELS = {"показатель", "наименование показателя", "metric", "indicator"}
+_CONDITION_LABELS = {"условия", "условие", "условия измерения", "conditions", "condition"}
+# A single explicit scalar only. Ranges, inequalities in the value cell,
+# compound values and unfamiliar layouts use the existing model route.
+_SCALAR = re.compile(r"[+-]?(?:[0-9]+|[0-9]{1,3}(?:[ \u00a0\u202f][0-9]{3})+)(?:[.,][0-9]+)?")
+
+
+def _structured_metrics(span, parts):
+    """Return literal metric candidates for an entirely unambiguous table chunk.
+
+    None means non-metric layout; [] means recognized header but unsafe row(s).
+    No obligation, ownership, current/target status or semantic approval inferred.
+    """
+    table = span.get("table_context") or {}
+    header, separator = table.get("header", ""), table.get("separator", "")
+    if not header.strip().startswith("|") or not header.strip().endswith("|"):
+        return None
+    labels = [_metric_header_label(c).casefold() for c in _metric_cells(header)]
+    aliases = (_SUBJECT_LABELS, _METRIC_VALUE_LABELS, _METRIC_UNIT_LABELS, _CONDITION_LABELS)
+    columns = [[i for i, label in enumerate(labels) if label in names] for names in aliases]
+    if (len(labels) not in (3, 4) or any(len(col) != 1 for col in columns[:3])
+            or len(columns[3]) != len(labels) - 3):
+        return None
+    si, vi, ui = (col[0] for col in columns[:3])
+    ci = columns[3][0] if columns[3] else None
+    facts = []
+    for part in parts:
+        line = part["text"].strip()
+        if not line or line == header.strip() or (separator and line == separator.strip()):
+            continue
+        if not line.startswith("|") or not line.endswith("|"):
+            return []
+        values = _metric_cells(line)
+        if len(values) != len(labels) or not all(values[i] for i in (si, vi, ui)):
+            return []
+        # Do not guess at merged cells, multiple units, placeholders or rich markup.
+        if not _SCALAR.fullmatch(values[vi]) or not re.fullmatch(r"[\w%°µμ/·.²³ -]+", values[ui]):
+            return []
+        if not any(ch.isalpha() for ch in values[ui]) and values[ui] not in {"%", "°"}:
+            return []
+        fields = dict(metric_subject=values[si], metric_value=values[vi], metric_unit=values[ui])
+        if ci is not None and values[ci]:
+            fields["condition"] = values[ci]
+        fact, status = _validated_candidate({"first": part["n"], "last": part["n"],
+                                             "fields": fields}, span, parts)
+        if status != "accepted":
+            return []
+        fact["origin"] = "structured_table"
+        facts.append(fact)
+    return facts
+
+
 def _extract_fragment(cfg, span, counts):
     parts = _line_parts(span["text"])
+    table_facts = _structured_metrics(span, parts)
+    if table_facts:
+        counts["metric_table_fragments"] += 1
+        counts["metric_table_rows"] += len(table_facts)
+        counts["accepted"] += len(table_facts)
+        return table_facts, "processed"
+    if table_facts is not None:
+        counts["metric_table_fallbacks"] += 1
     facts, status, limited = _extract_window(cfg, span, parts, counts)
     # Recover once with smaller disjoint windows when the original input or
     # output hits a limit. Keep all original candidates; never silently claim

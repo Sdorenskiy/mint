@@ -23,6 +23,7 @@ EN = {
     "Все сведения": "All facts",
     "Техническая выборка, не весь документ.": "Technical sample, not the whole document.",
     "Есть ограничения или ошибки разбора. Полный проход не означает полноту извлечённых сведений.": "Some extraction limits or errors occurred. Scanning everything does not establish completeness of extracted facts.",
+    "Программно извлечено строк показателей: {rows}; фрагментов таблиц: {tables}; передано модели из-за неоднозначности: {fallback}.": "Metric rows extracted programmatically: {rows}; table fragments: {tables}; sent to the model due to ambiguity: {fallback}.",
     "Без зарегистрированных ошибок: {complete}; частичные: {partial}; не обработаны: {failed}; пустые ответы: {empty}.": "Without recorded errors: {complete}; partial: {partial}; not processed: {failed}; empty responses: {empty}.",
     "Реестр исходных сведений": "Source fact registry",
     "Включить в выборку": "Include in sample",
