@@ -307,9 +307,18 @@ def _metric_pair(row, subject, value, unit):
     header = table.get("header", "")
     def cells(line):
         return [cell.strip() for cell in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+    def header_label(cell):
+        # Docling represents bold Word table headers as Markdown. Normalize
+        # only paired outer emphasis in labels, never source values or quotes.
+        label = _normalized(cell)
+        for marker in ("**", "__"):
+            if label.startswith(marker) and label.endswith(marker) and len(label) > 2 * len(marker):
+                return _normalized(label[len(marker):-len(marker)])
+        return label
+
     for line in row["quote"].splitlines():
         if header and line.strip().startswith("|"):
-            labels, values = cells(header), cells(line)
+            labels, values = [header_label(cell) for cell in cells(header)], cells(line)
             if len(labels) == len(values):
                 # A common layout stores the quantity and unit in separate cells.
                 # Accept only an unambiguous, explicitly labelled pair in this row;
