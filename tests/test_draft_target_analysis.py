@@ -125,6 +125,24 @@ def test_metric_pairs_and_separate_review():
     ambiguous = {"quote": "| Rate | 20 | 30 | messages/s |",
                  "table_context": {"header": "| Metric | Value | Value | Unit |"}}
     assert not target._metric_pair(ambiguous, "Rate", "20", "messages/s")
+    # Real Word-to-Markdown headers are bold. Preserve literal source values.
+    for header in ("| **Показатель** | **Значение** | **Единица** | **Условия** |",
+                   "| __Показатель__ | __Значение__ | __Единица__ | __Условия__ |"):
+        row = {"quote": "| Размер пакета | 250 000 | записей | Один пакет |\n"
+                        "| Время ответа | 2 | с | При 20 запросах |",
+               "table_context": {"header": header}}
+        assert target._metric_pair(row, "Размер пакета", "250 000", "записей")
+        assert target._metric_pair(row, "Время ответа", "2", "с")
+        assert not target._metric_pair(row, "Размер пакета", "2", "с")
+        assert not target._metric_pair(row, "Время ответа", "20", "с")
+        assert not target._metric_pair(row, "Размер пакета", "250000", "записей")
+        assert not target._metric_pair(row, "Размер пакета", "250 000", "с")
+    assert target._metric_pair({"quote": "| Availability | 99,5 | % | Per month |",
+                                "table_context": {"header": "| **Metric** | **Value** | **Unit** | **Conditions** |"}},
+                               "Availability", "99,5", "%")
+    ambiguous_bold = {"quote": "| Rate | 20 | 30 | messages/s |",
+                      "table_context": {"header": "| **Metric** | **Value** | **Value** | **Unit** |"}}
+    assert not target._metric_pair(ambiguous_bold, "Rate", "20", "messages/s")
     records_for_metrics = {"R1": {"section_role": "metric"}, "R2": {"section_role": "metric"},
                            "R3": {"dossier_facets": [{"facet": "capacity"}]}, "R4": {}, "R5": {}, "R6": {}}
     decisions_for_metrics = {"R1": {"metric": {}, "status": "model_supported"},

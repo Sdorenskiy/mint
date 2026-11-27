@@ -50,6 +50,44 @@ def test_contract():
     assert atomic._validated_candidate(candidate(1, 1, object="Metric"), table)[1] == "invalid_range"
 
 
+    # Synthetic regression: two table sizes, formatted headers, grouped
+    # numbers, decimal comma and conditional measurement boundaries.
+    header = "| **Показатель** | **Значение** | **Единица** | **Условия** |"
+    process = [
+        ("Размер набора A", "250 000", "записей", "Один регион и период"),
+        ("Размер набора B", "500 000", "записей", "Один регион и период"),
+        ("Время процесса", "4", "ч", "Не более в штатном режиме"),
+        ("Время приёма", "60", "с", "После получения полного пакета"),
+        ("Доступность", "99,5", "%", "За месяц без согласованных работ"),
+        ("Хранение событий", "90", "суток", "Не менее"),
+        ("Параллельная нагрузка", "12", "пакетов", "Одновременно"),
+    ]
+    component = [
+        ("Размер пакета A", "250 000", "записей", "Не менее"),
+        ("Размер пакета B", "500 000", "записей", "Не менее"),
+        ("Технический приём", "60", "с", "Не более"),
+        ("Доставка пакета", "30", "мин", "При доступном получателе"),
+        ("Время ответа", "2", "с", "При 20 одновременных запросах"),
+        ("Доступность интерфейса", "99,5", "%", "За календарный месяц"),
+        ("Параллельный приём", "12", "пакетов", "Одновременно"),
+        ("Хранение событий", "90", "суток", "Не менее"),
+        ("Хранение сведений", "30", "суток", "Календарные дни"),
+    ]
+    for rows in (process, component):
+        lines = [header, "| --- | --- | --- | --- |"] + [
+            "| " + " | ".join(row) + " |" for row in rows]
+        span = {"text": "\n".join(lines), "table_context": {"header": header,
+                 "separator": lines[1]}}
+        for n, (subject, value, unit, condition) in enumerate(rows, 3):
+            raw = candidate(n, n, metric_subject=subject, metric_value=value,
+                            metric_unit=unit, condition=condition)
+            fact, status = atomic._validated_candidate(raw, span)
+            assert status == "accepted", (subject, status)
+            assert fact["quote"] == lines[n - 1]
+            assert span["text"][fact["start"]:fact["end"]] == fact["quote"]
+            assert fact["fields"]["condition"] == condition
+
+
 def test_scope_and_privacy():
     with TemporaryDirectory() as tmp:
         cfg = SimpleNamespace(kb_path=Path(tmp) / "kb", log_path=Path(tmp) / "logs", llm_model="fixture",
