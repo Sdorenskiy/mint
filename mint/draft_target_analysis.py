@@ -290,6 +290,24 @@ def prepare_target_analysis(cfg, sources, roles, context, progress=None, *, refe
             "profile_retrieval": dict(evidence.counts), "index_revisions": dict(evidence.revisions)}
 
 
+_METRIC_VALUE_LABELS = {"значение", "величина", "value", "quantity"}
+_METRIC_UNIT_LABELS = {"единица", "единица измерения", "ед. изм.", "ед. изм",
+                       "ед. измерения", "unit", "unit of measure", "measurement unit"}
+
+
+def _metric_cells(line):
+    return [cell.strip() for cell in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
+
+
+def _metric_header_label(cell):
+    # Normalize only paired outer emphasis in labels, never original values.
+    label = _normalized(cell)
+    for marker in ("**", "__"):
+        if label.startswith(marker) and label.endswith(marker) and len(label) > 2 * len(marker):
+            return _normalized(label[len(marker):-len(marker)])
+    return label
+
+
 def _metric_pair(row, subject, value, unit):
     """Conservative exact value/unit association in one clause or table row.
 
@@ -305,29 +323,15 @@ def _metric_pair(row, subject, value, unit):
     subject_pattern = re.compile(r"(?<!\w)" + re.escape(subject) + r"(?!\w)", re.I)
     table = row.get("table_context") or {}
     header = table.get("header", "")
-    def cells(line):
-        return [cell.strip() for cell in re.split(r"(?<!\\)\|", line.strip().strip("|"))]
-    def header_label(cell):
-        # Docling represents bold Word table headers as Markdown. Normalize
-        # only paired outer emphasis in labels, never source values or quotes.
-        label = _normalized(cell)
-        for marker in ("**", "__"):
-            if label.startswith(marker) and label.endswith(marker) and len(label) > 2 * len(marker):
-                return _normalized(label[len(marker):-len(marker)])
-        return label
-
     for line in row["quote"].splitlines():
         if header and line.strip().startswith("|"):
-            labels, values = [header_label(cell) for cell in cells(header)], cells(line)
+            labels, values = [_metric_header_label(cell) for cell in _metric_cells(header)], _metric_cells(line)
             if len(labels) == len(values):
                 # A common layout stores the quantity and unit in separate cells.
                 # Accept only an unambiguous, explicitly labelled pair in this row;
                 # never borrow the unit from another row or infer a target level.
-                value_labels = {"значение", "величина", "value", "quantity"}
-                unit_labels = {"единица", "единица измерения", "ед. изм.", "ед. изм",
-                               "ед. измерения", "unit", "unit of measure", "measurement unit"}
-                value_cols = [i for i, label in enumerate(labels) if _normalized(label).casefold() in value_labels]
-                unit_cols = [i for i, label in enumerate(labels) if _normalized(label).casefold() in unit_labels]
+                value_cols = [i for i, label in enumerate(labels) if _normalized(label).casefold() in _METRIC_VALUE_LABELS]
+                unit_cols = [i for i, label in enumerate(labels) if _normalized(label).casefold() in _METRIC_UNIT_LABELS]
                 if len(value_cols) == len(unit_cols) == 1:
                     vi, ui = value_cols[0], unit_cols[0]
                     subject_cells = [cell for i, cell in enumerate(values)
