@@ -4,6 +4,8 @@
 
 ## Unreleased
 
+- V3 assertion experiment: preserve ordinary parsed table rows and their positional cells without model selection; separate document context and unresolved layouts from content candidates without deleting evidence. Keep the 18-field mode as comparator. Bounded literal-error recovery and per-fragment diagnostic reasons; optional, bounded local export of rejected parsed JSON candidates for authorized synthetic tests only. No raw transport logs, V2 or Word changes. Version 21.4.36; real-corpus comparison pending.
+
 - V3 comparison experiment: choose the existing 18-field extraction or independent verbatim assertion selection without classification. Both share original scope, deterministic table metrics, evidence coordinates, limits and bounded recovery. Separate mode-labelled exports and UI identity; unclassified categories are not reported as zero. Version 21.4.35; live comparative acceptance pending.
 
 - V3: extract literal metric rows programmatically from unambiguous tables with explicit metric, value, unit and optional conditions columns; fall back to the existing model for unsafe layouts/rows. Reuse the shared metric guard, preserve evidence and expose numeric counters. No semantic ownership decision or V2 extraction changes. Version 21.4.34; live acceptance pending.
